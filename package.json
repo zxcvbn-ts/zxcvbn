@@ -10,7 +10,7 @@
   "prettier": "./prettier.js",
   "scripts": {
     "build": "rollup -c ./scripts/rollup.config.js",
-    "demo": "npm run build && copy dist\\main.js demo\\zxcvbn.js && http-server demo",
+    "demo": "npm run build && npx copyfiles -f dist/main.browser.js demo && npx move-cli demo/main.browser.js demo/zxcvbn.js && http-server demo",
     "lint": "eslint --ext .js --fix --cache .",
     "test": "jest",
     "release": "npm run standard-version",
