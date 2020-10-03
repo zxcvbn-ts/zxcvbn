@@ -1,4 +1,4 @@
-const test_passwords = `\
+const testPasswords = `\
 zxcvbn
 qwER43@!
 Tr0ub4dour&3
@@ -80,7 +80,7 @@ rWibMFACxAUGZmxhVncy
 Ba9ZyWABu99[BK#6MBgbH88Tofv)vs$w\
 `;
 
-const results_tmpl = `\
+const resultsTmpl = `\
 {{#results}}
 <table class="result">
   <tr>
@@ -88,7 +88,7 @@ const results_tmpl = `\
     <td colspan="2"><strong>{{password}}</strong></td>
   </tr>
   <tr>
-    <td>guesses_log10: </td>
+    <td>guessesLog10: </td>
     <td colspan="2">{{guessesLog10}}</td>
   </tr>
   <tr>
@@ -101,17 +101,17 @@ const results_tmpl = `\
   <tr>
     <td colspan="3">guess times:</td>
   </tr>
-  {{& guess_times_display}}
-  {{& feedback_display }}
+  {{& guessTimesDisplay}}
+  {{& feedbackDisplay }}
   <tr>
     <td colspan="3"><strong>match sequence:</strong></td>
   </tr>
 </table>
-{{& sequence_display}}
+{{& sequenceDisplay}}
 {{/results}}\
 `;
 
-const guess_times_tmpl = `\
+const guessTimesTmpl = `\
 <tr>
   <td>100 / hour:</td>
   <td>{{onlineThrottling100PerHour}}</td>
@@ -133,14 +133,14 @@ const guess_times_tmpl = `\
 </tr>\
 `;
 
-const feedback_tmpl = `\
+const feedbackTmpl = `\
 {{#warning}}
 <tr>
   <td>warning: </td>
   <td colspan="2">{{warning}}</td>
 </tr>
 {{/warning}}
-{{#has_suggestions}}
+{{#hasSuggestions}}
 <tr>
   <td style="vertical-align: top">suggestions:</td>
   <td colspan="2">
@@ -149,10 +149,10 @@ const feedback_tmpl = `\
     {{/suggestions}}
   </td>
 </tr>
-{{/has_suggestions}}\
+{{/hasSuggestions}}\
 `;
 
-const props_tmpl = `\
+const propsTmpl = `\
 <div class="match-sequence">
 {{#sequence}}
 <table>
@@ -202,15 +202,15 @@ const props_tmpl = `\
   {{/l33t}}
   <tr>
     <td>base-guesses:</td>
-    <td>{{base_guesses}}</td>
+    <td>{{baseGuesses}}</td>
   </tr>
   <tr>
     <td>uppercase-variations:</td>
-    <td>{{uppercase_variations}}</td>
+    <td>{{uppercaseVariations}}</td>
   </tr>
   <tr>
     <td>l33t-variations:</td>
-    <td>{{l33t_variations}}</td>
+    <td>{{l33tVariations}}</td>
   </tr>
   {{/rank}}
   {{#graph}}
@@ -224,43 +224,43 @@ const props_tmpl = `\
   </tr>
   <tr>
     <td>shifted count:</td>
-    <td>{{shifted_count}}</td>
+    <td>{{shiftedCount}}</td>
   </tr>
   {{/graph}}
-  {{#base_token}}
+  {{#baseToken}}
   <tr>
-    <td>base_token:</td>
-    <td>'{{base_token}}'</td>
+    <td>baseToken:</td>
+    <td>'{{baseToken}}'</td>
   </tr>
   <tr>
     <td>guesses:</td>
     <td>{{guesses}}</td>
   </tr>
   <tr>
-    <td>num_repeats:</td>
-    <td>{{repeat_count}}</td>
+    <td>numRepeats:</td>
+    <td>{{repeatCount}}</td>
   </tr>
-  {{/base_token}}
-  {{#sequence_name}}
+  {{/baseToken}}
+  {{#sequenceName}}
   <tr>
     <td>sequence-name:</td>
-    <td>{{sequence_name}}</td>
+    <td>{{sequenceName}}</td>
   </tr>
   <tr>
     <td>sequence-size</td>
-    <td>{{sequence_space}}</td>
+    <td>{{sequenceSpace}}</td>
   </tr>
   <tr>
     <td>ascending:</td>
     <td>{{ascending}}</td>
   </tr>
-  {{/sequence_name}}
-  {{#regex_name}}
+  {{/sequenceName}}
+  {{#regexName}}
   <tr>
-    <td>regex_name:</td>
-    <td>{{regex_name}}</td>
+    <td>regexName:</td>
+    <td>{{regexName}}</td>
   </tr>
-  {{/regex_name}}
+  {{/regexName}}
   {{#day}}
   <tr>
     <td>day:</td>
@@ -284,54 +284,54 @@ const props_tmpl = `\
 </div>\
 `;
 
-const round_to_x_digits = (n, x) => Math.round(n * Math.pow(10, x)) / Math.pow(10, x);
+const roundToXDigits = (n, x) => Math.round(n * Math.pow(10, x)) / Math.pow(10, x);
 
-const round_logs = function(r) {
-    r.guesses_log10 = round_to_x_digits(r.guesses_log10, 5);
+const roundLogs = function(r) {
+    r.guessesLog10 = roundToXDigits(r.guessesLog10, 5);
     return Array.from(r.sequence).map((m) =>
-        (m.guesses_log10 = round_to_x_digits(m.guesses_log10, 5)));
+        (m.guessesLog10 = roundToXDigits(m.guessesLog10, 5)));
 };
 
 $(function() {
     console.log(zxcvbn);
     let r;
     window.zxcvbn = zxcvbn;
-    const results_lst = [];
-    for (let password of test_passwords.split('\n')) {
+    const resultsLst = [];
+    for (let password of testPasswords.split('\n')) {
         if (password) {
           r = zxcvbn(password);
             console.log(r);
-            round_logs(r);
-            r.sequence_display = Mustache.render(props_tmpl, r);
-            r.guess_times_display = Mustache.render(guess_times_tmpl, r.crackTimesDisplay);
-            r.feedback.has_suggestions = r.feedback.suggestions.length > 0;
-            r.feedback_display = Mustache.render(feedback_tmpl, r.feedback);
-            results_lst.push(r);
+            roundLogs(r);
+            r.sequenceDisplay = Mustache.render(propsTmpl, r);
+            r.guessTimesDisplay = Mustache.render(guessTimesTmpl, r.crackTimesDisplay);
+            r.feedback.hasSuggestions = r.feedback.suggestions.length > 0;
+            r.feedbackDisplay = Mustache.render(feedbackTmpl, r.feedback);
+            resultsLst.push(r);
         }
     }
 
-    let rendered = Mustache.render(results_tmpl, {
-        results: results_lst,
+    let rendered = Mustache.render(resultsTmpl, {
+        results: resultsLst,
     });
     $('#results').html(rendered);
 
-    let last_q = '';
+    let lastQ = '';
     const _listener = function() {
         const current = $('#search-bar').val();
         if (!current) {
             $('#search-results').html('');
             return;
         }
-        if (current !== last_q) {
-            last_q = current;
+        if (current !== lastQ) {
+            lastQ = current;
             r = zxcvbn(current);
-            round_logs(r);
-            r.sequence_display = Mustache.render(props_tmpl, r);
-            r.guess_times_display = Mustache.render(guess_times_tmpl, r.crackTimesDisplay);
-            r.feedback.has_suggestions = r.feedback.suggestions.length > 0;
-            r.feedback_display = Mustache.render(feedback_tmpl, r.feedback);
+            roundLogs(r);
+            r.sequenceDisplay = Mustache.render(propsTmpl, r);
+            r.guessTimesDisplay = Mustache.render(guessTimesTmpl, r.crackTimesDisplay);
+            r.feedback.hasSuggestions = r.feedback.suggestions.length > 0;
+            r.feedbackDisplay = Mustache.render(feedbackTmpl, r.feedback);
             const results = { results: [r] };
-            rendered = Mustache.render(results_tmpl, results);
+            rendered = Mustache.render(resultsTmpl, results);
             return $('#search-results').html(rendered);
         }
     };
