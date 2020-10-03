@@ -10,7 +10,7 @@ import repeatGuesses from './guesses/repeat'
 import sequenceGuesses from './guesses/sequence'
 import spatialGuesses from './guesses/spatial'
 import utils from './utils'
-import { ExtendedMatch, LooseObject, Match } from '~/types'
+import { ExtendedMatch, LooseObject, Match } from '../types'
 
 // ------------------------------------------------------------------------------
 // guess estimation -- one function per match pattern ---------------------------

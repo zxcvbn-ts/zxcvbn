@@ -1,4 +1,4 @@
-import { ExtendedMatch } from '~/types'
+import { ExtendedMatch } from '../types'
 
 /*
  *-------------------------------------------------------------------------------

@@ -1,6 +1,6 @@
 import { REGEXEN } from '~/data/const'
 import { sorted } from '~/helper'
-import { ExtendedMatch } from '~/types'
+import { ExtendedMatch } from '../types'
 /*
  * -------------------------------------------------------------------------------
  *  regex matching ---------------------------------------------------------------

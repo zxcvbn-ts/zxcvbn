@@ -1,4 +1,4 @@
-import { ExtendedMatch, LooseObject } from '~/types'
+import { ExtendedMatch, LooseObject } from './types'
 
 export const empty = (obj: LooseObject) => Object.keys(obj).length === 0
 

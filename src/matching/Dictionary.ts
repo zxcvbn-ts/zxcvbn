@@ -1,6 +1,6 @@
 import { sorted, buildRankedDictionary } from '~/helper'
 import Options from '~/Options'
-import { ExtendedMatch, DictionaryNames } from '~/types'
+import { ExtendedMatch, DictionaryNames } from '../types'
 import frequencyLists from '~/data/frequency_lists'
 
 const params = {

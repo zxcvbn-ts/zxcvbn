@@ -1,6 +1,6 @@
 import { START_UPPER, ALL_UPPER_INVERTED } from './data/const'
 import Options from './Options'
-import { ExtendedMatch, FeedbackType } from '~/types'
+import { ExtendedMatch, FeedbackType } from './types'
 
 /*
  * -------------------------------------------------------------------------------

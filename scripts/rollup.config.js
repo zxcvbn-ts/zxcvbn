@@ -42,18 +42,6 @@ const generateConfig = (type) => {
       del({
         targets: 'dist/*',
       }),
-      copy({
-        targets: [
-          {
-            src: 'package.json',
-            dest: 'dist/',
-          },
-          {
-            src: 'CHANGELOG.md',
-            dest: 'dist/',
-          },
-        ],
-      }),
     )
 
     generateCounter += 1

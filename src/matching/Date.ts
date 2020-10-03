@@ -5,7 +5,7 @@ import {
   REFERENCE_YEAR,
 } from '~/data/const'
 import { sorted } from '~/helper'
-import { ExtendedMatch } from '~/types'
+import { ExtendedMatch } from '../types'
 
 /*
  * -------------------------------------------------------------------------------

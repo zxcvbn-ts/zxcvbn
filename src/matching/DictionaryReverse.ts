@@ -1,6 +1,6 @@
 import { sorted } from '~/helper'
 import MatchDictionary from './Dictionary'
-import { ExtendedMatch } from '~/types'
+import { ExtendedMatch } from '../types'
 
 /*
  * -------------------------------------------------------------------------------

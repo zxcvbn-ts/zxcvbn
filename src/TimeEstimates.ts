@@ -1,5 +1,5 @@
 import Options from './Options'
-import { CrackTimesDisplay, CrackTimesSeconds, LooseObject } from '~/types'
+import { CrackTimesDisplay, CrackTimesSeconds, LooseObject } from './types'
 
 /*
  * -------------------------------------------------------------------------------

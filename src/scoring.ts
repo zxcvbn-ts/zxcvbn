@@ -1,7 +1,7 @@
 import utils from './scoring/utils'
 import estimateGuesses from './scoring/estimate'
 import { MIN_GUESSES_BEFORE_GROWING_SEQUENCE } from './data/const'
-import { Match, ExtendedMatch } from '~/types'
+import { Match, ExtendedMatch } from './types'
 
 const scoringHelper = {
   password: '',

@@ -1,7 +1,7 @@
 import { sorted, empty, translate } from '~/helper'
 import MatchDictionary from './Dictionary'
 import Options from '~/Options'
-import { ExtendedMatch, LooseObject } from '~/types'
+import { ExtendedMatch, LooseObject } from '../types'
 
 /*
  * -------------------------------------------------------------------------------

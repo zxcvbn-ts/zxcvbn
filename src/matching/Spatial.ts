@@ -1,6 +1,6 @@
 import { sorted, extend } from '~/helper'
 import Options from '~/Options'
-import { DefaultAdjacencyGraphsKeys, ExtendedMatch } from '~/types'
+import { DefaultAdjacencyGraphsKeys, ExtendedMatch } from '../types'
 import defaultAdjacencyGraphs from '~/data/adjacency_graphs'
 
 /*
