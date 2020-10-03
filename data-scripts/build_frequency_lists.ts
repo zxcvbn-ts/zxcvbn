@@ -6,8 +6,8 @@ const DICTIONARIES = {
     english_wikipedia: 30000,
     passwords: 30000,
     surnames: 10000,
-    male_names: null,
-    female_names: null,
+    maleNames: null,
+    femaleNames: null,
 };
 
 /**
