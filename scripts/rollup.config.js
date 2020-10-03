@@ -3,7 +3,6 @@ import alias from '@rollup/plugin-alias'
 import babel from '@rollup/plugin-babel'
 import commonjs from '@rollup/plugin-commonjs'
 import del from 'rollup-plugin-delete'
-import copy from 'rollup-plugin-copy'
 import typescript from '@rollup/plugin-typescript'
 import pkg from '../package.json'
 
