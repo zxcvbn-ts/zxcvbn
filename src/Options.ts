@@ -5,7 +5,6 @@ import {
   Keyboards,
   Keypads,
   LooseObject,
-  OptionsMatcher,
   OptionsType,
   FrequencyLists,
   DefaultAdjacencyGraphsKeys,
@@ -13,17 +12,12 @@ import {
   OptionsDictionary,
   OptionsGraph,
 } from '~/types'
+import l33tTable from '~/data/l33tTable'
+import frequencyLists from '~/data/frequency_lists'
+import translationsEn from '~/data/feedback/en'
+import graphs from '~/data/adjacency_graphs'
 
 class Options {
-  matcher: OptionsMatcher = {
-    dictionary: true,
-    spatial: true,
-    repeat: true,
-    sequence: true,
-    regex: true,
-    date: true,
-  }
-
   // @ts-ignore
   l33tTable: OptionsL33tTable
 
@@ -54,13 +48,6 @@ class Options {
   keypadStartingPositions = 0
 
   setOptions(options: OptionsType = {}) {
-    if (options.matcher) {
-      this.matcher = {
-        ...this.matcher,
-        ...options.matcher,
-      }
-    }
-
     if (options.usedKeyboard) {
       this.usedKeyboard = options.usedKeyboard
     }
@@ -72,36 +59,28 @@ class Options {
     if (options.l33tTable) {
       this.l33tTable = options.l33tTable
     } else {
-      // eslint-disable-next-line global-require
-      this.l33tTable = require('./data/l33tTable').default
+      this.l33tTable = l33tTable
     }
 
     if (options.dictionary) {
       this.dictionary = options.dictionary
     } else {
-      // eslint-disable-next-line global-require
-      this.dictionary = require('./data/frequency_lists').default
+      this.dictionary = frequencyLists
     }
 
     if (options.translations) {
       this.setTranslations(options.translations)
     } else {
-      // eslint-disable-next-line global-require
-      const translations = require('./data/feedback/en').default
-      this.setTranslations(translations)
+      this.setTranslations(translationsEn)
     }
 
     if (options.graphs) {
       this.setAdjacencyGraphs(options.graphs)
     } else {
-      // eslint-disable-next-line global-require
-      const graphs = require('./data/adjacency_graphs').default
       this.setAdjacencyGraphs(graphs)
     }
 
-    if (this.matcher.dictionary) {
-      this.setRankedDictionaries()
-    }
+    this.setRankedDictionaries()
   }
 
   setTranslations(translations: TranslationKeys) {

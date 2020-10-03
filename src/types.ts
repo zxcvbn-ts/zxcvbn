@@ -119,21 +119,6 @@ export type MatchingMatcherNames =
   | 'regex'
   | 'date'
 
-export interface MatchingMatcher {
-  name: MatchingMatcherNames
-  Class: any
-  params: MatchingMatcherParams[]
-}
-
-export interface OptionsMatcher {
-  dictionary?: boolean
-  spatial?: boolean
-  repeat?: boolean
-  sequence?: boolean
-  regex?: boolean
-  date?: boolean
-}
-
 export type Keyboards =
   | 'qwerty'
   | 'qwertz'
@@ -168,5 +153,4 @@ export interface OptionsType {
   usedKeypad?: Keypads
   l33tTable?: OptionsL33tTable
   dictionary?: OptionsDictionary
-  matcher?: OptionsMatcher
 }

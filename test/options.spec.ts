@@ -2,24 +2,6 @@ import Options from '~/Options'
 import translationsKeys from '~/data/feedback/keys'
 
 describe('Options', () => {
-  it('should set disable some matcher', () => {
-    Options.setOptions({
-      matcher: {
-        dictionary: false,
-        sequence: false,
-      },
-    })
-    expect(Options.matcher).toEqual({
-      dictionary: false,
-      spatial: true,
-      repeat: true,
-      sequence: false,
-      regex: true,
-      date: true,
-    })
-    expect(Options.rankedDictionaries).toEqual(undefined)
-  })
-
   describe('translations', () => {
     it('should return default feedback for no sequence on custom translations', () => {
       Options.setOptions({ translations: translationsKeys })
