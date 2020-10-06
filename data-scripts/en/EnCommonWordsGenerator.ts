@@ -2,7 +2,6 @@ import { DataGenerator } from "../DataGenerator";
 import axios from "axios";
 
 export class EnCommonWordsGenerator implements DataGenerator {
-    public filename = "english_wikipedia";
     public data: any = [];
     private url: string = "https://gist.githubusercontent.com/h3xx/1976236/raw";
 
@@ -16,7 +15,7 @@ export class EnCommonWordsGenerator implements DataGenerator {
         console.log("Filtering duplicates");
         this.data = this.data.filter((item, pos) => {
             return this.data.indexOf(item) == pos;
-        })
+        });
     }
 
     public generateJSON() {
