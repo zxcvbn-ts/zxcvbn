@@ -1,5 +1,6 @@
 import { DataGenerator } from "./DataGenerator";
 import { EnCommonWordsGenerator } from "./en/EnCommonWordsGenerator";
+import { DeCommonWordsGenerator } from "./de/DeCommonWordsGenerator";
 import * as fs from "fs";
 import * as path from "path";
 
@@ -14,6 +15,7 @@ function register(filename, language, generator) {
 }
 
 register("commonWords", "en", EnCommonWordsGenerator);
+register("commonWords", "de", DeCommonWordsGenerator);
 
 (async () => {
     for (const g of generators) {
