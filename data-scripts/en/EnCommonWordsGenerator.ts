@@ -1,5 +1,6 @@
 import { DataGenerator } from "../DataGenerator";
 import axios from "axios";
+import { processSimpleList } from "../_helpers/processors/simpleList";
 
 export class EnCommonWordsGenerator implements DataGenerator {
     public data: any = [];
@@ -8,14 +9,7 @@ export class EnCommonWordsGenerator implements DataGenerator {
     public async init() {
         console.log("Downloading");
         this.data = await (await axios.get(this.url)).data;
-        console.log("Filtering comments");
-        this.data = this.data.split("\n").filter((l) => !l.startsWith("#"));
-        console.log("Filtering whitespaces");
-        this.data = this.data.map((l) => l.trim());
-        console.log("Filtering duplicates");
-        this.data = this.data.filter((item, pos) => {
-            return this.data.indexOf(item) == pos;
-        });
+        this.data = processSimpleList(this.data);
     }
 
     public generateJSON() {
