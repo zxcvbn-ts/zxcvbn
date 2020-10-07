@@ -21,6 +21,26 @@ export function registerList(language: string, filename: string, url: string, ge
 
 export async function run() {
     ensureGlobalLists();
+    await generateData();
+    await generateIndices();
+
+}
+
+async function generateIndices() {
+    const dataFolder = path.join(__dirname, "../../data/");
+    for (const language of fs.readdirSync(dataFolder)) {
+        const languageFolder = path.join(dataFolder, language);
+        const files = fs.readdirSync(languageFolder).filter((f) => f.endsWith(".json"));
+        fs.writeFileSync(path.join(languageFolder, "index.js"),
+`${files.map((f) => `import ${f.replace(".json", "")} from "./${f}"`).join("\n")}
+
+export default {
+    ${files.map((f) => f.replace(".json", "")).join(",\n    ")}
+}`);
+    }
+}
+
+async function generateData() {
     for (const g of global.lists) {
         const generator = new (g.generator)(g.url, g.options);
         const folder = path.join(__dirname, "../../data/", g.language);
