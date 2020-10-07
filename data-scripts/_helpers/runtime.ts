@@ -1,38 +1,38 @@
-import { DataGenerator } from "data-scripts/DataGenerator";
+import { IDataGenerator } from "data-scripts/_generators/IDataGenerator";
 import * as fs from "fs";
 import * as path from "path";
 
 declare const global: any;
 
-export type GeneratorOption = {
-    filename: string;
+export type ListConfig = {
     language: string;
-    generator: DataGenerator;
+    filename: string;
+    url: string;
+    generator: IDataGenerator;
+    options?: any;
 };
 
-export type GeneratorOptions = GeneratorOption[];
+export type GeneratorOptions = ListConfig[];
 
-export function register(filename, language, generator) {
-    ensureGlobalGenerators();
-    global.generators.push({ filename, language, generator });
+export function registerList(language: string, filename: string, url: string, generator: any, options?) {
+    ensureGlobalLists();
+    global.lists.push({ language, filename, url, generator, options });
 }
 
-export async function runGenerators() {
-    ensureGlobalGenerators();
-    for (const g of global.generators) {
-        const generator = new (g.generator as any)();
-        await generator.init();
+export async function run() {
+    ensureGlobalLists();
+    for (const g of global.lists) {
+        const generator = new (g.generator)(g.url, g.options);
         const folder = path.join(__dirname, "../../data/", g.language);
         if (!fs.existsSync(folder)) {
             fs.mkdirSync(folder, { recursive: true });
         }
-        fs.writeFileSync(path.join(folder, `${g.filename}.json`), JSON.stringify(await generator.generateJSON()));
-        fs.writeFileSync(path.join(folder, `${g.filename}.txt`), await generator.generateTXT());
+        fs.writeFileSync(path.join(folder, `${g.filename}.json`), JSON.stringify(await generator.run()));
     }
 }
 
-function ensureGlobalGenerators() {
-    if (!Array.isArray(global.generators)) {
-        global.generators = [];
+function ensureGlobalLists() {
+    if (!Array.isArray(global.lists)) {
+        global.lists = [];
     }
 }

@@ -1,13 +1,10 @@
-import { GeneratorOptions, register, runGenerators } from "./_helpers/runtime";
-import { EnCommonWordsGenerator } from "./en/EnCommonWordsGenerator";
-import { DeCommonWordsGenerator } from "./de/DeCommonWordsGenerator";
-import { EnFirstnamesGenerator } from "./en/EnFirstnamesGenerator";
-import { EnLastnamesGenerator } from "./en/EnLastnamesGenerator";
+import { SimpleListGenerator } from "./_generators/SimpleListGenerator";
+import { registerList, run } from "./_helpers/runtime";
 
-register("commonWords", "en", EnCommonWordsGenerator);
-register("firstnames", "en", EnFirstnamesGenerator);
-register("lastnames", "en", EnLastnamesGenerator);
+registerList("en", "commonWords", "https://gist.githubusercontent.com/h3xx/1976236/raw", SimpleListGenerator);
+registerList("en", "firstnames", "https://raw.githubusercontent.com/dominictarr/random-name/master/first-names.txt", SimpleListGenerator);
+registerList("en", "lastnames", "https://raw.githubusercontent.com/arineng/arincli/master/lib/last-names.txt", SimpleListGenerator);
 
-register("commonWords", "de", DeCommonWordsGenerator);
+registerList("de", "commonWords", "http://pcai056.informatik.uni-leipzig.de/downloads/etc/legacy/Papers/top1000de.txt", SimpleListGenerator);
 
-runGenerators();
+run();
