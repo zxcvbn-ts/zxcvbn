@@ -14,8 +14,8 @@ const defaultOptions: Options = {
     toLowerCase: false,
 }
 
-export function processSimpleList(list: string, options?: Partial<Options>): string[] {
-    const effectiveOptions = Object.assign(defaultOptions, options);
+export function processSimpleList(list: string, options: Partial<Options> = {}): string[] {
+    const effectiveOptions = Object.assign(options, defaultOptions);
     let data = list.split(effectiveOptions.splitter);
     if (Array.isArray(effectiveOptions.commentPrefixes)) {
         console.log("Filtering comments");
