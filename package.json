@@ -50,6 +50,7 @@
     "standard-version": "9.0.0",
     "ts-jest": "26.3.0",
     "ts-node": "^9.0.0",
+    "iconv-lite": "^0.6.2",
     "typescript": "3.9.7"
   },
   "keywords": [

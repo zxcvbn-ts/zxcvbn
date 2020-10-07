@@ -1,5 +1,6 @@
 import { IDataGenerator } from "./IDataGenerator";
 import axios from "axios";
+import iconv from "iconv-lite";
 
 type Options = {
     splitter: string,
@@ -7,6 +8,7 @@ type Options = {
     removeDuplicates: boolean,
     trimWhitespaces: boolean,
     toLowerCase: boolean,
+    encoding?: string,
 };
 
 const defaultOptions: Options = {
@@ -24,13 +26,21 @@ export class SimpleListGenerator implements IDataGenerator {
 
     constructor(url: string, options: any) {
         this.url = url;
-        this.options = Object.assign(options || {}, defaultOptions);
-        return this;
+        this.options = Object.assign({}, defaultOptions);
+        Object.assign(this.options, options);
     }
 
     public async run(): Promise<string[]> {
         console.log("Downloading");
-        this.data = (await axios.get(this.url)).data;
+        const data = (await axios.get(this.url, {
+            responseType: this.options.encoding ? "arraybuffer" : undefined,
+        })).data;
+        if (this.options.encoding) {
+            console.log(this.options.encoding)
+            this.data = iconv.decode(data, this.options.encoding);
+        } else {
+            this.data = data;
+        }
         this.data = this.data.split(this.options.splitter);
         if (Array.isArray(this.options.commentPrefixes)) {
             console.log("Filtering comments");
