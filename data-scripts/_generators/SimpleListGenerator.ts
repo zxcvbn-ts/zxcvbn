@@ -42,15 +42,15 @@ export class SimpleListGenerator implements IDataGenerator {
             console.log("Filtering whitespaces");
             this.data = this.data.map((l) => l.trim());
         }
+        if (this.options.toLowerCase) {
+            console.log("Converting to lowercase");
+            this.data = this.data.map((l) => l.toLowerCase());
+        }
         if (this.options.removeDuplicates) {
             console.log("Filtering duplicates");
             this.data = this.data.filter((item, pos) => {
                 return this.data.indexOf(item) == pos;
             });
-        }
-        if (this.options.toLowerCase) {
-            console.log("Converting to lowercase");
-            this.data = this.data.map((l) => l.toLowerCase());
         }
         return this.data;
     }
