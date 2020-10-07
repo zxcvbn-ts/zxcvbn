@@ -15,8 +15,4 @@ export class EnFirstnamesGenerator implements DataGenerator {
     public generateJSON() {
         return this.data;
     }
-
-    public generateTXT() {
-        return this.data.join("\n");
-    }
 }

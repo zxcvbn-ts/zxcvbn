@@ -15,8 +15,4 @@ export class EnCommonWordsGenerator implements DataGenerator {
     public generateJSON() {
         return this.data;
     }
-
-    public generateTXT() {
-        return this.data.join("\n");
-    }
 }
