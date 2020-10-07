@@ -9,4 +9,5 @@ registerList("de", "commonWords", "http://pcai056.informatik.uni-leipzig.de/down
 registerList("de", "firstnames", "https://gist.githubusercontent.com/hrueger/2aa48086e9720ee9b87ec734889e1b15/raw", SimpleListGenerator);
 registerList("de", "lastnames", "https://gist.githubusercontent.com/hrueger/6599d1ac1e03b4c3dc432d722ffcefd0/raw", SimpleListGenerator);
 
+registerList("common", "passwords", "https://raw.githubusercontent.com/DavidWittman/wpxmlrpcbrute/master/wordlists/1000-most-common-passwords.txt", SimpleListGenerator);
 run();
