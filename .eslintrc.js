@@ -16,8 +16,12 @@ module.exports = {
   plugins: ['import', 'prettier', 'jest', '@typescript-eslint'],
   settings: {
     'import/resolver': {
-      webpack: {
-        config: 'eslint-webpack-resolver.config.js',
+      alias: {
+        map: [
+          ['~', './'],
+          ['@', './src'],
+        ],
+        extensions: ['.js', '.ts', '.d.ts'],
       },
     },
   },

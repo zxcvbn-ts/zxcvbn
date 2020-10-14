@@ -28,10 +28,10 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Install Node.js dependencies
-        run: npm ci
+        run: yarn --frozen-lockfile
 
       - name: Build source
-        run: npm run build
+        run: yarn build
 
       - name: Run tests
-        run: npm run test
+        run: yarn test
