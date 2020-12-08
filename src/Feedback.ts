@@ -103,6 +103,11 @@ class Feedback {
           warning: Options.translations.warnings.dates,
           suggestions: [Options.translations.suggestions.dates],
         }
+      case 'pwned':
+        return {
+          warning: Options.translations.warnings.pwned,
+          suggestions: [Options.translations.suggestions.pwned],
+        }
       default:
         return {
           warning: '',

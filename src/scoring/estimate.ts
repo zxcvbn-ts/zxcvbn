@@ -9,6 +9,7 @@ import regexGuesses from './guesses/regex'
 import repeatGuesses from './guesses/repeat'
 import sequenceGuesses from './guesses/sequence'
 import spatialGuesses from './guesses/spatial'
+import pwnedGuesses from './guesses/pwned'
 import utils from './utils'
 import { ExtendedMatch, LooseObject, Match } from '../types'
 
@@ -38,6 +39,7 @@ export default (match: ExtendedMatch | Match, password: string) => {
     sequence: sequenceGuesses,
     regex: regexGuesses,
     date: dateGuesses,
+    pwned: pwnedGuesses,
   }
   // @ts-ignore
   const estimationResult = estimationFunctions[match.pattern](match)

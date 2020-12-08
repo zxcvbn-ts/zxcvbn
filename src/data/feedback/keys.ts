@@ -14,6 +14,7 @@ export default {
     wordByItself: "wordByItself",
     namesByThemselves: "namesByThemselves",
     commonNames: "commonNames",
+    pwned: "pwned",
   },
   suggestions: {
     l33t: "l33t",
@@ -29,6 +30,7 @@ export default {
     anotherWord: "anotherWord",
     useWords: "useWords",
     noNeed: "noNeed",
+    pwned: "pwned",
   },
   timeEstimation: {
     ltSecond: "ltSecond",

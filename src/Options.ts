@@ -47,6 +47,8 @@ class Options {
 
   keypadStartingPositions = 0
 
+  fetch
+
   setOptions(options: OptionsType = {}) {
     if (options.usedKeyboard) {
       this.usedKeyboard = options.usedKeyboard
@@ -78,6 +80,10 @@ class Options {
       this.setAdjacencyGraphs(options.graphs)
     } else {
       this.setAdjacencyGraphs(graphs)
+    }
+
+    if (options.fetch) {
+      this.fetch = options.fetch
     }
 
     this.setRankedDictionaries()
