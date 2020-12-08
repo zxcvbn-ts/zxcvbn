@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "target": "ES2019",
+    "module": "esnext",
     "target": "esnext",
     "jsx": "preserve",
     "moduleResolution": "node",
