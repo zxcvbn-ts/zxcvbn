@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   slanted: false,
   layout: `
   / * -
@@ -6,5 +6,5 @@ module.exports = {
 4 5 6
 1 2 3
   0 .
-  `
+`
 }
