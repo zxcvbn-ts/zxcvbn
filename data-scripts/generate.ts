@@ -61,6 +61,7 @@ const main = async () => {
           name,
           data.source,
           data.generator || SimpleListGenerator,
+          data.options
         )
       }
     })

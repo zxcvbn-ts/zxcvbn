@@ -47,7 +47,7 @@ export class SimpleListGenerator {
 
   private filterOccurrences() {
     if (this.options.hasOccurrences) {
-      console.info('Removing occurence info')
+      console.info('Removing occurrence info')
       this.data = this.data
         .filter((entry) => {
           return (
