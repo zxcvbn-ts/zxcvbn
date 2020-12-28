@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   slanted: false,
   layout: `
   = / *
