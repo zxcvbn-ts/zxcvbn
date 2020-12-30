@@ -10,7 +10,7 @@ describe('date matching', () => {
   let data = ['', ' ', '-', '/', '\\', '_', '.']
   data.forEach((sep) => {
     password = `13${sep}2${sep}1921`
-    matches = matchDate.match(password)
+    matches = matchDate.match({ password })
     msg = `matches dates that use '${sep}' as a separator`
     checkMatches(msg, matches, 'date', [password], [[0, password.length - 1]], {
       separator: [sep],
@@ -27,7 +27,7 @@ describe('date matching', () => {
       .replace('y', `${y}`)
       .replace('m', `${m}`)
       .replace('d', `${d}`)
-    matches = matchDate.match(password)
+    matches = matchDate.match({ password })
     msg = `matches dates with '${order}' format`
     checkMatches(msg, matches, 'date', [password], [[0, password.length - 1]], {
       separator: [''],
@@ -38,7 +38,7 @@ describe('date matching', () => {
   })
 
   password = '111504'
-  matches = matchDate.match(password)
+  matches = matchDate.match({ password })
   msg = 'matches the date with year closest to REFERENCE_YEAR when ambiguous'
   checkMatches(msg, matches, 'date', [password], [[0, password.length - 1]], {
     separator: [''],
@@ -55,14 +55,14 @@ describe('date matching', () => {
   ]
   numberData.forEach(([day, month, year]) => {
     password = `${year}${month}${day}`
-    matches = matchDate.match(password)
+    matches = matchDate.match({ password })
     msg = `matches ${password}`
     checkMatches(msg, matches, 'date', [password], [[0, password.length - 1]], {
       separator: [''],
       year: [year],
     })
     password = `${year}.${month}.${day}`
-    matches = matchDate.match(password)
+    matches = matchDate.match({ password })
     msg = `matches ${password}`
     checkMatches(msg, matches, 'date', [password], [[0, password.length - 1]], {
       separator: ['.'],
@@ -71,7 +71,7 @@ describe('date matching', () => {
   })
 
   password = '02/02/02'
-  matches = matchDate.match(password)
+  matches = matchDate.match({ password })
   msg = 'matches zero-padded dates'
   checkMatches(msg, matches, 'date', [password], [[0, password.length - 1]], {
     separator: ['/'],
@@ -86,7 +86,7 @@ describe('date matching', () => {
   data = genpws(pattern, prefixes, suffixes)
 
   data.forEach(([dataPassword, i, j]) => {
-    matches = matchDate.match(dataPassword)
+    matches = matchDate.match({ password: dataPassword })
     msg = 'matches embedded dates'
     checkMatches(msg, matches, 'date', [pattern], [[i, j]], {
       year: [1991],
@@ -95,7 +95,7 @@ describe('date matching', () => {
     })
   })
 
-  matches = matchDate.match('12/20/1991.12.20')
+  matches = matchDate.match({ password: '12/20/1991.12.20' })
   msg = 'matches overlapping dates'
   checkMatches(
     msg,
@@ -114,7 +114,7 @@ describe('date matching', () => {
     },
   )
 
-  matches = matchDate.match('912/20/919')
+  matches = matchDate.match({ password: '912/20/919' })
   msg = 'matches dates padded by non-ambiguous digits'
   checkMatches(msg, matches, 'date', ['12/20/91'], [[1, 8]], {
     separator: ['/'],

@@ -6,10 +6,9 @@ import {
   Keypads,
   LooseObject,
   OptionsType,
-  FrequencyLists,
+  OptionsDictionary,
   DefaultAdjacencyGraphsKeys,
   OptionsL33tTable,
-  OptionsDictionary,
   OptionsGraph,
 } from './types'
 import l33tTable from './data/l33tTable'
@@ -21,11 +20,12 @@ class Options {
   // @ts-ignore
   l33tTable: OptionsL33tTable
 
-  // @ts-ignore
-  dictionary: OptionsDictionary
+  dictionary: OptionsDictionary = {
+    userInput: [],
+  }
 
   // @ts-ignore
-  rankedDictionaries: FrequencyLists
+  rankedDictionaries: OptionsDictionary
 
   usedKeyboard: Keyboards = 'qwerty'
 
@@ -113,7 +113,7 @@ class Options {
       const list = this.dictionary[name]
       rankedDictionaries[name] = buildRankedDictionary(list)
     })
-    this.rankedDictionaries = rankedDictionaries as FrequencyLists
+    this.rankedDictionaries = rankedDictionaries as OptionsDictionary
   }
 
   setAdjacencyGraphs(adjacencyGraphs: OptionsGraph) {
@@ -148,7 +148,7 @@ class Options {
     let average = 0
     Object.keys(graph).forEach((key) => {
       const neighbors = graph[key]
-      average += Object.entries(neighbors).length
+      average += neighbors.filter((entry) => !!entry).length
     })
     average /= Object.entries(graph).length
     return average

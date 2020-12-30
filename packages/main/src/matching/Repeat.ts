@@ -1,13 +1,18 @@
 import { ExtendedMatch } from '../types'
+import scoring from '../scoring'
+import Matching from '../Matching'
 
+interface RepeatMatchOptions {
+  password: string
+  omniMatch: Matching
+}
 /*
  *-------------------------------------------------------------------------------
  * repeats (aaa, abcabcabc) ------------------------------
  *-------------------------------------------------------------------------------
  */
-
 class MatchRepeat {
-  match(password: string) {
+  match({ password, omniMatch }: RepeatMatchOptions) {
     const matches: ExtendedMatch[] = []
     const greedy = /(.+)\1+/g
     const lazy = /(.+?)\1+/g
@@ -47,6 +52,16 @@ class MatchRepeat {
       }
       if (match) {
         const j = match.index + match[0].length - 1
+        const baseAnalysis = scoring.mostGuessableMatchSequence(
+          baseToken,
+          omniMatch.match(baseToken),
+        )
+        const baseGuesses = baseAnalysis.guesses
+
+        if (match[0] === 'freefree') {
+          console.log(baseAnalysis)
+        }
+
         // @ts-ignore
         matches.push({
           pattern: 'repeat',
@@ -54,6 +69,7 @@ class MatchRepeat {
           j,
           token: match[0],
           baseToken,
+          baseGuesses,
           repeatCount: match[0].length / baseToken.length,
         })
         lastIndex = j + 1

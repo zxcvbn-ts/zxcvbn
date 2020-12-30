@@ -22,6 +22,7 @@ export class PasswordGenerator {
   public data: any = []
 
   private shouldInclude(password, xatoRank) {
+    const isSpecial = password === 'freefree'
     for (let i = 0; i < password.length; i += 1) {
       if (password.charCodeAt(i) > 127) {
         console.log(
@@ -30,12 +31,26 @@ export class PasswordGenerator {
         return false
       }
     }
+    if(isSpecial){
+      console.log('non ascii', xatoRank)
+    }
+
     let matches = matching.match(password).filter((match) => {
-      return match.i === 0 && match.j === password.length - 1
+      // only keep matches that span full password
+      const isFullPassword = match.i === 0 && match.j === password.length - 1
+      // ignore dictionaries
+      const isDictionary = match.pattern === 'dictionary'
+      return isFullPassword && !isDictionary
     })
 
+    if(isSpecial){
+      console.log('matches', matches)
+    }
     for (const match of matches) {
-      if (estimateGuesses(match, password) < xatoRank) {
+      if(isSpecial){
+        console.log('estimateGuesses', estimateGuesses(match, password).guesses)
+      }
+      if (estimateGuesses(match, password).guesses < xatoRank) {
         return false
       }
     }

@@ -3,6 +3,9 @@ import Options from '../Options'
 import { DefaultAdjacencyGraphsKeys, ExtendedMatch } from '../types'
 import defaultAdjacencyGraphs from '../data/adjacency_graphs'
 
+interface SpatialMatchOptions {
+  password: string
+}
 /*
  * ------------------------------------------------------------------------------
  * spatial match (qwerty/dvorak/keypad and so on) -----------------------------------------
@@ -11,7 +14,7 @@ import defaultAdjacencyGraphs from '../data/adjacency_graphs'
 class MatchSpatial {
   SHIFTED_RX = /[~!@#$%^&*()_+QWERTYUIOP{}|ASDFGHJKL:"ZXCVBNM<>?]/
 
-  match(password: string) {
+  match({ password }: SpatialMatchOptions) {
     const matches: ExtendedMatch[] = []
     Object.keys(Options.graphs).forEach((graphName) => {
       const graph = Options.graphs[graphName]

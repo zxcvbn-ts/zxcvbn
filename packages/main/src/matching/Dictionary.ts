@@ -1,14 +1,16 @@
 import { sorted, buildRankedDictionary } from '../helper'
 import Options from '../Options'
-import { ExtendedMatch, DictionaryNames } from '../types'
-import frequencyLists from '../data/frequency_lists'
+import { ExtendedMatch, DictionaryNames, OptionsDictionary } from '../types'
 
 const params = {
   userInputs: [] as string[],
 }
 
+interface DictionaryMatchOptions {
+  password: string
+}
 class MatchDictionary {
-  rankedDictionaries: typeof frequencyLists
+  rankedDictionaries: OptionsDictionary = {}
 
   constructor({ userInputs = [] } = params) {
     this.rankedDictionaries = Options.rankedDictionaries
@@ -17,7 +19,7 @@ class MatchDictionary {
     ) as []
   }
 
-  match(password: string) {
+  match({ password }: DictionaryMatchOptions) {
     // rankedDictionaries variable is for unit testing purposes
     const matches: ExtendedMatch[] = []
     const passwordLength = password.length

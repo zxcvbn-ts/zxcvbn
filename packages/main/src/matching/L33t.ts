@@ -3,6 +3,9 @@ import MatchDictionary from './Dictionary'
 import Options from '../Options'
 import { ExtendedMatch, LooseObject } from '../types'
 
+interface L33tMatchOptions {
+  password: string
+}
 /*
  * -------------------------------------------------------------------------------
  *  date matching ----------------------------------------------------------------
@@ -17,7 +20,7 @@ class MatchL33t {
     })
   }
 
-  match(password: string) {
+  match({ password }: L33tMatchOptions) {
     const matches: ExtendedMatch[] = []
     const enumeratedSubs = this.enumerateL33tSubs(
       this.relevantL33tSubtable(password, Options.l33tTable),
@@ -29,7 +32,9 @@ class MatchL33t {
         break
       }
       const subbedPassword = translate(password, sub)
-      const matchedDictionary = this.MatchDictionary.match(subbedPassword)
+      const matchedDictionary = this.MatchDictionary.match({
+        password: subbedPassword,
+      })
       matchedDictionary.forEach((match: ExtendedMatch) => {
         const token = password.slice(match.i, +match.j + 1 || 9e9)
         // only return the matches that contain an actual substitution

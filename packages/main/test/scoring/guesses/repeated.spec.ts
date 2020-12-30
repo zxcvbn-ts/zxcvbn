@@ -26,9 +26,7 @@ describe('scoring guesses repeated', () => {
       baseGuesses,
       repeatCount,
     }
-    it('asd', () => {
-      expect(true).toBeTruthy()
-    })
+
     const expectedGuesses = baseGuesses * repeatCount
     const msg = `the repeat pattern '${token}' has guesses of ${expectedGuesses}`
 

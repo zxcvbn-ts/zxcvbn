@@ -7,13 +7,17 @@ import {
 import { sorted } from '../helper'
 import { ExtendedMatch } from '../types'
 
+interface DateMatchOptions {
+  password: string
+}
+
 /*
  * -------------------------------------------------------------------------------
  *  date matching ----------------------------------------------------------------
  * -------------------------------------------------------------------------------
  */
 class MatchDate {
-  match(password: string) {
+  match({ password }: DateMatchOptions) {
     /*
      * a "date" is recognized as:
      *   any 3-tuple that starts or ends with a 2- or 4-digit year,

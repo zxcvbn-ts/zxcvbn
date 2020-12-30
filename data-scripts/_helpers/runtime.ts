@@ -74,6 +74,7 @@ export default class ListHandler {
         `${imports}
 
 export default {
+    userInput: [],
     ${exports}
 }`,
       )

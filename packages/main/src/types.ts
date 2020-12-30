@@ -1,5 +1,4 @@
 import defaultAdjacencyGraphs from './data/adjacency_graphs'
-import frequencyLists from './data/frequency_lists'
 import translationKeys from './data/feedback/keys'
 import l33tTableDefault from './data/l33tTable'
 
@@ -7,7 +6,6 @@ export type DefaultAdjacencyGraphsKeys = keyof typeof defaultAdjacencyGraphs
 export type DefaultAdjacencyGraphs = typeof defaultAdjacencyGraphs
 export type TranslationKeys = typeof translationKeys
 export type L33tTableDefault = typeof l33tTableDefault
-export type FrequencyLists = typeof frequencyLists
 
 export interface LooseObject {
   [key: string]: any
@@ -134,11 +132,9 @@ export type OptionsL33tTable =
   | {
       [key: string]: string[]
     }
-export type OptionsDictionary =
-  | FrequencyLists
-  | {
-      [key: string]: string[] | number[]
-    }
+export type OptionsDictionary = {
+  [key: string]: string[] | number[]
+}
 export type OptionsGraph =
   | DefaultAdjacencyGraphs
   | {

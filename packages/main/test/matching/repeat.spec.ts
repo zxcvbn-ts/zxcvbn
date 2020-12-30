@@ -1,14 +1,18 @@
 import MatchRepeat from '../../src/matching/Repeat'
 import checkMatches from '../helper/checkMatches'
 import genpws from '../helper/genpws'
+import MatchOmni from '../../src/Matching'
+import Options from '../../src/Options'
 
+Options.setOptions()
+const omniMatch = new MatchOmni()
 describe('repeat matching', () => {
   const matchRepeat = new MatchRepeat()
 
   it("doesn't match length repeat patterns", () => {
     const data = ['', '#']
     data.forEach((password) => {
-      expect(matchRepeat.match(password)).toEqual([])
+      expect(matchRepeat.match({ password, omniMatch })).toEqual([])
     })
   })
 
@@ -18,7 +22,7 @@ describe('repeat matching', () => {
   const generatedGenPws = genpws(pattern, prefixes, suffixes)
 
   generatedGenPws.forEach(([password, i, j]) => {
-    const matches = matchRepeat.match(password)
+    const matches = matchRepeat.match({ password, omniMatch })
     const msg = 'matches embedded repeat patterns'
     checkMatches(msg, matches, 'sequence', [pattern], [[i, j]], {
       baseToken: ['&'],
@@ -30,7 +34,7 @@ describe('repeat matching', () => {
   ref1.forEach((length) => {
     ref2.forEach((chr) => {
       const patternChr = Array(length + 1).join(chr)
-      const matches = matchRepeat.match(patternChr)
+      const matches = matchRepeat.match({ password: patternChr, omniMatch })
       const msg = `matches repeats with base character '${chr}'`
       checkMatches(
         msg,
@@ -45,7 +49,7 @@ describe('repeat matching', () => {
     })
   })
 
-  let matches = matchRepeat.match('BBB1111aaaaa@@@@@@')
+  let matches = matchRepeat.match({ password: 'BBB1111aaaaa@@@@@@', omniMatch })
   const patterns = ['BBB', '1111', 'aaaaa', '@@@@@@']
   let msg = 'matches multiple adjacent repeats'
   checkMatches(
@@ -63,7 +67,10 @@ describe('repeat matching', () => {
       baseToken: ['B', '1', 'a', '@'],
     },
   )
-  matches = matchRepeat.match('2818BBBbzsdf1111@*&@!aaaaaEUDA@@@@@@1729')
+  matches = matchRepeat.match({
+    password: '2818BBBbzsdf1111@*&@!aaaaaEUDA@@@@@@1729',
+    omniMatch,
+  })
   msg = 'matches multiple repeats with non-repeats in-between'
   checkMatches(
     msg,
@@ -81,19 +88,19 @@ describe('repeat matching', () => {
     },
   )
   pattern = 'abab'
-  matches = matchRepeat.match(pattern)
+  matches = matchRepeat.match({ password: pattern, omniMatch })
   msg = 'matches multi-character repeat pattern'
   checkMatches(msg, matches, 'repeat', [pattern], [[0, pattern.length - 1]], {
     baseToken: ['ab'],
   })
   pattern = 'aabaab'
-  matches = matchRepeat.match(pattern)
+  matches = matchRepeat.match({ password: pattern, omniMatch })
   msg = 'matches aabaab as a repeat instead of the aa prefix'
   checkMatches(msg, matches, 'repeat', [pattern], [[0, pattern.length - 1]], {
     baseToken: ['aab'],
   })
   pattern = 'abababab'
-  matches = matchRepeat.match(pattern)
+  matches = matchRepeat.match({ password: pattern, omniMatch })
   msg = 'identifies ab as repeat string, even though abab is also repeated'
   checkMatches(msg, matches, 'repeat', [pattern], [[0, pattern.length - 1]], {
     baseToken: ['ab'],

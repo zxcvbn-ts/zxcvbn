@@ -103,7 +103,7 @@ const getTokens = (layoutStr: string) => {
 //     adjacent characters occur in a clockwise order.
 //     for example:
 //     * on qwerty layout, 'g' maps to ['fF', 'tT', 'yY', 'hH', 'bB', 'vV']
-//     * on keypad layout, '7' maps to [None, None, None, '=', '8', '5', '4', None]
+//     * on keypad layout, '7' maps to [null, null, null, '=', '8', '5', '4', null]
 const buildGraph = (layoutStr: string, slanted: boolean) => {
   const tokens = getTokens(layoutStr)
   const tokenSize = tokens[0].length
@@ -132,9 +132,9 @@ const buildGraph = (layoutStr: string, slanted: boolean) => {
       adjustedCoords.forEach((coordinate) => {
         // position in the list indicates direction
         // (for qwerty, 0 is left, 1 is top, 2 is top right, ...)
-        // for edge chars like 1 or m, insert None as a placeholder when needed
+        // for edge chars like 1 or m, insert null as a placeholder when needed
         // so that each character in the graph has a same-length adjacency list.
-        adjacencyGraph[char].push(positionTable[coordinate] || 'None')
+        adjacencyGraph[char].push(positionTable[coordinate] || null)
       })
     })
   })

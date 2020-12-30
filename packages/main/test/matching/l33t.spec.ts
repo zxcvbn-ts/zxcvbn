@@ -1,7 +1,7 @@
 import MatchL33t from '../../src/matching/L33t'
 import checkMatches from '../helper/checkMatches'
 import Options from '../../src/Options'
-import {LooseObject} from '../../src/types'
+import { LooseObject } from '../../src/types'
 
 Options.setOptions()
 
@@ -22,7 +22,7 @@ describe('l33t matching', () => {
   describe('default const', () => {
     const matchL33t = new MatchL33t()
     it("doesn't match single-character l33ted words", () => {
-      expect(matchL33t.match('4 1 @')).toEqual([])
+      expect(matchL33t.match({ password: '4 1 @' })).toEqual([])
     })
   })
 
@@ -36,19 +36,19 @@ describe('l33t matching', () => {
 
   describe('main match', () => {
     it("doesn't match ''", () => {
-      expect(matchL33t.match('')).toEqual([])
+      expect(matchL33t.match({ password: '' })).toEqual([])
     })
 
     it("doesn't match pure dictionary words", () => {
-      expect(matchL33t.match('password')).toEqual([])
+      expect(matchL33t.match({ password: 'password' })).toEqual([])
     })
 
     it("doesn't match when multiple l33t substitutions are needed for the same letter", () => {
-      expect(matchL33t.match('p4@ssword')).toEqual([])
+      expect(matchL33t.match({ password: 'p4@ssword' })).toEqual([])
     })
 
     it("doesn't match with subsets of possible l33t substitutions", () => {
-      expect(matchL33t.match('4sdf0')).toEqual([])
+      expect(matchL33t.match({ password: '4sdf0' })).toEqual([])
     })
     const data = [
       [
@@ -92,7 +92,8 @@ describe('l33t matching', () => {
       msg = 'matches against common l33t substitutions'
       checkMatches(
         msg,
-        matchL33t.match(password as string),
+        // @ts-ignore
+        matchL33t.match({ password }),
         'dictionary',
         [pattern],
         [ij],
@@ -105,7 +106,7 @@ describe('l33t matching', () => {
         },
       )
     })
-    const matches = matchL33t.match('@a(go{G0')
+    const matches = matchL33t.match({ password: '@a(go{G0' })
     msg = 'matches against overlapping l33t patterns'
     checkMatches(
       msg,

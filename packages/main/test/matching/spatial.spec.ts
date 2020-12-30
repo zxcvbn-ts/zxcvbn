@@ -9,7 +9,7 @@ describe('spatial matching', () => {
     const matchSpatial = new MatchSpatial()
     const data = ['', '/', 'qw', '*/']
     data.forEach((password) => {
-      expect(matchSpatial.match(password)).toEqual([])
+      expect(matchSpatial.match({ password })).toEqual([])
     })
   })
   const graphs: LooseObject = {
@@ -20,7 +20,7 @@ describe('spatial matching', () => {
   })
   const matchSpatial = new MatchSpatial()
   const pattern = '6tfGHJ'
-  const matches = matchSpatial.match(`rz!${pattern}%z`)
+  const matches = matchSpatial.match({ password: `rz!${pattern}%z` })
   const msg =
     'matches against spatial patterns surrounded by non-spatial patterns'
   checkMatches(
@@ -61,7 +61,7 @@ describe('spatial matching specific patterns vs keyboards', () => {
       graphs,
     })
     const matchSpatial = new MatchSpatial()
-    const matches = matchSpatial.match(pattern)
+    const matches = matchSpatial.match({ password: pattern })
     const msg = `matches '${pattern}' as a ${keyboard} pattern`
     checkMatches(
       msg,

@@ -8,7 +8,7 @@ Options.setOptions()
 describe('dictionary matching', () => {
   describe('Default dictionary', () => {
     const matchDictionary = new MatchDictionary()
-    const matches = matchDictionary.match('wow')
+    const matches = matchDictionary.match({ password: 'wow' })
     const patterns = ['wow']
     const msg = 'default dictionaries'
     const ijs = [[0, 2]]
@@ -29,7 +29,7 @@ describe('dictionary matching', () => {
     const matchDictionary = new MatchDictionary({
       userInputs: [],
     })
-    const dm = (pw) => matchDictionary.match(pw)
+    const dm = (pw) => matchDictionary.match({ password: pw })
     let matches = dm('motherboard')
     let patterns = ['mother', 'motherboard', 'board']
     let msg = 'matches words that contain other words'
@@ -129,7 +129,7 @@ describe('dictionary matching', () => {
       userInputs: ['foo', 'bar'],
     })
     const matches = matchDictionary
-      .match('foobar')
+      .match({ password: 'foobar' })
       .filter((match) => match.dictionaryName === 'userInputs')
 
     const msg = 'matches with provided user input dictionary'

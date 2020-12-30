@@ -9,11 +9,11 @@ describe('sequence matching', () => {
     const data = ['', 'a', '1']
 
     data.forEach((password) => {
-      expect(matchSequence.match(password)).toEqual([])
+      expect(matchSequence.match({ password })).toEqual([])
     })
   })
 
-  let matches = matchSequence.match('abcbabc')
+  let matches = matchSequence.match({ password: 'abcbabc' })
   let msg = 'matches overlapping patterns'
   checkMatches(
     msg,
@@ -36,7 +36,7 @@ describe('sequence matching', () => {
   const generatedGenPws = genpws(pattern, prefixes, suffixes)
 
   generatedGenPws.forEach(([password, i, j]) => {
-    matches = matchSequence.match(password)
+    matches = matchSequence.match({ password })
     msg = `matches embedded sequence patterns ${password}`
     checkMatches(msg, matches, 'sequence', [pattern], [[i, j]], {
       sequenceName: ['lower'],
@@ -61,7 +61,7 @@ describe('sequence matching', () => {
   ]
 
   data.forEach(([dataPattern, name, isAscending]) => {
-    matches = matchSequence.match(dataPattern)
+    matches = matchSequence.match({ password: dataPattern })
     msg = `matches '${dataPattern}' as a '${name}' sequence`
     checkMatches(
       msg,

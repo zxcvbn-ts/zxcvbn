@@ -32,7 +32,13 @@ class Matching {
     const matches: any[] = []
     this.matchers.forEach((Entry) => {
       const matcher = new Entry(options)
-      extend(matches, matcher.match(password))
+      extend(
+        matches,
+        matcher.match({
+          password,
+          omniMatch: this,
+        }),
+      )
     })
     return sorted(matches)
   }

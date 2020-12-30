@@ -7,6 +7,10 @@ type UpdateParams = {
   password: string
   result: any[]
 }
+
+interface SequenceMatchOptions {
+  password: string
+}
 /*
  *-------------------------------------------------------------------------------
  * sequences (abcdef) ------------------------------
@@ -15,7 +19,7 @@ type UpdateParams = {
 class MatchSequence {
   MAX_DELTA = 5
 
-  match(password: string) {
+  match({ password }: SequenceMatchOptions) {
     /*
      * Identifies sequences by looking for repeated differences in unicode codepoint.
      * this allows skipping, such as 9753, and also matches some extended unicode sequences
