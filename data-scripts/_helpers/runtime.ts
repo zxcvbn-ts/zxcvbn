@@ -1,5 +1,6 @@
 import * as fs from 'fs'
 import * as path from 'path'
+import { execSync } from 'child_process'
 
 export interface CustomListConfig {
   language: string
@@ -53,21 +54,30 @@ export default class ListHandler {
   }
   async generateIndices() {
     const dataFolder = path.join(__dirname, '../../data/')
-    for (const language of fs.readdirSync(dataFolder)) {
+    const languages = fs.readdirSync(dataFolder)
+    for (const language of languages) {
       const languageFolder = path.join(dataFolder, language)
       const files = fs
         .readdirSync(languageFolder)
-        .filter((f) => f.endsWith('.json'))
+        .filter((file) => file.endsWith('.json'))
+
+      const indexPath = path.join(languageFolder, 'index.js')
+      const imports = files
+        .map((file) => `import ${file.replace('.json', '')} from "./${file}"`)
+        .join('\n')
+      const exports = files
+        .map((file) => file.replace('.json', ''))
+        .join(',\n')
+
       fs.writeFileSync(
-        path.join(languageFolder, 'index.js'),
-        `${files
-          .map((f) => `import ${f.replace('.json', '')} from "./${f}"`)
-          .join('\n')}
+        indexPath,
+        `${imports}
 
 export default {
-    ${files.map((f) => f.replace('.json', '')).join(',\n    ')}
+    ${exports}
 }`,
       )
+      execSync(`eslint --ext .ts --fix --cache ${indexPath}`)
     }
   }
 

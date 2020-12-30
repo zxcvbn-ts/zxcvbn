@@ -1,9 +1,9 @@
 import fs from 'fs'
 import byline from 'byline'
 import sprintfClass from 'sprintf-js'
-import Matching from '../../src/Matching'
-import estimateGuesses from '../../src/scoring/estimate'
-import Options from '~/Options'
+import Matching from '../../packages/main/src/Matching'
+import estimateGuesses from '../../packages/main/src/scoring/estimate'
+import Options from '../../packages/main/src/Options'
 
 const CUTOFF = 10
 const BATCH_SIZE = 1000000

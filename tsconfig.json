@@ -2,21 +2,27 @@
   "compilerOptions": {
     "target": "ES2019",
     "module": "esnext",
-    "target": "esnext",
-    "jsx": "preserve",
-    "moduleResolution": "node",
-    "sourceMap": true,
     "strict": true,
+    "jsx": "preserve",
+    "importHelpers": true,
+    "moduleResolution": "node",
+    "noEmit": true,
+    "declaration": true,
+    "noImplicitAny": false,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": true,
+    "experimentalDecorators": true,
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "lib": ["esnext", "dom"],
     "noImplicitReturns": true,
     "noImplicitThis": true,
-    "noImplicitAny": false,
     "strictNullChecks": true,
-    "declaration": true,
-    "esModuleInterop": true,
-    "baseUrl": ".",
-    "paths": {
-      "~/*": ["./src/*"]
-    }
+//    "paths": {
+//      "~/*": ["./src/*"]
+//    },
+//    "rootDir": "src/"
   },
   "exclude": ["node_modules", "dist", "test"]
 }
