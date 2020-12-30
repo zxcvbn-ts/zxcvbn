@@ -14,32 +14,33 @@ ________________________________________________________________________
 
 Consider using zxcvbn as an algorithmic alternative to password composition policy — it is more secure, flexible, and usable when sites require a minimal complexity score in place of annoying rules like "passwords must contain three of {lower, upper, numbers, symbols}".
 
-* __More secure__: policies often fail both ways, allowing weak passwords (`P@ssword1`) and disallowing strong passwords.
-* __More flexible__: zxcvbn allows many password styles to flourish so long as it detects sufficient complexity — passphrases are rated highly given enough uncommon words, keyboard patterns are ranked based on length and number of turns, and capitalization adds more complexity when it's unpredictaBle.
-* __More usable__: zxcvbn is designed to power simple, rule-free interfaces that give instant feedback. In addition to strength estimation, zxcvbn includes minimal, targeted verbal feedback that can help guide users towards less guessable passwords.
+- **More secure**: policies often fail both ways, allowing weak passwords (`P@ssword1`) and disallowing strong passwords.
+- **More flexible**: zxcvbn allows many password styles to flourish so long as it detects sufficient complexity — passphrases are rated highly given enough uncommon words, keyboard patterns are ranked based on length and number of turns, and capitalization adds more complexity when it's unpredictaBle.
+- **More usable**: zxcvbn is designed to power simple, rule-free interfaces that give instant feedback. In addition to strength estimation, zxcvbn includes minimal, targeted verbal feedback that can help guide users towards less guessable passwords.
 
 For further detail and motivation, please refer to the USENIX Security '16 [paper and presentation](https://www.usenix.org/conference/usenixsecurity16/technical-sessions/presentation/wheeler).
 
 At Dropbox we use zxcvbn ([Release notes](https://github.com/dropbox/zxcvbn/releases)) on our web, desktop, iOS and Android clients. If JavaScript doesn't work for you, others have graciously ported the library to these languages:
 
-* [`zxcvbn-python`](https://github.com/dwolfhub/zxcvbn-python) (Python)
-* [`zxcvbn-cpp`](https://github.com/rianhunter/zxcvbn-cpp) (C/C++/Python/JS)
-* [`zxcvbn-c`](https://github.com/tsyrogit/zxcvbn-c) (C/C++)
-* [`zxcvbn-rs`](https://github.com/shssoichiro/zxcvbn-rs) (Rust)
-* [`zxcvbn-go`](https://github.com/nbutton23/zxcvbn-go) (Go)
-* [`zxcvbn4j`](https://github.com/nulab/zxcvbn4j) (Java)
-* [`nbvcxz`](https://github.com/GoSimpleLLC/nbvcxz) (Java)
-* [`zxcvbn-ruby`](https://github.com/envato/zxcvbn-ruby) (Ruby)
-* [`zxcvbn-js`](https://github.com/bitzesty/zxcvbn-js) (Ruby [via ExecJS])
-* [`zxcvbn-ios`](https://github.com/dropbox/zxcvbn-ios) (Objective-C)
-* [`zxcvbn-cs`](https://github.com/mickford/zxcvbn-cs) (C#/.NET)
-* [`szxcvbn`](https://github.com/tekul/szxcvbn) (Scala)
-* [`zxcvbn-php`](https://github.com/bjeavons/zxcvbn-php) (PHP)
-* [`zxcvbn-api`](https://github.com/wcjr/zxcvbn-api) (REST)
-* [`ocaml-zxcvbn`](https://github.com/cryptosense/ocaml-zxcvbn) (OCaml bindings for `zxcvbn-c`)
+- [`zxcvbn-python`](https://github.com/dwolfhub/zxcvbn-python) (Python)
+- [`zxcvbn-cpp`](https://github.com/rianhunter/zxcvbn-cpp) (C/C++/Python/JS)
+- [`zxcvbn-c`](https://github.com/tsyrogit/zxcvbn-c) (C/C++)
+- [`zxcvbn-rs`](https://github.com/shssoichiro/zxcvbn-rs) (Rust)
+- [`zxcvbn-go`](https://github.com/nbutton23/zxcvbn-go) (Go)
+- [`zxcvbn4j`](https://github.com/nulab/zxcvbn4j) (Java)
+- [`nbvcxz`](https://github.com/GoSimpleLLC/nbvcxz) (Java)
+- [`zxcvbn-ruby`](https://github.com/envato/zxcvbn-ruby) (Ruby)
+- [`zxcvbn-js`](https://github.com/bitzesty/zxcvbn-js) (Ruby [via ExecJS])
+- [`zxcvbn-ios`](https://github.com/dropbox/zxcvbn-ios) (Objective-C)
+- [`zxcvbn-cs`](https://github.com/mickford/zxcvbn-cs) (C#/.NET)
+- [`szxcvbn`](https://github.com/tekul/szxcvbn) (Scala)
+- [`zxcvbn-php`](https://github.com/bjeavons/zxcvbn-php) (PHP)
+- [`zxcvbn-api`](https://github.com/wcjr/zxcvbn-api) (REST)
+- [`ocaml-zxcvbn`](https://github.com/cryptosense/ocaml-zxcvbn) (OCaml bindings for `zxcvbn-c`)
 
 Integrations with other frameworks:
-* [`angular-zxcvbn`](https://github.com/ghostbar/angular-zxcvbn) (AngularJS)
+
+- [`angular-zxcvbn`](https://github.com/ghostbar/angular-zxcvbn) (AngularJS)
 
 # Installation
 
@@ -51,23 +52,22 @@ Install [`node`](https://nodejs.org/download/) and [`bower`](http://bower.io/) i
 
 Get `zxcvbn`:
 
-``` shell
+```shell
 cd /path/to/project/root
 bower install zxcvbn
 ```
 
 Add this script to your `index.html`:
 
-``` html
-<script src="bower_components/zxcvbn/dist/zxcvbn.js">
-</script>
+```html
+<script src="bower_components/zxcvbn/dist/zxcvbn.js"></script>
 ```
 
 To make sure it loaded properly, open in a browser and type `zxcvbn('Tr0ub4dour&3')` into the console.
 
 To pull in updates and bug fixes:
 
-``` shell
+```shell
 bower update zxcvbn
 ```
 
@@ -75,7 +75,7 @@ bower update zxcvbn
 
 zxcvbn works identically on the server.
 
-``` shell
+```shell
 $ npm install zxcvbn
 $ node
 > var zxcvbn = require('zxcvbn');
@@ -86,17 +86,17 @@ $ node
 
 Add [`zxcvbn.js`](https://raw.githubusercontent.com/dropbox/zxcvbn/master/dist/zxcvbn.js) to your project (using bower, npm or direct download) and import as usual:
 
-``` javascript
-requirejs(["relpath/to/zxcvbn"], function (zxcvbn) {
-    console.log(zxcvbn('Tr0ub4dour&3'));
-});
+```javascript
+requirejs(['relpath/to/zxcvbn'], function (zxcvbn) {
+  console.log(zxcvbn('Tr0ub4dour&3'))
+})
 ```
 
 ## Browserify / Webpack
 
 If you're using `npm` and have `require('zxcvbn')` somewhere in your code, browserify and webpack should just work.
 
-``` shell
+```shell
 $ npm install zxcvbn
 $ echo "console.log(require('zxcvbn'))" > mymodule.js
 $ browserify mymodule.js > browserify_bundle.js
@@ -105,25 +105,25 @@ $ webpack mymodule.js webpack_bundle.js
 
 But we recommend against bundling zxcvbn via tools like browserify and webpack, for three reasons:
 
-* Minified and gzipped, zxcvbn is still several hundred kilobytes. (Significantly grows bundle size.)
-* Most sites will only need zxcvbn on a few pages (registration, password reset).
-* Most sites won't need `zxcvbn()` immediately upon page load; since `zxcvbn()` is typically called in response to user events like filling in a password, there's ample time to fetch `zxcvbn.js` after initial html/css/js loads and renders.
+- Minified and gzipped, zxcvbn is still several hundred kilobytes. (Significantly grows bundle size.)
+- Most sites will only need zxcvbn on a few pages (registration, password reset).
+- Most sites won't need `zxcvbn()` immediately upon page load; since `zxcvbn()` is typically called in response to user events like filling in a password, there's ample time to fetch `zxcvbn.js` after initial html/css/js loads and renders.
 
 See the [performance](#perf) section below for tips on loading zxcvbn stand-alone.
 
 Tangentially, if you want to build your own standalone, consider tweaking the browserify pipeline used to generate `dist/zxcvbn.js`:
 
-``` shell
+```shell
 $ browserify --debug --standalone zxcvbn \
     -t coffeeify --extension='.coffee' \
     -t uglifyify \
     src/main.coffee | exorcist dist/zxcvbn.js.map >| dist/zxcvbn.js
 ```
 
-* `--debug` adds an inline source map to the bundle. `exorcist` pulls it out into `dist/zxcvbn.js.map`.
-* `--standalone zxcvbn` exports a global `zxcvbn` when CommonJS/AMD isn't detected.
-* `-t coffeeify --extension='.coffee'` compiles `.coffee` to `.js` before bundling. This is convenient as it allows `.js` modules to import from `.coffee` modules and vice-versa. Instead of this transform, one could also compile everything to `.js` first (`npm run prepublish`) and point `browserify` to `lib` instead of `src`.
-* `-t uglifyify` minifies the bundle through UglifyJS, maintaining proper source mapping.
+- `--debug` adds an inline source map to the bundle. `exorcist` pulls it out into `dist/zxcvbn.js.map`.
+- `--standalone zxcvbn` exports a global `zxcvbn` when CommonJS/AMD isn't detected.
+- `-t coffeeify --extension='.coffee'` compiles `.coffee` to `.js` before bundling. This is convenient as it allows `.js` modules to import from `.coffee` modules and vice-versa. Instead of this transform, one could also compile everything to `.js` first (`npm run prepublish`) and point `browserify` to `lib` instead of `src`.
+- `-t uglifyify` minifies the bundle through UglifyJS, maintaining proper source mapping.
 
 ## Manual installation
 
@@ -131,7 +131,7 @@ Download [zxcvbn.js](https://raw.githubusercontent.com/dropbox/zxcvbn/master/dis
 
 Add to your .html:
 
-``` html
+```html
 <script type="text/javascript" src="path/to/zxcvbn.js"></script>
 ```
 
@@ -139,13 +139,13 @@ Add to your .html:
 
 [try zxcvbn interactively](https://lowe.github.io/tryzxcvbn/) to see these docs in action.
 
-``` javascript
-zxcvbn(password, userInputs=[])
+```javascript
+zxcvbn(password, (userInputs = []))
 ```
 
 `zxcvbn()` takes one required argument, a password, and returns a result object with several properties:
 
-``` coffee
+```coffee
 result.guesses            # estimated guesses needed to crack password
 result.guessesLog10      # order of magnitude of result.guesses
 
@@ -201,7 +201,7 @@ result.sequence   # the list of patterns that zxcvbn based the
 
 result.calcTime  # how long it took zxcvbn to calculate an answer,
                   # in milliseconds.
-````
+```
 
 The optional `userInputs` argument is an array of strings that zxcvbn will treat as an extra dictionary. This can be whatever list of strings you like, but is meant for user inputs from other fields of the form, like name and email. That way a password that includes a user's personal information can be heavily penalized. This list is also good for site-specific vocabulary — Acme Brick Co. might want to include ['acme', 'brick', 'acmebrick', etc].
 
@@ -215,7 +215,7 @@ zxcvbn operates below human perception of delay for most input: ~5-20ms for ~25 
 
 `zxcvbn.js` bundled and minified is about 400kB gzipped or 820kB uncompressed, most of which is dictionaries. Consider these tips if you're noticing page load latency on your site.
 
-* Make sure your server is configured to compress static assets for browsers that support it. ([nginx tutorial](https://rtcamp.com/tutorials/nginx/enable-gzip/), [Apache/IIS tutorial](http://betterexplained.com/articles/how-to-optimize-your-site-with-gzip-compression/).)
+- Make sure your server is configured to compress static assets for browsers that support it. ([nginx tutorial](https://rtcamp.com/tutorials/nginx/enable-gzip/), [Apache/IIS tutorial](http://betterexplained.com/articles/how-to-optimize-your-site-with-gzip-compression/).)
 
 Then try one of these alternatives:
 
@@ -227,44 +227,42 @@ Then try one of these alternatives:
 
 4. Include an inline `<script>` in `<head>` that asynchronously loads `zxcvbn.js` in the background. Advantage over (3): it works in older browsers.
 
-``` javascript
+```javascript
 // cross-browser asynchronous script loading for zxcvbn.
 // adapted from http://friendlybit.com/js/lazy-loading-asyncronous-javascript/
 
-(function() {
+;(function () {
+  var ZXCVBN_SRC = 'path/to/zxcvbn.js'
 
-  var ZXCVBN_SRC = 'path/to/zxcvbn.js';
-
-  var async_load = function() {
-    var first, s;
-    s = document.createElement('script');
-    s.src = ZXCVBN_SRC;
-    s.type = 'text/javascript';
-    s.async = true;
-    first = document.getElementsByTagName('script')[0];
-    return first.parentNode.insertBefore(s, first);
-  };
-
-  if (window.attachEvent != null) {
-    window.attachEvent('onload', async_load);
-  } else {
-    window.addEventListener('load', async_load, false);
+  var async_load = function () {
+    var first, s
+    s = document.createElement('script')
+    s.src = ZXCVBN_SRC
+    s.type = 'text/javascript'
+    s.async = true
+    first = document.getElementsByTagName('script')[0]
+    return first.parentNode.insertBefore(s, first)
   }
 
-}).call(this);
+  if (window.attachEvent != null) {
+    window.attachEvent('onload', async_load)
+  } else {
+    window.addEventListener('load', async_load, false)
+  }
+}.call(this))
 ```
 
 # Development
 
 Bug reports and pull requests welcome!
 
-``` shell
+```shell
 git clone https://github.com/dropbox/zxcvbn.git
 ```
 
 zxcvbn is built with CoffeeScript, browserify, and uglify-js. CoffeeScript source lives in `src`, which gets compiled, bundled and minified into `dist/zxcvbn.js`.
 
-``` shell
+```shell
 npm run build    # builds dist/zxcvbn.js
 npm run watch    # same, but quickly rebuilds as changes are made in src.
 ```
@@ -287,8 +285,8 @@ Researchers at Concordia University for [studying password estimation rigorously
 
 And [xkcd](https://xkcd.com/936/) for the inspiration :+1::horse::battery::heart:
 
-
 New Features:
+
 - add i18n support warning, suggestions and times are now translateable with a english default translation
 - every match type can be deactivated. For example you can deactivate the `dictionary` to stop using the really big frequency list
 - you can customize everything. Use your own l33t table, your own adjacency graphs or your complete self made dictonary
@@ -297,10 +295,11 @@ New Features:
 - esm build for treeshaking
 - use prettier and eslint for clean code
 - use custom adjacency_graphs in guesses/spatial.js
-- remove more references 
+- remove more references
 - fix rewarding of capitalize first letter https://github.com/dropbox/zxcvbn/issues/232
 
 Ongoing:
+
 - typescript support
 - multi frequency and multi adjacency_graphs lists
 - improve data-scripts

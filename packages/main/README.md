@@ -23,17 +23,19 @@ import zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
 const password = 'somePassword'
 const userInput = []
 const options = {
-  ...zxcvbnCommonPackage
+  ...zxcvbnCommonPackage,
 }
 
 zxcvbn(password, userInputs, options)
 ```
 
 ## Migration guide
+
 - The dictionary list is outsourced by default to decrease the bundle size and make i18n possible.
   We recommend to include at least one of the available language packages.
   If your language is not available at least include the english language package.
   If you won't include the dictionary list the password strength effectiveness is decrease rapidly
+
 ```js
 import zxcvbn from '@zxcvbn-ts/core'
 import zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
@@ -50,8 +52,10 @@ const options = {
 
 zxcvbn(password, userInputs, options)
 ```
+
 - We implemented i18n support for all texts. By default the texts were changed to keys.
   This way you can use your own language translation setup or include one of the available language packages
+
 ```js
 import zxcvbn from 'zxcvbn-ts'
 import zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
@@ -63,7 +67,7 @@ const options = {
   dictionary: {
     ...zxcvbnCommonPackage.dictionary,
   },
-  translations: zxcvbnEnPackage.translations
+  translations: zxcvbnEnPackage.translations,
 }
 
 zxcvbn(password, userInputs, options)
