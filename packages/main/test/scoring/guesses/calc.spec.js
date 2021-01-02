@@ -26,7 +26,7 @@ describe('scoring', () => {
       month: 7,
       day: 14,
       guesses: dateGuesses(match),
-      guessesLog10: 4.195761320036061,
+      guessesLog10: 4.205745540942662,
     })
   })
 })

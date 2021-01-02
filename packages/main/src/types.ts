@@ -125,7 +125,7 @@ export type Keyboards =
   | 'dvorak'
   | string
 
-export type Keypads = 'keypad' | 'mac_keypad' | string
+export type Keypads = 'keypad' | 'keypadMac' | string
 
 export type OptionsL33tTable =
   | L33tTableDefault

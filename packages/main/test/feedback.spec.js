@@ -142,7 +142,7 @@ describe('feedback', () => {
       data = feedbackClass.getFeedback(1, [
         {
           ...options,
-          dictionaryName: 'english_wikipedia',
+          dictionaryName: 'wikipedia',
         },
       ])
       expect(data).toEqual({
@@ -153,11 +153,11 @@ describe('feedback', () => {
       data = feedbackClass.getFeedback(1, [
         {
           ...options,
-          dictionaryName: 'english_wikipedia',
+          dictionaryName: 'wikipedia',
         },
         {
           ...options,
-          dictionaryName: 'english_wikipedia',
+          dictionaryName: 'wikipedia',
         },
       ])
       expect(data).toEqual({

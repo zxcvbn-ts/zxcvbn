@@ -8,14 +8,14 @@ Options.setOptions()
 describe('dictionary matching', () => {
   describe('Default dictionary', () => {
     const matchDictionary = new MatchDictionary()
-    const matches = matchDictionary.match({ password: 'wow' })
-    const patterns = ['wow']
+    const matches = matchDictionary.match({ password: 'i' })
+    const patterns = ['i']
     const msg = 'default dictionaries'
     const ijs = [[0, 2]]
     checkMatches(msg, matches, 'dictionary', patterns, ijs, {
       matchedWord: patterns,
       rank: [322],
-      dictionaryName: ['us_tv_and_film'],
+      dictionaryName: ['commonWords'],
     })
   })
   describe('without user input', () => {

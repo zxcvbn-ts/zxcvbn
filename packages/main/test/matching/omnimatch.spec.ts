@@ -14,7 +14,7 @@ describe('omnimatch matching', () => {
   const matches = omniMatch.match(password)
   const data = [
     ['dictionary', [0, 6]],
-    ['dictionary', [7, 15]],
+    ['dictionary', [7, 14]],
     ['date', [16, 23]],
     ['repeat', [24, 27]],
   ]

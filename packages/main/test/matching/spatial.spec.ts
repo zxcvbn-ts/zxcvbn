@@ -49,8 +49,8 @@ describe('spatial matching specific patterns vs keyboards', () => {
     ['*84', 'keypad', 1, 0],
     ['/8520', 'keypad', 1, 0],
     ['369', 'keypad', 1, 0],
-    ['/963.', 'mac_keypad', 1, 0],
-    ['*-632.0214', 'mac_keypad', 9, 0],
+    ['/963.', 'keypadMac', 1, 0],
+    ['*-632.0214', 'keypadMac', 9, 0],
     ['aoEP%yIxkjq:', 'dvorak', 4, 5],
     [';qoaOQ:Aoq;a', 'dvorak', 11, 4],
   ]

@@ -1,14 +1,12 @@
 import commonWords from "./commonWords.json"
-import englishWikipedia from "./englishWikipedia.json"
+import wikipedia from "./wikipedia.json"
 import firstnames from "./firstnames.json"
 import lastnames from "./lastnames.json"
-import usTvAndFilm from "./usTvAndFilm.json"
 
 export default {
   userInput: [],
   commonWords,
-  englishWikipedia,
+  wikipedia,
   firstnames,
-  lastnames,
-  usTvAndFilm
+  lastnames
 }
