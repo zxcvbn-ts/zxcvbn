@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "target": "ES2019",
-    "module": "esnext",
+    "target": "es2018",
+    "module": "CommonJS",
     "strict": true,
     "jsx": "preserve",
     "importHelpers": true,
@@ -14,15 +14,11 @@
     "sourceMap": true,
     "experimentalDecorators": true,
     "resolveJsonModule": true,
-    "baseUrl": ".",
-    "lib": ["esnext", "dom"],
+    "lib": ["es2018"],
+    "types": ["node", "jest"],
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "strictNullChecks": true
-    //    "paths": {
-    //      "~/*": ["./src/*"]
-    //    },
-    //    "rootDir": "src/"
   },
   "exclude": ["node_modules", "dist", "test"]
 }
