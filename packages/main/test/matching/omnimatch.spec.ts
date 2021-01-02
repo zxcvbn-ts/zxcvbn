@@ -1,7 +1,15 @@
 import MatchOmni from '../../src/Matching'
 import Options from '../../src/Options'
+import zxcvbnCommonPackage from '../../../common/src/index'
+import zxcvbnEnPackage from '../../../en/src/index'
 
-Options.setOptions()
+Options.setOptions({
+  dictionary: {
+    ...zxcvbnCommonPackage.dictionary,
+    ...zxcvbnEnPackage.dictionary,
+  },
+  translations: zxcvbnEnPackage.translations,
+})
 
 describe('omnimatch matching', () => {
   const omniMatch = new MatchOmni()

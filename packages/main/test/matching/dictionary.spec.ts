@@ -2,8 +2,16 @@ import MatchDictionary from '../../src/matching/Dictionary'
 import checkMatches from '../helper/checkMatches'
 import genpws from '../helper/genpws'
 import Options from '../../src/Options'
+import zxcvbnCommonPackage from '../../../common/src/index'
+import zxcvbnEnPackage from '../../../en/src/index'
 
-Options.setOptions()
+Options.setOptions({
+  dictionary: {
+    ...zxcvbnCommonPackage.dictionary,
+    ...zxcvbnEnPackage.dictionary,
+  },
+  translations: zxcvbnEnPackage.translations,
+})
 
 describe('dictionary matching', () => {
   describe('Default dictionary', () => {

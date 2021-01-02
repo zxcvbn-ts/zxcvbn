@@ -1,10 +1,15 @@
-import zxcvbn from '../src/main'
-import translations from '../../en/src/translations'
+import zxcvbn from '../src'
 import passwordTests from './helper/passwordTests'
 import Options from '../src/Options'
+import zxcvbnCommonPackage from '../../common/src/index'
+import zxcvbnEnPackage from '../../en/src/index'
 
 Options.setOptions({
-  translations,
+  dictionary: {
+    ...zxcvbnCommonPackage.dictionary,
+    ...zxcvbnEnPackage.dictionary,
+  },
+  translations: zxcvbnEnPackage.translations,
 })
 
 describe('main', () => {
@@ -71,7 +76,7 @@ describe('main', () => {
         onlineThrottling100PerHour: 72,
       },
       feedback: {
-        suggestions: [translations.suggestions.anotherWord],
+        suggestions: [zxcvbnEnPackage.translations.suggestions.anotherWord],
         warning: '',
       },
       guesses: 2,

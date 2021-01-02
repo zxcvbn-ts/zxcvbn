@@ -13,8 +13,6 @@ import {
 import l33tTable from './data/l33tTable'
 import graphs from './data/adjacencyGraphs'
 import translationKeys from './data/translationKeys'
-import commonOptions from '../../../data/common'
-import enOptions from '../../../data/en'
 
 class Options {
   // @ts-ignore
@@ -64,11 +62,6 @@ class Options {
 
     if (options.dictionary) {
       this.dictionary = options.dictionary
-    } else {
-      this.dictionary = {
-        ...commonOptions,
-        ...enOptions,
-      }
     }
 
     if (options.translations) {

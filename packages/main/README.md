@@ -19,11 +19,16 @@ Consider using zxcvbn as an algorithmic alternative to password composition poli
 ```js
 import zxcvbn from '@zxcvbn-ts/core'
 import zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
+import zxcvbnEnPackage from '@zxcvbn-ts/language-en'
 
 const password = 'somePassword'
 const userInput = []
 const options = {
-  ...zxcvbnCommonPackage,
+  dictionary: {
+    ...zxcvbnCommonPackage.dictionary,
+    ...zxcvbnEnPackage.dictionary,
+  },
+  translations: zxcvbnEnPackage.translations,
 }
 
 zxcvbn(password, userInputs, options)
