@@ -1,4 +1,4 @@
-import defaultAdjacencyGraphs from './data/adjacency_graphs'
+import defaultAdjacencyGraphs from './data/adjacencyGraphs'
 import translationKeys from './data/feedback/keys'
 import l33tTableDefault from './data/l33tTable'
 

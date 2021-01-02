@@ -17,22 +17,17 @@ const normalize = (token) => {
 }
 
 // GET file from https://xato.net/today-i-am-releasing-ten-million-passwords-b6278bbe7495
-
 export class PasswordGenerator {
   public data: any = []
 
   private shouldInclude(password, xatoRank) {
-    const isSpecial = password === 'freefree'
     for (let i = 0; i < password.length; i += 1) {
       if (password.charCodeAt(i) > 127) {
-        console.log(
+        console.info(
           'SKIPPING non-ascii password=' + password + ', rank=' + xatoRank,
         )
         return false
       }
-    }
-    if(isSpecial){
-      console.log('non ascii', xatoRank)
     }
 
     let matches = matching.match(password).filter((match) => {
@@ -43,13 +38,7 @@ export class PasswordGenerator {
       return isFullPassword && !isDictionary
     })
 
-    if(isSpecial){
-      console.log('matches', matches)
-    }
     for (const match of matches) {
-      if(isSpecial){
-        console.log('estimateGuesses', estimateGuesses(match, password).guesses)
-      }
       if (estimateGuesses(match, password).guesses < xatoRank) {
         return false
       }
@@ -89,7 +78,7 @@ export class PasswordGenerator {
         while (null !== (line = stream.read())) {
           lineCount += 1
           if (lineCount % BATCH_SIZE === 0) {
-            console.log('counting tokens:', lineCount)
+            console.info('counting tokens:', lineCount)
             PasswordGenerator.prune(counts)
           }
           const tokens = line.trim().split(/\s+/)
@@ -111,9 +100,9 @@ export class PasswordGenerator {
         return results
       })
       return stream.on('end', () => {
-        console.log('skipped lines:', skippedLines)
+        console.info('skipped lines:', skippedLines)
         let pairs: [string, number][] = []
-        console.log('copying to tuples')
+        console.info('copying to tuples')
         for (let pw in counts) {
           const count = counts[pw]
           if (count > CUTOFF) {
@@ -121,11 +110,11 @@ export class PasswordGenerator {
           }
           delete counts[pw]
         }
-        console.log('sorting')
+        console.info('sorting')
         pairs.sort((p1, p2) => {
           return p2[1] - p1[1]
         })
-        console.log('filtering')
+        console.info('filtering')
         pairs = pairs.filter((pair, i) => {
           const [password] = pair
           const rank = i + 1

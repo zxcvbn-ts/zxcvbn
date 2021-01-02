@@ -1,5 +1,6 @@
 import { readdirSync } from 'fs'
 import path from 'path'
+import fs from 'fs'
 
 // returns the six adjacent coordinates on a standard keyboard, where each row is slanted to the
 // right from the last. adjacencies are clockwise, starting with key to the left, then two keys
@@ -160,6 +161,15 @@ export class KeyboardAdjacencyGraph {
       const filename = file.split('.')[0]
       graphs[filename] = graph
     })
+
+    fs.writeFileSync(
+      path.join(
+        __dirname,
+        '../..',
+        `packages/main/src/data/adjacencyGraphs.ts`,
+      ),
+      `export default ${JSON.stringify(graphs)}`,
+    )
 
     return graphs
   }

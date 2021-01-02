@@ -3,8 +3,8 @@ import firstnames from "./firstnames.json"
 import lastnames from "./lastnames.json"
 
 export default {
-    userInput: [],
-    commonWords,
-    firstnames,
-    lastnames
+  userInput: [],
+  commonWords,
+  firstnames,
+  lastnames
 }

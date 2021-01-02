@@ -1,6 +1,6 @@
 import MatchSpatial from '../../src/matching/Spatial'
 import checkMatches from '../helper/checkMatches'
-import adjacencyGraphs from '../../src/data/adjacency_graphs'
+import adjacencyGraphs from '../../src/data/adjacencyGraphs'
 import Options from '../../src/Options'
 import { LooseObject } from '../../src/types'
 

@@ -67,15 +67,15 @@ export default class ListHandler {
         .join('\n')
       const exports = files
         .map((file) => file.replace('.json', ''))
-        .join(',\n')
+        .join(',\n  ')
 
       fs.writeFileSync(
         indexPath,
         `${imports}
 
 export default {
-    userInput: [],
-    ${exports}
+  userInput: [],
+  ${exports}
 }`,
       )
       execSync(`eslint --ext .ts --fix --cache ${indexPath}`)
