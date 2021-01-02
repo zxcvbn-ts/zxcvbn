@@ -1,0 +1,21 @@
+{
+  "name": "@zxcvbn-ts/language-en",
+  "version": "0.1.0",
+  "main": "index.js",
+  "module": "index.esm.js",
+  "types": "index.d.ts",
+  "description": "The English language package for zxcvbn-ts",
+  "license": "MIT",
+  "homepage": "https://github.com/MrWook/zxcvbn",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MrWook/zxcvbn.git"
+  },
+  "keywords": [
+    "zxcvbn",
+    "language",
+    "translation",
+    "english"
+  ],
+  "author": "hrueger & MrWook"
+}

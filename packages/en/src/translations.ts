@@ -3,7 +3,8 @@ export default {
     straightRow: 'Straight rows of keys are easy to guess.',
     keyPattern: 'Short keyboard patterns are easy to guess.',
     simpleRepeat: 'Repeated characters like "aaa" are easy to guess.',
-    extendedRepeat: 'Repeated character patterns like "abcabcabc" are easy to guess.',
+    extendedRepeat:
+      'Repeated character patterns like "abcabcabc" are easy to guess.',
     sequences: 'Common character sequences like "abc" are easy to guess.',
     recentYears: 'Recent years are easy to guess.',
     dates: 'Dates are easy to guess.',
@@ -16,8 +17,8 @@ export default {
     commonNames: 'Common names and surnames are easy to guess.',
   },
   suggestions: {
-    l33t: 'Avoid predictable letter substitutions like \'@\' for \'a\'.',
-    reverseWords: 'Avoid reversed spellings of common words."',
+    l33t: "Avoid predictable letter substitutions like '@' for 'a'.",
+    reverseWords: 'Avoid reversed spellings of common words.',
     allUppercase: 'Capitalize some, but not all letters.',
     capitalization: 'Capitalize more than the first letter.',
     dates: 'Avoid dates and years that are associated with you.',
@@ -25,10 +26,12 @@ export default {
     associatedYears: 'Avoid years that are associated with you.',
     sequences: 'Avoid common character sequences.',
     repeated: 'Avoid repeated words and characters.',
-    longerKeyboardPattern: 'Use longer keyboard patterns and change typing direction multiple times.',
+    longerKeyboardPattern:
+      'Use longer keyboard patterns and change typing direction multiple times.',
     anotherWord: 'Add more words that are less common.',
     useWords: 'Use multiple words, but avoid common phrases.',
-    noNeed: 'You can create strong passwords without using symbols, numbers, or uppercase letters.'
+    noNeed:
+      'You can create strong passwords without using symbols, numbers, or uppercase letters.',
   },
   timeEstimation: {
     ltSecond: 'less than a second',
@@ -45,5 +48,5 @@ export default {
     year: '{base} year',
     years: '{base} years',
     centuries: 'centuries',
-  }
+  },
 }

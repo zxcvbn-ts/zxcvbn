@@ -1,5 +1,5 @@
 import defaultAdjacencyGraphs from './data/adjacencyGraphs'
-import translationKeys from './data/feedback/keys'
+import translationKeys from './data/translationKeys'
 import l33tTableDefault from './data/l33tTable'
 
 export type DefaultAdjacencyGraphsKeys = keyof typeof defaultAdjacencyGraphs

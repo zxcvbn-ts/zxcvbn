@@ -1,7 +1,10 @@
 import TimeEstimates from '../src/TimeEstimates'
 import Options from '../src/Options'
+import translations from '../../en/src/translations'
 
-Options.setOptions()
+Options.setOptions({
+  translations,
+})
 
 // TODO add tests
 describe('timeEstimates', () => {

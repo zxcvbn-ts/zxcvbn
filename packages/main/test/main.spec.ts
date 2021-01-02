@@ -1,9 +1,11 @@
 import zxcvbn from '../src/main'
-import translations from '../src/data/feedback/en'
+import translations from '../../en/src/translations'
 import passwordTests from './helper/passwordTests'
 import Options from '../src/Options'
 
-Options.setOptions()
+Options.setOptions({
+  translations,
+})
 
 describe('main', () => {
   it('should check without userInputs', () => {

@@ -1,11 +1,11 @@
 import Options from '../src/Options'
-import translationsKeys from '../src/data/feedback/keys'
+import translationKeys from '../src/data/translationKeys'
 
 describe('Options', () => {
   describe('translations', () => {
     it('should return default feedback for no sequence on custom translations', () => {
-      Options.setOptions({ translations: translationsKeys })
-      expect(Options.translations).toEqual(translationsKeys)
+      Options.setOptions({ translations: translationKeys })
+      expect(Options.translations).toEqual(translationKeys)
     })
     const customTranslations = {
       warnings: {

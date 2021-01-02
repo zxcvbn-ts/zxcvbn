@@ -138,7 +138,7 @@ export class PasswordGenerator {
           const [pw] = pair
           const isLast = pairLength === index + 1
           const comma = isLast ? '' : ','
-          outputStreamJson.write(`"${pw}"${comma}`)
+          outputStreamJson.write(`"${pw.replace('\\', '')}"${comma}`)
         })
 
         outputStreamJson.write(']')

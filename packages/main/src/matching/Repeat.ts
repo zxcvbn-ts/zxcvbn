@@ -58,10 +58,6 @@ class MatchRepeat {
         )
         const baseGuesses = baseAnalysis.guesses
 
-        if (match[0] === 'freefree') {
-          console.log(baseAnalysis)
-        }
-
         // @ts-ignore
         matches.push({
           pattern: 'repeat',

@@ -1,4 +1,3 @@
-import translationKeys from './data/feedback/keys'
 import { buildRankedDictionary } from './helper'
 import {
   TranslationKeys,
@@ -12,9 +11,10 @@ import {
   OptionsGraph,
 } from './types'
 import l33tTable from './data/l33tTable'
-import frequencyLists from './data/frequency_lists'
-import translationsEn from './data/feedback/en'
-import graphs from './data/adjacency_graphs'
+import graphs from './data/adjacencyGraphs'
+import translationKeys from './data/translationKeys'
+import commonOptions from '../../../data/common'
+import enOptions from '../../../data/en'
 
 class Options {
   // @ts-ignore
@@ -58,25 +58,28 @@ class Options {
 
     if (options.l33tTable) {
       this.l33tTable = options.l33tTable
-    } else {
+    } else if (!this.l33tTable) {
       this.l33tTable = l33tTable
     }
 
     if (options.dictionary) {
       this.dictionary = options.dictionary
     } else {
-      this.dictionary = frequencyLists
+      this.dictionary = {
+        ...commonOptions,
+        ...enOptions,
+      }
     }
 
     if (options.translations) {
       this.setTranslations(options.translations)
-    } else {
-      this.setTranslations(translationsEn)
+    } else if (!this.translations) {
+      this.setTranslations(translationKeys)
     }
 
     if (options.graphs) {
       this.setAdjacencyGraphs(options.graphs)
-    } else {
+    } else if (!this.graphs) {
       this.setAdjacencyGraphs(graphs)
     }
 
