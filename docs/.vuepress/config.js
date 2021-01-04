@@ -5,7 +5,7 @@ const pkg = require('../../package')
 module.exports = {
   title: pkg.name,
   description: pkg.description,
-  base: '/zxcvbn-ts/',
+  base: '/zxcvbn/',
   evergreen: true,
   displayAllHeaders: true,
   sidebarDepth: 3,
