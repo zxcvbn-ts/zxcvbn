@@ -6,10 +6,10 @@
   "types": "dist/index.d.ts",
   "description": "Realistic password strength estimation written in typescript",
   "license": "MIT",
-  "homepage": "https://github.com/MrWook/zxcvbn",
+  "homepage": "https://github.com/zxcvbn-ts/zxcvbn",
   "repository": {
     "type": "git",
-    "url": "https://github.com/MrWook/zxcvbn.git"
+    "url": "https://github.com/zxcvbn-ts/zxcvbn.git"
   },
   "keywords": [
     "password",
