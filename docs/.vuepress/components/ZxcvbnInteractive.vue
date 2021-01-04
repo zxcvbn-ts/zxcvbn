@@ -21,8 +21,8 @@
 </template>
 
 <script>
-import Result from '../../../docs/.vuepress/components/Result'
-import Sequence from '../../../docs/.vuepress/components/Sequence'
+import Result from './Result'
+import Sequence from './Sequence'
 import zxcvbn from '../../../packages/main/dist'
 import zxcvbnCommonPackage from '../../../packages/common/dist'
 import zxcvbnEnPackage from '../../../packages/en/dist'
