@@ -6,10 +6,10 @@
   "types": "dist/index.d.ts",
   "description": "The English language package for zxcvbn-ts",
   "license": "MIT",
-  "homepage": "https://github.com/MrWook/zxcvbn",
+  "homepage": "https://github.com/zxcvbn-ts/zxcvbn",
   "repository": {
     "type": "git",
-    "url": "https://github.com/MrWook/zxcvbn.git"
+    "url": "https://github.com/zxcvbn-ts/zxcvbn.git"
   },
   "keywords": [
     "zxcvbn",

@@ -9,7 +9,11 @@
   "author": "hrueger & MrWook",
   "license": "MIT",
   "main": "lib/main.js",
-  "repository": "zxcvbn-ts/zxcvbn",
+  "homepage": "https://github.com/zxcvbn-ts/zxcvbn",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:zxcvbn-ts/zxcvbn.git"
+  },
   "files": [],
   "prettier": "./prettier.js",
   "scripts": {
