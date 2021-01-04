@@ -41,6 +41,7 @@ const lists = {
     },
     keyboardLayouts: {
       generator: KeyboardAdjacencyGraph,
+      customList: true,
     },
   },
 }

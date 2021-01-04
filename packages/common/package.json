@@ -1,0 +1,24 @@
+{
+  "name": "@zxcvbn-ts/language-common",
+  "version": "0.1.0",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "description": "The common language package for zxcvbn-ts",
+  "license": "MIT",
+  "homepage": "https://github.com/MrWook/zxcvbn",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MrWook/zxcvbn.git"
+  },
+  "keywords": [
+    "zxcvbn",
+    "language",
+    "translation",
+    "common"
+  ],
+  "author": "hrueger & MrWook",
+  "files": [
+    "dist"
+  ]
+}

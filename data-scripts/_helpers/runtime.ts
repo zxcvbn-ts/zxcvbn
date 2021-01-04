@@ -1,5 +1,6 @@
 import * as fs from 'fs'
 import * as path from 'path'
+import { execSync } from 'child_process'
 
 export interface CustomListConfig {
   language: string
@@ -21,17 +22,23 @@ export default class ListHandler {
       console.info(
         `----------- Starting ${options.language} ${options.filename} -----------`,
       )
-      console.time(options.filename);
+      console.time(options.filename)
       const generator = new options.generator(options.url, options.options)
-      const folder = path.join(__dirname, '../../data/', options.language)
+      const folder = path.join(
+        __dirname,
+        '../../packages/',
+        options.language,
+        'src',
+      )
       if (!fs.existsSync(folder)) {
         fs.mkdirSync(folder, { recursive: true })
       }
+      const data = JSON.stringify(await generator.run())
       fs.writeFileSync(
-        path.join(folder, `${options.filename}.json`),
-        JSON.stringify(await generator.run()),
+        path.join(folder, `${options.filename}.ts`),
+        `export default ${data}`,
       )
-      console.timeEnd(options.filename);
+      console.timeEnd(options.filename)
       console.info(
         `----------- Finished ${options.language} ${options.filename} -----------`,
       )
@@ -41,7 +48,13 @@ export default class ListHandler {
         `----------- Starting ${options.language} ${options.filename} -----------`,
       )
       const generator = new options.generator(options.options)
-      const folder = path.join(__dirname, '../../data/', options.language)
+
+      const folder = path.join(
+        __dirname,
+        '../../packages/',
+        options.language,
+        'src',
+      )
       if (!fs.existsSync(folder)) {
         fs.mkdirSync(folder, { recursive: true })
       }
@@ -52,22 +65,48 @@ export default class ListHandler {
     }
   }
   async generateIndices() {
-    const dataFolder = path.join(__dirname, '../../data/')
-    for (const language of fs.readdirSync(dataFolder)) {
-      const languageFolder = path.join(dataFolder, language)
+    const dataFolder = path.join(__dirname, '../../packages/')
+    const nonLanguagePackage = ['main']
+    const languages = fs
+      .readdirSync(dataFolder)
+      .filter((language) => !nonLanguagePackage.includes(language))
+    for (const language of languages) {
+      const isCommon = language === 'common'
+      const languageFolder = path.join(dataFolder, language, 'src')
       const files = fs
         .readdirSync(languageFolder)
-        .filter((f) => f.endsWith('.json'))
+        .filter((file) => file.endsWith('.json'))
+
+      if(!isCommon){
+        files.push('translations')
+      }
+
+      const indexPath = path.join(languageFolder, 'index.ts')
+      const imports = files
+        .map((file) => `import ${file.replace('.json', '')} from "./${file}"`)
+        .join('\n')
+      const dictionaryExports = files
+        .map((file) => file.replace('.json', ''))
+        .filter((file) => file !== 'translations')
+        .join(',\n  ')
+
+      const translations = isCommon ? '' : 'translations,'
+
       fs.writeFileSync(
-        path.join(languageFolder, 'index.js'),
-        `${files
-          .map((f) => `import ${f.replace('.json', '')} from "./${f}"`)
-          .join('\n')}
+        indexPath,
+        `${imports}
+
+const userInputs: string[] = []
 
 export default {
-    ${files.map((f) => f.replace('.json', '')).join(',\n    ')}
+    dictionary: {
+      userInputs,
+      ${dictionaryExports}
+    },
+    ${translations}
 }`,
       )
+      execSync(`eslint --ext .ts --fix --cache ${indexPath}`)
     }
   }
 
