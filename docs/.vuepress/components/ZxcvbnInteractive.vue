@@ -28,7 +28,6 @@ import zxcvbnCommonPackage from '../../../packages/common/dist'
 import zxcvbnEnPackage from '../../../packages/en/dist'
 import translationKeys from '../../../packages/main/dist/data/translationKeys'
 
-// export component
 export default {
   name: 'ZxcvbnInteractive',
   components: {
