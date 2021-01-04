@@ -1,9 +1,9 @@
 {
   "name": "@zxcvbn-ts/core",
   "version": "0.1.0",
-  "main": "index.js",
-  "module": "index.esm.js",
-  "types": "index.d.ts",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
   "description": "Realistic password strength estimation written in typescript",
   "license": "MIT",
   "homepage": "https://github.com/MrWook/zxcvbn",
@@ -26,5 +26,8 @@
     "entropy",
     "bruteforce"
   ],
-  "author": "hrueger & MrWook"
+  "author": "hrueger & MrWook",
+  "files": [
+    "dist"
+  ]
 }

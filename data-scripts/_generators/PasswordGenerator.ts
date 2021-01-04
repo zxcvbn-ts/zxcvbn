@@ -120,14 +120,14 @@ export class PasswordGenerator {
           const rank = i + 1
           return this.shouldInclude(password, rank)
         })
-        const outputStreamTxt = fs.createWriteStream(`${output}.txt`, {
-          encoding: 'utf8',
-        })
-        pairs.forEach((pair) => {
-          const [pw, count] = pair
-          outputStreamTxt.write(sprintf('%-15s %d\n', pw, count))
-        })
-        outputStreamTxt.end()
+        // const outputStreamTxt = fs.createWriteStream(`${output}.txt`, {
+        //   encoding: 'utf8',
+        // })
+        // pairs.forEach((pair) => {
+        //   const [pw, count] = pair
+        //   outputStreamTxt.write(sprintf('%-15s %d\n', pw, count))
+        // })
+        // outputStreamTxt.end()
 
         const outputStreamJson = fs.createWriteStream(`${output}.json`, {
           encoding: 'utf8',

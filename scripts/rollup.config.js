@@ -4,6 +4,7 @@ import babel from '@rollup/plugin-babel'
 import commonjs from '@rollup/plugin-commonjs'
 import del from 'rollup-plugin-delete'
 import typescript from '@rollup/plugin-typescript'
+import json from '@rollup/plugin-json'
 import pkg from '../package.json'
 
 let generateCounter = 0
@@ -24,6 +25,8 @@ const generateConfig = (type) => {
     typescriptOptions = {
       declarationDir: `dist/`,
       declaration: true,
+      rootDir: 'src/',
+      exclude: ['test/**/*', 'dist/**/*'],
     }
     output.entryFileNames = '[name].esm.js'
     output.assetFileNames = '[name].esm.js'
@@ -47,7 +50,7 @@ const generateConfig = (type) => {
   }
 
   return {
-    input: './src/main.ts',
+    input: ['./src/index.ts'],
     output,
     plugins: [
       ...pluginsOnlyOnce,
@@ -58,6 +61,9 @@ const generateConfig = (type) => {
             replacement: path.join(__dirname, '..', '/src'),
           },
         ],
+      }),
+      json({
+        compact: true,
       }),
       typescript(typescriptOptions),
       commonjs(),

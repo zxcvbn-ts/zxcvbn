@@ -33,9 +33,10 @@ export default class ListHandler {
       if (!fs.existsSync(folder)) {
         fs.mkdirSync(folder, { recursive: true })
       }
+      const data = JSON.stringify(await generator.run())
       fs.writeFileSync(
-        path.join(folder, `${options.filename}.json`),
-        JSON.stringify(await generator.run()),
+        path.join(folder, `${options.filename}.ts`),
+        `export default ${data}`,
       )
       console.timeEnd(options.filename)
       console.info(
@@ -70,14 +71,17 @@ export default class ListHandler {
       .readdirSync(dataFolder)
       .filter((language) => !nonLanguagePackage.includes(language))
     for (const language of languages) {
+      const isCommon = language === 'common'
       const languageFolder = path.join(dataFolder, language, 'src')
       const files = fs
         .readdirSync(languageFolder)
         .filter((file) => file.endsWith('.json'))
 
-      files.push('translations')
+      if(!isCommon){
+        files.push('translations')
+      }
 
-      const indexPath = path.join(languageFolder, 'index.js')
+      const indexPath = path.join(languageFolder, 'index.ts')
       const imports = files
         .map((file) => `import ${file.replace('.json', '')} from "./${file}"`)
         .join('\n')
@@ -86,16 +90,17 @@ export default class ListHandler {
         .filter((file) => file !== 'translations')
         .join(',\n  ')
 
-      const isCommon = language === 'common'
       const translations = isCommon ? '' : 'translations,'
 
       fs.writeFileSync(
         indexPath,
         `${imports}
 
+const userInputs: string[] = []
+
 export default {
     dictionary: {
-      userInputs: [],
+      userInputs,
       ${dictionaryExports}
     },
     ${translations}
