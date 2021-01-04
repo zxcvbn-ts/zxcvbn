@@ -84,14 +84,14 @@ export interface Optimal {
 
 export interface CrackTimesSeconds {
   onlineThrottling100PerHour: number
-  onlineThrottling10PerSecond: number
+  onlineNoThrottling10PerSecond: number
   offlineSlowHashing1e4PerSecond: number
   offlineFastHashing1e10PerSecond: number
 }
 
 export interface CrackTimesDisplay {
   onlineThrottling100PerHour: string
-  onlineThrottling10PerSecond: string
+  onlineNoThrottling10PerSecond: string
   offlineSlowHashing1e4PerSecond: string
   offlineFastHashing1e10PerSecond: string
 }

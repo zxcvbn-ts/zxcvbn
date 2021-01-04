@@ -33,7 +33,7 @@ const generateConfig = (type) => {
     babelrc = false
   }
   if (type === 'iife') {
-    output.name = pkg.name
+    output.name = pkg.name.replace('-', '')
     output.entryFileNames = '[name].browser.js'
     output.assetFileNames = '[name].browser.js'
   }

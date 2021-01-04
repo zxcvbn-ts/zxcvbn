@@ -1,10 +1,6 @@
-import { sorted, buildRankedDictionary } from '../helper'
+import { sorted } from '../helper'
 import Options from '../Options'
 import { ExtendedMatch, DictionaryNames, OptionsDictionary } from '../types'
-
-const params = {
-  userInputs: [] as string[],
-}
 
 interface DictionaryMatchOptions {
   password: string
@@ -12,11 +8,8 @@ interface DictionaryMatchOptions {
 class MatchDictionary {
   rankedDictionaries: OptionsDictionary = {}
 
-  constructor({ userInputs = [] } = params) {
+  constructor() {
     this.rankedDictionaries = Options.rankedDictionaries
-    this.rankedDictionaries.userInputs = buildRankedDictionary(
-      userInputs.slice(),
-    ) as []
   }
 
   match({ password }: DictionaryMatchOptions) {

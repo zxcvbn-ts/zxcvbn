@@ -3,13 +3,13 @@
     "packages/*"
   ],
   "private": true,
-  "name": "zxcvbn",
+  "name": "zxcvbn-ts",
   "version": "4.4.2",
   "description": "realistic password strength estimation",
-  "author": "Dan Wheeler",
+  "author": "hrueger & MrWook",
   "license": "MIT",
   "main": "lib/main.js",
-  "repository": "dropbox/zxcvbn",
+  "repository": "zxcvbn-ts/zxcvbn",
   "files": [],
   "prettier": "./prettier.js",
   "scripts": {

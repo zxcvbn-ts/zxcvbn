@@ -41,13 +41,13 @@ describe('main', () => {
       ],
       crackTimesSeconds: {
         onlineThrottling100PerHour: 4176,
-        onlineThrottling10PerSecond: 11.6,
+        onlineNoThrottling10PerSecond: 11.6,
         offlineSlowHashing1e4PerSecond: 0.0116,
         offlineFastHashing1e10PerSecond: 1.16e-8,
       },
       crackTimesDisplay: {
         onlineThrottling100PerHour: '1 hour',
-        onlineThrottling10PerSecond: '12 seconds',
+        onlineNoThrottling10PerSecond: '12 seconds',
         offlineSlowHashing1e4PerSecond: 'less than a second',
         offlineFastHashing1e10PerSecond: 'less than a second',
       },
@@ -60,19 +60,22 @@ describe('main', () => {
   })
 
   it('should check with userInputs', () => {
-    const result = zxcvbn('test', ['test', 12, true, []])
+    const result = zxcvbn('test', {
+      // @ts-ignore
+      dictionary: { userInputs: ['test', 12, true, []] },
+    })
     delete result.calcTime
     expect(result).toEqual({
       crackTimesDisplay: {
         offlineFastHashing1e10PerSecond: 'less than a second',
         offlineSlowHashing1e4PerSecond: 'less than a second',
-        onlineThrottling10PerSecond: 'less than a second',
+        onlineNoThrottling10PerSecond: 'less than a second',
         onlineThrottling100PerHour: '1 minute',
       },
       crackTimesSeconds: {
         offlineFastHashing1e10PerSecond: 2e-10,
         offlineSlowHashing1e4PerSecond: 0.0002,
-        onlineThrottling10PerSecond: 0.2,
+        onlineNoThrottling10PerSecond: 0.2,
         onlineThrottling100PerHour: 72,
       },
       feedback: {
@@ -107,7 +110,12 @@ describe('main', () => {
   describe('password tests', () => {
     passwordTests.forEach((data) => {
       it(`should resolve ${data.password}`, () => {
-        const result = zxcvbn(data.password)
+        const result = zxcvbn(data.password, {
+          dictionary: {
+            ...zxcvbnCommonPackage.dictionary,
+            ...zxcvbnEnPackage.dictionary,
+          },
+        })
         delete result.calcTime
         expect(JSON.stringify(result)).toEqual(JSON.stringify(data))
       })

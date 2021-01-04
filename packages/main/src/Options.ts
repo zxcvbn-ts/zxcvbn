@@ -107,7 +107,24 @@ class Options {
     const rankedDictionaries: LooseObject = {}
     Object.keys(this.dictionary).forEach((name) => {
       const list = this.dictionary[name]
-      rankedDictionaries[name] = buildRankedDictionary(list)
+      if (name === 'userInputs') {
+        const sanitizedInputs: string[] = []
+
+        list.forEach((input: string | number | boolean) => {
+          const inputType = typeof input
+          if (
+            inputType === 'string' ||
+            inputType === 'number' ||
+            inputType === 'boolean'
+          ) {
+            sanitizedInputs.push(input.toString().toLowerCase())
+          }
+        })
+
+        rankedDictionaries[name] = buildRankedDictionary(sanitizedInputs)
+      } else {
+        rankedDictionaries[name] = buildRankedDictionary(list)
+      }
     })
     this.rankedDictionaries = rankedDictionaries as OptionsDictionary
   }

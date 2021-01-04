@@ -9,7 +9,6 @@ const time = () => new Date().getTime()
 
 export default (
   password: string,
-  userInputs: any[] = [],
   options: OptionsType = {},
 ) => {
   Options.setOptions(options)
@@ -18,22 +17,9 @@ export default (
   const timeEstimates = new TimeEstimates()
 
   const start = time()
-  const sanitizedInputs: string[] = []
 
-  userInputs.forEach((input: string | number | boolean) => {
-    const inputType = typeof input
-    if (
-      inputType === 'string' ||
-      inputType === 'number' ||
-      inputType === 'boolean'
-    ) {
-      sanitizedInputs.push(input.toString().toLowerCase())
-    }
-  })
+  const matches = matching.match(password)
 
-  const matches = matching.match(password, {
-    userInputs: sanitizedInputs,
-  })
   const matchSequence = scoring.mostGuessableMatchSequence(password, matches)
   const calcTime = time() - start
   const attackTimes = timeEstimates.estimateAttackTimes(matchSequence.guesses)

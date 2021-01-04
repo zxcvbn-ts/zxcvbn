@@ -19,10 +19,9 @@ import zxcvbn from '@zxcvbn-ts/core'
 import zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
 
 const password = 'somePassword'
-const userInput = []
 const options = {
   ...zxcvbnCommonPackage
 }
 
-zxcvbn(password, userInputs, options)
+zxcvbn(password, options)
 ```

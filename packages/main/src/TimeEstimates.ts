@@ -22,7 +22,7 @@ class TimeEstimates {
   estimateAttackTimes(guesses: number) {
     const crackTimesSeconds: CrackTimesSeconds = {
       onlineThrottling100PerHour: guesses / (100 / 3600),
-      onlineThrottling10PerSecond: guesses / 10,
+      onlineNoThrottling10PerSecond: guesses / 10,
       offlineSlowHashing1e4PerSecond: guesses / 1e4,
       offlineFastHashing1e10PerSecond: guesses / 1e10,
     }

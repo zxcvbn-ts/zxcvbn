@@ -14,10 +14,8 @@ interface L33tMatchOptions {
 class MatchL33t {
   MatchDictionary: any
 
-  constructor({ userInputs = [] } = {}) {
-    this.MatchDictionary = new MatchDictionary({
-      userInputs,
-    })
+  constructor() {
+    this.MatchDictionary = new MatchDictionary()
   }
 
   match({ password }: L33tMatchOptions) {

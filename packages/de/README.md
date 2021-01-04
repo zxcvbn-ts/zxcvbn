@@ -20,7 +20,6 @@ import zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
 import zxcvbnDePackage from '@zxcvbn-ts/language-de'
 
 const password = 'somePassword'
-const userInput = []
 const options = {
   translations: zxcvbnDePackage.translations,
   dictionary: {
@@ -29,5 +28,5 @@ const options = {
   },
 }
 
-zxcvbn(password, userInputs, options)
+zxcvbn(password, options)
 ```

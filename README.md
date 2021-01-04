@@ -157,7 +157,7 @@ result.crackTimesSeconds # dictionary of back-of-the-envelope crack time
 
   # online attack on a service that doesn't ratelimit,
   # or where an attacker has outsmarted ratelimiting.
-  onlineThrottling10PerSecond
+  onlineNoThrottling10PerSecond
 
   # offline attack. assumes multiple attackers,
   # proper user-unique salting, and a slow hash function

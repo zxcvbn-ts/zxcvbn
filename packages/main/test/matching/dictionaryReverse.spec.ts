@@ -11,9 +11,7 @@ describe('dictionary reverse matching', () => {
   Options.setOptions({
     dictionary: testDicts,
   })
-  const matchDictionaryReverse = new MatchDictionaryReverse({
-    userInputs: [],
-  })
+  const matchDictionaryReverse = new MatchDictionaryReverse()
   const password = '0123456789'
   const matches = matchDictionaryReverse.match({ password })
   const msg = 'matches against reversed words'

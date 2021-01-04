@@ -30,9 +30,7 @@ describe('l33t matching', () => {
     dictionary: dicts,
     l33tTable: testTable,
   })
-  const matchL33t = new MatchL33t({
-    userInputs: [],
-  })
+  const matchL33t = new MatchL33t()
 
   describe('main match', () => {
     it("doesn't match ''", () => {

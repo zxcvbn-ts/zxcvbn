@@ -22,7 +22,6 @@ import zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
 import zxcvbnEnPackage from '@zxcvbn-ts/language-en'
 
 const password = 'somePassword'
-const userInput = []
 const options = {
   dictionary: {
     ...zxcvbnCommonPackage.dictionary,
@@ -31,7 +30,7 @@ const options = {
   translations: zxcvbnEnPackage.translations,
 }
 
-zxcvbn(password, userInputs, options)
+zxcvbn(password, options)
 ```
 
 ## Migration guide
@@ -47,7 +46,6 @@ import zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
 import zxcvbnEnPackage from '@zxcvbn-ts/language-en'
 
 const password = 'somePassword'
-const userInput = []
 const options = {
   dictionary: {
     ...zxcvbnCommonPackage.dictionary,
@@ -55,7 +53,7 @@ const options = {
   },
 }
 
-zxcvbn(password, userInputs, options)
+zxcvbn(password, options)
 ```
 
 - We implemented i18n support for all texts. By default the texts were changed to keys.
@@ -67,7 +65,6 @@ import zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
 import zxcvbnEnPackage from '@zxcvbn-ts/language-en'
 
 const password = 'somePassword'
-const userInput = []
 const options = {
   dictionary: {
     ...zxcvbnCommonPackage.dictionary,
@@ -75,5 +72,5 @@ const options = {
   translations: zxcvbnEnPackage.translations,
 }
 
-zxcvbn(password, userInputs, options)
+zxcvbn(password, options)
 ```

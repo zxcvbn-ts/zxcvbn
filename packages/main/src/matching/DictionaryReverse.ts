@@ -13,14 +13,8 @@ interface DictionaryReverseMatchOptions {
 class MatchDictionaryReverse {
   MatchDictionary: any
 
-  constructor(
-    { userInputs = [] } = {
-      userInputs: [],
-    },
-  ) {
-    this.MatchDictionary = new MatchDictionary({
-      userInputs,
-    })
+  constructor() {
+    this.MatchDictionary = new MatchDictionary()
   }
 
   match({ password }: DictionaryReverseMatchOptions) {

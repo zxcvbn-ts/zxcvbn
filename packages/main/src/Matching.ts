@@ -28,10 +28,10 @@ class Matching {
 
   options = {}
 
-  match(password: string, options: any = {}) {
+  match(password: string) {
     const matches: any[] = []
     this.matchers.forEach((Entry) => {
-      const matcher = new Entry(options)
+      const matcher = new Entry()
       extend(
         matches,
         matcher.match({

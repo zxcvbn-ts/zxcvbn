@@ -34,9 +34,7 @@ describe('dictionary matching', () => {
     Options.setOptions({
       dictionary: testDicts,
     })
-    const matchDictionary = new MatchDictionary({
-      userInputs: [],
-    })
+    const matchDictionary = new MatchDictionary()
     const dm = (pw) => matchDictionary.match({ password: pw })
     let matches = dm('motherboard')
     let patterns = ['mother', 'motherboard', 'board']
@@ -133,9 +131,12 @@ describe('dictionary matching', () => {
   })
 
   describe('with user input', () => {
-    const matchDictionary = new MatchDictionary({
-      userInputs: ['foo', 'bar'],
+    Options.setOptions({
+      dictionary: {
+        userInputs: ['foo', 'bar'],
+      },
     })
+    const matchDictionary = new MatchDictionary()
     const matches = matchDictionary
       .match({ password: 'foobar' })
       .filter((match) => match.dictionaryName === 'userInputs')
