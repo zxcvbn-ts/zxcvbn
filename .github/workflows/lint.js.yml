@@ -5,9 +5,9 @@ name: Lint
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
   run-linter:
@@ -24,8 +24,7 @@ jobs:
           node-version: 12
 
       - name: Install Node.js dependencies
-        run: npm ci
+        run: yarn --frozen-lockfile
 
       - name: Run linter
-        run: npm run lint
-
+        run: yarn lint

@@ -1,0 +1,33 @@
+# This workflow will do a clean install of node dependencies and check if the docs can be build
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Docs
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  build-docs:
+    name: Build docs
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - name: Install Node.js dependencies
+        run: yarn --frozen-lockfile
+
+      - name: Build source
+        run: yarn build
+
+      - name: Build docs
+        run: yarn docs:build

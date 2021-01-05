@@ -1,22 +1,24 @@
 {
   "compilerOptions": {
-    "target": "ES2019",
-    "module": "esnext",
-    "jsx": "preserve",
-    "moduleResolution": "node",
-    "sourceMap": true,
+    "target": "es2018",
+    "module": "CommonJS",
     "strict": true,
+    "jsx": "preserve",
+    "importHelpers": true,
+    "moduleResolution": "node",
+    "noEmit": true,
+    "declaration": true,
+    "noImplicitAny": false,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": true,
+    "experimentalDecorators": true,
+    "resolveJsonModule": true,
+    "lib": ["es2018"],
+    "types": ["node", "jest"],
     "noImplicitReturns": true,
     "noImplicitThis": true,
-    "noImplicitAny": false,
-    "strictNullChecks": true,
-    "declaration": true,
-    "esModuleInterop": true,
-    "baseUrl": ".",
-    "paths": {
-      "~/*": ["./src/*"]
-    },
-    "rootDir": "src/"
+    "strictNullChecks": true
   },
   "exclude": ["node_modules", "dist", "test"]
 }
