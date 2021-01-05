@@ -1,8 +1,9 @@
-module.exports = (pattern, prefixes, suffixes) => {
-  const result = []
+export default (pattern: string, prefixes: string[], suffixes: string[]) => {
+  const result: [string, number, number][] = []
   const slicedPrefixes = prefixes.slice()
   const slicedSuffixes = suffixes.slice()
-  ;[slicedPrefixes, slicedSuffixes].forEach((lst) => {
+  const combined = [slicedPrefixes, slicedSuffixes]
+  combined.forEach((lst) => {
     if (lst.indexOf('') === -1) {
       lst.unshift('')
     }

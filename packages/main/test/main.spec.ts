@@ -16,9 +16,10 @@ describe('main', () => {
   it('should check without userInputs', () => {
     const result = zxcvbn('test')
     expect(result.calcTime).toBeDefined()
-    delete result.calcTime
+    result.calcTime = 0
     expect(result).toEqual({
       password: 'test',
+      calcTime: 0,
       guesses: 116,
       guessesLog10: 2.064457989226918,
       sequence: [
@@ -64,7 +65,7 @@ describe('main', () => {
       // @ts-ignore
       dictionary: { userInputs: ['test', 12, true, []] },
     })
-    delete result.calcTime
+    result.calcTime = 0
     expect(result).toEqual({
       crackTimesDisplay: {
         offlineFastHashing1e10PerSecond: 'less than a second',
@@ -84,6 +85,7 @@ describe('main', () => {
       },
       guesses: 2,
       guessesLog10: 0.30102999566398114,
+      calcTime: 0,
       password: 'test',
       score: 0,
       sequence: [
@@ -116,7 +118,7 @@ describe('main', () => {
             ...zxcvbnEnPackage.dictionary,
           },
         })
-        delete result.calcTime
+        result.calcTime = 0
         expect(JSON.stringify(result)).toEqual(JSON.stringify(data))
       })
     })

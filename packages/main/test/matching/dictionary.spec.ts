@@ -19,7 +19,7 @@ describe('dictionary matching', () => {
     const matches = matchDictionary.match({ password: 'i' })
     const patterns = ['i']
     const msg = 'default dictionaries'
-    const ijs = [[0, 2]]
+    const ijs: number[][] = [[0, 2]]
     checkMatches(msg, matches, 'dictionary', patterns, ijs, {
       matchedWord: patterns,
       rank: [322],

@@ -22,11 +22,10 @@ export type Pattern =
 
 export type DictionaryNames =
   | 'passwords'
-  | 'maleNames'
-  | 'femaleNames'
-  | 'tvAndFilm'
+  | 'commonWords'
+  | 'firstnames'
+  | 'lastnames'
   | 'wikipedia'
-  | 'surnames'
   | 'userInputs'
 
 export interface Match {
@@ -117,16 +116,6 @@ export type MatchingMatcherNames =
   | 'regex'
   | 'date'
 
-export type Keyboards =
-  | 'qwerty'
-  | 'qwertz'
-  | 'qwertz_altgr'
-  | 'qwertz_altgr_shift'
-  | 'dvorak'
-  | string
-
-export type Keypads = 'keypad' | 'keypadMac' | string
-
 export type OptionsL33tTable =
   | L33tTableDefault
   | {
@@ -145,8 +134,6 @@ export type OptionsGraph =
 export interface OptionsType {
   translations?: TranslationKeys
   graphs?: OptionsGraph
-  usedKeyboard?: Keyboards
-  usedKeypad?: Keypads
   l33tTable?: OptionsL33tTable
   dictionary?: OptionsDictionary
 }

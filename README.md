@@ -34,18 +34,3 @@ and the [Migration](https://zxcvbn-ts.github.io/zxcvbn/guide/Migration) guide.
 
 Please feel free to [open up an issue](https://github.com/zxcvbn-ts/zxcvbn/issues/new) or provide a pull request.
 
-New Features:
-
-- add i18n support warning, suggestions and times are now translateable with a english default translation
-- every match type can be deactivated. For example you can deactivate the `dictionary` to stop using the really big frequency list
-- you can customize everything. Use your own l33t table, your own adjacency graphs or your complete self made dictonary
-- rewritten in es6
-- tests and coverage with jest
-- esm build for treeshaking
-- use prettier and eslint for clean code
-- use custom adjacency_graphs in guesses/spatial.js
-- remove more references
-- fix rewarding of capitalize first letter https://github.com/dropbox/zxcvbn/issues/232
-- typescript support
-- multi frequency and multi adjacency_graphs lists
-- use typescript for data-scripts

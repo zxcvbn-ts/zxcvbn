@@ -21,14 +21,4 @@ describe('Options', () => {
       }).toThrow('Invalid translations object fallback to keys')
     })
   })
-
-  it('should set custom keyboard', () => {
-    Options.setOptions({ usedKeyboard: 'someKeyboard' })
-    expect(Options.usedKeyboard).toEqual('someKeyboard')
-  })
-
-  it('should set custom keypad', () => {
-    Options.setOptions({ usedKeypad: 'someKeypad' })
-    expect(Options.usedKeypad).toEqual('someKeypad')
-  })
 })

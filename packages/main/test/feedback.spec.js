@@ -181,7 +181,7 @@ describe('feedback', () => {
       data = feedbackClass.getFeedback(1, [
         {
           ...options,
-          dictionaryName: 'surnames',
+          dictionaryName: 'lastnames',
         },
       ])
       expect(data).toEqual({
@@ -191,18 +191,7 @@ describe('feedback', () => {
       data = feedbackClass.getFeedback(1, [
         {
           ...options,
-          dictionaryName: 'maleNames',
-        },
-      ])
-      expect(data).toEqual({
-        warning: translations.warnings.namesByThemselves,
-        suggestions: [translations.suggestions.anotherWord],
-      })
-
-      data = feedbackClass.getFeedback(1, [
-        {
-          ...options,
-          dictionaryName: 'femaleNames',
+          dictionaryName: 'firstnames',
         },
       ])
       expect(data).toEqual({
@@ -213,11 +202,11 @@ describe('feedback', () => {
       data = feedbackClass.getFeedback(1, [
         {
           ...options,
-          dictionaryName: 'femaleNames',
+          dictionaryName: 'firstnames',
         },
         {
           ...options,
-          dictionaryName: 'femaleNames',
+          dictionaryName: 'firstnames',
         },
       ])
       expect(data).toEqual({
