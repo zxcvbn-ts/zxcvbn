@@ -6,7 +6,7 @@ export default (
   matches,
   patternNames: string,
   patterns: string[],
-  ijs: [number, number][],
+  ijs: number[][],
   props: LooseObject,
 ) => {
   const usedPatternNames = patterns.map(() => patternNames)

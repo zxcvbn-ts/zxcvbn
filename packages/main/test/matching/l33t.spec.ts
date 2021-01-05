@@ -93,8 +93,8 @@ describe('l33t matching', () => {
         // @ts-ignore
         matchL33t.match({ password }),
         'dictionary',
-        [pattern],
-        [ij],
+        [pattern as string],
+        [ij as number[]],
         {
           l33t: [true],
           sub: [sub],
