@@ -33,7 +33,7 @@ export default {
     useWords: 'Use multiple words, but avoid common phrases.',
     noNeed:
       'You can create strong passwords without using symbols, numbers, or uppercase letters.',
-    pwned: "If you use this password somewhere else you should change it, too.",
+    pwned: 'If you use this password somewhere else you should change it, too.',
   },
   timeEstimation: {
     ltSecond: 'less than a second',

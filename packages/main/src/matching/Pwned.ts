@@ -1,6 +1,6 @@
-import { sorted } from '~/helper'
+import { sorted } from '../helper'
 import { ExtendedMatch } from '../types'
-import Options from '~/Options'
+import Options from '../Options'
 
 const isNodeJs =
   typeof process !== 'undefined' && process.release.name === 'node'
@@ -24,6 +24,9 @@ class MatchPwned {
   }
 
   async checkPassword(password: string) {
+    if (Options.fetch) {
+      return null
+    }
     const passwordHash = (await this.digestMessage(password)).toUpperCase()
     const range = passwordHash.slice(0, 5)
     const suffix = passwordHash.slice(5)
@@ -48,8 +51,12 @@ class MatchPwned {
     if (isNodeJs) {
       // eslint-disable-next-line global-require
       const crypto = require('crypto')
-      hash = crypto.createHash('sha1').update(message).digest('hex').toUpperCase()
-    } else {
+      hash = crypto
+        .createHash('sha1')
+        .update(message)
+        .digest('hex')
+        .toUpperCase()
+    } else if (crypto) {
       const hashBuffer = await crypto.subtle.digest('SHA-1', data)
       const hashArray = Array.from(new Uint8Array(hashBuffer))
       hash = hashArray
@@ -61,15 +68,18 @@ class MatchPwned {
   }
 
   textEncode(str) {
-    if (!isNodeJs && window.TextEncoder) {
+    if (isNodeJs) {
+      const utf8 = unescape(encodeURIComponent(str))
+      const result = new Uint8Array(utf8.length)
+      for (let i = 0; i < utf8.length; i += 1) {
+        result[i] = utf8.charCodeAt(i)
+      }
+      return result
+    }
+    if (window.TextEncoder) {
       return new TextEncoder().encode(str)
     }
-    const utf8 = unescape(encodeURIComponent(str))
-    const result = new Uint8Array(utf8.length)
-    for (let i = 0; i < utf8.length; i += 1) {
-      result[i] = utf8.charCodeAt(i)
-    }
-    return result
+    throw new Error('No encoder found')
   }
 }
 

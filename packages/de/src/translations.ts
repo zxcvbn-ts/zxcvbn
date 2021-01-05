@@ -16,6 +16,7 @@ export default {
     wordByItself: 'Einzelne Wörter sind leicht zu erraten.',
     namesByThemselves: 'Einzelne Namen oder Nachnamen sind leicht zu erraten.',
     commonNames: 'Vornamen und Nachnamen sind leicht zu erraten.',
+    pwned: 'Ihr Kennwort wurde durch eine Datenpanne offengelegt.',
   },
   suggestions: {
     l33t: "Vermeiden Sie vorhersehbare Buchstabenersetzungen wie '@' für 'a'.",
@@ -37,6 +38,8 @@ export default {
       'Verwenden Sie mehrere Wörter, aber vermeiden Sie allgemeine Phrasen.',
     noNeed:
       'Sie können sichere Kennwörter erstellen, ohne Symbole, Zahlen oder Großbuchstaben zu verwenden.',
+    pwned:
+      'Wenn Sie dieses Kennwort an anderer Stelle verwenden, sollten Sie es ebenfalls ändern.',
   },
   timeEstimation: {
     ltSecond: 'weniger als eine Sekunde',
