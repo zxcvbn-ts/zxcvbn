@@ -1,8 +1,6 @@
 import { buildRankedDictionary } from './helper'
 import {
   TranslationKeys,
-  Keyboards,
-  Keypads,
   LooseObject,
   OptionsType,
   OptionsDictionary,
@@ -25,10 +23,6 @@ class Options {
   // @ts-ignore
   rankedDictionaries: OptionsDictionary
 
-  usedKeyboard: Keyboards = 'qwerty'
-
-  usedKeypad: Keypads = 'keypad'
-
   // @ts-ignore
   translations: TranslationKeys
 
@@ -37,23 +31,7 @@ class Options {
 
   availableGraphs: DefaultAdjacencyGraphsKeys[] = []
 
-  keyboardAverageDegree = 0
-
-  keypadAverageDegree = 0
-
-  keyboardStartingPositions = 0
-
-  keypadStartingPositions = 0
-
   setOptions(options: OptionsType = {}) {
-    if (options.usedKeyboard) {
-      this.usedKeyboard = options.usedKeyboard
-    }
-
-    if (options.usedKeypad) {
-      this.usedKeypad = options.usedKeypad
-    }
-
     if (options.l33tTable) {
       this.l33tTable = options.l33tTable
     } else if (!this.l33tTable) {
@@ -135,36 +113,7 @@ class Options {
       this.availableGraphs = Object.keys(
         adjacencyGraphs,
       ) as DefaultAdjacencyGraphsKeys[]
-      if (adjacencyGraphs[this.usedKeyboard]) {
-        this.keyboardAverageDegree = this.calcAverageDegree(
-          // @ts-ignore
-          adjacencyGraphs[this.usedKeyboard],
-        )
-        this.keyboardStartingPositions = Object.keys(
-          adjacencyGraphs[this.usedKeyboard],
-        ).length
-      }
-      if (adjacencyGraphs[this.usedKeypad]) {
-        this.keypadAverageDegree = this.calcAverageDegree(
-          // @ts-ignore
-          adjacencyGraphs[this.usedKeypad],
-        )
-
-        this.keypadStartingPositions = Object.keys(
-          adjacencyGraphs[this.usedKeypad],
-        ).length
-      }
     }
-  }
-
-  calcAverageDegree(graph: OptionsGraph) {
-    let average = 0
-    Object.keys(graph).forEach((key) => {
-      const neighbors = graph[key]
-      average += neighbors.filter((entry) => !!entry).length
-    })
-    average /= Object.entries(graph).length
-    return average
   }
 }
 

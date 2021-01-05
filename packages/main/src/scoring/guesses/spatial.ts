@@ -1,13 +1,21 @@
 import utils from '../utils'
 import Options from '../../Options'
+import { OptionsGraph } from '../../types'
+
+const calcAverageDegree = (graph: OptionsGraph) => {
+  let average = 0
+  Object.keys(graph).forEach((key) => {
+    const neighbors = graph[key]
+    average += neighbors.filter((entry) => !!entry).length
+  })
+  average /= Object.entries(graph).length
+  return average
+}
 
 export default ({ graph, token, shiftedCount, turns }) => {
-  let startingPosition = Options.keypadStartingPositions
-  let averageDegree = Options.keypadAverageDegree
-  if (Options.availableGraphs.includes(graph)) {
-    startingPosition = Options.keyboardStartingPositions
-    averageDegree = Options.keyboardAverageDegree
-  }
+  const startingPosition = calcAverageDegree(Options.graphs[graph])
+  const averageDegree = Object.keys(Options.graphs[graph]).length
+
   let guesses = 0
   const tokenLength = token.length
   // # estimate the number of possible patterns w/ tokenLength or less with turns or less.
@@ -31,5 +39,5 @@ export default ({ graph, token, shiftedCount, turns }) => {
       guesses *= shiftedVariations
     }
   }
-  return guesses
+  return Math.round(guesses)
 }
