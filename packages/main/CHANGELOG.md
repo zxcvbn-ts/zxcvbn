@@ -3,7 +3,7 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [0.1.0](https://github.com/zxcvbn-ts/zxcvbn/compare/v0.1.0...dropbox:v4.4.2) (2021-01-05)
+# [0.1.0](https://github.com/dropbox/zxcvbn/compare/v4.4.2...zxcvbn-ts:@zxcvbn-ts/core@0.1.0) (2021-01-05)
 
 ## Features
 
