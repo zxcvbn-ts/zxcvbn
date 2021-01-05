@@ -11,14 +11,17 @@
     "type": "git",
     "url": "https://github.com/zxcvbn-ts/zxcvbn.git"
   },
+  "author": "hrueger & MrWook",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "keywords": [
     "zxcvbn",
     "language",
     "translation",
     "english"
   ],
-  "author": "hrueger & MrWook",
-  "files": [
-    "dist"
-  ]
 }
