@@ -1,6 +1,6 @@
-// eslint-disable-next-line jest/no-export
-module.exports = [
+export default [
   {
+    calcTime: 0,
     password: '1q2w3e4r5t',
     guesses: 364,
     guessesLog10: 2.5611013836490555,
@@ -41,6 +41,7 @@ module.exports = [
     },
   },
   {
+    calcTime: 0,
     password: '1Q2w3e4r5t',
     guesses: 727,
     guessesLog10: 2.8615344108590377,
@@ -81,6 +82,7 @@ module.exports = [
     },
   },
   {
+    calcTime: 0,
     password: '1q2w3e4r5T',
     guesses: 727,
     guessesLog10: 2.8615344108590377,
@@ -121,6 +123,7 @@ module.exports = [
     },
   },
   {
+    calcTime: 0,
     password: 'abcdefg123',
     guesses: 15000,
     guessesLog10: 4.176091259055681,
@@ -170,6 +173,7 @@ module.exports = [
     },
   },
   {
+    calcTime: 0,
     password: 'TESTERINO',
     guesses: 2486000,
     guessesLog10: 6.395501124305626,
@@ -221,6 +225,7 @@ module.exports = [
     },
   },
   {
+    calcTime: 0,
     password: 'aaaaaaa',
     guesses: 43,
     guessesLog10: 1.6334684555795864,
@@ -259,6 +264,7 @@ module.exports = [
     },
   },
   {
+    calcTime: 0,
     password: 'Daniel',
     guesses: 109,
     guessesLog10: 2.0374264979406234,
@@ -302,6 +308,7 @@ module.exports = [
     },
   },
   {
+    calcTime: 0,
     password: '1234qwer',
     guesses: 105,
     guessesLog10: 2.021189299069938,
@@ -342,6 +349,7 @@ module.exports = [
     },
   },
   {
+    calcTime: 0,
     password: '1234qwe',
     guesses: 2978,
     guessesLog10: 3.473924693416157,
@@ -382,6 +390,7 @@ module.exports = [
     },
   },
   {
+    calcTime: 0,
     password: '1234qwert',
     guesses: 12288,
     guessesLog10: 4.089481202687437,
@@ -430,6 +439,7 @@ module.exports = [
     },
   },
   {
+    calcTime: 0,
     password: 'password',
     guesses: 3,
     guessesLog10: 0.4771212547196623,
@@ -470,6 +480,7 @@ module.exports = [
     },
   },
   {
+    calcTime: 0,
     password: '2010abc',
     guesses: 15000,
     guessesLog10: 4.176091259055681,
@@ -519,6 +530,7 @@ module.exports = [
     },
   },
   {
+    calcTime: 0,
     password: 'abcabcabcabc',
     guesses: 53,
     guessesLog10: 1.724275869600789,
@@ -558,9 +570,10 @@ module.exports = [
     },
   },
   {
+    calcTime: 0,
     password: 'qwer',
-    guesses: 1294.0000000000002,
-    guessesLog10: 3.1119342763326814,
+    guesses: 1294,
+    guessesLog10: 3.111934276332681,
     sequence: [
       {
         pattern: 'spatial',
@@ -570,15 +583,15 @@ module.exports = [
         graph: 'qwerty',
         turns: 1,
         shiftedCount: 0,
-        guesses: 1293.0000000000002,
+        guesses: 1293,
         guessesLog10: 3.1115985248803937,
       },
     ],
     crackTimesSeconds: {
-      onlineThrottling100PerHour: 46584.00000000001,
-      onlineNoThrottling10PerSecond: 129.40000000000003,
-      offlineSlowHashing1e4PerSecond: 0.12940000000000002,
-      offlineFastHashing1e10PerSecond: 1.2940000000000003e-7,
+      onlineThrottling100PerHour: 46584,
+      onlineNoThrottling10PerSecond: 129.4,
+      offlineSlowHashing1e4PerSecond: 0.1294,
+      offlineFastHashing1e10PerSecond: 1.294e-7,
     },
     crackTimesDisplay: {
       onlineThrottling100PerHour: '13 hours',
@@ -596,6 +609,7 @@ module.exports = [
     },
   },
   {
+    calcTime: 0,
     password: 'P4$$w0rd',
     guesses: 33,
     guessesLog10: 1.5185139398778873,
@@ -610,7 +624,11 @@ module.exports = [
         dictionaryName: 'passwords',
         reversed: false,
         l33t: true,
-        sub: { 0: 'o', 4: 'a', $: 's' },
+        sub: {
+          0: 'o',
+          4: 'a',
+          $: 's',
+        },
         subDisplay: '0 -> o, 4 -> a, $ -> s',
         baseGuesses: 2,
         uppercaseVariations: 2,
@@ -642,6 +660,7 @@ module.exports = [
     },
   },
   {
+    calcTime: 0,
     password: 'aA!1',
     guesses: 10001,
     guessesLog10: 4.000043427276863,
@@ -674,6 +693,7 @@ module.exports = [
     },
   },
   {
+    calcTime: 0,
     password: 'dgo9dsghasdoghi8/!&IT/§(ihsdhf8o7o',
     guesses: 2.34e33,
     guessesLog10: 33.36921585741014,
@@ -751,6 +771,9 @@ module.exports = [
       offlineFastHashing1e10PerSecond: 'centuries',
     },
     score: 4,
-    feedback: { warning: '', suggestions: [] },
+    feedback: {
+      warning: '',
+      suggestions: [],
+    },
   },
 ]

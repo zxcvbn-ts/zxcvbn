@@ -1,9 +1,15 @@
+import { LooseObject } from '../../src/types'
+
 // eslint-disable-next-line jest/no-export
-module.exports = (prefix, matches, patternNames, patterns, ijs, props) => {
-  let usedPatternNames = patternNames
-  if (typeof patternNames === 'string') {
-    usedPatternNames = patterns.map(() => patternNames)
-  }
+export default (
+  prefix: string,
+  matches,
+  patternNames: string,
+  patterns: string[],
+  ijs: [number, number][],
+  props: LooseObject,
+) => {
+  const usedPatternNames = patterns.map(() => patternNames)
   let isEqualLenArgs =
     usedPatternNames.length === patterns.length &&
     patterns.length === ijs.length
