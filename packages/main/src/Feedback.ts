@@ -137,9 +137,8 @@ class Feedback {
         warning = Options.translations.warnings.wordByItself
       }
     } else if (
-      dictName === 'surnames' ||
-      dictName === 'maleNames' ||
-      dictName === 'femaleNames'
+      dictName === 'lastnames' ||
+      dictName === 'firstnames'
     ) {
       if (isSoleMatch) {
         warning = Options.translations.warnings.namesByThemselves
