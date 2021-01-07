@@ -11,7 +11,7 @@ describe('feedback', () => {
     const feedbackClass = new Feedback()
 
     it('should return no feedback for a good password', () => {
-      const data = feedbackClass.getFeedback(3, [{}])
+      const data = feedbackClass.getFeedback(3, [])
       expect(data).toEqual({
         warning: '',
         suggestions: [],
@@ -30,7 +30,7 @@ describe('feedback', () => {
     })
 
     it('should return some basic feedback if no feedback could be generated', () => {
-      const data = feedbackClass.getFeedback(1, [{}])
+      const data = feedbackClass.getFeedback(1, [])
       expect(data).toEqual({
         warning: '',
         suggestions: [translations.suggestions.anotherWord],
@@ -47,17 +47,15 @@ describe('feedback', () => {
         rank: 10,
         guessesLog10: 4,
       }
-      let data = feedbackClass.getFeedback(1, [
-        {
-          ...options,
-        },
-      ])
+      // @ts-ignore
+      let data = feedbackClass.getFeedback(1, [options])
       expect(data).toEqual({
         warning: translations.warnings.topTen,
         suggestions: [translations.suggestions.anotherWord],
       })
 
       data = feedbackClass.getFeedback(1, [
+        // @ts-ignore
         {
           ...options,
           rank: 100,
@@ -69,6 +67,7 @@ describe('feedback', () => {
       })
 
       data = feedbackClass.getFeedback(1, [
+        // @ts-ignore
         {
           ...options,
           rank: 1000,
@@ -80,6 +79,7 @@ describe('feedback', () => {
       })
 
       data = feedbackClass.getFeedback(1, [
+        // @ts-ignore
         {
           ...options,
           l33t: true,
@@ -94,6 +94,7 @@ describe('feedback', () => {
       })
 
       data = feedbackClass.getFeedback(1, [
+        // @ts-ignore
         {
           ...options,
           reversed: true,
@@ -108,6 +109,7 @@ describe('feedback', () => {
       })
 
       data = feedbackClass.getFeedback(1, [
+        // @ts-ignore
         {
           ...options,
           reversed: true,
@@ -125,6 +127,7 @@ describe('feedback', () => {
       })
 
       data = feedbackClass.getFeedback(1, [
+        // @ts-ignore
         {
           ...options,
           reversed: true,
@@ -142,6 +145,7 @@ describe('feedback', () => {
       })
 
       data = feedbackClass.getFeedback(1, [
+        // @ts-ignore
         {
           ...options,
           dictionaryName: 'wikipedia',
@@ -153,10 +157,12 @@ describe('feedback', () => {
       })
 
       data = feedbackClass.getFeedback(1, [
+        // @ts-ignore
         {
           ...options,
           dictionaryName: 'wikipedia',
         },
+        // @ts-ignore
         {
           ...options,
           dictionaryName: 'wikipedia',
@@ -170,6 +176,7 @@ describe('feedback', () => {
       data = feedbackClass.getFeedback(1, [
         {
           ...options,
+          // @ts-ignore
           dictionaryName: 'test_name',
         },
       ])
@@ -179,6 +186,7 @@ describe('feedback', () => {
       })
 
       data = feedbackClass.getFeedback(1, [
+        // @ts-ignore
         {
           ...options,
           dictionaryName: 'lastnames',
@@ -189,6 +197,7 @@ describe('feedback', () => {
         suggestions: [translations.suggestions.anotherWord],
       })
       data = feedbackClass.getFeedback(1, [
+        // @ts-ignore
         {
           ...options,
           dictionaryName: 'firstnames',
@@ -200,10 +209,12 @@ describe('feedback', () => {
       })
 
       data = feedbackClass.getFeedback(1, [
+        // @ts-ignore
         {
           ...options,
           dictionaryName: 'firstnames',
         },
+        // @ts-ignore
         {
           ...options,
           dictionaryName: 'firstnames',
@@ -222,11 +233,8 @@ describe('feedback', () => {
         graph: 'qwerty',
         turns: 1,
       }
-      let data = feedbackClass.getFeedback(2, [
-        {
-          ...options,
-        },
-      ])
+      // @ts-ignore
+      let data = feedbackClass.getFeedback(2, [options])
       expect(data).toEqual({
         warning: translations.warnings.straightRow,
         suggestions: [
@@ -235,6 +243,7 @@ describe('feedback', () => {
         ],
       })
       data = feedbackClass.getFeedback(2, [
+        // @ts-ignore
         {
           ...options,
           turns: 2,
@@ -255,11 +264,8 @@ describe('feedback', () => {
         token: 'tests',
         baseToken: 'a',
       }
-      let data = feedbackClass.getFeedback(2, [
-        {
-          ...options,
-        },
-      ])
+      // @ts-ignore
+      let data = feedbackClass.getFeedback(2, [options])
       expect(data).toEqual({
         warning: translations.warnings.simpleRepeat,
         suggestions: [
@@ -268,6 +274,7 @@ describe('feedback', () => {
         ],
       })
       data = feedbackClass.getFeedback(2, [
+        // @ts-ignore
         {
           ...options,
           baseToken: 'aa',
@@ -287,11 +294,8 @@ describe('feedback', () => {
         pattern: 'sequence',
         token: 'tests',
       }
-      const data = feedbackClass.getFeedback(2, [
-        {
-          ...options,
-        },
-      ])
+      // @ts-ignore
+      const data = feedbackClass.getFeedback(2, [options])
       expect(data).toEqual({
         warning: translations.warnings.sequences,
         suggestions: [
@@ -307,11 +311,8 @@ describe('feedback', () => {
         token: 'tests',
         regexName: 'recentYear',
       }
-      const data = feedbackClass.getFeedback(2, [
-        {
-          ...options,
-        },
-      ])
+      // @ts-ignore
+      const data = feedbackClass.getFeedback(2, [options])
       expect(data).toEqual({
         warning: translations.warnings.recentYears,
         suggestions: [
@@ -327,11 +328,8 @@ describe('feedback', () => {
         pattern: 'date',
         token: 'tests',
       }
-      const data = feedbackClass.getFeedback(2, [
-        {
-          ...options,
-        },
-      ])
+      // @ts-ignore
+      const data = feedbackClass.getFeedback(2, [options])
       expect(data).toEqual({
         warning: translations.warnings.dates,
         suggestions: [
