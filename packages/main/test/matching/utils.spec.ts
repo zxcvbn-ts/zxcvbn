@@ -6,7 +6,7 @@ import {
   mod,
   buildRankedDictionary,
 } from '../../src/helper'
-import {LooseObject} from '../../src/types'
+import { LooseObject } from '../../src/types'
 
 describe('utils matching', () => {
   describe('empty', () => {
