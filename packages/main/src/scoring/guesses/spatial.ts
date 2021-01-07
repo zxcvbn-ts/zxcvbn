@@ -12,7 +12,7 @@ const calcAverageDegree = (graph: OptionsGraph) => {
   return average
 }
 
-export default ({ graph, token, shiftedCount, turns }) => {
+const estimatePossiblePatterns = ({ token, graph, turns }) => {
   const startingPosition = calcAverageDegree(Options.graphs[graph])
   const averageDegree = Object.keys(Options.graphs[graph]).length
 
@@ -25,6 +25,12 @@ export default ({ graph, token, shiftedCount, turns }) => {
       guesses += utils.nCk(i - 1, j - 1) * startingPosition * averageDegree ** j
     }
   }
+  return guesses
+}
+
+export default ({ graph, token, shiftedCount, turns }) => {
+  let guesses = estimatePossiblePatterns({ token, graph, turns })
+
   // add extra guesses for shifted keys. (% instead of 5, A instead of a.)
   // math is similar to extra guesses of l33t substitutions in dictionary matches.
   if (shiftedCount) {

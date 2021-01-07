@@ -12,16 +12,17 @@ import spatialGuesses from './guesses/spatial'
 import utils from './utils'
 import { ExtendedMatch, LooseObject, Match } from '../types'
 
-// ------------------------------------------------------------------------------
-// guess estimation -- one function per match pattern ---------------------------
-// ------------------------------------------------------------------------------
+const estimationFunctions = {
+  bruteforce: bruteforceGuesses,
+  dictionary: dictionaryGuesses,
+  spatial: spatialGuesses,
+  repeat: repeatGuesses,
+  sequence: sequenceGuesses,
+  regex: regexGuesses,
+  date: dateGuesses,
+}
 
-export default (match: ExtendedMatch | Match, password: string) => {
-  const extraData: LooseObject = {}
-  // a match's guess estimate doesn't change. cache it.
-  if ('guesses' in match && match.guesses != null) {
-    return match
-  }
+const getMinGuesses = (match: ExtendedMatch | Match, password: string) => {
   let minGuesses = 1
   if (match.token.length < password.length) {
     if (match.token.length === 1) {
@@ -30,15 +31,20 @@ export default (match: ExtendedMatch | Match, password: string) => {
       minGuesses = MIN_SUBMATCH_GUESSES_MULTI_CHAR
     }
   }
-  const estimationFunctions = {
-    bruteforce: bruteforceGuesses,
-    dictionary: dictionaryGuesses,
-    spatial: spatialGuesses,
-    repeat: repeatGuesses,
-    sequence: sequenceGuesses,
-    regex: regexGuesses,
-    date: dateGuesses,
+  return minGuesses
+}
+
+// ------------------------------------------------------------------------------
+// guess estimation -- one function per match pattern ---------------------------
+// ------------------------------------------------------------------------------
+export default (match: ExtendedMatch | Match, password: string) => {
+  const extraData: LooseObject = {}
+  // a match's guess estimate doesn't change. cache it.
+  if ('guesses' in match && match.guesses != null) {
+    return match
   }
+
+  const minGuesses = getMinGuesses(match, password)
   // @ts-ignore
   const estimationResult = estimationFunctions[match.pattern](match)
   let guesses = 0

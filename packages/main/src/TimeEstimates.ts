@@ -1,19 +1,33 @@
 import Options from './Options'
 import { CrackTimesDisplay, CrackTimesSeconds, LooseObject } from './types'
 
+const SECOND = 1
+const MINUTE = SECOND * 60
+const HOUR = MINUTE * 60
+const DAY = HOUR * 24
+const MONTH = DAY * 31
+const YEAR = MONTH * 12
+const CENTURY = YEAR * 100
+
+const times = {
+  second: SECOND,
+  minute: MINUTE,
+  hour: HOUR,
+  day: DAY,
+  month: MONTH,
+  year: YEAR,
+  century: CENTURY,
+}
+
 /*
  * -------------------------------------------------------------------------------
  *  Estimates time for an attacker ---------------------------------------------------------------
  * -------------------------------------------------------------------------------
  */
 class TimeEstimates {
-  translate(
-    displayStr: string,
-    value: number | undefined,
-    displayNum: number | null,
-  ) {
+  translate(displayStr: string, value: number | undefined) {
     let key = displayStr
-    if (displayNum != null && displayNum !== 1) {
+    if (value !== undefined && value !== 1) {
       key += 's'
     }
     return Options.translations.timeEstimation[key].replace('{base}', value)
@@ -62,44 +76,19 @@ class TimeEstimates {
   }
 
   displayTime(seconds: number) {
-    const minute = 60
-    const hour = minute * 60
-    const day = hour * 24
-    const month = day * 31
-    const year = month * 12
-    const century = year * 100
-    let displayNum = null
     let displayStr = 'centuries'
     let base
-    if (seconds < 1) {
-      displayNum = null
-      displayStr = 'ltSecond'
-    } else if (seconds < minute) {
-      base = Math.round(seconds)
-      displayNum = base
-      displayStr = 'second'
-    } else if (seconds < hour) {
-      base = Math.round(seconds / minute)
-      displayNum = base
-      displayStr = 'minute'
-    } else if (seconds < day) {
-      base = Math.round(seconds / hour)
-      displayNum = base
-      displayStr = 'hour'
-    } else if (seconds < month) {
-      base = Math.round(seconds / day)
-      displayNum = base
-      displayStr = 'day'
-    } else if (seconds < year) {
-      base = Math.round(seconds / month)
-      displayNum = base
-      displayStr = 'month'
-    } else if (seconds < century) {
-      base = Math.round(seconds / year)
-      displayNum = base
-      displayStr = 'year'
+    const timeKeys = Object.keys(times)
+    const foundIndex = timeKeys.findIndex((time) => seconds < times[time])
+    if (foundIndex > -1) {
+      displayStr = timeKeys[foundIndex - 1]
+      if (foundIndex !== 0) {
+        base = Math.round(seconds / times[displayStr])
+      } else {
+        displayStr = 'ltSecond'
+      }
     }
-    return this.translate(displayStr, base, displayNum)
+    return this.translate(displayStr, base)
   }
 }
 

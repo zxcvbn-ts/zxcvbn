@@ -29,6 +29,17 @@ class MatchSpatial {
     return sorted(matches)
   }
 
+  checkIfShifted(graphName, password, index) {
+    if (
+      !graphName.includes('keypad') &&
+      // initial character is shifted
+      this.SHIFTED_RX.test(password.charAt(index))
+    ) {
+      return 1
+    }
+    return 0
+  }
+
   helper(
     password: string,
     graph: DefaultAdjacencyGraphs,
@@ -42,15 +53,7 @@ class MatchSpatial {
       let j = i + 1
       let lastDirection = 0
       let turns = 0
-      if (
-        !graphName.includes('keypad') &&
-        this.SHIFTED_RX.test(password.charAt(i))
-      ) {
-        // initial character is shifted
-        shiftedCount = 1
-      } else {
-        shiftedCount = 0
-      }
+      shiftedCount = this.checkIfShifted(graphName, password, i)
       // eslint-disable-next-line no-constant-condition
       while (true) {
         const prevChar = password.charAt(j - 1)

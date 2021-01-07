@@ -136,10 +136,7 @@ class Feedback {
       if (isSoleMatch) {
         warning = Options.translations.warnings.wordByItself
       }
-    } else if (
-      dictName === 'lastnames' ||
-      dictName === 'firstnames'
-    ) {
+    } else if (dictName === 'lastnames' || dictName === 'firstnames') {
       if (isSoleMatch) {
         warning = Options.translations.warnings.namesByThemselves
       } else {

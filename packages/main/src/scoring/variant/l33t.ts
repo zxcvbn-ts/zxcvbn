@@ -1,5 +1,19 @@
 import utils from '../utils'
 
+const getCounts = ({ subs, subbed, token }) => {
+  const unsubbed = subs[subbed]
+  // lower-case match.token before calculating: capitalization shouldn't affect l33t calc.
+  const chrs = token.toLowerCase().split('')
+  // num of subbed chars
+  const subbedCount = chrs.filter((char) => char === subbed).length
+  // num of unsubbed chars
+  const unsubbedCount = chrs.filter((char) => char === unsubbed).length
+  return {
+    subbedCount,
+    unsubbedCount,
+  }
+}
+
 export default ({ l33t, sub, token }) => {
   if (!l33t) {
     return 1
@@ -7,13 +21,7 @@ export default ({ l33t, sub, token }) => {
   let variations = 1
   const subs = sub
   Object.keys(subs).forEach((subbed) => {
-    const unsubbed = subs[subbed]
-    // lower-case match.token before calculating: capitalization shouldn't affect l33t calc.
-    const chrs = token.toLowerCase().split('')
-    // num of subbed chars
-    const subbedCount = chrs.filter((char) => char === subbed).length
-    // num of unsubbed chars
-    const unsubbedCount = chrs.filter((char) => char === unsubbed).length
+    const { subbedCount, unsubbedCount } = getCounts({ subs, subbed, token })
 
     if (subbedCount === 0 || unsubbedCount === 0) {
       // for this sub, password is either fully subbed (444) or fully unsubbed (aaa)

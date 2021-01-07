@@ -7,10 +7,7 @@ import { OptionsType } from './types'
 
 const time = () => new Date().getTime()
 
-export default (
-  password: string,
-  options: OptionsType = {},
-) => {
+export default (password: string, options: OptionsType = {}) => {
   Options.setOptions(options)
   const feedback = new Feedback()
   const matching = new Matching()
