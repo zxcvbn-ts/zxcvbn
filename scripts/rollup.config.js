@@ -1,11 +1,13 @@
 import path from 'path'
-import alias from '@rollup/plugin-alias'
 import babel from '@rollup/plugin-babel'
 import commonjs from '@rollup/plugin-commonjs'
-import del from 'rollup-plugin-delete'
 import typescript from '@rollup/plugin-typescript'
 import json from '@rollup/plugin-json'
-import pkg from '../package.json'
+import del from 'rollup-plugin-delete'
+
+const packagePath = process.cwd()
+// eslint-disable-next-line import/no-dynamic-require
+const pkg = require(path.join(packagePath, 'package.json'))
 
 let generateCounter = 0
 const generateConfig = (type) => {
@@ -32,10 +34,11 @@ const generateConfig = (type) => {
     output.assetFileNames = '[name].esm.js'
     babelrc = false
   }
+
   if (type === 'iife') {
-    output.name = pkg.name.replace('-', '')
-    output.entryFileNames = '[name].browser.js'
-    output.assetFileNames = '[name].browser.js'
+    output.name = pkg.name.replace('@', '').replace('-', '').replace('/', '.')
+    output.entryFileNames = 'zxcvbn-ts.js'
+    output.assetFileNames = 'zxcvbn-ts.js'
   }
 
   const pluginsOnlyOnce = []
@@ -54,14 +57,6 @@ const generateConfig = (type) => {
     output,
     plugins: [
       ...pluginsOnlyOnce,
-      alias({
-        entries: [
-          {
-            find: '~',
-            replacement: path.join(__dirname, '..', '/src'),
-          },
-        ],
-      }),
       json({
         compact: true,
       }),
