@@ -11,7 +11,8 @@ describe('feedback', () => {
     const feedbackClass = new Feedback()
 
     it('should return no feedback for a good password', () => {
-      const data = feedbackClass.getFeedback(3, [])
+      // @ts-ignore
+      const data = feedbackClass.getFeedback(3, [{}])
       expect(data).toEqual({
         warning: '',
         suggestions: [],
@@ -30,7 +31,8 @@ describe('feedback', () => {
     })
 
     it('should return some basic feedback if no feedback could be generated', () => {
-      const data = feedbackClass.getFeedback(1, [])
+      // @ts-ignore
+      const data = feedbackClass.getFeedback(1, [{}])
       expect(data).toEqual({
         warning: '',
         suggestions: [translations.suggestions.anotherWord],

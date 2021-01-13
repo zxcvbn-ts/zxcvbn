@@ -40,6 +40,7 @@ class MatchSpatial {
     return 0
   }
 
+  // eslint-disable-next-line complexity, max-statements
   helper(
     password: string,
     graph: DefaultAdjacencyGraphs,
@@ -68,11 +69,14 @@ class MatchSpatial {
           for (let k = 0; k < adjacentsLength; k += 1) {
             const adjacent = adjacents[k]
             curDirection += 1
+            // eslint-disable-next-line max-depth
             if (adjacent) {
               const adjacentIndex = adjacent.indexOf(curChar)
+              // eslint-disable-next-line max-depth
               if (adjacentIndex !== -1) {
                 found = true
                 foundDirection = curDirection
+                // eslint-disable-next-line max-depth
                 if (adjacentIndex === 1) {
                   // # index 1 in the adjacency means the key is shifted,
                   // # 0 means unshifted: A vs a, % vs 5, etc.
@@ -80,6 +84,7 @@ class MatchSpatial {
                   // # @ is shifted w/ index 1, 2 is unshifted.
                   shiftedCount += 1
                 }
+                // eslint-disable-next-line max-depth
                 if (lastDirection !== foundDirection) {
                   // # adding a turn is correct even in the initial
                   // case when last_direction is null:

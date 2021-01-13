@@ -205,6 +205,17 @@ export default {
     }
     const optimalMatchSequence = scoringHelper.unwind(passwordLength)
     const optimalSequenceLength = optimalMatchSequence.length
+    const guesses = this.getGuesses(password, optimalSequenceLength)
+    return {
+      password,
+      guesses,
+      guessesLog10: utils.log10(guesses),
+      sequence: optimalMatchSequence,
+    }
+  },
+
+  getGuesses(password: string, optimalSequenceLength: number) {
+    const passwordLength = password.length
     let guesses = 0
     if (password.length === 0) {
       guesses = 1
@@ -212,11 +223,6 @@ export default {
       guesses =
         scoringHelper.optimal.g[passwordLength - 1][optimalSequenceLength]
     }
-    return {
-      password,
-      guesses,
-      guessesLog10: utils.log10(guesses),
-      sequence: optimalMatchSequence,
-    }
+    return guesses
   },
 }

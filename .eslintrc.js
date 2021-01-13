@@ -99,12 +99,13 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['*.spec.ts', '*.config.ts', '*.config.js'],
+      files: ['*.spec.ts', '*.config.ts', '*.config.js', '**/test/**/*.ts'],
       rules: {
         'max-lines-per-function': 'off',
         'max-statements': 'off',
         'max-nested-callbacks': 'off',
         'complexity': 'off',
+        'max-params': 'off',
       },
     },
   ],
