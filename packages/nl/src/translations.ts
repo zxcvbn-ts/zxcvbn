@@ -15,7 +15,8 @@ export default {
     similarToCommon: 'Dit lijkt op een veelvoorkomend wachtwoord.',
     wordByItself: 'Woorden op zich zijn makkelijk te raden.',
     namesByThemselves: 'Voor- en achternamen op zich zijn makkelijk te raden.',
-    commonNames: 'Veelvoorkomende voor- en achternamen zijn makkelijk te raden.',
+    commonNames:
+      'Veelvoorkomende voor- en achternamen zijn makkelijk te raden.',
   },
   suggestions: {
     l33t: "Vermijd voorspelbare vervangingen, zoals '@' voor 'a'.",
