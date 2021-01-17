@@ -25,7 +25,6 @@ export default (password: string, options: OptionsType = {}) => {
     calcTime,
     ...matchSequence,
     ...attackTimes,
-    // @ts-ignore
     feedback: feedback.getFeedback(attackTimes.score, matchSequence.sequence),
   }
 }

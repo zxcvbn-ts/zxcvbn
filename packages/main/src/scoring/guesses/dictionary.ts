@@ -10,7 +10,20 @@ export interface DictionaryOptions {
   sub: LooseObject
 }
 
-export default ({ rank, reversed, l33t, sub, token }: DictionaryOptions) => {
+export interface DictionaryReturn {
+  baseGuesses: number
+  uppercaseVariations: number
+  l33tVariations: number
+  calculation: number
+}
+
+export default ({
+  rank,
+  reversed,
+  l33t,
+  sub,
+  token,
+}: DictionaryOptions): DictionaryReturn => {
   const baseGuesses = rank // keep these as properties for display purposes
   const uppercaseVariations = uppercaseVariant(token)
   const l33tVariations = l33tVariant({ l33t, sub, token })

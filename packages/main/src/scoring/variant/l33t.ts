@@ -14,6 +14,7 @@ export interface GetCountsOptions {
 }
 
 const getCounts = ({ subs, subbed, token }: GetCountsOptions) => {
+  console.log('reee', subs)
   const unsubbed = subs[subbed as keyof typeof subs]
   // lower-case match.token before calculating: capitalization shouldn't affect l33t calc.
   const chrs = token.toLowerCase().split('')

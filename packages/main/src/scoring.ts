@@ -96,7 +96,7 @@ const scoringHelper = {
   // helper: step backwards through optimal.m starting at the end,
   // constructing the final optimal match sequence.
   unwind(passwordLength: number) {
-    const optimalMatchSequence: Match[] = []
+    const optimalMatchSequence: ExtendedMatch[] = []
     let k = passwordLength - 1
     // find the final best sequence length and score
     let sequenceLength = 0
@@ -110,7 +110,7 @@ const scoringHelper = {
       }
     })
     while (k >= 0) {
-      const match: Match = this.optimal.m[k][sequenceLength]
+      const match: ExtendedMatch = this.optimal.m[k][sequenceLength]
       optimalMatchSequence.unshift(match)
       k = match.i - 1
       sequenceLength -= 1

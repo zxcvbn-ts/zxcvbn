@@ -6,6 +6,8 @@ interface RegexMatchOptions {
   password: string
   regexes?: typeof REGEXEN
 }
+
+type RegexesKeys = keyof typeof REGEXEN
 /*
  * -------------------------------------------------------------------------------
  *  regex matching ---------------------------------------------------------------
@@ -14,9 +16,8 @@ interface RegexMatchOptions {
 class MatchRegex {
   match({ password, regexes = REGEXEN }: RegexMatchOptions) {
     const matches: ExtendedMatch[] = []
-    // @ts-ignore
-    Object.keys(regexes).forEach((name: keyof typeof REGEXEN) => {
-      const regex = regexes[name]
+    Object.keys(regexes).forEach((name) => {
+      const regex = regexes[name as RegexesKeys]
       regex.lastIndex = 0 // keeps regexMatch stateless
       const regexMatch = regex.exec(password)
       if (regexMatch) {
@@ -27,7 +28,7 @@ class MatchRegex {
           token,
           i: regexMatch.index,
           j: regexMatch.index + regexMatch[0].length - 1,
-          regexName: name,
+          regexName: name as RegexesKeys,
           regexMatch,
         })
       }

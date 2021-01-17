@@ -3,6 +3,8 @@ import MatchDictionary from './Dictionary'
 import Options from '../Options'
 import { ExtendedMatch, LooseObject, OptionsL33tTable } from '../types'
 
+type Subs = string[][][]
+
 interface L33tMatchOptions {
   password: string
 }
@@ -40,7 +42,6 @@ class MatchL33t {
           // subset of mappings in sub that are in use for this match
           const matchSub: LooseObject = {}
           Object.keys(sub).forEach((subbedChr) => {
-            // @ts-ignore
             const chr = sub[subbedChr]
             if (token.indexOf(subbedChr) !== -1) {
               matchSub[subbedChr] = chr
@@ -85,7 +86,6 @@ class MatchL33t {
   }
 
   // returns the list of possible 1337 replacement dictionaries for a given password
-  // TODO set correct table type
   enumerateL33tSubs(table: OptionsL33tTable) {
     const tableKeys = Object.keys(table)
     const subs = this.getSubs(tableKeys, [[]], table)
@@ -99,17 +99,13 @@ class MatchL33t {
     })
   }
 
-  getSubs(
-    keys: string[],
-    subs: string[][],
-    table: OptionsL33tTable,
-  ): string[][] {
+  getSubs(keys: string[], subs: Subs, table: OptionsL33tTable): Subs {
     if (!keys.length) {
       return subs
     }
     const firstKey = keys[0]
     const restKeys = keys.slice(1)
-    const nextSubs: string[][] = []
+    const nextSubs: Subs = []
     table[firstKey as keyof typeof table].forEach((l33tChr: string) => {
       subs.forEach((sub) => {
         let dupL33tIndex = -1
@@ -120,13 +116,11 @@ class MatchL33t {
           }
         }
         if (dupL33tIndex === -1) {
-          // @ts-ignore
           const subExtension = sub.concat([[l33tChr, firstKey]])
           nextSubs.push(subExtension)
         } else {
           const subAlternative = sub.slice(0)
           subAlternative.splice(dupL33tIndex, 1)
-          // @ts-ignore
           subAlternative.push([l33tChr, firstKey])
           nextSubs.push(sub)
           nextSubs.push(subAlternative)
@@ -140,16 +134,14 @@ class MatchL33t {
     return newSubs
   }
 
-  dedup(subs: string[][]) {
-    const deduped: string[][] = []
-    const members = {}
+  dedup(subs: Subs) {
+    const deduped: Subs = []
+    const members: LooseObject = {}
     subs.forEach((sub) => {
       const assoc = sub.map((k, index) => [k, index])
       assoc.sort()
-      const label = assoc.map(([k, v]) => `${k},${v}`)
-      // @ts-ignore
+      const label = assoc.map(([k, v]) => `${k},${v}`).join('-')
       if (!(label in members)) {
-        // @ts-ignore
         members[label] = true
         deduped.push(sub)
       }

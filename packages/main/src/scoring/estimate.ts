@@ -48,17 +48,13 @@ export default (match: ExtendedMatch | Match, password: string) => {
   // @ts-ignore
   const estimationResult = estimationFunctions[match.pattern](match)
   let guesses = 0
-  if (match.pattern === 'dictionary') {
-    // @ts-ignore
+  if (typeof estimationResult === 'number') {
+    guesses = estimationResult
+  } else if (match.pattern === 'dictionary') {
     guesses = estimationResult.calculation
-    // @ts-ignore
     extraData.baseGuesses = estimationResult.baseGuesses
-    // @ts-ignore
     extraData.uppercaseVariations = estimationResult.uppercaseVariations
-    // @ts-ignore
     extraData.l33tVariations = estimationResult.l33tVariations
-  } else {
-    guesses = estimationResult as number
   }
 
   const matchGuesses = Math.max(guesses, minGuesses)
