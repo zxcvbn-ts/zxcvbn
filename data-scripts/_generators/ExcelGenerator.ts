@@ -13,6 +13,7 @@ export type Options = {
   trimWhitespaces?: boolean;
   toLowerCase?: boolean;
   removeDuplicates?: boolean;
+  sheetName?: string;
 }
 
 const defaultOptions: Options = {
@@ -63,8 +64,8 @@ export class ExcelGenerator {
     const data = new Uint8Array(response.data);
 
     console.info("Parsing file")
-    const workbook = XLSX.read(data, {type:"array"})
-    const sheet = workbook.Sheets[workbook.SheetNames[0]]
+    const workbook = XLSX.read(data, {type:"array" })
+    const sheet = workbook.Sheets[this.options.sheetName ?? workbook.SheetNames[0]]
 
     if (!sheet['!ref']) {
       throw new Error("Missing ref in sheet")

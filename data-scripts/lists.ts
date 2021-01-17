@@ -58,8 +58,9 @@ export default {
       customList: true,
       options: {
         url: "https://statbel.fgov.be/sites/default/files/files/documents/bevolking/5.10%20Namen%20en%20voornamen/5.10.%203%20Voornamen%20meisjes%20en%20jongens/Voornamen_Jongens_1995-2017_0.xls",
-        column: 5,
-        row: 2
+        column: 8,
+        row: 2,
+        sheetName: "1995-2019",
       }
     },
     girlsFirstnames: {
@@ -67,8 +68,9 @@ export default {
       customList: true,
       options: {
         url: "https://statbel.fgov.be/sites/default/files/files/documents/bevolking/5.10%20Namen%20en%20voornamen/5.10.%203%20Voornamen%20meisjes%20en%20jongens/Voornamen_meisjes_1995-2017.xls",
-        column: 5,
-        row: 2
+        column: 8,
+        row: 2,
+        sheetName: "1995-2019",
       }
     },
     lastnames: {
