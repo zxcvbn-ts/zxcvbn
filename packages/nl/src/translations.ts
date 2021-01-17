@@ -1,6 +1,6 @@
 export default {
   warnings: {
-    straightRow: 'Straight rows of keys are easy to guess.',
+    straightRow: 'Opeenvolgende toetsen zijn makkelijk te raden.',
     keyPattern: 'Korte toetsenbord patronen zijn makkelijk te raden.',
     simpleRepeat: 'Herhalende letters zoals "aaa" zijn makkelijk te raden.',
     extendedRepeat:
@@ -8,14 +8,14 @@ export default {
     sequences:
       'Veelvoorkomende tekstreeksen zoals "abc" zijn makkelijk te raden.',
     recentYears: 'Recente jaartallen zijn makkelijk te raden.',
-    dates: 'Datums zijn makkelijk te raden',
+    dates: 'Datums zijn makkelijk te raden.',
     topTen: 'Dit wachtwoord wordt heel erg veel gebruikt.',
     topHundred: 'Dit wachtwoord wordt erg veel gebruikt.',
     common: 'Dit wachtwoord wordt veel gebruikt.',
     similarToCommon: 'Dit lijkt op een veelvoorkomend wachtwoord.',
     wordByItself: 'Woorden op zich zijn makkelijk te raden.',
-    namesByThemselves: 'Voor- en achternamen op zich zijn makkelijk te raden',
-    commonNames: 'Veelvoorkomende voor- en achternamen zijn makkelijk te raden',
+    namesByThemselves: 'Voor- en achternamen op zich zijn makkelijk te raden.',
+    commonNames: 'Veelvoorkomende voor- en achternamen zijn makkelijk te raden.',
   },
   suggestions: {
     l33t: "Vermijd voorspelbare vervangingen, zoals '@' voor 'a'.",
