@@ -36,8 +36,8 @@ export default class ListHandler {
       }
       const data = JSON.stringify(await generator.run())
       fs.writeFileSync(
-        path.join(folder, `${options.filename}.ts`),
-        `export default ${data}`,
+        path.join(folder, `${options.filename}.json`),
+        `${data}`,
       )
       console.timeEnd(options.filename)
       console.info(
