@@ -12,6 +12,7 @@ describe('scoring: guesses spatial', () => {
       shiftedCount: 0,
     }
 
+    // @ts-ignore
     expect(spatialGuesses(match)).toEqual(2155)
   })
 
@@ -24,6 +25,7 @@ describe('scoring: guesses spatial', () => {
       guesses: null,
     }
 
+    // @ts-ignore
     expect(spatialGuesses(match)).toEqual(45255)
   })
 
@@ -35,6 +37,7 @@ describe('scoring: guesses spatial', () => {
       shiftedCount: 6,
       guesses: null,
     }
+    // @ts-ignore
     expect(spatialGuesses(match)).toEqual(4310)
   })
 
@@ -46,6 +49,7 @@ describe('scoring: guesses spatial', () => {
       shiftedCount: 0,
     }
 
+    // @ts-ignore
     expect(spatialGuesses(match)).toEqual(206109803)
   })
 })

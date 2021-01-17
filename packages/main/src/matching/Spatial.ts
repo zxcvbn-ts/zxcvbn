@@ -3,7 +3,7 @@ import Options from '../Options'
 import {
   DefaultAdjacencyGraphsKeys,
   ExtendedMatch,
-  DefaultAdjacencyGraphs,
+  LooseObject,
 } from '../types'
 
 interface SpatialMatchOptions {
@@ -20,7 +20,7 @@ class MatchSpatial {
   match({ password }: SpatialMatchOptions) {
     const matches: ExtendedMatch[] = []
     Object.keys(Options.graphs).forEach((graphName) => {
-      const graph = Options.graphs[graphName]
+      const graph = Options.graphs[graphName as DefaultAdjacencyGraphsKeys]
       extend(
         matches,
         this.helper(password, graph, graphName as DefaultAdjacencyGraphsKeys),
@@ -29,7 +29,7 @@ class MatchSpatial {
     return sorted(matches)
   }
 
-  checkIfShifted(graphName, password, index) {
+  checkIfShifted(graphName: string, password: string, index: number) {
     if (
       !graphName.includes('keypad') &&
       // initial character is shifted
@@ -43,7 +43,7 @@ class MatchSpatial {
   // eslint-disable-next-line complexity, max-statements
   helper(
     password: string,
-    graph: DefaultAdjacencyGraphs,
+    graph: LooseObject,
     graphName: DefaultAdjacencyGraphsKeys,
   ) {
     let shiftedCount
@@ -58,7 +58,7 @@ class MatchSpatial {
       // eslint-disable-next-line no-constant-condition
       while (true) {
         const prevChar = password.charAt(j - 1)
-        const adjacents = graph[prevChar] || []
+        const adjacents = graph[prevChar as keyof typeof graph] || []
         let found = false
         let foundDirection = -1
         let curDirection = -1

@@ -1,12 +1,12 @@
 import { buildRankedDictionary } from './helper'
 import {
   TranslationKeys,
-  LooseObject,
   OptionsType,
   OptionsDictionary,
   DefaultAdjacencyGraphsKeys,
   OptionsL33tTable,
   OptionsGraph,
+  RankedDictionaries,
 } from './types'
 import l33tTable from './data/l33tTable'
 import graphs from './data/adjacencyGraphs'
@@ -21,7 +21,7 @@ class Options {
   }
 
   // @ts-ignore
-  rankedDictionaries: OptionsDictionary
+  rankedDictionaries: RankedDictionaries
 
   // @ts-ignore
   translations: TranslationKeys
@@ -69,8 +69,9 @@ class Options {
     let valid = true
     Object.keys(translationKeys).forEach((type) => {
       if (type in translations) {
-        Object.keys(translationKeys[type]).forEach((key) => {
-          if (!(key in translations[type])) {
+        const translationType = type as keyof typeof translationKeys
+        Object.keys(translationKeys[translationType]).forEach((key) => {
+          if (!(key in translations[translationType])) {
             valid = false
           }
         })
@@ -82,7 +83,7 @@ class Options {
   }
 
   setRankedDictionaries() {
-    const rankedDictionaries: LooseObject = {}
+    const rankedDictionaries: RankedDictionaries = {}
     Object.keys(this.dictionary).forEach((name) => {
       const list = this.dictionary[name]
       if (name === 'userInputs') {
@@ -104,7 +105,7 @@ class Options {
         rankedDictionaries[name] = buildRankedDictionary(list)
       }
     })
-    this.rankedDictionaries = rankedDictionaries as OptionsDictionary
+    this.rankedDictionaries = rankedDictionaries
   }
 
   setAdjacencyGraphs(adjacencyGraphs: OptionsGraph) {

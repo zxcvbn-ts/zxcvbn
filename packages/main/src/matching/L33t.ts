@@ -1,7 +1,7 @@
 import { sorted, empty, translate } from '../helper'
 import MatchDictionary from './Dictionary'
 import Options from '../Options'
-import { ExtendedMatch, LooseObject } from '../types'
+import { ExtendedMatch, LooseObject, OptionsL33tTable } from '../types'
 
 interface L33tMatchOptions {
   password: string
@@ -67,7 +67,7 @@ class MatchL33t {
   }
 
   // makes a pruned copy of l33t_table that only includes password's possible substitutions
-  relevantL33tSubtable(password: string, table: any) {
+  relevantL33tSubtable(password: string, table: OptionsL33tTable) {
     const passwordChars: LooseObject = {}
     const subTable: LooseObject = {}
     password.split('').forEach((char: string) => {
@@ -75,7 +75,7 @@ class MatchL33t {
     })
 
     Object.keys(table).forEach((letter) => {
-      const subs = table[letter]
+      const subs = table[letter as keyof typeof table]
       const relevantSubs = subs.filter((sub: string) => sub in passwordChars)
       if (relevantSubs.length > 0) {
         subTable[letter] = relevantSubs
@@ -86,12 +86,12 @@ class MatchL33t {
 
   // returns the list of possible 1337 replacement dictionaries for a given password
   // TODO set correct table type
-  enumerateL33tSubs(table: any) {
+  enumerateL33tSubs(table: OptionsL33tTable) {
     const tableKeys = Object.keys(table)
     const subs = this.getSubs(tableKeys, [[]], table)
     // convert from assoc lists to dicts
     return subs.map((sub) => {
-      const subDict = {}
+      const subDict: LooseObject = {}
       sub.forEach(([l33tChr, chr]) => {
         subDict[l33tChr] = chr
       })
@@ -99,14 +99,18 @@ class MatchL33t {
     })
   }
 
-  getSubs(keys: string[], subs: string[][], table: any) {
+  getSubs(
+    keys: string[],
+    subs: string[][],
+    table: OptionsL33tTable,
+  ): string[][] {
     if (!keys.length) {
       return subs
     }
     const firstKey = keys[0]
     const restKeys = keys.slice(1)
     const nextSubs: string[][] = []
-    table[firstKey].forEach((l33tChr) => {
+    table[firstKey as keyof typeof table].forEach((l33tChr: string) => {
       subs.forEach((sub) => {
         let dupL33tIndex = -1
         for (let i = 0; i < sub.length; i += 1) {

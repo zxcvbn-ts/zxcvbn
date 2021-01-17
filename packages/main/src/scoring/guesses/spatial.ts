@@ -1,25 +1,25 @@
 import utils from '../utils'
 import Options from '../../Options'
-import { DefaultAdjacencyGraphs, OptionsGraph } from '../../types'
+import { DefaultAdjacencyGraphsKeys, LooseObject } from '../../types'
 
 interface EstimatePossiblePatternsOptions {
   token: string
-  graph: DefaultAdjacencyGraphs | string
+  graph: DefaultAdjacencyGraphsKeys
   turns: number
 }
 
 interface SpatialOptions {
   token: string
-  graph: DefaultAdjacencyGraphs | string
+  graph: DefaultAdjacencyGraphsKeys
   turns: number
   shiftedCount: number
 }
 
-const calcAverageDegree = (graph: OptionsGraph) => {
+const calcAverageDegree = (graph: LooseObject) => {
   let average = 0
   Object.keys(graph).forEach((key) => {
-    const neighbors = graph[key as keyof typeof OptionsGraph]
-    average += neighbors.filter((entry) => !!entry).length
+    const neighbors = graph[key]
+    average += neighbors.filter((entry: string) => !!entry).length
   })
   average /= Object.entries(graph).length
   return average

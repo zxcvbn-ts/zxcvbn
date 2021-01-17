@@ -137,3 +137,9 @@ export interface OptionsType {
   l33tTable?: OptionsL33tTable
   dictionary?: OptionsDictionary
 }
+
+export interface RankedDictionaries {
+  [key: string]: {
+    [key: string]: number
+  }
+}

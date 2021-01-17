@@ -99,7 +99,7 @@ class MatchDate {
         if (maybeDateNoSeparator.exec(token)) {
           const candidates: any[] = []
           const index = token.length
-          const splittedDates = DATE_SPLITS[index]
+          const splittedDates = DATE_SPLITS[index as keyof typeof DATE_SPLITS]
           // @ts-ignore
           splittedDates.forEach(([k, l]) => {
             const dmy = this.mapIntegersToDayMonthYear([
