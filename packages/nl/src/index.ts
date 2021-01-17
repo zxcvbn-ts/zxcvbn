@@ -1,9 +1,12 @@
-import commonWords from './commonWords.json'
+import commonWords from './commonWords'
 import translations from './translations'
+
+const userInputs: string[] = []
 
 export default {
   dictionary: {
-    commonWords,
+    userInputs,
+    commonWords
   },
   translations,
 }

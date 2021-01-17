@@ -1,6 +1,6 @@
 # @zxcvbn-ts/language-nl-be
 
-Contains Dutch words specific to Belgium (first and last names)
+Contains Dutch words specific to Belgium and common Dutch words
 
 ## Install
 
@@ -17,15 +17,13 @@ Contains Dutch words specific to Belgium (first and last names)
 ```js
 import zxcvbn from '@zxcvbn-ts/core'
 import zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
-import zxcvbnNlPackage from '@zxcvbn-ts/language-nl'
 import zxcvbnNlBePackage from '@zxcvbn-ts/language-nl-be'
 
 const password = 'somePassword'
 const options = {
-  translations: zxcvbnNlPackage.translations,
+  translations: zxcvbnNlBePackage.translations,
   dictionary: {
     ...zxcvbnCommonPackage.dictionary,
-    ...zxcvbnNlPackage.dictionary,
     ...zxcvbnNlBePackage.dictionary,
   },
 }

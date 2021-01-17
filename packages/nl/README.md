@@ -31,12 +31,3 @@ const options = {
 
 zxcvbn(password, options)
 ```
-
-## License
-
-The common words are licensed under Attribution-ShareAlike 3.0 Unported 
-https://creativecommons.org/licenses/by-sa/3.0/
-
-## Sources
-
-Common words: https://en.wiktionary.org/wiki/Wiktionary:Frequency_lists/Dutch_wordlist
