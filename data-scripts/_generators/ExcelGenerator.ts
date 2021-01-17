@@ -14,6 +14,11 @@ export type Options = {
   toLowerCase?: boolean;
   removeDuplicates?: boolean;
   sheetName?: string;
+  /**
+   * The occurences count should be the cell after (right side) of the name.
+   * Set to undefined if occurences are missing in the excel file
+   */
+  minOccurrences?: number
 }
 
 const defaultOptions: Options = {
@@ -22,7 +27,7 @@ const defaultOptions: Options = {
   column: 1,
   trimWhitespaces: true,
   toLowerCase: true,
-  removeDuplicates: true,
+  removeDuplicates: true
 }
 
 export class ExcelGenerator {
@@ -86,6 +91,27 @@ export class ExcelGenerator {
       const value = (cell.w ?? cell.v ?? "")+""
       if (value.length === 0) {
         break
+      }
+
+      if (this.options.minOccurrences) {
+        const cell_address = {c: this.options.column + range.s.c, r: row };
+        /* if an A1-style address is needed, encode the address */
+        const cell_ref = XLSX.utils.encode_cell(cell_address);
+        const cell = sheet[cell_ref] as XLSX.CellObject | undefined 
+        if (!cell) {
+          throw new Error("Missing occurence at "+cell_ref)
+        }
+        const occurence = cell.v
+
+        if (typeof occurence !== "number") {
+          throw new Error("Expecting number at "+cell_ref)
+        }
+
+        if (occurence < this.options.minOccurrences) {
+          // Don't add this one
+          continue
+        }
+
       }
       this.values.push(value)
     }

@@ -61,6 +61,7 @@ export default {
         column: 8,
         row: 2,
         sheetName: "1995-2019",
+        minOccurrences: 50
       }
     },
     girlsFirstnames: {
@@ -71,6 +72,7 @@ export default {
         column: 8,
         row: 2,
         sheetName: "1995-2019",
+        minOccurrences: 50
       }
     },
     lastnames: {
