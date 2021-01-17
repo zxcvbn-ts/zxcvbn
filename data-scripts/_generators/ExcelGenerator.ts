@@ -2,7 +2,7 @@ import axios from 'axios'
 import XLSX from 'xlsx'
 import { promises as fs} from 'fs'
 
-export type ExcelOptions = {
+export type Options = {
   url: string;
   /**
    * Row + column indicate a cell coordinate, and will include all cells 
@@ -10,13 +10,50 @@ export type ExcelOptions = {
    */
   row: number;
   column: number;
+  trimWhitespaces?: boolean;
+  toLowerCase?: boolean;
+  removeDuplicates?: boolean;
+}
+
+const defaultOptions: Options = {
+  url: "",
+  row: 1,
+  column: 1,
+  trimWhitespaces: true,
+  toLowerCase: true,
+  removeDuplicates: true,
 }
 
 export class ExcelGenerator {
-  public options: ExcelOptions
+  public options: Options
+  values: string[] = []
 
-  constructor(options: ExcelOptions) {
-    this.options = options
+  constructor(options: Options) {
+    this.options = Object.assign({}, defaultOptions)
+    Object.assign(this.options, options)
+  }
+
+  private trimWhitespaces() {
+    if (this.options.trimWhitespaces) {
+      console.info('Filtering whitespaces')
+      this.values = this.values.map((l) => l.trim())
+    }
+  }
+
+  private convertToLowerCase() {
+    if (this.options.toLowerCase) {
+      console.info('Converting to lowercase')
+      this.values = this.values.map((l) => l.toLowerCase())
+    }
+  }
+
+  private removeDuplicates() {
+    if (this.options.removeDuplicates) {
+      console.info('Filtering duplicates')
+      this.values = this.values.filter((item, pos) => {
+        return this.values.indexOf(item) == pos
+      })
+    }
   }
 
   public async run(output: string) {
@@ -35,7 +72,6 @@ export class ExcelGenerator {
     const range = XLSX.utils.decode_range(sheet['!ref'])
 
     console.info("Reading values")
-    const values: string[] = []
 
     // Loop until we reach an emtpy cell or the end
     for(var row = range.s.r + this.options.row - 1; row <= range.e.r; row++) {
@@ -50,12 +86,16 @@ export class ExcelGenerator {
       if (value.length === 0) {
         break
       }
-      values.push(value)
+      this.values.push(value)
     }
+
+    this.trimWhitespaces()
+    this.convertToLowerCase()
+    this.removeDuplicates()
 
     console.info("Saving to disk")
 
-    const json = JSON.stringify(values)
+    const json = JSON.stringify(this.values)
     await fs.writeFile(output+".json", json)
   }
 }
