@@ -56,6 +56,6 @@ export class ExcelGenerator {
     console.info("Saving to disk")
 
     const json = JSON.stringify(values)
-    await fs.writeFile(output+".ts", `export default ${json}`)
+    await fs.writeFile(output+".json", json)
   }
 }

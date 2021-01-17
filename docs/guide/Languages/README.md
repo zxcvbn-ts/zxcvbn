@@ -3,8 +3,9 @@
 zxcvbn-ts is available for multiple languages. If your language is not supported you can set the options by yourself.
 
 Current supported languages:
-- german
-- english
+- German
+- English
+- Dutch (Belgium)
 
 ## Feedback
 By default zxcvbn-ts uses `keys` as feedback. This way you can integrate zxcvbn-ts into your own translation system.
@@ -80,5 +81,6 @@ the 234
 
 If your list is more complex you need to write your own generator like the [password generator](./data-scripts/_generators/PasswordGenerator.ts) or the [keyboard generator](./data-scripts/_generators/KeyboardAdjacencyGraph.ts)
 
-- execute the npm script `generate:languageData` with `yarn generate:languageData`. This will generate the json files and the index.ts.
+- Execute the npm script `generate:languageData` with `yarn generate:languageData`. This will generate the json files and the index.ts.
+- During debuging, it might be easy to only generate the language files for one language, use `yarn generate:languageData nl-be`
 - Create a pull request to the master branch

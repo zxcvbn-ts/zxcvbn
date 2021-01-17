@@ -6,11 +6,11 @@ Contains Dutch words specific to Belgium and common Dutch words
 
 #### npm:
 
-`npm install @zxcvbn-ts/language-nl @zxcvbn-ts/language-nl-be --save`
+`npm install @zxcvbn-ts/language-nl-be --save`
 
 #### yarn:
 
-`yarn add @zxcvbn-ts/language-nl @zxcvbn-ts/language-nl-be`
+`yarn add @zxcvbn-ts/language-nl-be`
 
 ## Setup
 

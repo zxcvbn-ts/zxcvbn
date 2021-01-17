@@ -47,13 +47,6 @@ export default {
         'https://gist.githubusercontent.com/hrueger/6599d1ac1e03b4c3dc432d722ffcefd0/raw',
     },
   },
-  nl: {
-    commonWords: {
-      source:
-        'https://github.com/hermitdave/FrequencyWords/raw/master/content/2018/nl/nl_50k.txt',
-      options: { hasOccurrences: true },
-    }
-  },
   "nl-be": {
     commonWords: {
       source:

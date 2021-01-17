@@ -1,7 +1,7 @@
-import boysFirstnames from './boysFirstnames'
-import commonWords from './commonWords'
-import girlsFirstnames from './girlsFirstnames'
-import lastnames from './lastnames'
+import boysFirstnames from './boysFirstnames.json'
+import commonWords from './commonWords.json'
+import girlsFirstnames from './girlsFirstnames.json'
+import lastnames from './lastnames.json'
 import translations from './translations'
 
 const userInputs: string[] = []

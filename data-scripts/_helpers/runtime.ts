@@ -79,8 +79,7 @@ export default class ListHandler {
       const languageFolder = path.join(dataFolder, language, 'src')
       const files = fs
         .readdirSync(languageFolder)
-        .filter((file) => file.endsWith('.ts'))
-        .filter((file) => file !== "index.ts")
+        .filter((file) => file.endsWith('.json'))
 
       if(!isCommon){
         files.push('translations')
@@ -88,10 +87,10 @@ export default class ListHandler {
 
       const indexPath = path.join(languageFolder, 'index.ts')
       const imports = files
-        .map((file) => `import ${file.replace('.ts', '')} from "./${file.replace('.ts', '')}"`)
+        .map((file) => `import ${file.replace('.json', '')} from "./${file}"`)
         .join('\n')
       const dictionaryExports = files
-        .map((file) => file.replace('.ts', ''))
+        .map((file) => file.replace('.json', ''))
         .filter((file) => file !== 'translations')
         .join(',\n  ')
 
