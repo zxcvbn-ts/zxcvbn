@@ -32,3 +32,8 @@ const options = {
 
 zxcvbn(password, options)
 ```
+
+## Sources
+
+First and last names (open data) from statbel
+https://statbel.fgov.be/nl/themas/bevolking/namen-en-voornamen/voornamen-van-meisjes-en-jongens#panel-13
