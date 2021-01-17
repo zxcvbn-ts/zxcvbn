@@ -1,6 +1,6 @@
 export default {
   warnings: {
-    straightRow: 'Straight rows of keys are easy to guess.',
+    straightRow: 'Straight rows of keys on your keyboard are easy to guess.',
     keyPattern: 'Short keyboard patterns are easy to guess.',
     simpleRepeat: 'Repeated characters like "aaa" are easy to guess.',
     extendedRepeat:

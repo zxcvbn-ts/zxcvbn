@@ -1,6 +1,6 @@
 export default {
   warnings: {
-    straightRow: 'Gerade Reihen von Tasten sind leicht zu erraten.',
+    straightRow: 'Gerade Reihen von Tasten auf der Tastatur sind leicht zu erraten.',
     keyPattern: 'Kurze Tastaturmuster sind leicht zu erraten.',
     simpleRepeat:
       'Sich wiederholende Zeichen wie "aaa" sind leicht zu erraten.',
