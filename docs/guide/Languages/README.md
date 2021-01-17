@@ -43,3 +43,42 @@ const options = {
 
 zxcvbn(password, options)
 ```
+
+## Add a new language package
+
+To add add missing language package you need to do the following things:
+
+- Copy repo
+- install dependencies with `yarn install`
+- Create a new language package inside the packages directory. You need following filestructure:
+```
+- src
+    - translations.ts
+- package.json
+- README.md
+- tsconfig.json 
+```
+- fill the translation file with the correct translations of your language
+- adjust the README.md file example to your language 
+- find some reliable sources for some dictionaries. At least you need to have a source for `firstname`, `lastname` and `commonWords`.
+For common words you can check out https://github.com/hermitdave/FrequencyWords there are a lot of languages available.
+- add your language and sources to the generator list in `./data-scripts/lists.ts`
+- there is a default generator that takes simple lists that have only single words per line and can have occurrences of that word with a space separator.
+For example something like this:
+
+```
+John
+Debra
+Billy
+```
+or:
+```
+you 23123
+i 12345
+the 234
+```
+
+If your list is more complex you need to write your own generator like the [password generator](./data-scripts/_generators/PasswordGenerator.ts) or the [keyboard generator](./data-scripts/_generators/KeyboardAdjacencyGraph.ts)
+
+- execute the npm script `generate:languageData` with `yarn generate:languageData`. This will generate the json files and the index.ts.
+- Create a pull request to the master branch
