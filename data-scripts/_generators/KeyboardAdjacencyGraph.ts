@@ -2,11 +2,15 @@ import { readdirSync } from 'fs'
 import path from 'path'
 import fs from 'fs'
 
+interface LooseObject {
+  [key: string]: any
+}
+
 // returns the six adjacent coordinates on a standard keyboard, where each row is slanted to the
 // right from the last. adjacencies are clockwise, starting with key to the left, then two keys
 // above, then right key, then two keys below. (that is, only near-diagonal keys are adjacent,
 //   so g's coordinate is adjacent to those of t,y,b,v, but not those of r,u,n,c.)
-const getSlantedAdjacentCoords = (x, y) => {
+const getSlantedAdjacentCoords = (x: number, y: number) => {
   return [
     `${x - 1},${y}`,
     `${x},${y - 1}`,
@@ -18,7 +22,7 @@ const getSlantedAdjacentCoords = (x, y) => {
 }
 
 // returns the nine clockwise adjacent coordinates on a keypad, where each row is vert aligned.
-const getAlignedAdjacentCoords = (x, y) => {
+const getAlignedAdjacentCoords = (x: number, y: number) => {
   return [
     `${x - 1},${y}`,
     `${x - 1},${y - 1}`,
@@ -31,11 +35,11 @@ const getAlignedAdjacentCoords = (x, y) => {
   ]
 }
 
-const divmod = (value, lambda) => {
+const divmod = (value: number, lambda: number) => {
   return [Math.floor(value / lambda), value % lambda]
 }
 
-const getCleanedLines = (layout) => {
+const getCleanedLines = (layout: string) => {
   return layout
     .replace(/ +/g, ' ')
     .split('\n')
@@ -44,7 +48,7 @@ const getCleanedLines = (layout) => {
     })
 }
 
-const getLines = (layout) => {
+const getLines = (layout: string) => {
   return layout.split('\n')
 }
 
@@ -123,7 +127,7 @@ const buildGraph = (layoutStr: string, slanted: boolean) => {
 
   const positionTable = getPositionTable(layoutStr, xUnit, slanted) // maps from tuple (x,y) -> characters at that position.
 
-  const adjacencyGraph = {}
+  const adjacencyGraph: LooseObject = {}
   Object.entries(positionTable).forEach(([coordinates, chars]) => {
     const [x, y] = parseCoordinates(coordinates)
     const charsArray = chars.split('')
@@ -151,7 +155,7 @@ const getFiles = (source: string) =>
 export class KeyboardAdjacencyGraph {
   run() {
     const layoutFolder = path.join(__dirname, '..', 'keyboardLayouts')
-    const graphs = {}
+    const graphs: LooseObject = {}
     const files = getFiles(layoutFolder)
     files.forEach((file) => {
       const fileData = require(`${layoutFolder}/${file}`)

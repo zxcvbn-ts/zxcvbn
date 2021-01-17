@@ -23,7 +23,7 @@ const defaultOptions: Options = {
 }
 
 export class SimpleListGenerator {
-  public data: any = []
+  public data: any[] = []
   private url: string
   private options: Options
 
@@ -95,8 +95,8 @@ export class SimpleListGenerator {
 
   public async run(): Promise<string[]> {
     console.info('Downloading')
-    this.data = await this.getData()
-    this.data = this.data.split(this.options.splitter)
+    const data = await this.getData()
+    this.data = data.split(this.options.splitter)
     this.filterOccurrences()
     this.commentPrefixes()
     this.trimWhitespaces()

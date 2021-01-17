@@ -8,7 +8,7 @@
     "moduleResolution": "node",
     "noEmit": true,
     "declaration": true,
-    "noImplicitAny": false,
+    "noImplicitAny": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,

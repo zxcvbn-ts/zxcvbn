@@ -35,7 +35,7 @@ describe('dictionary matching', () => {
       dictionary: testDicts,
     })
     const matchDictionary = new MatchDictionary()
-    const dm = (pw) => matchDictionary.match({ password: pw })
+    const dm = (pw: string) => matchDictionary.match({ password: pw })
     let matches = dm('motherboard')
     let patterns = ['mother', 'motherboard', 'board']
     let msg = 'matches words that contain other words'
@@ -109,7 +109,7 @@ describe('dictionary matching', () => {
     Object.keys(Options.rankedDictionaries).forEach((name) => {
       const dict = Options.rankedDictionaries[name]
       Object.keys(dict).forEach((word) => {
-        const rank = dict[word]
+        const rank = dict[word as keyof typeof dict]
         if (word !== 'motherboard') {
           matches = dm(word)
           msg = 'matches against all words in provided dictionaries'

@@ -12,7 +12,11 @@ const sprintf = sprintfClass.sprintf
 Options.setOptions()
 const matching = new Matching()
 
-const normalize = (token) => {
+interface Counts {
+  [key: string]: number
+}
+
+const normalize = (token: string) => {
   return token.toLowerCase()
 }
 
@@ -20,7 +24,7 @@ const normalize = (token) => {
 export class PasswordGenerator {
   public data: any = []
 
-  private shouldInclude(password, xatoRank) {
+  private shouldInclude(password: string, xatoRank: number) {
     for (let i = 0; i < password.length; i += 1) {
       if (password.charCodeAt(i) > 127) {
         console.info(
@@ -46,7 +50,7 @@ export class PasswordGenerator {
     return true
   }
 
-  private static prune(counts) {
+  private static prune(counts: Counts) {
     const results: (boolean | undefined)[] = []
     for (let pw in counts) {
       const count = counts[pw]
@@ -60,8 +64,8 @@ export class PasswordGenerator {
   }
 
   public async run(output: string) {
-    return new Promise((resolve) => {
-      const counts = {}
+    return new Promise<void>((resolve) => {
+      const counts: Counts = {}
       let skippedLines = 0
       let lineCount = 0
       const xatoFileName = 'xato_file.txt'

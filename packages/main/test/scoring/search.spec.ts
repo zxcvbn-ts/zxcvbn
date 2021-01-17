@@ -4,7 +4,7 @@ import Options from '../../src/Options'
 Options.setOptions()
 
 describe('scoring search', () => {
-  const getMatch = (i, j, guesses) => ({
+  const getMatch = (i: number, j: number, guesses: number) => ({
     i,
     j,
     guesses,

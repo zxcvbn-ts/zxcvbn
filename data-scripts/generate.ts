@@ -3,6 +3,15 @@ import { PasswordGenerator } from './_generators/PasswordGenerator'
 import ListHandler from './_helpers/runtime'
 import { KeyboardAdjacencyGraph } from './_generators/KeyboardAdjacencyGraph'
 
+interface LanguageList {
+  source: string
+  options?: {
+    [key: string]: any
+  }
+  generator: Function
+  customList: boolean
+}
+
 const lists = {
   en: {
     commonWords: {
@@ -50,9 +59,10 @@ const main = async () => {
   const listHandler = new ListHandler()
 
   Object.keys(lists).forEach((language) => {
-    const languageLists = lists[language]
+    const languageLists = lists[language as keyof typeof lists]
     Object.keys(languageLists).forEach((name) => {
-      const data = languageLists[name]
+      const data: LanguageList =
+        languageLists[name as keyof typeof languageLists]
 
       if (data.customList) {
         listHandler.registerCustomList(language, name, data.generator)
@@ -62,7 +72,7 @@ const main = async () => {
           name,
           data.source,
           data.generator || SimpleListGenerator,
-          data.options
+          data.options,
         )
       }
     })

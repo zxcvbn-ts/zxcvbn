@@ -30,7 +30,11 @@ class TimeEstimates {
     if (value !== undefined && value !== 1) {
       key += 's'
     }
-    return Options.translations.timeEstimation[key].replace('{base}', value)
+    const { timeEstimation } = Options.translations
+    return timeEstimation[key as keyof typeof timeEstimation].replace(
+      '{base}',
+      `${value}`,
+    )
   }
 
   estimateAttackTimes(guesses: number) {
@@ -79,11 +83,13 @@ class TimeEstimates {
     let displayStr = 'centuries'
     let base
     const timeKeys = Object.keys(times)
-    const foundIndex = timeKeys.findIndex((time) => seconds < times[time])
+    const foundIndex = timeKeys.findIndex(
+      (time) => seconds < times[time as keyof typeof times],
+    )
     if (foundIndex > -1) {
       displayStr = timeKeys[foundIndex - 1]
       if (foundIndex !== 0) {
-        base = Math.round(seconds / times[displayStr])
+        base = Math.round(seconds / times[displayStr as keyof typeof times])
       } else {
         displayStr = 'ltSecond'
       }

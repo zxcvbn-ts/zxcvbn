@@ -55,8 +55,8 @@ describe('spatial matching specific patterns vs keyboards', () => {
     [';qoaOQ:Aoq;a', 'dvorak', 11, 4],
   ]
   data.forEach(([pattern, keyboard, turns, shifts]) => {
-    const graphs = {}
-    graphs[keyboard] = adjacencyGraphs[keyboard]
+    const graphs: any = {}
+    graphs[keyboard] = adjacencyGraphs[keyboard as keyof typeof adjacencyGraphs]
     Options.setOptions({
       graphs,
     })

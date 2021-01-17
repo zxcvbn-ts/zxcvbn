@@ -2,6 +2,10 @@ import * as fs from 'fs'
 import * as path from 'path'
 import { execSync } from 'child_process'
 
+interface LooseObject {
+  [key: string]: any
+}
+
 export interface CustomListConfig {
   language: string
   filename: string
@@ -77,7 +81,7 @@ export default class ListHandler {
         .readdirSync(languageFolder)
         .filter((file) => file.endsWith('.json'))
 
-      if(!isCommon){
+      if (!isCommon) {
         files.push('translations')
       }
 
@@ -119,7 +123,7 @@ export default {
     language: string,
     filename: string,
     generator: any,
-    options?,
+    options?: LooseObject,
   ) {
     this.listsCustom.push({ language, filename, generator, options })
   }
@@ -129,7 +133,7 @@ export default {
     filename: string,
     url: string,
     generator: any,
-    options?,
+    options?: LooseObject,
   ) {
     this.lists.push({ language, filename, url, generator, options })
   }

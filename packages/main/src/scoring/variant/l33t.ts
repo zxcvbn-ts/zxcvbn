@@ -1,7 +1,20 @@
 import utils from '../utils'
+import { LooseObject } from '../../types'
 
-const getCounts = ({ subs, subbed, token }) => {
-  const unsubbed = subs[subbed]
+export interface L33tOptions {
+  l33t: string
+  sub: LooseObject
+  token: string
+}
+
+export interface GetCountsOptions {
+  token: string
+  subs: LooseObject
+  subbed: string
+}
+
+const getCounts = ({ subs, subbed, token }: GetCountsOptions) => {
+  const unsubbed = subs[subbed as keyof typeof subs]
   // lower-case match.token before calculating: capitalization shouldn't affect l33t calc.
   const chrs = token.toLowerCase().split('')
   // num of subbed chars
@@ -14,7 +27,7 @@ const getCounts = ({ subs, subbed, token }) => {
   }
 }
 
-export default ({ l33t, sub, token }) => {
+export default ({ l33t, sub, token }: L33tOptions) => {
   if (!l33t) {
     return 1
   }

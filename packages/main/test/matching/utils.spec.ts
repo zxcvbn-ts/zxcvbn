@@ -73,22 +73,22 @@ describe('utils matching', () => {
 
   describe('extend', () => {
     it('an empty list with an empty list leaves it empty', () => {
-      const lst = []
+      const lst: any[] = []
       extend(lst, [])
       expect(lst).toEqual([])
     })
     it('an empty list with another makes it equal to the other', () => {
-      const lst = []
+      const lst: number[] = []
       extend(lst, [1])
       expect(lst).toEqual([1])
     })
     it("a list with another adds each of the other's elements", () => {
-      const lst = [1]
+      const lst: number[] = [1]
       extend(lst, [2, 3])
       expect(lst).toEqual([1, 2, 3])
     })
     it("a list by another doesn't affect the other", () => {
-      const lst = [1]
+      const lst: number[] = [1]
       const lst2 = [2]
       extend(lst, lst2)
       expect(lst2).toEqual([2])

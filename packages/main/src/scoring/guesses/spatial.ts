@@ -1,18 +1,35 @@
 import utils from '../utils'
 import Options from '../../Options'
-import { OptionsGraph } from '../../types'
+import { DefaultAdjacencyGraphs, OptionsGraph } from '../../types'
+
+interface EstimatePossiblePatternsOptions {
+  token: string
+  graph: DefaultAdjacencyGraphs | string
+  turns: number
+}
+
+interface SpatialOptions {
+  token: string
+  graph: DefaultAdjacencyGraphs | string
+  turns: number
+  shiftedCount: number
+}
 
 const calcAverageDegree = (graph: OptionsGraph) => {
   let average = 0
   Object.keys(graph).forEach((key) => {
-    const neighbors = graph[key]
+    const neighbors = graph[key as keyof typeof OptionsGraph]
     average += neighbors.filter((entry) => !!entry).length
   })
   average /= Object.entries(graph).length
   return average
 }
 
-const estimatePossiblePatterns = ({ token, graph, turns }) => {
+const estimatePossiblePatterns = ({
+  token,
+  graph,
+  turns,
+}: EstimatePossiblePatternsOptions) => {
   const startingPosition = calcAverageDegree(Options.graphs[graph])
   const averageDegree = Object.keys(Options.graphs[graph]).length
 
@@ -28,7 +45,7 @@ const estimatePossiblePatterns = ({ token, graph, turns }) => {
   return guesses
 }
 
-export default ({ graph, token, shiftedCount, turns }) => {
+export default ({ graph, token, shiftedCount, turns }: SpatialOptions) => {
   let guesses = estimatePossiblePatterns({ token, graph, turns })
 
   // add extra guesses for shifted keys. (% instead of 5, A instead of a.)
