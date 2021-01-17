@@ -37,3 +37,4 @@ zxcvbn(password, options)
 
 First and last names (open data) from statbel
 https://statbel.fgov.be/nl/themas/bevolking/namen-en-voornamen/voornamen-van-meisjes-en-jongens#panel-13
+https://statbel.fgov.be/nl/themas/bevolking/namen-en-voornamen/familienamen#figures
