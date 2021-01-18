@@ -601,7 +601,7 @@ export default [
     },
     score: 1,
     feedback: {
-      warning: 'Straight rows of keys are easy to guess.',
+      warning: 'Straight rows of keys on your keyboard are easy to guess.',
       suggestions: [
         'Add more words that are less common.',
         'Use longer keyboard patterns and change typing direction multiple times.',
@@ -816,7 +816,7 @@ export default [
     },
     score: 1,
     feedback: {
-      warning: 'Straight rows of keys are easy to guess.',
+      warning: 'Straight rows of keys on your keyboard are easy to guess.',
       suggestions: [
         'Add more words that are less common.',
         'Use longer keyboard patterns and change typing direction multiple times.',
