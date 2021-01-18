@@ -55,10 +55,10 @@ If you don't use webpack or another bundler you could get the dictionaries with 
 
 ```js
 const packages = [
-  'https://raw.githubusercontent.com/zxcvbn-ts/zxcvbn/master/packages/common/src/passwords.json',
-  'https://raw.githubusercontent.com/zxcvbn-ts/zxcvbn/master/packages/en/src/commonWords.json',
-  'https://raw.githubusercontent.com/zxcvbn-ts/zxcvbn/master/packages/en/src/firstnames.json',
-  'https://raw.githubusercontent.com/zxcvbn-ts/zxcvbn/master/packages/en/src/lastnames.json',
+  'https://yourWebsite/zxcvbn-ts-language-common/passwords.json',
+  'https://yourWebsite/zxcvbn-ts-language-en/commonWords.json',
+  'https://yourWebsite/zxcvbn-ts-language-en/firstnames.json',
+  'https://yourWebsite/zxcvbn-ts-language-en/lastnames.json',
 ]
 
 const loadDictionaries = async () => {

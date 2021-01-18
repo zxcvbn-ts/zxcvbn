@@ -6,7 +6,9 @@ module.exports = [
       ['/guide/', 'Getting started'],
       '/guide/Migration/',
       '/guide/Languages/',
+      '/guide/LazyLoading/',
       '/guide/Options/',
+      '/guide/UserInput/',
     ],
   },
   {
