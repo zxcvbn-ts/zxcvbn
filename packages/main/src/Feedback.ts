@@ -138,7 +138,7 @@ class Feedback {
       }
     } else if (
       dictName === 'lastnames' ||
-      dictName === 'firstnames'
+      dictName.toLowerCase().includes('firstnames')
     ) {
       if (isSoleMatch) {
         warning = Options.translations.warnings.namesByThemselves

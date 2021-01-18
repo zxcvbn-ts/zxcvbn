@@ -69,11 +69,11 @@ export default class ListHandler {
   }
   async generateIndices() {
     const dataFolder = path.join(__dirname, '../../packages/')
-    const nonLanguagePackage = ['main']
+
     const languages = fs
       .readdirSync(dataFolder)
-      .filter((language) => !nonLanguagePackage.includes(language))
       .filter((language) => this.languages.has(language))
+
     for (const language of languages) {
       const isCommon = language === 'common'
       const languageFolder = path.join(dataFolder, language, 'src')
