@@ -16,6 +16,7 @@ export interface ListConfig extends CustomListConfig {
 export default class ListHandler {
   lists: ListConfig[] = []
   listsCustom: CustomListConfig[] = []
+  languages: Set<string> = new Set()
 
   async generateData() {
     for (const options of this.lists) {
@@ -42,6 +43,7 @@ export default class ListHandler {
       console.info(
         `----------- Finished ${options.language} ${options.filename} -----------`,
       )
+      this.languages.add(options.language)
     }
     for (const options of this.listsCustom) {
       console.info(
@@ -62,6 +64,7 @@ export default class ListHandler {
       console.info(
         `----------- Finished ${options.language} ${options.filename} -----------`,
       )
+      this.languages.add(options.language)
     }
   }
   async generateIndices() {
@@ -70,6 +73,7 @@ export default class ListHandler {
     const languages = fs
       .readdirSync(dataFolder)
       .filter((language) => !nonLanguagePackage.includes(language))
+      .filter((language) => this.languages.has(language))
     for (const language of languages) {
       const isCommon = language === 'common'
       const languageFolder = path.join(dataFolder, language, 'src')
@@ -106,7 +110,15 @@ export default {
     ${translations}
 }`,
       )
-      execSync(`eslint --ext .ts --fix --cache ${indexPath}`)
+      try {
+        execSync(`eslint --ext .ts --fix --cache ${indexPath}`)
+      } catch (e) {
+        if (e.stdout) {
+          console.error((e.stdout as Buffer).toString('utf8'));
+          throw new Error("Eslint failed for file "+indexPath)
+        }
+        throw e
+      }
     }
   }
 
