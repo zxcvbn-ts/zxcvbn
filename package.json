@@ -71,7 +71,8 @@
     "sprintf-js": "1.1.2",
     "ts-jest": "26.4.4",
     "typescript": "4.1.3",
-    "vuepress": "1.8.0"
+    "vuepress": "1.8.0",
+    "xlsx": "^0.16.9"
   },
   "keywords": [
     "password",

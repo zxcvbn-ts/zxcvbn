@@ -1,5 +1,6 @@
 import fs, { readdirSync } from 'fs'
 import path from 'path'
+import { execSync } from 'child_process'
 
 interface LooseObject {
   [key: string]: any
@@ -168,15 +169,15 @@ export default class KeyboardAdjacencyGraph {
       graphs[filename] = graph
     })
 
-    fs.writeFileSync(
-      path.join(
-        __dirname,
-        '../..',
-        `packages/main/src/data/adjacencyGraphs.ts`,
-      ),
-      `export default ${JSON.stringify(graphs)}`,
+    const graphFile = path.join(
+      __dirname,
+      '../..',
+      `packages/main/src/data/adjacencyGraphs.ts`,
     )
 
+    fs.writeFileSync(graphFile, `export default ${JSON.stringify(graphs)}`)
+
+    execSync(`eslint --ext .ts --fix --cache ${graphFile}`)
     return graphs
   }
 }

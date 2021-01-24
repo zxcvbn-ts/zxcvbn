@@ -601,7 +601,7 @@ export default [
     },
     score: 1,
     feedback: {
-      warning: 'Straight rows of keys are easy to guess.',
+      warning: 'Straight rows of keys on your keyboard are easy to guess.',
       suggestions: [
         'Add more words that are less common.',
         'Use longer keyboard patterns and change typing direction multiple times.',
@@ -774,6 +774,53 @@ export default [
     feedback: {
       warning: '',
       suggestions: [],
+    },
+  },
+  {
+    calcTime: 0,
+    password: 'AZERYT',
+    guesses: 538000,
+    guessesLog10: 5.730782275666389,
+    sequence: [
+      {
+        pattern: 'spatial',
+        i: 0,
+        j: 3,
+        token: 'AZER',
+        graph: 'azerty',
+        turns: 1,
+        shiftedCount: 4,
+        guesses: 2640,
+        guessesLog10: 3.421603926869831,
+      },
+      {
+        pattern: 'bruteforce',
+        token: 'YT',
+        i: 4,
+        j: 5,
+        guesses: 100,
+        guessesLog10: 2,
+      },
+    ],
+    crackTimesSeconds: {
+      onlineThrottling100PerHour: 19368000,
+      onlineNoThrottling10PerSecond: 53800,
+      offlineSlowHashing1e4PerSecond: 53.8,
+      offlineFastHashing1e10PerSecond: 0.0000538,
+    },
+    crackTimesDisplay: {
+      onlineThrottling100PerHour: '7 months',
+      onlineNoThrottling10PerSecond: '15 hours',
+      offlineSlowHashing1e4PerSecond: '54 seconds',
+      offlineFastHashing1e10PerSecond: 'less than a second',
+    },
+    score: 1,
+    feedback: {
+      warning: 'Straight rows of keys on your keyboard are easy to guess.',
+      suggestions: [
+        'Add more words that are less common.',
+        'Use longer keyboard patterns and change typing direction multiple times.',
+      ],
     },
   },
 ]

@@ -155,7 +155,10 @@ class Feedback {
       warning = this.getDictionaryWarningPassword(match, isSoleMatch)
     } else if (dictName.includes('wikipedia')) {
       warning = this.getDictionaryWarningWikipedia(match, isSoleMatch)
-    } else if (dictName === 'lastnames' || dictName === 'firstnames') {
+    } else if (
+      dictName === 'lastnames' ||
+      dictName.toLowerCase().includes('firstnames')
+    ) {
       warning = this.getDictionaryWarningNames(match, isSoleMatch)
     }
     return warning

@@ -22,6 +22,8 @@ export default class ListHandler {
 
   listsCustom: CustomListConfig[] = []
 
+  languages: Set<string> = new Set()
+
   async generateData() {
     // eslint-disable-next-line no-restricted-syntax
     for (const options of this.lists) {
@@ -43,15 +45,13 @@ export default class ListHandler {
       }
       // eslint-disable-next-line no-await-in-loop
       const data = JSON.stringify(await generator.run())
-      fs.writeFileSync(
-        path.join(folder, `${options.filename}.ts`),
-        `export default ${data}`,
-      )
+      fs.writeFileSync(path.join(folder, `${options.filename}.json`), `${data}`)
       // eslint-disable-next-line no-console
       console.timeEnd(options.filename)
       console.info(
         `----------- Finished ${options.language} ${options.filename} -----------`,
       )
+      this.languages.add(options.language)
     }
     // eslint-disable-next-line no-restricted-syntax
     for (const options of this.listsCustom) {
@@ -79,15 +79,17 @@ export default class ListHandler {
       console.info(
         `----------- Finished ${options.language} ${options.filename} -----------`,
       )
+      this.languages.add(options.language)
     }
   }
 
   async generateIndices() {
     const dataFolder = path.join(__dirname, '../../packages/')
-    const nonLanguagePackage = ['main']
+
     const languages = fs
       .readdirSync(dataFolder)
-      .filter((language) => !nonLanguagePackage.includes(language))
+      .filter((language) => this.languages.has(language))
+
     languages.forEach((language) => {
       const isCommon = language === 'common'
       const languageFolder = path.join(dataFolder, language, 'src')
@@ -124,7 +126,15 @@ export default {
     ${translations}
 }`,
       )
-      execSync(`eslint --ext .ts --fix --cache ${indexPath}`)
+      try {
+        execSync(`eslint --ext .ts --fix --cache ${indexPath}`)
+      } catch (e) {
+        if (e.stdout) {
+          console.error((e.stdout as Buffer).toString('utf8'))
+          throw new Error(`Eslint failed for file ${indexPath}`)
+        }
+        throw e
+      }
     })
   }
 

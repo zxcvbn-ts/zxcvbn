@@ -140,21 +140,24 @@ export default class PasswordGenerator {
         // })
         // outputStreamTxt.end()
 
-        const outputStreamJson = fs.createWriteStream(`${output}.json`, {
-          encoding: 'utf8',
-        })
-        outputStreamJson.write('[')
-        const pairLength = pairs.length
-        pairs.forEach((pair, index) => {
-          const [pw] = pair
-          const isLast = pairLength === index + 1
-          const comma = isLast ? '' : ','
-          outputStreamJson.write(`"${pw.replace('\\', '')}"${comma}`)
-        })
+        if (pairs.length > 0) {
+          const outputStreamJson = fs.createWriteStream(`${output}.json`, {
+            encoding: 'utf8',
+          })
+          outputStreamJson.write('[')
+          const pairLength = pairs.length
+          pairs.forEach((pair, index) => {
+            const [pw] = pair
+            const isLast = pairLength === index + 1
+            const comma = isLast ? '' : ','
+            outputStreamJson.write(`"${pw.replace('\\', '')}"${comma}`)
+          })
 
-        outputStreamJson.write(']')
-        outputStreamJson.end()
+          outputStreamJson.write(']')
+          outputStreamJson.end()
+        }
 
+        // @ts-ignore
         resolve()
       })
     })
