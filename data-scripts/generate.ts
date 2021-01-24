@@ -1,7 +1,7 @@
-import { SimpleListGenerator } from './_generators/SimpleListGenerator'
-import { PasswordGenerator } from './_generators/PasswordGenerator'
+import SimpleListGenerator from './_generators/SimpleListGenerator'
+import PasswordGenerator from './_generators/PasswordGenerator'
 import ListHandler from './_helpers/runtime'
-import { KeyboardAdjacencyGraph } from './_generators/KeyboardAdjacencyGraph'
+import KeyboardAdjacencyGraph from './_generators/KeyboardAdjacencyGraph'
 
 interface LanguageList {
   source: string

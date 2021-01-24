@@ -8,7 +8,9 @@ import Options from '../../packages/main/src/Options'
 const CUTOFF = 10
 const BATCH_SIZE = 1000000
 
-const sprintf = sprintfClass.sprintf
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const { sprintf } = sprintfClass
+
 Options.setOptions()
 const matching = new Matching()
 
@@ -21,20 +23,20 @@ const normalize = (token: string) => {
 }
 
 // GET file from https://xato.net/today-i-am-releasing-ten-million-passwords-b6278bbe7495
-export class PasswordGenerator {
+export default class PasswordGenerator {
   public data: any = []
 
   private shouldInclude(password: string, xatoRank: number) {
     for (let i = 0; i < password.length; i += 1) {
       if (password.charCodeAt(i) > 127) {
         console.info(
-          'SKIPPING non-ascii password=' + password + ', rank=' + xatoRank,
+          `SKIPPING non-ascii password=${password}, rank=${xatoRank}`,
         )
         return false
       }
     }
 
-    let matches = matching.match(password).filter((match) => {
+    const matches = matching.match(password).filter((match) => {
       // only keep matches that span full password
       const isFullPassword = match.i === 0 && match.j === password.length - 1
       // ignore dictionaries
@@ -42,6 +44,7 @@ export class PasswordGenerator {
       return isFullPassword && !isDictionary
     })
 
+    // eslint-disable-next-line no-restricted-syntax
     for (const match of matches) {
       if (estimateGuesses(match, password).guesses < xatoRank) {
         return false
@@ -52,18 +55,20 @@ export class PasswordGenerator {
 
   private static prune(counts: Counts) {
     const results: (boolean | undefined)[] = []
-    for (let pw in counts) {
+    Object.keys(counts).forEach((pw) => {
       const count = counts[pw]
       if (count === 1) {
+        // eslint-disable-next-line no-param-reassign
         results.push(delete counts[pw])
       } else {
-        results.push(void 0)
+        results.push(undefined)
       }
-    }
+    })
     return results
   }
 
   public async run(output: string) {
+    // eslint-disable-next-line compat/compat
     return new Promise<void>((resolve) => {
       const counts: Counts = {}
       let skippedLines = 0
@@ -79,7 +84,8 @@ export class PasswordGenerator {
       stream.on('readable', () => {
         let line
         const results: number[] = []
-        while (null !== (line = stream.read())) {
+        // eslint-disable-next-line no-cond-assign
+        while ((line = stream.read()) !== null) {
           lineCount += 1
           if (lineCount % BATCH_SIZE === 0) {
             console.info('counting tokens:', lineCount)
@@ -88,6 +94,7 @@ export class PasswordGenerator {
           const tokens = line.trim().split(/\s+/)
           if (tokens.length !== 2) {
             skippedLines += 1
+            // eslint-disable-next-line no-continue
             continue
           }
           const combo = tokens.slice(0, 2)
@@ -107,13 +114,13 @@ export class PasswordGenerator {
         console.info('skipped lines:', skippedLines)
         let pairs: [string, number][] = []
         console.info('copying to tuples')
-        for (let pw in counts) {
+        Object.keys(counts).forEach((pw) => {
           const count = counts[pw]
           if (count > CUTOFF) {
             pairs.push([pw, count])
           }
           delete counts[pw]
-        }
+        })
         console.info('sorting')
         pairs.sort((p1, p2) => {
           return p2[1] - p1[1]

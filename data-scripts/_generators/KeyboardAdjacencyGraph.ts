@@ -1,6 +1,5 @@
-import { readdirSync } from 'fs'
+import fs, { readdirSync } from 'fs'
 import path from 'path'
-import fs from 'fs'
 
 interface LooseObject {
   [key: string]: any
@@ -53,7 +52,7 @@ const getLines = (layout: string) => {
 }
 
 const parseCoordinates = (coordinates: string) => {
-  return coordinates.split(',').map((coordinate) => parseInt(coordinate))
+  return coordinates.split(',').map((coordinate) => parseInt(coordinate, 10))
 }
 
 interface PositionTable {
@@ -69,11 +68,13 @@ const getPositionTable = (
 } => {
   const positionTable: PositionTable = {}
   const lines = getLines(layoutStr)
+  // eslint-disable-next-line no-restricted-syntax
   for (const [index, line] of lines.entries()) {
     // the way I illustrated keys above, each qwerty row is indented one space in from the last
     const slant = slanted ? index - 1 : 0
     const lineArray = line.split(' ')
     if (line) {
+      // eslint-disable-next-line no-restricted-syntax
       for (const token of lineArray) {
         if (token) {
           const [x, remainder] = divmod(line.indexOf(token) - slant, xUnit)
@@ -95,7 +96,7 @@ const getTokens = (layoutStr: string) => {
   cleanedLines.forEach((entry) => {
     if (entry && entry !== ' ') {
       const entryTemp = entry.split(' ')
-      if (entryTemp[0] == '') {
+      if (entryTemp[0] === '') {
         entryTemp.shift()
       }
       tokens = [...tokens, ...entryTemp]
@@ -104,7 +105,7 @@ const getTokens = (layoutStr: string) => {
   return tokens
 }
 
-//builds an adjacency graph as a dictionary: {character: [adjacentCharacters]}.
+// builds an adjacency graph as a dictionary: {character: [adjacentCharacters]}.
 //     adjacent characters occur in a clockwise order.
 //     for example:
 //     * on qwerty layout, 'g' maps to ['fF', 'tT', 'yY', 'hH', 'bB', 'vV']
@@ -152,12 +153,13 @@ const getFiles = (source: string) =>
     .filter((dirent) => dirent.isFile())
     .map((dirent) => dirent.name)
 
-export class KeyboardAdjacencyGraph {
+export default class KeyboardAdjacencyGraph {
   run() {
     const layoutFolder = path.join(__dirname, '..', 'keyboardLayouts')
     const graphs: LooseObject = {}
     const files = getFiles(layoutFolder)
     files.forEach((file) => {
+      // eslint-disable-next-line global-require,import/no-dynamic-require
       const fileData = require(`${layoutFolder}/${file}`)
       const layout = fileData.default
       const graph = buildGraph(layout.layout, layout.slanted)

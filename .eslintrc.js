@@ -26,6 +26,7 @@ module.exports = {
     },
   },
   rules: {
+    'arrow-body-style': 'off',
     'prettier/prettier': ['error', prettierConfig],
     'import/no-extraneous-dependencies': 'off',
     'semi': ['error', 'never'],

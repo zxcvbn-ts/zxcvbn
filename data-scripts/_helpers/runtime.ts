@@ -19,14 +19,18 @@ export interface ListConfig extends CustomListConfig {
 
 export default class ListHandler {
   lists: ListConfig[] = []
+
   listsCustom: CustomListConfig[] = []
 
   async generateData() {
+    // eslint-disable-next-line no-restricted-syntax
     for (const options of this.lists) {
       console.info(
         `----------- Starting ${options.language} ${options.filename} -----------`,
       )
+      // eslint-disable-next-line no-console
       console.time(options.filename)
+      // eslint-disable-next-line new-cap
       const generator = new options.generator(options.url, options.options)
       const folder = path.join(
         __dirname,
@@ -37,20 +41,26 @@ export default class ListHandler {
       if (!fs.existsSync(folder)) {
         fs.mkdirSync(folder, { recursive: true })
       }
+      // eslint-disable-next-line no-await-in-loop
       const data = JSON.stringify(await generator.run())
       fs.writeFileSync(
         path.join(folder, `${options.filename}.ts`),
         `export default ${data}`,
       )
+      // eslint-disable-next-line no-console
       console.timeEnd(options.filename)
       console.info(
         `----------- Finished ${options.language} ${options.filename} -----------`,
       )
     }
+    // eslint-disable-next-line no-restricted-syntax
     for (const options of this.listsCustom) {
       console.info(
         `----------- Starting ${options.language} ${options.filename} -----------`,
       )
+      // eslint-disable-next-line no-console
+      console.time(options.filename)
+      // eslint-disable-next-line new-cap
       const generator = new options.generator(options.options)
 
       const folder = path.join(
@@ -62,19 +72,23 @@ export default class ListHandler {
       if (!fs.existsSync(folder)) {
         fs.mkdirSync(folder, { recursive: true })
       }
+      // eslint-disable-next-line no-await-in-loop
       await generator.run(path.join(folder, `${options.filename}`))
+      // eslint-disable-next-line no-console
+      console.timeEnd(options.filename)
       console.info(
         `----------- Finished ${options.language} ${options.filename} -----------`,
       )
     }
   }
+
   async generateIndices() {
     const dataFolder = path.join(__dirname, '../../packages/')
     const nonLanguagePackage = ['main']
     const languages = fs
       .readdirSync(dataFolder)
       .filter((language) => !nonLanguagePackage.includes(language))
-    for (const language of languages) {
+    languages.forEach((language) => {
       const isCommon = language === 'common'
       const languageFolder = path.join(dataFolder, language, 'src')
       const files = fs
@@ -111,7 +125,7 @@ export default {
 }`,
       )
       execSync(`eslint --ext .ts --fix --cache ${indexPath}`)
-    }
+    })
   }
 
   async run() {
