@@ -23,7 +23,7 @@ describe('translations', () => {
       Object.entries(translationKeys).forEach(([key, value]) => {
         expect(translations[key]).toBeDefined()
         expect(translations[key]).not.toBe('')
-        Object.entries(value).forEach(([subKey, subValue]) => {
+        Object.entries(value).forEach(([subKey]) => {
           expect(translations[key][subKey]).toBeDefined()
           expect(translations[key][subKey]).not.toBe('')
         })
