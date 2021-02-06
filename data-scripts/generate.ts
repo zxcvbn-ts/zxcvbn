@@ -25,7 +25,12 @@ const main = async () => {
         languageLists[name as keyof typeof languageLists]
 
       if (data.customList) {
-        listHandler.registerCustomList(language, name, data.generator, data.options)
+        listHandler.registerCustomList(
+          language,
+          name,
+          data.generator,
+          data.options,
+        )
       } else {
         listHandler.registerList(
           language,
