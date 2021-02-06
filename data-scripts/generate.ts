@@ -2,15 +2,6 @@ import SimpleListGenerator from './_generators/SimpleListGenerator'
 import ListHandler from './_helpers/runtime'
 import lists from './lists'
 
-interface LanguageList {
-  source: string
-  options?: {
-    [key: string]: any
-  }
-  generator: Function
-  customList: boolean
-}
-
 const main = async () => {
   const listHandler = new ListHandler()
   const forceLanguage = process.argv.length > 2 ? process.argv[2] : undefined
@@ -21,8 +12,7 @@ const main = async () => {
     }
     const languageLists = lists[language as keyof typeof lists]
     Object.keys(languageLists).forEach((name) => {
-      const data: LanguageList =
-        languageLists[name as keyof typeof languageLists]
+      const data = languageLists[name as keyof typeof languageLists]
 
       if (data.customList) {
         listHandler.registerCustomList(
@@ -35,7 +25,7 @@ const main = async () => {
         listHandler.registerList(
           language,
           name,
-          data.source,
+          data.source as string,
           data.generator || SimpleListGenerator,
           data.options,
         )
