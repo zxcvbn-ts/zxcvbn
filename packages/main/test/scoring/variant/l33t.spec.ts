@@ -83,6 +83,7 @@ describe('scoring: variant l33t', () => {
         sub,
         l33t: !empty(sub),
       }
+      // @ts-ignore
       expect(l33t(match)).toEqual(variants)
     })
   })
@@ -96,6 +97,7 @@ describe('scoring: variant l33t', () => {
       },
     }
     const variants = nCk(6, 2) + nCk(6, 1)
+    // @ts-ignore
     expect(l33t(match)).toEqual(variants)
   })
 })

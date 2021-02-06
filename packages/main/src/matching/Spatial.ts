@@ -3,7 +3,7 @@ import Options from '../Options'
 import {
   DefaultAdjacencyGraphsKeys,
   ExtendedMatch,
-  DefaultAdjacencyGraphs,
+  LooseObject,
 } from '../types'
 
 interface SpatialMatchOptions {
@@ -20,7 +20,7 @@ class MatchSpatial {
   match({ password }: SpatialMatchOptions) {
     const matches: ExtendedMatch[] = []
     Object.keys(Options.graphs).forEach((graphName) => {
-      const graph = Options.graphs[graphName]
+      const graph = Options.graphs[graphName as DefaultAdjacencyGraphsKeys]
       extend(
         matches,
         this.helper(password, graph, graphName as DefaultAdjacencyGraphsKeys),
@@ -29,9 +29,21 @@ class MatchSpatial {
     return sorted(matches)
   }
 
+  checkIfShifted(graphName: string, password: string, index: number) {
+    if (
+      !graphName.includes('keypad') &&
+      // initial character is shifted
+      this.SHIFTED_RX.test(password.charAt(index))
+    ) {
+      return 1
+    }
+    return 0
+  }
+
+  // eslint-disable-next-line complexity, max-statements
   helper(
     password: string,
-    graph: DefaultAdjacencyGraphs,
+    graph: LooseObject,
     graphName: DefaultAdjacencyGraphsKeys,
   ) {
     let shiftedCount
@@ -42,19 +54,11 @@ class MatchSpatial {
       let j = i + 1
       let lastDirection = 0
       let turns = 0
-      if (
-        !graphName.includes('keypad') &&
-        this.SHIFTED_RX.test(password.charAt(i))
-      ) {
-        // initial character is shifted
-        shiftedCount = 1
-      } else {
-        shiftedCount = 0
-      }
+      shiftedCount = this.checkIfShifted(graphName, password, i)
       // eslint-disable-next-line no-constant-condition
       while (true) {
         const prevChar = password.charAt(j - 1)
-        const adjacents = graph[prevChar] || []
+        const adjacents = graph[prevChar as keyof typeof graph] || []
         let found = false
         let foundDirection = -1
         let curDirection = -1
@@ -65,11 +69,14 @@ class MatchSpatial {
           for (let k = 0; k < adjacentsLength; k += 1) {
             const adjacent = adjacents[k]
             curDirection += 1
+            // eslint-disable-next-line max-depth
             if (adjacent) {
               const adjacentIndex = adjacent.indexOf(curChar)
+              // eslint-disable-next-line max-depth
               if (adjacentIndex !== -1) {
                 found = true
                 foundDirection = curDirection
+                // eslint-disable-next-line max-depth
                 if (adjacentIndex === 1) {
                   // # index 1 in the adjacency means the key is shifted,
                   // # 0 means unshifted: A vs a, % vs 5, etc.
@@ -77,6 +84,7 @@ class MatchSpatial {
                   // # @ is shifted w/ index 1, 2 is unshifted.
                   shiftedCount += 1
                 }
+                // eslint-disable-next-line max-depth
                 if (lastDirection !== foundDirection) {
                   // # adding a turn is correct even in the initial
                   // case when last_direction is null:

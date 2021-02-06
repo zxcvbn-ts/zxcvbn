@@ -2,6 +2,10 @@ import * as fs from 'fs'
 import * as path from 'path'
 import { execSync } from 'child_process'
 
+interface LooseObject {
+  [key: string]: any
+}
+
 export interface CustomListConfig {
   language: string
   filename: string
@@ -15,15 +19,20 @@ export interface ListConfig extends CustomListConfig {
 
 export default class ListHandler {
   lists: ListConfig[] = []
+
   listsCustom: CustomListConfig[] = []
+
   languages: Set<string> = new Set()
 
   async generateData() {
+    // eslint-disable-next-line no-restricted-syntax
     for (const options of this.lists) {
       console.info(
         `----------- Starting ${options.language} ${options.filename} -----------`,
       )
+      // eslint-disable-next-line no-console
       console.time(options.filename)
+      // eslint-disable-next-line new-cap
       const generator = new options.generator(options.url, options.options)
       const folder = path.join(
         __dirname,
@@ -34,21 +43,24 @@ export default class ListHandler {
       if (!fs.existsSync(folder)) {
         fs.mkdirSync(folder, { recursive: true })
       }
+      // eslint-disable-next-line no-await-in-loop
       const data = JSON.stringify(await generator.run())
-      fs.writeFileSync(
-        path.join(folder, `${options.filename}.json`),
-        `${data}`,
-      )
+      fs.writeFileSync(path.join(folder, `${options.filename}.json`), `${data}`)
+      // eslint-disable-next-line no-console
       console.timeEnd(options.filename)
       console.info(
         `----------- Finished ${options.language} ${options.filename} -----------`,
       )
       this.languages.add(options.language)
     }
+    // eslint-disable-next-line no-restricted-syntax
     for (const options of this.listsCustom) {
       console.info(
         `----------- Starting ${options.language} ${options.filename} -----------`,
       )
+      // eslint-disable-next-line no-console
+      console.time(options.filename)
+      // eslint-disable-next-line new-cap
       const generator = new options.generator(options.options)
 
       const folder = path.join(
@@ -60,13 +72,17 @@ export default class ListHandler {
       if (!fs.existsSync(folder)) {
         fs.mkdirSync(folder, { recursive: true })
       }
+      // eslint-disable-next-line no-await-in-loop
       await generator.run(path.join(folder, `${options.filename}`))
+      // eslint-disable-next-line no-console
+      console.timeEnd(options.filename)
       console.info(
         `----------- Finished ${options.language} ${options.filename} -----------`,
       )
       this.languages.add(options.language)
     }
   }
+
   async generateIndices() {
     const dataFolder = path.join(__dirname, '../../packages/')
 
@@ -74,14 +90,14 @@ export default class ListHandler {
       .readdirSync(dataFolder)
       .filter((language) => this.languages.has(language))
 
-    for (const language of languages) {
+    languages.forEach((language) => {
       const isCommon = language === 'common'
       const languageFolder = path.join(dataFolder, language, 'src')
       const files = fs
         .readdirSync(languageFolder)
         .filter((file) => file.endsWith('.json'))
 
-      if(!isCommon){
+      if (!isCommon) {
         files.push('translations')
       }
 
@@ -114,12 +130,12 @@ export default {
         execSync(`eslint --ext .ts --fix --cache ${indexPath}`)
       } catch (e) {
         if (e.stdout) {
-          console.error((e.stdout as Buffer).toString('utf8'));
-          throw new Error("Eslint failed for file "+indexPath)
+          console.error((e.stdout as Buffer).toString('utf8'))
+          throw new Error(`Eslint failed for file ${indexPath}`)
         }
         throw e
       }
-    }
+    })
   }
 
   async run() {
@@ -131,7 +147,7 @@ export default {
     language: string,
     filename: string,
     generator: any,
-    options?,
+    options?: LooseObject,
   ) {
     this.listsCustom.push({ language, filename, generator, options })
   }
@@ -141,7 +157,7 @@ export default {
     filename: string,
     url: string,
     generator: any,
-    options?,
+    options?: LooseObject,
   ) {
     this.lists.push({ language, filename, url, generator, options })
   }

@@ -4,7 +4,11 @@ import {
   MIN_SUBMATCH_GUESSES_MULTI_CHAR,
 } from '../../data/const'
 
-export default ({ token }) => {
+export interface BruteforceOptions {
+  token: string
+}
+
+export default ({ token }: BruteforceOptions) => {
   let guesses = BRUTEFORCE_CARDINALITY ** token.length
   if (guesses === Number.POSITIVE_INFINITY) {
     guesses = Number.MAX_VALUE

@@ -1,13 +1,16 @@
-import { readdirSync } from 'fs'
+import fs, { readdirSync } from 'fs'
 import path from 'path'
-import fs from 'fs'
 import { execSync } from 'child_process'
+
+interface LooseObject {
+  [key: string]: any
+}
 
 // returns the six adjacent coordinates on a standard keyboard, where each row is slanted to the
 // right from the last. adjacencies are clockwise, starting with key to the left, then two keys
 // above, then right key, then two keys below. (that is, only near-diagonal keys are adjacent,
 //   so g's coordinate is adjacent to those of t,y,b,v, but not those of r,u,n,c.)
-const getSlantedAdjacentCoords = (x, y) => {
+const getSlantedAdjacentCoords = (x: number, y: number) => {
   return [
     `${x - 1},${y}`,
     `${x},${y - 1}`,
@@ -19,7 +22,7 @@ const getSlantedAdjacentCoords = (x, y) => {
 }
 
 // returns the nine clockwise adjacent coordinates on a keypad, where each row is vert aligned.
-const getAlignedAdjacentCoords = (x, y) => {
+const getAlignedAdjacentCoords = (x: number, y: number) => {
   return [
     `${x - 1},${y}`,
     `${x - 1},${y - 1}`,
@@ -32,11 +35,11 @@ const getAlignedAdjacentCoords = (x, y) => {
   ]
 }
 
-const divmod = (value, lambda) => {
+const divmod = (value: number, lambda: number) => {
   return [Math.floor(value / lambda), value % lambda]
 }
 
-const getCleanedLines = (layout) => {
+const getCleanedLines = (layout: string) => {
   return layout
     .replace(/ +/g, ' ')
     .split('\n')
@@ -45,12 +48,12 @@ const getCleanedLines = (layout) => {
     })
 }
 
-const getLines = (layout) => {
+const getLines = (layout: string) => {
   return layout.split('\n')
 }
 
 const parseCoordinates = (coordinates: string) => {
-  return coordinates.split(',').map((coordinate) => parseInt(coordinate))
+  return coordinates.split(',').map((coordinate) => parseInt(coordinate, 10))
 }
 
 interface PositionTable {
@@ -66,11 +69,13 @@ const getPositionTable = (
 } => {
   const positionTable: PositionTable = {}
   const lines = getLines(layoutStr)
+  // eslint-disable-next-line no-restricted-syntax
   for (const [index, line] of lines.entries()) {
     // the way I illustrated keys above, each qwerty row is indented one space in from the last
     const slant = slanted ? index - 1 : 0
     const lineArray = line.split(' ')
     if (line) {
+      // eslint-disable-next-line no-restricted-syntax
       for (const token of lineArray) {
         if (token) {
           const [x, remainder] = divmod(line.indexOf(token) - slant, xUnit)
@@ -92,7 +97,7 @@ const getTokens = (layoutStr: string) => {
   cleanedLines.forEach((entry) => {
     if (entry && entry !== ' ') {
       const entryTemp = entry.split(' ')
-      if (entryTemp[0] == '') {
+      if (entryTemp[0] === '') {
         entryTemp.shift()
       }
       tokens = [...tokens, ...entryTemp]
@@ -101,7 +106,7 @@ const getTokens = (layoutStr: string) => {
   return tokens
 }
 
-//builds an adjacency graph as a dictionary: {character: [adjacentCharacters]}.
+// builds an adjacency graph as a dictionary: {character: [adjacentCharacters]}.
 //     adjacent characters occur in a clockwise order.
 //     for example:
 //     * on qwerty layout, 'g' maps to ['fF', 'tT', 'yY', 'hH', 'bB', 'vV']
@@ -124,7 +129,7 @@ const buildGraph = (layoutStr: string, slanted: boolean) => {
 
   const positionTable = getPositionTable(layoutStr, xUnit, slanted) // maps from tuple (x,y) -> characters at that position.
 
-  const adjacencyGraph = {}
+  const adjacencyGraph: LooseObject = {}
   Object.entries(positionTable).forEach(([coordinates, chars]) => {
     const [x, y] = parseCoordinates(coordinates)
     const charsArray = chars.split('')
@@ -149,12 +154,13 @@ const getFiles = (source: string) =>
     .filter((dirent) => dirent.isFile())
     .map((dirent) => dirent.name)
 
-export class KeyboardAdjacencyGraph {
+export default class KeyboardAdjacencyGraph {
   run() {
     const layoutFolder = path.join(__dirname, '..', 'keyboardLayouts')
-    const graphs = {}
+    const graphs: LooseObject = {}
     const files = getFiles(layoutFolder)
     files.forEach((file) => {
+      // eslint-disable-next-line global-require,import/no-dynamic-require
       const fileData = require(`${layoutFolder}/${file}`)
       const layout = fileData.default
       const graph = buildGraph(layout.layout, layout.slanted)

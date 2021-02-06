@@ -1,4 +1,9 @@
-export default ({ token, ascending }) => {
+export interface SequenceOptions {
+  token: string
+  ascending: boolean
+}
+
+export default ({ token, ascending }: SequenceOptions) => {
   const firstChr = token.charAt(0)
   let baseGuesses = 0
   const startingPoints = ['a', 'A', 'z', 'Z', '0', '1', '9']

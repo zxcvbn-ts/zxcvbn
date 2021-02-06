@@ -1,18 +1,35 @@
 import utils from '../utils'
 import Options from '../../Options'
-import { OptionsGraph } from '../../types'
+import { DefaultAdjacencyGraphsKeys, LooseObject } from '../../types'
 
-const calcAverageDegree = (graph: OptionsGraph) => {
+interface EstimatePossiblePatternsOptions {
+  token: string
+  graph: DefaultAdjacencyGraphsKeys
+  turns: number
+}
+
+interface SpatialOptions {
+  token: string
+  graph: DefaultAdjacencyGraphsKeys
+  turns: number
+  shiftedCount: number
+}
+
+const calcAverageDegree = (graph: LooseObject) => {
   let average = 0
   Object.keys(graph).forEach((key) => {
     const neighbors = graph[key]
-    average += neighbors.filter((entry) => !!entry).length
+    average += neighbors.filter((entry: string) => !!entry).length
   })
   average /= Object.entries(graph).length
   return average
 }
 
-export default ({ graph, token, shiftedCount, turns }) => {
+const estimatePossiblePatterns = ({
+  token,
+  graph,
+  turns,
+}: EstimatePossiblePatternsOptions) => {
   const startingPosition = calcAverageDegree(Options.graphs[graph])
   const averageDegree = Object.keys(Options.graphs[graph]).length
 
@@ -25,6 +42,12 @@ export default ({ graph, token, shiftedCount, turns }) => {
       guesses += utils.nCk(i - 1, j - 1) * startingPosition * averageDegree ** j
     }
   }
+  return guesses
+}
+
+export default ({ graph, token, shiftedCount, turns }: SpatialOptions) => {
+  let guesses = estimatePossiblePatterns({ token, graph, turns })
+
   // add extra guesses for shifted keys. (% instead of 5, A instead of a.)
   // math is similar to extra guesses of l33t substitutions in dictionary matches.
   if (shiftedCount) {

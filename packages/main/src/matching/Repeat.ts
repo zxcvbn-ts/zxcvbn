@@ -14,49 +14,18 @@ interface RepeatMatchOptions {
 class MatchRepeat {
   match({ password, omniMatch }: RepeatMatchOptions) {
     const matches: ExtendedMatch[] = []
-    const greedy = /(.+)\1+/g
-    const lazy = /(.+?)\1+/g
-    const lazyAnchored = /^(.+?)\1+$/
     let lastIndex = 0
     while (lastIndex < password.length) {
-      let match
-      let baseToken = ''
-      greedy.lastIndex = lastIndex
-      lazy.lastIndex = lastIndex
-      const greedyMatch = greedy.exec(password)
-      const lazyMatch = lazy.exec(password)
+      const greedyMatch = this.getGreedyMatch(password, lastIndex)
+      const lazyMatch = this.getLazyMatch(password, lastIndex)
       if (greedyMatch == null) {
         break
       }
-      if (lazyMatch && greedyMatch[0].length > lazyMatch[0].length) {
-        // greedy beats lazy for 'aabaab'
-        // greedy: [aabaab, aab]
-        // lazy:   [aa,     a]
-        match = greedyMatch
-        // greedy's repeated string might itself be repeated, eg.
-        // aabaab in aabaabaabaab.
-        // run an anchored lazy match on greedy's repeated string
-        // to find the shortest repeated string
-        const temp = lazyAnchored.exec(match[0])
-        if (temp) {
-          baseToken = temp[1]
-        }
-      } else {
-        // lazy beats greedy for 'aaaaa'
-        // greedy: [aaaa,  aa]
-        // lazy:   [aaaaa, a]
-        match = lazyMatch
-        if (match) {
-          baseToken = match[1]
-        }
-      }
+      const { match, baseToken } = this.setMatchToken(greedyMatch, lazyMatch)
+
       if (match) {
         const j = match.index + match[0].length - 1
-        const baseAnalysis = scoring.mostGuessableMatchSequence(
-          baseToken,
-          omniMatch.match(baseToken),
-        )
-        const baseGuesses = baseAnalysis.guesses
+        const baseGuesses = this.getBaseGuesses(baseToken, omniMatch)
 
         // @ts-ignore
         matches.push({
@@ -72,6 +41,61 @@ class MatchRepeat {
       }
     }
     return matches
+  }
+
+  getGreedyMatch(password: string, lastIndex: number) {
+    const greedy = /(.+)\1+/g
+    greedy.lastIndex = lastIndex
+    return greedy.exec(password)
+  }
+
+  getLazyMatch(password: string, lastIndex: number) {
+    const lazy = /(.+?)\1+/g
+    lazy.lastIndex = lastIndex
+    return lazy.exec(password)
+  }
+
+  setMatchToken(
+    greedyMatch: RegExpExecArray,
+    lazyMatch: RegExpExecArray | null,
+  ) {
+    const lazyAnchored = /^(.+?)\1+$/
+    let match
+    let baseToken = ''
+    if (lazyMatch && greedyMatch[0].length > lazyMatch[0].length) {
+      // greedy beats lazy for 'aabaab'
+      // greedy: [aabaab, aab]
+      // lazy:   [aa,     a]
+      match = greedyMatch
+      // greedy's repeated string might itself be repeated, eg.
+      // aabaab in aabaabaabaab.
+      // run an anchored lazy match on greedy's repeated string
+      // to find the shortest repeated string
+      const temp = lazyAnchored.exec(match[0])
+      if (temp) {
+        baseToken = temp[1]
+      }
+    } else {
+      // lazy beats greedy for 'aaaaa'
+      // greedy: [aaaa,  aa]
+      // lazy:   [aaaaa, a]
+      match = lazyMatch
+      if (match) {
+        baseToken = match[1]
+      }
+    }
+    return {
+      match,
+      baseToken,
+    }
+  }
+
+  getBaseGuesses(baseToken: string, omniMatch: Matching) {
+    const baseAnalysis = scoring.mostGuessableMatchSequence(
+      baseToken,
+      omniMatch.match(baseToken),
+    )
+    return baseAnalysis.guesses
   }
 }
 

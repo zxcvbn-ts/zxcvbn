@@ -18,6 +18,7 @@ describe('scoring: guesses sequence', () => {
 
     // eslint-disable-next-line jest/valid-title
     it(msg, () => {
+      // @ts-ignore
       expect(sequenceGuesses(match)).toEqual(guesses)
     })
   })
