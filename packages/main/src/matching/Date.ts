@@ -65,13 +65,13 @@ class MatchDate {
             parseInt(regexMatch[4], 10),
           ])
           if (dmy != null) {
+            // @ts-ignore
             matches.push({
               pattern: 'date',
               token,
               i,
               j,
               separator: regexMatch[2],
-              // @ts-ignore
               year: dmy.year,
               month: dmy.month,
               day: dmy.day,
@@ -100,7 +100,6 @@ class MatchDate {
           const candidates: any[] = []
           const index = token.length
           const splittedDates = DATE_SPLITS[index as keyof typeof DATE_SPLITS]
-          // @ts-ignore
           splittedDates.forEach(([k, l]) => {
             const dmy = this.mapIntegersToDayMonthYear([
               parseInt(token.slice(0, k), 10),
@@ -216,7 +215,7 @@ class MatchDate {
   // eslint-disable-next-line max-statements
   getDayMonth(integers: number[]) {
     // first look for a four digit year: yyyy + daymonth or daymonth + yyyy
-    const possibleYearSplits = [
+    const possibleYearSplits: [number, number[]][] = [
       [integers[2], integers.slice(0, 2)], // year last
       [integers[0], integers.slice(1, 3)], // year first
     ]
@@ -224,7 +223,6 @@ class MatchDate {
     for (let j = 0; j < possibleYearSplitsLength; j += 1) {
       const [y, rest] = possibleYearSplits[j]
       if (DATE_MIN_YEAR <= y && y <= DATE_MAX_YEAR) {
-        // @ts-ignore
         const dm = this.mapIntegersToDayMonth(rest)
         if (dm != null) {
           return {
@@ -245,11 +243,9 @@ class MatchDate {
     // try to parse a day-month out of integers[0..1] or integers[1..0]
     for (let k = 0; k < possibleYearSplitsLength; k += 1) {
       const [y, rest] = possibleYearSplits[k]
-      // @ts-ignore
       const dm = this.mapIntegersToDayMonth(rest)
       if (dm != null) {
         return {
-          // @ts-ignore
           year: this.twoToFourDigitYear(y),
           month: dm.month,
           day: dm.day,
