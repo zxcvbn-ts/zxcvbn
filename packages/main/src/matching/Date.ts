@@ -17,33 +17,78 @@ interface DateMatchOptions {
  * -------------------------------------------------------------------------------
  */
 class MatchDate {
+  /*
+   * a "date" is recognized as:
+   *   any 3-tuple that starts or ends with a 2- or 4-digit year,
+   *   with 2 or 0 separator chars (1.1.91 or 1191),
+   *   maybe zero-padded (01-01-91 vs 1-1-91),
+   *   a month between 1 and 12,
+   *   a day between 1 and 31.
+   *
+   * note: this isn't true date parsing in that "feb 31st" is allowed,
+   * this doesn't check for leap years, etc.
+   *
+   * recipe:
+   * start with regex to find maybe-dates, then attempt to map the integers
+   * onto month-day-year to filter the maybe-dates into dates.
+   * finally, remove matches that are substrings of other matches to reduce noise.
+   *
+   * note: instead of using a lazy or greedy regex to find many dates over the full string,
+   * this uses a ^...$ regex against every substring of the password -- less performant but leads
+   * to every possible date match.
+   */
   match({ password }: DateMatchOptions) {
-    /*
-     * a "date" is recognized as:
-     *   any 3-tuple that starts or ends with a 2- or 4-digit year,
-     *   with 2 or 0 separator chars (1.1.91 or 1191),
-     *   maybe zero-padded (01-01-91 vs 1-1-91),
-     *   a month between 1 and 12,
-     *   a day between 1 and 31.
-     *
-     * note: this isn't true date parsing in that "feb 31st" is allowed,
-     * this doesn't check for leap years, etc.
-     *
-     * recipe:
-     * start with regex to find maybe-dates, then attempt to map the integers
-     * onto month-day-year to filter the maybe-dates into dates.
-     * finally, remove matches that are substrings of other matches to reduce noise.
-     *
-     * note: instead of using a lazy or greedy regex to find many dates over the full string,
-     * this uses a ^...$ regex against every substring of the password -- less performant but leads
-     * to every possible date match.
-     */
-    const metric = (candidate: ExtendedMatch) =>
-      Math.abs(candidate.year - REFERENCE_YEAR)
+    const matches: ExtendedMatch[] = [
+      ...this.getMatchesWithoutSeparator(password),
+      ...this.getMatchesWithSeparator(password),
+    ]
+
+    const filteredMatches = this.filterNoise(matches)
+    return sorted(filteredMatches)
+  }
+
+  getMatchesWithSeparator(password: string) {
+    const matches: ExtendedMatch[] = []
+    const maybeDateWithSeparator = /^(\d{1,4})([\s/\\_.-])(\d{1,2})\2(\d{1,4})$/
+    // # dates with separators are between length 6 '1/1/91' and 10 '11/11/1991'
+    for (let i = 0; i <= Math.abs(password.length - 6); i += 1) {
+      for (let j = i + 5; j <= i + 9; j += 1) {
+        if (j >= password.length) {
+          break
+        }
+        const token = password.slice(i, +j + 1 || 9e9)
+        const regexMatch = maybeDateWithSeparator.exec(token)
+        if (regexMatch != null) {
+          const dmy = this.mapIntegersToDayMonthYear([
+            parseInt(regexMatch[1], 10),
+            parseInt(regexMatch[3], 10),
+            parseInt(regexMatch[4], 10),
+          ])
+          if (dmy != null) {
+            // @ts-ignore
+            matches.push({
+              pattern: 'date',
+              token,
+              i,
+              j,
+              separator: regexMatch[2],
+              year: dmy.year,
+              month: dmy.month,
+              day: dmy.day,
+            })
+          }
+        }
+      }
+    }
+    return matches
+  }
+
+  // eslint-disable-next-line max-statements
+  getMatchesWithoutSeparator(password: string) {
     const matches: ExtendedMatch[] = []
     const maybeDateNoSeparator = /^\d{4,8}$/
-    const maybeDateWithSeparator = /^(\d{1,4})([\s/\\_.-])(\d{1,2})\2(\d{1,4})$/
-
+    const metric = (candidate: ExtendedMatch) =>
+      Math.abs(candidate.year - REFERENCE_YEAR)
     // # dates without separators are between length 4 '1191' and 8 '11111991'
     for (let i = 0; i <= Math.abs(password.length - 4); i += 1) {
       for (let j = i + 3; j <= i + 7; j += 1) {
@@ -54,8 +99,7 @@ class MatchDate {
         if (maybeDateNoSeparator.exec(token)) {
           const candidates: any[] = []
           const index = token.length
-          const splittedDates = DATE_SPLITS[index]
-          // @ts-ignore
+          const splittedDates = DATE_SPLITS[index as keyof typeof DATE_SPLITS]
           splittedDates.forEach(([k, l]) => {
             const dmy = this.mapIntegersToDayMonthYear([
               parseInt(token.slice(0, k), 10),
@@ -100,47 +144,20 @@ class MatchDate {
         }
       }
     }
+    return matches
+  }
 
-    // # dates with separators are between length 6 '1/1/91' and 10 '11/11/1991'
-    for (let i = 0; i <= Math.abs(password.length - 6); i += 1) {
-      for (let j = i + 5; j <= i + 9; j += 1) {
-        if (j >= password.length) {
-          break
-        }
-        const token = password.slice(i, +j + 1 || 9e9)
-        const regexMatch = maybeDateWithSeparator.exec(token)
-        if (regexMatch != null) {
-          const dmy = this.mapIntegersToDayMonthYear([
-            parseInt(regexMatch[1], 10),
-            parseInt(regexMatch[3], 10),
-            parseInt(regexMatch[4], 10),
-          ])
-          if (dmy != null) {
-            matches.push({
-              pattern: 'date',
-              token,
-              i,
-              j,
-              separator: regexMatch[2],
-              // @ts-ignore
-              year: dmy.year,
-              month: dmy.month,
-              day: dmy.day,
-            })
-          }
-        }
-      }
-    }
-    /*
-     * matches now contains all valid date strings in a way that is tricky to capture
-     * with regexes only. while thorough, it will contain some unintuitive noise:
-     *
-     * '2015_06_04', in addition to matching 2015_06_04, will also contain
-     * 5(!) other date matches: 15_06_04, 5_06_04, ..., even 2015 (matched as 5/1/2020)
-     *
-     * to reduce noise, remove date matches that are strict substrings of others
-     */
-    const filteredMatches = matches.filter((match) => {
+  /*
+   * matches now contains all valid date strings in a way that is tricky to capture
+   * with regexes only. while thorough, it will contain some unintuitive noise:
+   *
+   * '2015_06_04', in addition to matching 2015_06_04, will also contain
+   * 5(!) other date matches: 15_06_04, 5_06_04, ..., even 2015 (matched as 5/1/2020)
+   *
+   * to reduce noise, remove date matches that are strict substrings of others
+   */
+  filterNoise(matches: ExtendedMatch[]) {
+    return matches.filter((match) => {
       let isSubmatch = false
       const matchesLength = matches.length
       for (let o = 0; o < matchesLength; o += 1) {
@@ -154,20 +171,20 @@ class MatchDate {
       }
       return !isSubmatch
     })
-    return sorted(filteredMatches)
   }
 
+  /*
+   * given a 3-tuple, discard if:
+   *   middle int is over 31 (for all dmy formats, years are never allowed in the middle)
+   *   middle int is zero
+   *   any int is over the max allowable year
+   *   any int is over two digits but under the min allowable year
+   *   2 integers are over 31, the max allowable day
+   *   2 integers are zero
+   *   all integers are over 12, the max allowable month
+   */
+  // eslint-disable-next-line complexity, max-statements
   mapIntegersToDayMonthYear(integers: number[]) {
-    /*
-     * given a 3-tuple, discard if:
-     *   middle int is over 31 (for all dmy formats, years are never allowed in the middle)
-     *   middle int is zero
-     *   any int is over the max allowable year
-     *   any int is over two digits but under the min allowable year
-     *   2 integers are over 31, the max allowable day
-     *   2 integers are zero
-     *   all integers are over 12, the max allowable month
-     */
     if (integers[1] > 31 || integers[1] <= 0) {
       return null
     }
@@ -192,17 +209,20 @@ class MatchDate {
     if (over31 >= 2 || over12 === 3 || under1 >= 2) {
       return null
     }
+    return this.getDayMonth(integers)
+  }
+
+  // eslint-disable-next-line max-statements
+  getDayMonth(integers: number[]) {
     // first look for a four digit year: yyyy + daymonth or daymonth + yyyy
-    const possibleYearSplits = [
+    const possibleYearSplits: [number, number[]][] = [
       [integers[2], integers.slice(0, 2)], // year last
       [integers[0], integers.slice(1, 3)], // year first
     ]
-
     const possibleYearSplitsLength = possibleYearSplits.length
     for (let j = 0; j < possibleYearSplitsLength; j += 1) {
       const [y, rest] = possibleYearSplits[j]
       if (DATE_MIN_YEAR <= y && y <= DATE_MAX_YEAR) {
-        // @ts-ignore
         const dm = this.mapIntegersToDayMonth(rest)
         if (dm != null) {
           return {
@@ -223,11 +243,9 @@ class MatchDate {
     // try to parse a day-month out of integers[0..1] or integers[1..0]
     for (let k = 0; k < possibleYearSplitsLength; k += 1) {
       const [y, rest] = possibleYearSplits[k]
-      // @ts-ignore
       const dm = this.mapIntegersToDayMonth(rest)
       if (dm != null) {
         return {
-          // @ts-ignore
           year: this.twoToFourDigitYear(y),
           month: dm.month,
           day: dm.day,

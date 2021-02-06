@@ -25,33 +25,46 @@ module.exports = {
       },
     },
   },
-  env: {
-    browser: true,
-  },
   rules: {
-    'prettier/prettier': ['warn', prettierConfig],
+    'arrow-body-style': 'off',
+    'prettier/prettier': ['error', prettierConfig],
     'import/no-extraneous-dependencies': 'off',
-    'no-restricted-imports': [
-      'error',
-      {
-        paths: [
-          {
-            name: 'date-fns',
-            message:
-              'Please import functions from files for smaller bundle size.',
-          },
-        ],
-      },
-    ],
     'semi': ['error', 'never'],
     'no-console': ['error', { allow: ['info', 'warn', 'error'] }],
-    'complexity': ['error', 20],
     'max-lines-per-function': [
-      'warn',
+      'error',
       {
         max: 100,
         skipComments: true,
         skipBlankLines: true,
+      },
+    ],
+    'max-nested-callbacks': ['warn', { max: 3 }],
+    'max-statements': [
+      'warn',
+      {
+        max: 14,
+      },
+      {
+        ignoreTopLevelFunctions: false,
+      },
+    ],
+    'complexity': [
+      'warn',
+      {
+        max: 8,
+      },
+    ],
+    'max-depth': [
+      'warn',
+      {
+        max: 4,
+      },
+    ],
+    'max-params': [
+      'warn',
+      {
+        max: 3,
       },
     ],
     'import/extensions': [
@@ -84,5 +97,20 @@ module.exports = {
         object: true,
       },
     ],
+  },
+  overrides: [
+    {
+      files: ['*.spec.ts', '*.config.ts', '*.config.js', '**/test/**/*.ts'],
+      rules: {
+        'max-lines-per-function': 'off',
+        'max-statements': 'off',
+        'max-nested-callbacks': 'off',
+        'complexity': 'off',
+        'max-params': 'off',
+      },
+    },
+  ],
+  env: {
+    browser: true,
   },
 }

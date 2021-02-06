@@ -1,6 +1,11 @@
 import { MIN_YEAR_SPACE, REFERENCE_YEAR } from '../../data/const'
 
-export default ({ regexName, regexMatch, token }) => {
+export interface RegexOptions {
+  regexName: string
+  regexMatch: string[]
+  token: string
+}
+export default ({ regexName, regexMatch, token }: RegexOptions) => {
   const charClassBases = {
     alphaLower: 26,
     alphaUpper: 26,
@@ -10,7 +15,9 @@ export default ({ regexName, regexMatch, token }) => {
     symbols: 33,
   }
   if (regexName in charClassBases) {
-    return charClassBases[regexName] ** token.length
+    return (
+      charClassBases[regexName as keyof typeof charClassBases] ** token.length
+    )
   }
   // TODO add more regex types for example special dates like 09.11
   // eslint-disable-next-line default-case

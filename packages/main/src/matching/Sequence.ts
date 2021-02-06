@@ -19,6 +19,7 @@ interface SequenceMatchOptions {
 class MatchSequence {
   MAX_DELTA = 5
 
+  // eslint-disable-next-line max-statements
   match({ password }: SequenceMatchOptions) {
     /*
      * Identifies sequences by looking for repeated differences in unicode codepoint.
@@ -74,21 +75,7 @@ class MatchSequence {
       const absoluteDelta = Math.abs(delta)
       if (absoluteDelta > 0 && absoluteDelta <= this.MAX_DELTA) {
         const token = password.slice(i, +j + 1 || 9e9)
-        // TODO conservatively stick with roman alphabet size.
-        //  (this could be improved)
-        let sequenceName = 'unicode'
-        let sequenceSpace = 26
-
-        if (ALL_LOWER.test(token)) {
-          sequenceName = 'lower'
-          sequenceSpace = 26
-        } else if (ALL_UPPER.test(token)) {
-          sequenceName = 'upper'
-          sequenceSpace = 26
-        } else if (ALL_DIGIT.test(token)) {
-          sequenceName = 'digits'
-          sequenceSpace = 10
-        }
+        const { sequenceName, sequenceSpace } = this.getSequence(token)
         return result.push({
           pattern: 'sequence',
           i,
@@ -101,6 +88,28 @@ class MatchSequence {
       }
     }
     return null
+  }
+
+  getSequence(token: string) {
+    // TODO conservatively stick with roman alphabet size.
+    //  (this could be improved)
+    let sequenceName = 'unicode'
+    let sequenceSpace = 26
+
+    if (ALL_LOWER.test(token)) {
+      sequenceName = 'lower'
+      sequenceSpace = 26
+    } else if (ALL_UPPER.test(token)) {
+      sequenceName = 'upper'
+      sequenceSpace = 26
+    } else if (ALL_DIGIT.test(token)) {
+      sequenceName = 'digits'
+      sequenceSpace = 10
+    }
+    return {
+      sequenceName,
+      sequenceSpace,
+    }
   }
 }
 

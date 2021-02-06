@@ -3,7 +3,7 @@ import utils from '../../src/scoring/utils'
 const { log2 } = utils
 const { log10 } = utils
 const EPSILON = 1e-10
-const truncateFloat = (float) => Math.round(float / EPSILON) * EPSILON
+const truncateFloat = (float: number) => Math.round(float / EPSILON) * EPSILON
 
 describe('scoring: utils log', () => {
   it('log2 should calculate correctly', () => {
@@ -33,7 +33,7 @@ describe('scoring: utils log', () => {
 
   const firstNumber = 17
   const secondNumber = 4
-  const approxEqual = (actual, expected) => {
+  const approxEqual = (actual: number, expected: number) => {
     const calculation = truncateFloat(actual)
     const result = truncateFloat(expected)
     expect(calculation).toEqual(result)

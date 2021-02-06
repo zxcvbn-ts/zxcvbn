@@ -22,14 +22,16 @@ const defaultOptions: Options = {
   minOccurrences: 500,
 }
 
-export class SimpleListGenerator {
-  public data: any = []
-  private url: string
-  private options: Options
+export default class SimpleListGenerator {
+  public data: any[] = []
+
+  private readonly url: string
+
+  private readonly options: Options
 
   constructor(url: string, options: any) {
     this.url = url
-    this.options = Object.assign({}, defaultOptions)
+    this.options = { ...defaultOptions }
     Object.assign(this.options, options)
   }
 
@@ -40,9 +42,8 @@ export class SimpleListGenerator {
     if (this.options.encoding) {
       console.info(this.options.encoding)
       return iconv.decode(result.data, this.options.encoding)
-    } else {
-      return result.data
     }
+    return result.data
   }
 
   private filterOccurrences() {
@@ -64,9 +65,9 @@ export class SimpleListGenerator {
   private commentPrefixes() {
     if (Array.isArray(this.options.commentPrefixes)) {
       console.info('Filtering comments')
-      for (const p of this.options.commentPrefixes) {
-        this.data = this.data.filter((l) => !l.startsWith(p))
-      }
+      this.options.commentPrefixes.forEach((prefix) => {
+        this.data = this.data.filter((l) => !l.startsWith(prefix))
+      })
     }
   }
 
@@ -88,15 +89,15 @@ export class SimpleListGenerator {
     if (this.options.removeDuplicates) {
       console.info('Filtering duplicates')
       this.data = this.data.filter((item, pos) => {
-        return this.data.indexOf(item) == pos
+        return this.data.indexOf(item) === pos
       })
     }
   }
 
   public async run(): Promise<string[]> {
     console.info('Downloading')
-    this.data = await this.getData()
-    this.data = this.data.split(this.options.splitter)
+    const data = await this.getData()
+    this.data = data.split(this.options.splitter)
     this.filterOccurrences()
     this.commentPrefixes()
     this.trimWhitespaces()

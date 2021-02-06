@@ -1,9 +1,9 @@
-import { LooseObject } from '../../src/types'
+import { ExtendedMatch, LooseObject } from '../../src/types'
 
 // eslint-disable-next-line jest/no-export
 export default (
   prefix: string,
-  matches,
+  matches: ExtendedMatch[],
   patternNames: string,
   patterns: string[],
   ijs: number[][],
@@ -46,6 +46,7 @@ export default (
         propMsg = `'${propMsg}'`
       }
       it(`${prefix}: matches[${k}].${propName} == ${propMsg}`, () => {
+        // @ts-ignore
         expect(match[propName]).toEqual(propList[k])
       })
     })

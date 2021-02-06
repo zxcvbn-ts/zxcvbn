@@ -9,6 +9,21 @@ import {
   ALPHA_INVERTED,
 } from '../../data/const'
 
+const getVariations = (cleanedWord: string) => {
+  const wordArray = cleanedWord.split('')
+  const upperCaseCount = wordArray.filter((char) => char.match(ONE_UPPER))
+    .length
+  const lowerCaseCount = wordArray.filter((char) => char.match(ONE_LOWER))
+    .length
+
+  let variations = 0
+  const variationLength = Math.min(upperCaseCount, lowerCaseCount)
+  for (let i = 1; i <= variationLength; i += 1) {
+    variations += utils.nCk(upperCaseCount + lowerCaseCount, i)
+  }
+  return variations
+}
+
 export default (word: string) => {
   // clean words of non alpha characters to remove the reward effekt to capitalize the first letter https://github.com/dropbox/zxcvbn/issues/232
   const cleanedWord = word.replace(ALPHA_INVERTED, '')
@@ -29,19 +44,9 @@ export default (word: string) => {
       return 2
     }
   }
+
   // otherwise calculate the number of ways to capitalize U+L uppercase+lowercase letters
   // with U uppercase letters or less. or, if there's more uppercase than lower (for eg. PASSwORD),
   // the number of ways to lowercase U+L letters with L lowercase letters or less.
-  const wordArray = cleanedWord.split('')
-  const upperCaseCount = wordArray.filter((char) => char.match(ONE_UPPER))
-    .length
-  const lowerCaseCount = wordArray.filter((char) => char.match(ONE_LOWER))
-    .length
-
-  let variations = 0
-  const variationLength = Math.min(upperCaseCount, lowerCaseCount)
-  for (let i = 1; i <= variationLength; i += 1) {
-    variations += utils.nCk(upperCaseCount + lowerCaseCount, i)
-  }
-  return variations
+  return getVariations(cleanedWord)
 }

@@ -34,3 +34,5 @@ and the [Migration](https://zxcvbn-ts.github.io/zxcvbn/guide/Migration) guide.
 
 Please feel free to [open up an issue](https://github.com/zxcvbn-ts/zxcvbn/issues/new) or provide a pull request.
 
+## Language packages
+If your language is missing as a language pack checkout the [guide](https://zxcvbn-ts.github.io/zxcvbn/guide/Languages/#add-a-new-language-package) to add your own.

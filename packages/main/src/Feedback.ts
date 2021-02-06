@@ -34,15 +34,9 @@ class Feedback {
         suggestions: [],
       }
     }
-    let longestMatch = sequence[0]
-    const slicedSequence = sequence.slice(1)
-    slicedSequence.forEach((match: ExtendedMatch) => {
-      if (match.token.length > longestMatch.token.length) {
-        longestMatch = match
-      }
-    })
-    let feedback = this.getMatchFeedback(longestMatch, sequence.length === 1)
     const extraFeedback = Options.translations.suggestions.anotherWord
+    const longestMatch = this.getLongestMatch(sequence)
+    let feedback = this.getMatchFeedback(longestMatch, sequence.length === 1)
     if (feedback !== null && feedback !== undefined) {
       feedback.suggestions.unshift(extraFeedback)
       if (feedback.warning == null) {
@@ -57,31 +51,25 @@ class Feedback {
     return feedback
   }
 
-  getMatchFeedback(match: ExtendedMatch, isSoleMatch: Boolean) {
-    let warning
+  getLongestMatch(sequence: ExtendedMatch[]) {
+    let longestMatch = sequence[0]
+    const slicedSequence = sequence.slice(1)
+    slicedSequence.forEach((match: ExtendedMatch) => {
+      if (match.token.length > longestMatch.token.length) {
+        longestMatch = match
+      }
+    })
+    return longestMatch
+  }
 
+  getMatchFeedback(match: ExtendedMatch, isSoleMatch: Boolean) {
     switch (match.pattern) {
       case 'dictionary':
         return this.getDictionaryMatchFeedback(match, isSoleMatch)
       case 'spatial':
-        warning = Options.translations.warnings.keyPattern
-        if (match.turns === 1) {
-          warning = Options.translations.warnings.straightRow
-        }
-        return {
-          warning,
-          suggestions: [Options.translations.suggestions.longerKeyboardPattern],
-        }
+        return this.getSpatialMatchFeedback(match)
       case 'repeat':
-        warning = Options.translations.warnings.extendedRepeat
-        if (match.baseToken.length === 1) {
-          warning = Options.translations.warnings.simpleRepeat
-        }
-
-        return {
-          warning,
-          suggestions: [Options.translations.suggestions.repeated],
-        }
+        return this.getRepeatMatchFeedback(match)
       case 'sequence':
         return {
           warning: Options.translations.warnings.sequences,
@@ -120,37 +108,33 @@ class Feedback {
     }
   }
 
+  getSpatialMatchFeedback(match: ExtendedMatch) {
+    let warning = Options.translations.warnings.keyPattern
+    if (match.turns === 1) {
+      warning = Options.translations.warnings.straightRow
+    }
+    return {
+      warning,
+      suggestions: [Options.translations.suggestions.longerKeyboardPattern],
+    }
+  }
+
+  getRepeatMatchFeedback(match: ExtendedMatch) {
+    let warning = Options.translations.warnings.extendedRepeat
+    if (match.baseToken.length === 1) {
+      warning = Options.translations.warnings.simpleRepeat
+    }
+
+    return {
+      warning,
+      suggestions: [Options.translations.suggestions.repeated],
+    }
+  }
+
   getDictionaryMatchFeedback(match: ExtendedMatch, isSoleMatch: Boolean) {
-    let warning = ''
+    const warning = this.getDictionaryWarning(match, isSoleMatch)
     const suggestions: string[] = []
     const word = match.token
-    const dictName = match.dictionaryName
-    if (dictName === 'passwords') {
-      if (isSoleMatch && !match.l33t && !match.reversed) {
-        if (match.rank <= 10) {
-          warning = Options.translations.warnings.topTen
-        } else if (match.rank <= 100) {
-          warning = Options.translations.warnings.topHundred
-        } else {
-          warning = Options.translations.warnings.common
-        }
-      } else if (match.guessesLog10 <= 4) {
-        warning = Options.translations.warnings.similarToCommon
-      }
-    } else if (dictName.includes('wikipedia')) {
-      if (isSoleMatch) {
-        warning = Options.translations.warnings.wordByItself
-      }
-    } else if (
-      dictName === 'lastnames' ||
-      dictName === 'firstnames'
-    ) {
-      if (isSoleMatch) {
-        warning = Options.translations.warnings.namesByThemselves
-      } else {
-        warning = Options.translations.warnings.commonNames
-      }
-    }
 
     if (word.match(START_UPPER)) {
       suggestions.push(Options.translations.suggestions.capitalization)
@@ -167,6 +151,53 @@ class Feedback {
       warning,
       suggestions,
     }
+  }
+
+  getDictionaryWarning(match: ExtendedMatch, isSoleMatch: Boolean) {
+    let warning = ''
+    const dictName = match.dictionaryName
+    if (dictName === 'passwords') {
+      warning = this.getDictionaryWarningPassword(match, isSoleMatch)
+    } else if (dictName.includes('wikipedia')) {
+      warning = this.getDictionaryWarningWikipedia(match, isSoleMatch)
+    } else if (
+      dictName === 'lastnames' ||
+      dictName.toLowerCase().includes('firstnames')
+    ) {
+      warning = this.getDictionaryWarningNames(match, isSoleMatch)
+    }
+    return warning
+  }
+
+  getDictionaryWarningPassword(match: ExtendedMatch, isSoleMatch: Boolean) {
+    let warning = ''
+    if (isSoleMatch && !match.l33t && !match.reversed) {
+      if (match.rank <= 10) {
+        warning = Options.translations.warnings.topTen
+      } else if (match.rank <= 100) {
+        warning = Options.translations.warnings.topHundred
+      } else {
+        warning = Options.translations.warnings.common
+      }
+    } else if (match.guessesLog10 <= 4) {
+      warning = Options.translations.warnings.similarToCommon
+    }
+    return warning
+  }
+
+  getDictionaryWarningWikipedia(match: ExtendedMatch, isSoleMatch: Boolean) {
+    let warning = ''
+    if (isSoleMatch) {
+      warning = Options.translations.warnings.wordByItself
+    }
+    return warning
+  }
+
+  getDictionaryWarningNames(match: ExtendedMatch, isSoleMatch: Boolean) {
+    if (isSoleMatch) {
+      return Options.translations.warnings.namesByThemselves
+    }
+    return Options.translations.warnings.commonNames
   }
 }
 

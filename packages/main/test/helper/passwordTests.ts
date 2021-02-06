@@ -572,8 +572,8 @@ export default [
   {
     calcTime: 0,
     password: 'qwer',
-    guesses: 1294,
-    guessesLog10: 3.111934276332681,
+    guesses: 1297,
+    guessesLog10: 3.1129399760840797,
     sequence: [
       {
         pattern: 'spatial',
@@ -583,15 +583,15 @@ export default [
         graph: 'qwerty',
         turns: 1,
         shiftedCount: 0,
-        guesses: 1293,
-        guessesLog10: 3.1115985248803937,
+        guesses: 1296,
+        guessesLog10: 3.112605001534574,
       },
     ],
     crackTimesSeconds: {
-      onlineThrottling100PerHour: 46584,
-      onlineNoThrottling10PerSecond: 129.4,
-      offlineSlowHashing1e4PerSecond: 0.1294,
-      offlineFastHashing1e10PerSecond: 1.294e-7,
+      onlineThrottling100PerHour: 46692,
+      onlineNoThrottling10PerSecond: 129.7,
+      offlineSlowHashing1e4PerSecond: 0.1297,
+      offlineFastHashing1e10PerSecond: 1.297e-7,
     },
     crackTimesDisplay: {
       onlineThrottling100PerHour: '13 hours',
@@ -601,7 +601,7 @@ export default [
     },
     score: 1,
     feedback: {
-      warning: 'Straight rows of keys are easy to guess.',
+      warning: 'Straight rows of keys on your keyboard are easy to guess.',
       suggestions: [
         'Add more words that are less common.',
         'Use longer keyboard patterns and change typing direction multiple times.',
@@ -774,6 +774,53 @@ export default [
     feedback: {
       warning: '',
       suggestions: [],
+    },
+  },
+  {
+    calcTime: 0,
+    password: 'AZERYT',
+    guesses: 538000,
+    guessesLog10: 5.730782275666389,
+    sequence: [
+      {
+        pattern: 'spatial',
+        i: 0,
+        j: 3,
+        token: 'AZER',
+        graph: 'azerty',
+        turns: 1,
+        shiftedCount: 4,
+        guesses: 2640,
+        guessesLog10: 3.421603926869831,
+      },
+      {
+        pattern: 'bruteforce',
+        token: 'YT',
+        i: 4,
+        j: 5,
+        guesses: 100,
+        guessesLog10: 2,
+      },
+    ],
+    crackTimesSeconds: {
+      onlineThrottling100PerHour: 19368000,
+      onlineNoThrottling10PerSecond: 53800,
+      offlineSlowHashing1e4PerSecond: 53.8,
+      offlineFastHashing1e10PerSecond: 0.0000538,
+    },
+    crackTimesDisplay: {
+      onlineThrottling100PerHour: '7 months',
+      onlineNoThrottling10PerSecond: '15 hours',
+      offlineSlowHashing1e4PerSecond: '54 seconds',
+      offlineFastHashing1e10PerSecond: 'less than a second',
+    },
+    score: 1,
+    feedback: {
+      warning: 'Straight rows of keys on your keyboard are easy to guess.',
+      suggestions: [
+        'Add more words that are less common.',
+        'Use longer keyboard patterns and change typing direction multiple times.',
+      ],
     },
   },
 ]

@@ -12,7 +12,8 @@ describe('scoring: guesses spatial', () => {
       shiftedCount: 0,
     }
 
-    expect(spatialGuesses(match)).toEqual(2155)
+    // @ts-ignore
+    expect(spatialGuesses(match)).toEqual(2160)
   })
 
   it('guesses is added for shifted keys, similar to capitals in dictionary matching', () => {
@@ -24,7 +25,8 @@ describe('scoring: guesses spatial', () => {
       guesses: null,
     }
 
-    expect(spatialGuesses(match)).toEqual(45255)
+    // @ts-ignore
+    expect(spatialGuesses(match)).toEqual(45360)
   })
 
   it('when everything is shifted, guesses are doubled', () => {
@@ -35,7 +37,8 @@ describe('scoring: guesses spatial', () => {
       shiftedCount: 6,
       guesses: null,
     }
-    expect(spatialGuesses(match)).toEqual(4310)
+    // @ts-ignore
+    expect(spatialGuesses(match)).toEqual(4320)
   })
 
   it('spatial guesses accounts for turn positions, directions and starting keys', () => {
@@ -46,6 +49,7 @@ describe('scoring: guesses spatial', () => {
       shiftedCount: 0,
     }
 
-    expect(spatialGuesses(match)).toEqual(206109803)
+    // @ts-ignore
+    expect(spatialGuesses(match)).toEqual(211042800)
   })
 })

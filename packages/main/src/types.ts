@@ -140,3 +140,9 @@ export interface OptionsType {
   dictionary?: OptionsDictionary
   fetch?: any
 }
+
+export interface RankedDictionaries {
+  [key: string]: {
+    [key: string]: number
+  }
+}

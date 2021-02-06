@@ -1,1 +1,7 @@
-export default ({ baseGuesses, repeatCount }) => baseGuesses * repeatCount
+export interface RepeatOptions {
+  baseGuesses: number
+  repeatCount: number
+}
+
+export default ({ baseGuesses, repeatCount }: RepeatOptions) =>
+  baseGuesses * repeatCount
