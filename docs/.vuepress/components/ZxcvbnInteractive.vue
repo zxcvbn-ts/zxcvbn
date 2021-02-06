@@ -52,6 +52,7 @@ export default {
       const options = {
         dictionary: {},
         translations: translationKeys,
+        fetch: window.fetch.bind(window),
       }
       if (this.useDictionaries) {
         options.dictionary = {
@@ -68,6 +69,7 @@ export default {
   watch: {
     password() {
       if (this.password) {
+        console.log(this.options)
         this.result = zxcvbn(this.password, this.options)
       } else {
         this.result = null

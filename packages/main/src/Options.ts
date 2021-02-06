@@ -31,7 +31,7 @@ class Options {
 
   availableGraphs: DefaultAdjacencyGraphsKeys[] = []
 
-  fetch
+  fetch: any
 
   setOptions(options: OptionsType = {}) {
     if (options.l33tTable) {

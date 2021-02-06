@@ -6,7 +6,7 @@ const isNodeJs =
   typeof process !== 'undefined' && process.release.name === 'node'
 /*
  * -------------------------------------------------------------------------------
- *  Have i been pwned matching ---------------------------------------------------------------
+ *  Have i been pwned matching ---------------------------------------------------
  * -------------------------------------------------------------------------------
  */
 class MatchPwned {
@@ -24,7 +24,7 @@ class MatchPwned {
   }
 
   async checkPassword(password: string) {
-    if (Options.fetch) {
+    if (!Options.fetch) {
       return null
     }
     const passwordHash = (await this.digestMessage(password)).toUpperCase()
@@ -39,13 +39,13 @@ class MatchPwned {
     const result = await response.text()
     const resultArray = result.split('\r\n')
 
-    return resultArray.find((entry) => {
+    return resultArray.find((entry: string) => {
       const passwordHasPart = entry.split(':')[0]
       return passwordHasPart === suffix
     })
   }
 
-  async digestMessage(message) {
+  async digestMessage(message: string) {
     const data = this.textEncode(message)
     let hash = ''
     if (isNodeJs) {
@@ -67,9 +67,9 @@ class MatchPwned {
     return hash
   }
 
-  textEncode(str) {
+  textEncode(text: string) {
     if (isNodeJs) {
-      const utf8 = unescape(encodeURIComponent(str))
+      const utf8 = unescape(encodeURIComponent(text))
       const result = new Uint8Array(utf8.length)
       for (let i = 0; i < utf8.length; i += 1) {
         result[i] = utf8.charCodeAt(i)
@@ -77,7 +77,7 @@ class MatchPwned {
       return result
     }
     if (window.TextEncoder) {
-      return new TextEncoder().encode(str)
+      return new TextEncoder().encode(text)
     }
     throw new Error('No encoder found')
   }

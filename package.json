@@ -27,9 +27,6 @@
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs"
   },
-  "dependencies": {
-    "cross-fetch": "3.0.6"
-  },
   "devDependencies": {
     "@babel/cli": "7.12.10",
     "@babel/core": "7.12.10",
