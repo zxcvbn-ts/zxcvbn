@@ -47,11 +47,11 @@ zxcvbn(password, options)
 
 ## Add a new language package
 
-To add add missing language package you need to do the following things:
+To add a missing language package you need to do the following things:
 
 - Copy repo
 - install dependencies with `yarn install`
-- Create a new language package inside the packages directory. You need following filestructure:
+- Create a new language package inside the packages directory. You need following file structure:
 ```
 - src
     - translations.ts
@@ -82,5 +82,11 @@ the 234
 If your list is more complex you need to write your own generator like the [password generator](./data-scripts/_generators/PasswordGenerator.ts) or the [keyboard generator](./data-scripts/_generators/KeyboardAdjacencyGraph.ts)
 
 - Execute the npm script `generate:languageData` with `yarn generate:languageData`. This will generate the json files and the index.ts.
-- During debuging, it might be easy to only generate the language files for one language, use `yarn generate:languageData nl-be`
+- During debugging, it might be easy to only generate the language files for one language, use `yarn generate:languageData nl-be`
 - Create a pull request to the master branch
+- use the wikipedia extractor (optional, one of the maintainer can do this but this will increase the time until it is merged)
+    - get the wikipedia dump for your language from http://dumps.wikimedia.org/XXwiki/latest/XXwiki-latest-pages-articles.xml.bz2 where `XX` is your language like `en` or `de`
+    - get the [wikiextractor](https://github.com/attardi/wikiextractor) written in python 3. Currently, with v3.0.4 it only works correctly on linux
+    - use the wikiextractor with `python3 -m wikiextractor.WikiExtractor --no-templates -o extracts dewiki-latest-pages-articles.xml.bz2` (The output folder need to be the extracts folder inside the zxcvbn-ts repo)
+    - execute `yarn run wikipediaExtractor` which generates `wikipedia.json` from all the files inside the extracts folder
+    - move the `wikipedia.json` into your language package
