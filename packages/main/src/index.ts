@@ -3,7 +3,7 @@ import scoring from './scoring'
 import TimeEstimates from './TimeEstimates'
 import Feedback from './Feedback'
 import Options from './Options'
-import { OptionsType } from './types'
+import { ExtendedMatch, OptionsType } from './types'
 
 const time = () => new Date().getTime()
 
@@ -15,16 +15,16 @@ export default (password: string, options: OptionsType = {}) => {
 
   const start = time()
 
-  const matches = matching.match(password)
+  return matching.match(password, (matches: ExtendedMatch[]) => {
+    const matchSequence = scoring.mostGuessableMatchSequence(password, matches)
+    const calcTime = time() - start
+    const attackTimes = timeEstimates.estimateAttackTimes(matchSequence.guesses)
 
-  const matchSequence = scoring.mostGuessableMatchSequence(password, matches)
-  const calcTime = time() - start
-  const attackTimes = timeEstimates.estimateAttackTimes(matchSequence.guesses)
-
-  return {
-    calcTime,
-    ...matchSequence,
-    ...attackTimes,
-    feedback: feedback.getFeedback(attackTimes.score, matchSequence.sequence),
-  }
+    return {
+      calcTime,
+      ...matchSequence,
+      ...attackTimes,
+      feedback: feedback.getFeedback(attackTimes.score, matchSequence.sequence),
+    }
+  })
 }

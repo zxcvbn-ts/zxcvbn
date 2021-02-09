@@ -91,10 +91,8 @@ class MatchRepeat {
   }
 
   getBaseGuesses(baseToken: string, omniMatch: Matching) {
-    const baseAnalysis = scoring.mostGuessableMatchSequence(
-      baseToken,
-      omniMatch.match(baseToken),
-    )
+    const matches = omniMatch.match(baseToken)
+    const baseAnalysis = scoring.mostGuessableMatchSequence(baseToken, matches)
     return baseAnalysis.guesses
   }
 }

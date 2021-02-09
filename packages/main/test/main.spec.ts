@@ -10,6 +10,7 @@ Options.setOptions({
     ...zxcvbnEnPackage.dictionary,
   },
   translations: zxcvbnEnPackage.translations,
+  fetch: undefined,
 })
 
 describe('main', () => {

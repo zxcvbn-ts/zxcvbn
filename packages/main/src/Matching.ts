@@ -8,6 +8,11 @@ import Sequence from './matching/Sequence'
 import Regex from './matching/Regex'
 import Date from './matching/Date'
 import Pwned from './matching/Pwned'
+import { ExtendedMatch } from './types'
+
+const defaultCb = (data: ExtendedMatch) => {
+  return data
+}
 
 /*
  * -------------------------------------------------------------------------------
@@ -30,7 +35,7 @@ class Matching {
 
   options = {}
 
-  match(password: string) {
+  match(password: string, cb: Function = defaultCb) {
     const matches: any[] = []
     this.matchers.forEach((Entry) => {
       const matcher = new Entry()
@@ -42,7 +47,7 @@ class Matching {
         }),
       )
     })
-    return sorted(matches)
+    return cb(sorted(matches))
   }
 }
 
