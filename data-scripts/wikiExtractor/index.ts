@@ -141,7 +141,9 @@ const readLinePromise = (readInterface: any, callback: Function) => {
 
 const getTokens = async (inputDir: string, counter: TopTokenCounter) => {
   const files = globAll.sync([`${inputDir}/**/wiki_*`])
-  const tokenizer = new natural.OrthographyTokenizer({ language: 'de' })
+  const tokenizer = new natural.RegexpTokenizer({
+    pattern: /[^A-Za-z\xbf-\xdf\xdf-\xff]/,
+  })
   let lines = 0
   const promises = files.map(async (filePath: string) => {
     const readInterface = readline.createInterface({
@@ -202,5 +204,5 @@ const main = async (inputDir: string, _outputFile: string) => {
 }
 
 const inputDir = path.join(__dirname, 'extracts')
-const outputFile = path.join(__dirname, 'extractedData.json')
+const outputFile = path.join(__dirname, 'wikipedia.json')
 main(inputDir, outputFile)
