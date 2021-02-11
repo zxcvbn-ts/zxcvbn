@@ -5,7 +5,7 @@
   "private": true,
   "name": "zxcvbn-ts",
   "version": "4.4.2",
-  "description": "realistic password strength estimation",
+  "description": "Realistic password strength estimation written in typescript",
   "author": "zxcvbn-ts",
   "license": "MIT",
   "homepage": "https://github.com/zxcvbn-ts/zxcvbn",

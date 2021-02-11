@@ -7,7 +7,20 @@ This is a complete rewrite of [zxcvbn](https://github.com/dropbox/zxcvbn) into t
 which is licensed under the [MIT](https://github.com/dropbox/zxcvbn/blob/master/LICENSE.txt) license.
 Thanks to the original creators [dropbox](https://github.com/dropbox) for the great work.
 
->zxcvbn attempts to give sound password advice through pattern matching and conservative entropy calculations. It finds 10k common passwords, common American names and surnames, common English words, and common patterns like dates, repeats (aaa), sequences (abcd), and QWERTY patterns.
+> zxcvbn is a password strength estimator inspired by password crackers. 
+> Through pattern matching and conservative estimation, 
+> it recognizes and weighs 40k common passwords, 
+> common names surnames, popular words from Wikipedia and common word in different language from different countries, 
+> and other common patterns like dates, repeats (aaa), sequences (abcd), keyboard patterns (qwertyuiop), and l33t speak.
+>
+> Consider using zxcvbn as an algorithmic alternative to password composition policy — it is more secure, 
+> flexible, and usable when sites require a minimal complexity score in place of annoying rules like "passwords must contain three of {lower, upper, numbers, symbols}".
+>
+> - More secure: policies often fail both ways, allowing weak passwords (P@ssword1) and disallowing strong passwords.
+> - More flexible: zxcvbn allows many password styles to flourish so long as it detects sufficient complexity — passphrases are rated highly given enough uncommon words, keyboard patterns are ranked based on length and number of turns, and capitalization adds more complexity when it's unpredictaBle.
+> - More usable: zxcvbn is designed to power simple, rule-free interfaces that give instant feedback. In addition to strength estimation, zxcvbn includes minimal, targeted verbal feedback that can help guide users towards less guessable passwords.
+> For further detail and motivation, please refer to the USENIX Security '16 [paper and presentation](https://www.usenix.org/conference/usenixsecurity16/technical-sessions/presentation/wheeler).
+
 
 The reason of this project is to modernize zxcvbn and make it maintainable with new features.
 
@@ -28,7 +41,7 @@ The reason of this project is to modernize zxcvbn and make it maintainable with 
 
 Checkout the [Documentation](https://zxcvbn-ts.github.io/zxcvbn/).
 There you will also find the [Demo](https://zxcvbn-ts.github.io/zxcvbn/demo/) pages
-and the [Migration](https://zxcvbn-ts.github.io/zxcvbn/guide/Migration) guide.
+and the [Migration](https://zxcvbn-ts.github.io/zxcvbn/guide/migration) guide.
 
 ## Contribution
 
