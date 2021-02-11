@@ -1,6 +1,6 @@
 import TimeEstimates from '../src/TimeEstimates'
 import Options from '../src/Options'
-import translations from '../../en/src/translations'
+import translations from '@zxcvbn-ts/language-en/translations'
 
 Options.setOptions({
   translations,

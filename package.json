@@ -1,6 +1,7 @@
 {
   "workspaces": [
-    "packages/*"
+    "packages/languages*",
+    "packages/libraries*"
   ],
   "private": true,
   "name": "zxcvbn-ts",

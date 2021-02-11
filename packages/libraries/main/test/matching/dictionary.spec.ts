@@ -2,8 +2,8 @@ import MatchDictionary from '../../src/matching/Dictionary'
 import checkMatches from '../helper/checkMatches'
 import genpws from '../helper/genpws'
 import Options from '../../src/Options'
-import zxcvbnCommonPackage from '../../../common/src/index'
-import zxcvbnEnPackage from '../../../en/src/index'
+import zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
+import zxcvbnEnPackage from '@zxcvbn-ts/language-en'
 
 Options.setOptions({
   dictionary: {

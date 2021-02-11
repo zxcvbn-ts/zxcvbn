@@ -24,6 +24,6 @@ module.exports = {
     '^.+\\.ts$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'json', 'js'],
-  collectCoverageFrom: ['packages/main/**/*.{js,ts}'],
+  collectCoverageFrom: ['packages/libraries/main/**/*.{js,ts}'],
   coveragePathIgnorePatterns: ['dist'],
 }

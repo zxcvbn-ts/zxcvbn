@@ -23,10 +23,10 @@
 <script>
 import Result from './Result'
 import Sequence from './Sequence'
-import zxcvbn from '../../../packages/main/dist'
-import zxcvbnCommonPackage from '../../../packages/common/dist'
-import zxcvbnEnPackage from '../../../packages/en/dist'
-import translationKeys from '../../../packages/main/dist/data/translationKeys'
+import zxcvbn from '../../../packages/libraries/main/dist'
+import zxcvbnCommonPackage from '../../../packages/languages/common/dist'
+import zxcvbnEnPackage from '../../../packages/languages/en/dist'
+import translationKeys from '../../../packages/libraries/main/dist/data/translationKeys'
 
 export default {
   name: 'ZxcvbnInteractive',
