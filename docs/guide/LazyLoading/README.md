@@ -18,19 +18,19 @@ Create a function which imports the dictionaries and returns an options object
 
 ```js
 const loadOptions = async () => {
-  const zxcvbnCommonPackage = import(
+  const zxcvbnCommonPackage = await import(
     /* webpackChunkName: "zxcvbnCommonPackage" */ '@zxcvbn-ts/language-common'
   )
-  const zxcvbnEnPackage = import(
+  const zxcvbnEnPackage = await import(
     /* webpackChunkName: "zxcvbnEnPackage" */ '@zxcvbn-ts/language-en'
   )
 
   return {
     dictionary: {
-      ...zxcvbnCommonPackage.dictionary,
-      ...zxcvbnEnPackage.dictionary,
+      ...zxcvbnCommonPackage.default.dictionary,
+      ...zxcvbnEnPackage.default.dictionary,
     },
-    translations: zxcvbnEnPackage.translations,
+    translations: zxcvbnEnPackage.default.translations,
   }
 }
 ```
