@@ -89,6 +89,15 @@ export default {
       },
     },
   },
+  'fr': {
+    commonWords: {
+      source:
+        'https://github.com/hermitdave/FrequencyWords/raw/master/content/2018/fr/fr_50k.txt',
+      options: { hasOccurrences: true },
+    },
+	// firstnames: custom json created from : "https://www.data.gouv.fr/fr/datasets/ficher-des-prenoms-de-1900-a-2019
+	// lastnames: custom json created from : https://www.insee.fr/fr/statistiques/3536630
+  },
   'common': {
     passwords: {
       generator: PasswordGenerator,
