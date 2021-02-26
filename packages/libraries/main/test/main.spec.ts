@@ -1,8 +1,8 @@
+import zxcvbnCommonPackage from '../../../languages/common/src'
+import zxcvbnEnPackage from '../../../languages/en/src'
 import zxcvbn from '../src'
 import passwordTests from './helper/passwordTests'
 import Options from '../src/Options'
-import zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
-import zxcvbnEnPackage from '@zxcvbn-ts/language-en'
 
 Options.setOptions({
   dictionary: {
