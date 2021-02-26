@@ -1,77 +1,45 @@
-# Getting started
+# Introduction
 
-## Install
+zxcvbn is a password strength estimator inspired by password crackers.
+Through pattern matching and conservative estimation,
+it recognizes and weighs 40k common passwords,
+common names surnames, popular words from Wikipedia and common word in different language from different countries,
+and other common patterns like dates, repeats (aaa), sequences (abcd), keyboard patterns (qwertyuiop), and l33t speak.
 
-#### npm:
+Consider using zxcvbn as an algorithmic alternative to password composition policy — it is more secure,
+flexible, and usable when sites require a minimal complexity score in place of annoying rules like "passwords must contain three of {lower, upper, numbers, symbols}".
 
-`npm install @zxcvbn-ts/core @zxcvbn-ts/language-common @zxcvbn-ts/language-en --save`
+- More secure: policies often fail both ways, allowing weak passwords (P@ssword1) and disallowing strong passwords.
+- More flexible: zxcvbn allows many password styles to flourish so long as it detects sufficient complexity — passphrases are rated highly given enough uncommon words, keyboard patterns are ranked based on length and number of turns, and capitalization adds more complexity when it's unpredictaBle.
+- More usable: zxcvbn is designed to power simple, rule-free interfaces that give instant feedback. In addition to strength estimation, zxcvbn includes minimal, targeted verbal feedback that can help guide users towards less guessable passwords.
+For further detail and motivation, please refer to the USENIX Security '16 [paper and presentation](https://www.usenix.org/conference/usenixsecurity16/technical-sessions/presentation/wheeler).
 
-#### yarn:
+This is a complete rewrite of [zxcvbn](https://github.com/dropbox/zxcvbn) into typescript
+which is licensed under the [MIT](https://github.com/dropbox/zxcvbn/blob/master/LICENSE.txt) license.
+Thanks to the original creators [dropbox](https://github.com/dropbox) for the great work.
 
-`yarn add @zxcvbn-ts/core @zxcvbn-ts/language-common @zxcvbn-ts/language-en`
 
-## Usage
+## Other implementation
 
-### Bundler like webpack
-```js
-import zxcvbn from '@zxcvbn-ts/core'
-import zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
-import zxcvbnEnPackage from '@zxcvbn-ts/language-en'
+* [`zxcvbn`](https://github.com/dropbox/zxcvbn) (Original JS)
+* [`zxcvbn-python`](https://github.com/dwolfhub/zxcvbn-python) (Python)
+* [`zxcvbn-cpp`](https://github.com/rianhunter/zxcvbn-cpp) (C/C++/Python/JS)
+* [`zxcvbn-c`](https://github.com/tsyrogit/zxcvbn-c) (C/C++)
+* [`zxcvbn-rs`](https://github.com/shssoichiro/zxcvbn-rs) (Rust)
+* [`zxcvbn-go`](https://github.com/nbutton23/zxcvbn-go) (Go)
+* [`zxcvbn4j`](https://github.com/nulab/zxcvbn4j) (Java)
+* [`nbvcxz`](https://github.com/GoSimpleLLC/nbvcxz) (Java)
+* [`zxcvbn-ruby`](https://github.com/envato/zxcvbn-ruby) (Ruby)
+* [`zxcvbn-js`](https://github.com/bitzesty/zxcvbn-js) (Ruby [via ExecJS])
+* [`zxcvbn-ios`](https://github.com/dropbox/zxcvbn-ios) (Objective-C)
+* [`zxcvbn-cs`](https://github.com/mickford/zxcvbn-cs) (C#/.NET)
+* [`szxcvbn`](https://github.com/tekul/szxcvbn) (Scala)
+* [`zxcvbn-php`](https://github.com/bjeavons/zxcvbn-php) (PHP)
+* [`zxcvbn-api`](https://github.com/wcjr/zxcvbn-api) (REST)
+* [`ocaml-zxcvbn`](https://github.com/cryptosense/ocaml-zxcvbn) (OCaml bindings for `zxcvbn-c`)
 
-const password = 'somePassword'
-const options = {
-  translations: zxcvbnEnPackage.translations,
-  dictionary: {
-    ...zxcvbnCommonPackage.dictionary,
-    ...zxcvbnEnPackage.dictionary,
-  },
-}
 
-zxcvbn(password, options)
-```
+## Performance
 
-### As script tag
-For example with the CDN jsdelivr
-```
-<html>
-  <head>
-    <script src="https://cdn.jsdelivr.net/npm/@zxcvbn-ts/core@0.2.0/dist/zxcvbn-ts.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@zxcvbn-ts/language-common@0.2.0/dist/zxcvbn-ts.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@zxcvbn-ts/language-en@0.2.0/dist/zxcvbn-ts.js"></script>
-  </head>
-  <body>
-    <script>
-      ;(function () {
-        // all package will be available under zxcvbnts
-        const options = {
-          translations: zxcvbnts['language-en'].translations,
-          dictionary: {
-            ...zxcvbnts['language-common'].dictionary,
-            ...zxcvbnts['language-en'].dictionary,
-          },
-        }
-        console.log(zxcvbnts.core('somePassword', options))
-      })()
-    </script>
-  </body>
-</html>
-```
-
-We highly recommend to always use the common and english language package for a useful scoring result.
-If your own language is available as a package you should include it as well. If your language is missing feel free to open a PR, in the meantime you can extend the default set.
-
-The `esm` build is for modern browser and includes ES5 or higher.
-If you want to use it and want to include own polyfills you need to transpile it within your build process:
-
-## Change prior to original library
-- I18n support for feedback and dictionaries. By default, the feedback are keys now
-- All dictionaries are optional but highly recommend (wished feature in some issues)
-- Dictionaries are separated from the core library. This means zxcvbn-ts is relative small without dictionaries
-- The project is a monorepo with a core library `@zxcvbn-ts/core` and language packages `@txcvbn-ts/language-en`. At the beginning, there is only a German and English language package.
-- Keyboard layouts can be customised. This means you can overwrite the default set of layouts with your own or extend it. For example if you develop a Russian website the keyboard layouts are pretty much useless. 
-  Now you could add a Russian keyboard layout by yourself for a fast implementation and create a PR for the long run.
-- Multiple keyboard layouts are used which means that every layout that is added to the library will be checked against by default.
-- Tests are now made with jest, so we get a coverage
-- Included eslint/prettier for consistent code
-- Added static-page docs https://zxcvbn-ts.github.io/zxcvbn/
-- There is an esm, commonJS and browser build use it as needed
+zxcvbn operates below human perception of delay for most input: ~5-20ms for ~25 char passwords on modern browsers/CPUs, ~100ms for passwords around 100 characters. 
+To bound runtime latency for really long passwords, consider sending `zxcvbn()` only the first 100 characters or so of user input.

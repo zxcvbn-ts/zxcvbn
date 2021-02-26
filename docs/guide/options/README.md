@@ -19,6 +19,7 @@ Currently those keyboards are used:
 - qwerty
 - dvroak
 - keypads
+- azerty
 
 ## l33tTable
 This is a table which matches alphabetical chars with numbers and special characters for [Leet speak](https://en.wikipedia.org/wiki/Leet).
@@ -26,4 +27,4 @@ For example an `a` can be written with `4` or `@`.
 Normally you don't need to adjust this options. If you think this table is not complete feel free to open an issue or a PR.
 
 ## translations
-By default every feedback is a key. If you want to get real translated feedback you can use one of the [language](/Languages) packages.
+By default every feedback is a key. If you want to get real translated feedback you can use one of the [language](/languages) packages.
