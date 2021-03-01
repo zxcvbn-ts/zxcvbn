@@ -10,7 +10,7 @@ for further information.
 The core library can be imported normally
 
 ```js
-import zxcvbn from '@zxcvbn-ts/core'
+import { zxcvbn } from '@zxcvbn-ts/core'
 ```
 
 To lazyload the dictionaries you need to do something like this:
@@ -44,7 +44,8 @@ At some point in your application you can call the "loadOptions" function. Only 
 const run = async () => {
   const password = 'asdnlja978o'
   const options = await loadOptions()
-  const results = zxcvbn(password, options)
+  ZxcvbnOptions.setOptions(options)
+  const results = zxcvbn(password)
   console.log(results)
 }
 ```

@@ -13,7 +13,7 @@ If you don't have a own translation system or want to use predefined translation
 Each language pack has it's own translation file that you can use like this:
 
 ```js
-import zxcvbn from '@zxcvbn-ts/core'
+import { zxcvbn, ZxcvbnOptions } from '@zxcvbn-ts/core'
 import { translations } from '@zxcvbn-ts/language-en'
 
 const password = 'somePassword'
@@ -21,7 +21,9 @@ const options = {
   translations,
 }
 
-zxcvbn(password, options)
+ZxcvbnOptions.setOptions(options)
+
+zxcvbn(password)
 ```
 
 ## Dictionary
@@ -30,7 +32,7 @@ This makes the library tiny but inefficient compared to the original library.
 It is recommended to use at least the common and english language package.
 
 ```js
-import zxcvbn from '@zxcvbn-ts/core'
+import { zxcvbn, ZxcvbnOptions } from '@zxcvbn-ts/core'
 import zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
 import zxcvbnEnPackage from '@zxcvbn-ts/language-en'
 
@@ -42,7 +44,9 @@ const options = {
   },
 }
 
-zxcvbn(password, options)
+ZxcvbnOptions.setOptions(options)
+
+zxcvbn(password)
 ```
 
 ## Add a new language package

@@ -23,7 +23,7 @@
 <script>
 import Result from './Result'
 import Sequence from './Sequence'
-import zxcvbn from '../../../packages/main/dist'
+import { zxcvbn, ZxcvbnOptions } from '../../../packages/main/dist'
 import zxcvbnCommonPackage from '../../../packages/common/dist'
 import zxcvbnEnPackage from '../../../packages/en/dist'
 import translationKeys from '../../../packages/main/dist/data/translationKeys'
@@ -47,31 +47,32 @@ export default {
       this.result = result
     },
   },
-  computed: {
-    options() {
-      const options = {
-        dictionary: {},
-        translations: translationKeys,
-      }
-      if (this.useDictionaries) {
-        options.dictionary = {
-          ...zxcvbnCommonPackage.dictionary,
-          ...zxcvbnEnPackage.dictionary,
-        }
-      }
-      if (this.useTranslations) {
-        options.translations = zxcvbnEnPackage.translations
-      }
-      return options
-    },
-  },
   watch: {
     password() {
       if (this.password) {
-        this.result = zxcvbn(this.password, this.options)
+        this.result = zxcvbn(this.password)
       } else {
         this.result = null
       }
+    },
+    options: {
+      handler() {
+        const options  = {
+          dictionary: {},
+          translations: translationKeys,
+        }
+        if (this.useDictionaries) {
+          options.dictionary = {
+            ...zxcvbnCommonPackage.dictionary,
+            ...zxcvbnEnPackage.dictionary,
+          }
+        }
+        if (this.useTranslations) {
+          options.translations = zxcvbnEnPackage.translations
+        }
+        ZxcvbnOptions.setOptions(options)
+      },
+      immediate: true,
     },
     useTranslations() {
       this.password = ''

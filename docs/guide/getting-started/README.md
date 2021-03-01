@@ -14,7 +14,7 @@
 
 ### Bundler like webpack
 ```js
-import zxcvbn from '@zxcvbn-ts/core'
+import { zxcvbn, ZxcvbnOptions } from '@zxcvbn-ts/core'
 import zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
 import zxcvbnEnPackage from '@zxcvbn-ts/language-en'
 
@@ -27,7 +27,9 @@ const options = {
   },
 }
 
-zxcvbn(password, options)
+ZxcvbnOptions.setOptions(options)
+
+zxcvbn(password)
 ```
 
 ### As script tag
@@ -35,9 +37,9 @@ For example with the CDN jsdelivr
 ```
 <html>
   <head>
-    <script src="https://cdn.jsdelivr.net/npm/@zxcvbn-ts/core@0.2.0/dist/zxcvbn-ts.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@zxcvbn-ts/language-common@0.2.0/dist/zxcvbn-ts.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@zxcvbn-ts/language-en@0.2.0/dist/zxcvbn-ts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@zxcvbn-ts/core@0.3.0/dist/zxcvbn-ts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@zxcvbn-ts/language-common@0.3.0/dist/zxcvbn-ts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@zxcvbn-ts/language-en@0.3.0/dist/zxcvbn-ts.js"></script>
   </head>
   <body>
     <script>
@@ -50,7 +52,8 @@ For example with the CDN jsdelivr
             ...zxcvbnts['language-en'].dictionary,
           },
         }
-        console.log(zxcvbnts.core('somePassword', options))
+        zxcvbnts.core.Options.setOptions(options)
+        console.log(zxcvbnts.core.zxcvbn('somePassword'))
       })()
     </script>
   </body>

@@ -1,5 +1,56 @@
 # Migration
 
+## `zxcvbn-ts 0.2.x` to `zxcvbn-ts 0.3.x`
+
+We moved the options handling out of the zxcvbn call to improve performance. 
+
+Related [issue](https://github.com/zxcvbn-ts/zxcvbn/issues/31)
+
+- @zxcvbn-ts/core has only named exports
+- options need to be set by `ZxcvbnOptions.setOptions`
+
+Old
+
+```js
+import zxcvbn from '@zxcvbn-ts/core'
+import zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
+import zxcvbnEnPackage from '@zxcvbn-ts/language-en'
+
+const password = 'somePassword'
+const options = {
+  translations: zxcvbnEnPackage.translations,
+  dictionary: {
+    ...zxcvbnCommonPackage.dictionary,
+    ...zxcvbnEnPackage.dictionary,
+  },
+}
+
+zxcvbn(password, options)
+```
+
+New
+
+```js
+import { zxcvbn, ZxcvbnOptions } from '@zxcvbn-ts/core'
+import zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
+import zxcvbnEnPackage from '@zxcvbn-ts/language-en'
+
+const password = 'somePassword'
+const options = {
+  translations: zxcvbnEnPackage.translations,
+  dictionary: {
+    ...zxcvbnCommonPackage.dictionary,
+    ...zxcvbnEnPackage.dictionary,
+  },
+}
+
+ZxcvbnOptions.setOptions(options)
+
+zxcvbn(password)
+```
+
+The `ZxcvbnOptions.setOptions` should be in another place as the zxcvbn call for example directly after you load your options.
+
 ## `zxcvbn 4.4.2` to `zxcvbn-ts 0.1.0`
 
 - Everything is written in TypeScript, this should make it easier for other people to contribute and it will generate types that everybody can use.

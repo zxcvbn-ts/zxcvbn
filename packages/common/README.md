@@ -15,7 +15,7 @@ The common dictionary and language package for zxcvbn-ts
 ## Setup
 
 ```js
-import zxcvbn from '@zxcvbn-ts/core'
+import { zxcvbn, ZxcvbnOptions } from '@zxcvbn-ts/core'
 import zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
 
 const password = 'somePassword'
@@ -23,5 +23,7 @@ const options = {
   ...zxcvbnCommonPackage
 }
 
-zxcvbn(password, options)
+ZxcvbnOptions.setOptions(options)
+
+zxcvbn(password)
 ```
