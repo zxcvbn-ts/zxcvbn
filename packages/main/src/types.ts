@@ -19,6 +19,7 @@ export type Pattern =
   | 'sequence'
   | 'spatial'
   | 'date'
+  | 'pwned'
 
 export type DictionaryNames =
   | 'passwords'
@@ -73,6 +74,7 @@ export interface ExtendedMatch {
   month: number
   day: number
   separator?: string
+  pwnedAmount?: number
 }
 
 export interface Optimal {
@@ -136,6 +138,7 @@ export interface OptionsType {
   graphs?: OptionsGraph
   l33tTable?: OptionsL33tTable
   dictionary?: OptionsDictionary
+  fetch?: any
 }
 
 export interface RankedDictionaries {

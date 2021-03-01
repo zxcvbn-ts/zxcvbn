@@ -7,6 +7,7 @@ import Repeat from './matching/Repeat'
 import Sequence from './matching/Sequence'
 import Regex from './matching/Regex'
 import Date from './matching/Date'
+import Pwned from './matching/Pwned'
 
 /*
  * -------------------------------------------------------------------------------
@@ -24,6 +25,7 @@ class Matching {
     Sequence,
     Regex,
     Date,
+    Pwned,
   ]
 
   options = {}

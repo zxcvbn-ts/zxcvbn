@@ -31,6 +31,8 @@ class Options {
 
   availableGraphs: DefaultAdjacencyGraphsKeys[] = []
 
+  fetch: any
+
   setOptions(options: OptionsType = {}) {
     if (options.l33tTable) {
       this.l33tTable = options.l33tTable
@@ -52,6 +54,10 @@ class Options {
       this.setAdjacencyGraphs(options.graphs)
     } else if (!this.graphs) {
       this.setAdjacencyGraphs(graphs)
+    }
+
+    if (options.fetch) {
+      this.fetch = options.fetch
     }
 
     this.setRankedDictionaries()
