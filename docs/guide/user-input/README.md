@@ -5,7 +5,7 @@ For this reason you can add a `userInputs` dictionary which has simple sanitizer
 
 
 ```js
-import zxcvbn from '@zxcvbn-ts/core'
+import { zxcvbn, ZxcvbnOptions } from '@zxcvbn-ts/core'
 
 const password = 'somePassword'
 const options = {
@@ -13,6 +13,7 @@ const options = {
     userInputs: ['someEmail@email.de', 'someUsername'],
   },
 }
+ZxcvbnOptions.setOptions(options)
 
-zxcvbn(password, options)
+zxcvbn(password)
 ```

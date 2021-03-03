@@ -17,7 +17,7 @@ Consider using zxcvbn as an algorithmic alternative to password composition poli
 ## Setup
 
 ```js
-import zxcvbn from '@zxcvbn-ts/core'
+import { zxcvbn, ZxcvbnOptions } from '@zxcvbn-ts/core'
 import zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
 import zxcvbnEnPackage from '@zxcvbn-ts/language-en'
 
@@ -29,6 +29,7 @@ const options = {
   },
   translations: zxcvbnEnPackage.translations,
 }
+ZxcvbnOptions.setOptions(options)
 
-zxcvbn(password, options)
+zxcvbn(password)
 ```

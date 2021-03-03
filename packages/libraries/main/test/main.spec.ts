@@ -1,10 +1,9 @@
 import zxcvbnCommonPackage from '../../../languages/common/src'
 import zxcvbnEnPackage from '../../../languages/en/src'
-import zxcvbn from '../src'
+import { zxcvbn, ZxcvbnOptions } from '../src'
 import passwordTests from './helper/passwordTests'
-import Options from '../src/Options'
 
-Options.setOptions({
+ZxcvbnOptions.setOptions({
   dictionary: {
     ...zxcvbnCommonPackage.dictionary,
     ...zxcvbnEnPackage.dictionary,
@@ -61,10 +60,11 @@ describe('main', () => {
   })
 
   it('should check with userInputs', () => {
-    const result = zxcvbn('test', {
+    ZxcvbnOptions.setOptions({
       // @ts-ignore
       dictionary: { userInputs: ['test', 12, true, []] },
     })
+    const result = zxcvbn('test')
     result.calcTime = 0
     expect(result).toEqual({
       crackTimesDisplay: {
@@ -112,12 +112,13 @@ describe('main', () => {
   describe('password tests', () => {
     passwordTests.forEach((data) => {
       it(`should resolve ${data.password}`, () => {
-        const result = zxcvbn(data.password, {
+        ZxcvbnOptions.setOptions({
           dictionary: {
             ...zxcvbnCommonPackage.dictionary,
             ...zxcvbnEnPackage.dictionary,
           },
         })
+        const result = zxcvbn(data.password)
         result.calcTime = 0
         expect(JSON.stringify(result)).toEqual(JSON.stringify(data))
       })

@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.3.0](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/language-de@0.1.0...@zxcvbn-ts/language-de@0.3.0) (2021-03-03)
+
+
+### Bug Fixes
+
+* **rollup:** Fix browser package ([#18](https://github.com/zxcvbn-ts/zxcvbn/issues/18)) ([444aabd](https://github.com/zxcvbn-ts/zxcvbn/commit/444aabd4c37d449f600eaa4ad6d144f3c8ca5780))
+
+
+### Features
+
+* **scripts:** Add wikipedia extractor ([#26](https://github.com/zxcvbn-ts/zxcvbn/issues/26)) ([7efecd5](https://github.com/zxcvbn-ts/zxcvbn/commit/7efecd5bc5f54c4786e4091f79e6eba77fee5498))
+* **translations:** improve straight row translation ([#22](https://github.com/zxcvbn-ts/zxcvbn/issues/22)) ([9e1f6e0](https://github.com/zxcvbn-ts/zxcvbn/commit/9e1f6e073f2baf5fb72a9eb507a7f0ad59dd32e9))
+
+
+
+
+
 # [0.2.0](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/language-de@0.1.0...@zxcvbn-ts/language-de@0.2.0) (2021-01-18)
 
 

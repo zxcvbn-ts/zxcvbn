@@ -23,7 +23,7 @@
 <script>
 import Result from './Result'
 import Sequence from './Sequence'
-import zxcvbn from '../../../packages/libraries/main/dist'
+import { zxcvbn, ZxcvbnOptions } from '../../../packages/libraries/main/dist'
 import zxcvbnCommonPackage from '../../../packages/languages/common/dist'
 import zxcvbnEnPackage from '../../../packages/languages/en/dist'
 import translationKeys from '../../../packages/libraries/main/dist/data/translationKeys'
@@ -42,13 +42,14 @@ export default {
       useDictionaries: true,
     }
   },
+  mounted() {
+    this.setOptions()
+  },
   methods: {
     setResult(result) {
       this.result = result
     },
-  },
-  computed: {
-    options() {
+    setOptions() {
       const options = {
         dictionary: {},
         translations: translationKeys,
@@ -62,22 +63,24 @@ export default {
       if (this.useTranslations) {
         options.translations = zxcvbnEnPackage.translations
       }
-      return options
+      ZxcvbnOptions.setOptions(options)
     },
   },
   watch: {
     password() {
       if (this.password) {
-        this.result = zxcvbn(this.password, this.options)
+        this.result = zxcvbn(this.password)
       } else {
         this.result = null
       }
     },
     useTranslations() {
       this.password = ''
+      this.setOptions()
     },
     useDictionaries() {
       this.password = ''
+      this.setOptions()
     },
   },
 }
