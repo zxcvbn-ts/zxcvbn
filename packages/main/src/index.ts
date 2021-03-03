@@ -3,12 +3,10 @@ import scoring from './scoring'
 import TimeEstimates from './TimeEstimates'
 import Feedback from './Feedback'
 import Options from './Options'
-import { OptionsType } from './types'
 
 const time = () => new Date().getTime()
 
-export default (password: string, options: OptionsType = {}) => {
-  Options.setOptions(options)
+export const zxcvbn = (password: string) => {
   const feedback = new Feedback()
   const matching = new Matching()
   const timeEstimates = new TimeEstimates()
@@ -28,3 +26,5 @@ export default (password: string, options: OptionsType = {}) => {
     feedback: feedback.getFeedback(attackTimes.score, matchSequence.sequence),
   }
 }
+
+export { Options as ZxcvbnOptions }

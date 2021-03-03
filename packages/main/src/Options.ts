@@ -13,48 +13,43 @@ import graphs from './data/adjacencyGraphs'
 import translationKeys from './data/translationKeys'
 
 class Options {
-  // @ts-ignore
-  l33tTable: OptionsL33tTable
+  l33tTable: OptionsL33tTable = l33tTable
 
   dictionary: OptionsDictionary = {
     userInput: [],
   }
 
-  // @ts-ignore
-  rankedDictionaries: RankedDictionaries
+  rankedDictionaries: RankedDictionaries = {}
 
-  // @ts-ignore
-  translations: TranslationKeys
+  translations: TranslationKeys = translationKeys
 
-  // @ts-ignore
-  graphs: OptionsGraph
+  graphs: OptionsGraph = graphs
 
   availableGraphs: DefaultAdjacencyGraphsKeys[] = []
+
+  constructor() {
+    this.setRankedDictionaries()
+    this.setAdjacencyGraphs(graphs)
+  }
 
   setOptions(options: OptionsType = {}) {
     if (options.l33tTable) {
       this.l33tTable = options.l33tTable
-    } else if (!this.l33tTable) {
-      this.l33tTable = l33tTable
     }
 
     if (options.dictionary) {
       this.dictionary = options.dictionary
+
+      this.setRankedDictionaries()
     }
 
     if (options.translations) {
       this.setTranslations(options.translations)
-    } else if (!this.translations) {
-      this.setTranslations(translationKeys)
     }
 
     if (options.graphs) {
       this.setAdjacencyGraphs(options.graphs)
-    } else if (!this.graphs) {
-      this.setAdjacencyGraphs(graphs)
     }
-
-    this.setRankedDictionaries()
   }
 
   setTranslations(translations: TranslationKeys) {
