@@ -42,9 +42,28 @@ export default {
       useDictionaries: true,
     }
   },
+  mounted() {
+    this.setOptions()
+  },
   methods: {
     setResult(result) {
       this.result = result
+    },
+    setOptions() {
+      const options = {
+        dictionary: {},
+        translations: translationKeys,
+      }
+      if (this.useDictionaries) {
+        options.dictionary = {
+          ...zxcvbnCommonPackage.dictionary,
+          ...zxcvbnEnPackage.dictionary,
+        }
+      }
+      if (this.useTranslations) {
+        options.translations = zxcvbnEnPackage.translations
+      }
+      ZxcvbnOptions.setOptions(options)
     },
   },
   watch: {
@@ -55,30 +74,13 @@ export default {
         this.result = null
       }
     },
-    options: {
-      handler() {
-        const options  = {
-          dictionary: {},
-          translations: translationKeys,
-        }
-        if (this.useDictionaries) {
-          options.dictionary = {
-            ...zxcvbnCommonPackage.dictionary,
-            ...zxcvbnEnPackage.dictionary,
-          }
-        }
-        if (this.useTranslations) {
-          options.translations = zxcvbnEnPackage.translations
-        }
-        ZxcvbnOptions.setOptions(options)
-      },
-      immediate: true,
-    },
     useTranslations() {
       this.password = ''
+      this.setOptions()
     },
     useDictionaries() {
       this.password = ''
+      this.setOptions()
     },
   },
 }
