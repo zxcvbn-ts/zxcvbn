@@ -1,4 +1,5 @@
 import { ALL_UPPER, ALL_LOWER, ALL_DIGIT } from '../data/const'
+import { SequenceMatch } from '../types'
 
 type UpdateParams = {
   i: number
@@ -35,7 +36,7 @@ class MatchSequence {
      * expected result:
      * [(i, j, delta), ...] = [(0, 3, 1), (5, 7, -2), (8, 9, 1)]
      */
-    const result: any[] = []
+    const result: SequenceMatch[] = []
     if (password.length === 1) {
       return []
     }

@@ -1,6 +1,6 @@
 import { sorted } from '../helper'
 import Options from '../Options'
-import { ExtendedMatch, DictionaryNames, RankedDictionaries } from '../types'
+import { DictionaryNames, RankedDictionaries, DictionaryMatch } from '../types'
 
 interface DictionaryMatchOptions {
   password: string
@@ -14,7 +14,7 @@ class MatchDictionary {
 
   match({ password }: DictionaryMatchOptions) {
     // rankedDictionaries variable is for unit testing purposes
-    const matches: ExtendedMatch[] = []
+    const matches: DictionaryMatch[] = []
     const passwordLength = password.length
     const passwordLower = password.toLowerCase()
 
@@ -27,7 +27,6 @@ class MatchDictionary {
           if (passwordLower.slice(i, +j + 1 || 9e9) in rankedDict) {
             const word = passwordLower.slice(i, +j + 1 || 9e9)
             const rank = rankedDict[word as keyof typeof rankedDict]
-            // @ts-ignore
             matches.push({
               pattern: 'dictionary',
               i,

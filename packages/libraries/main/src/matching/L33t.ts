@@ -1,7 +1,12 @@
 import { sorted, empty, translate } from '../helper'
 import MatchDictionary from './Dictionary'
 import Options from '../Options'
-import { ExtendedMatch, LooseObject, OptionsL33tTable } from '../types'
+import {
+  DictionaryMatch,
+  L33tMatch,
+  LooseObject,
+  OptionsL33tTable,
+} from '../types'
 
 type Subs = string[][][]
 
@@ -21,7 +26,7 @@ class MatchL33t {
   }
 
   match({ password }: L33tMatchOptions) {
-    const matches: ExtendedMatch[] = []
+    const matches: L33tMatch[] = []
     const enumeratedSubs = this.enumerateL33tSubs(
       this.relevantL33tSubtable(password, Options.l33tTable),
     )
@@ -35,7 +40,7 @@ class MatchL33t {
       const matchedDictionary = this.MatchDictionary.match({
         password: subbedPassword,
       })
-      matchedDictionary.forEach((match: ExtendedMatch) => {
+      matchedDictionary.forEach((match: DictionaryMatch) => {
         const token = password.slice(match.i, +match.j + 1 || 9e9)
         // only return the matches that contain an actual substitution
         if (token.toLowerCase() !== match.matchedWord) {

@@ -1,10 +1,6 @@
 import { sorted, extend } from '../helper'
 import Options from '../Options'
-import {
-  DefaultAdjacencyGraphsKeys,
-  ExtendedMatch,
-  LooseObject,
-} from '../types'
+import { DefaultAdjacencyGraphsKeys, LooseObject, SpatialMatch } from '../types'
 
 interface SpatialMatchOptions {
   password: string
@@ -18,7 +14,7 @@ class MatchSpatial {
   SHIFTED_RX = /[~!@#$%^&*()_+QWERTYUIOP{}|ASDFGHJKL:"ZXCVBNM<>?]/
 
   match({ password }: SpatialMatchOptions) {
-    const matches: ExtendedMatch[] = []
+    const matches: SpatialMatch[] = []
     Object.keys(Options.graphs).forEach((graphName) => {
       const graph = Options.graphs[graphName as DefaultAdjacencyGraphsKeys]
       extend(
@@ -47,7 +43,7 @@ class MatchSpatial {
     graphName: DefaultAdjacencyGraphsKeys,
   ) {
     let shiftedCount
-    const matches: ExtendedMatch[] = []
+    const matches: SpatialMatch[] = []
     let i = 0
     const passwordLength = password.length
     while (i < passwordLength - 1) {
@@ -104,7 +100,6 @@ class MatchSpatial {
         } else {
           // don't consider length 1 or 2 chains.
           if (j - i > 2) {
-            // @ts-ignore
             matches.push({
               pattern: 'spatial',
               i,

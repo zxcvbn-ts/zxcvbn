@@ -10,7 +10,7 @@ import repeatGuesses from './guesses/repeat'
 import sequenceGuesses from './guesses/sequence'
 import spatialGuesses from './guesses/spatial'
 import utils from './utils'
-import { ExtendedMatch, LooseObject, Match } from '../types'
+import { LooseObject, MatchEstimated, MatchExtended } from '../types'
 
 const estimationFunctions = {
   bruteforce: bruteforceGuesses,
@@ -22,7 +22,10 @@ const estimationFunctions = {
   date: dateGuesses,
 }
 
-const getMinGuesses = (match: ExtendedMatch | Match, password: string) => {
+const getMinGuesses = (
+  match: MatchExtended | MatchEstimated,
+  password: string,
+) => {
   let minGuesses = 1
   if (match.token.length < password.length) {
     if (match.token.length === 1) {
@@ -37,7 +40,7 @@ const getMinGuesses = (match: ExtendedMatch | Match, password: string) => {
 // ------------------------------------------------------------------------------
 // guess estimation -- one function per match pattern ---------------------------
 // ------------------------------------------------------------------------------
-export default (match: ExtendedMatch | Match, password: string) => {
+export default (match: MatchExtended | MatchEstimated, password: string) => {
   const extraData: LooseObject = {}
   // a match's guess estimate doesn't change. cache it.
   if ('guesses' in match && match.guesses != null) {
