@@ -172,7 +172,7 @@ export default class KeyboardAdjacencyGraph {
     const graphFile = path.join(
       __dirname,
       '../..',
-      `packages/main/src/data/adjacencyGraphs.ts`,
+      `packages/libraries/main/src/data/adjacencyGraphs.ts`,
     )
 
     fs.writeFileSync(graphFile, `export default ${JSON.stringify(graphs)}`)

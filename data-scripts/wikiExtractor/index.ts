@@ -4,7 +4,7 @@ import path from 'path'
 // @ts-ignore
 import globAll from 'glob-all'
 import natural from 'natural'
-import { LooseObject } from '../../packages/main/src/types'
+import { LooseObject } from '../../packages/libraries/main/src/types'
 
 const SENTENCES_PER_BATCH = 500000 // after each batch, delete all counts with count == 1 (hapax legomena)
 const PRE_SORT_CUTOFF = 500 // before sorting, discard all words with less than this count

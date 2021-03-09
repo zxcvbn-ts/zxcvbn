@@ -36,7 +36,7 @@ export default class ListHandler {
       const generator = new options.generator(options.url, options.options)
       const folder = path.join(
         __dirname,
-        '../../packages/',
+        '../../packages/languages/',
         options.language,
         'src',
       )
@@ -65,7 +65,7 @@ export default class ListHandler {
 
       const folder = path.join(
         __dirname,
-        '../../packages/',
+        '../../packages/languages/',
         options.language,
         'src',
       )
@@ -84,7 +84,7 @@ export default class ListHandler {
   }
 
   async generateIndices() {
-    const dataFolder = path.join(__dirname, '../../packages/')
+    const dataFolder = path.join(__dirname, '../../packages/languages/')
 
     const languages = fs
       .readdirSync(dataFolder)

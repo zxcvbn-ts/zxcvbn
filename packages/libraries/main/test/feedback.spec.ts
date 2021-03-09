@@ -1,6 +1,6 @@
+import translations from '../../../languages/en/src/translations'
 import Options from '../src/Options'
 import Feedback from '../src/Feedback'
-import translations from '../../en/src/translations'
 
 Options.setOptions({
   translations,

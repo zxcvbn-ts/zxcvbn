@@ -2,7 +2,7 @@ import { readdirSync } from 'fs'
 import path from 'path'
 import translationKeys from '../src/data/translationKeys'
 
-const languagePath = path.join(__dirname, '../../')
+const languagePath = path.join(__dirname, '../../../languages')
 
 const getLanguages = () => {
   return readdirSync(languagePath, { withFileTypes: true })
@@ -11,12 +11,12 @@ const getLanguages = () => {
 }
 
 describe('translations', () => {
-  const notALanguage = ['main', 'common']
+  const withoutTranslations = ['common']
   const languages = getLanguages().filter(
-    (language) => !notALanguage.includes(language),
+    (language) => !withoutTranslations.includes(language),
   )
   languages.forEach((language) => {
-    const translationPath = `../../${language}/src/translations.ts`
+    const translationPath = `${languagePath}/${language}/src/translations.ts`
     // eslint-disable-next-line global-require,import/no-dynamic-require
     const translations = require(translationPath).default
     it(`should have all translation keys for ${language}`, () => {

@@ -1,7 +1,7 @@
+import zxcvbnCommonPackage from '../../../../languages/common/src'
+import zxcvbnEnPackage from '../../../../languages/en/src'
 import MatchOmni from '../../src/Matching'
 import Options from '../../src/Options'
-import zxcvbnCommonPackage from '../../../common/src/index'
-import zxcvbnEnPackage from '../../../en/src/index'
 
 Options.setOptions({
   dictionary: {

@@ -1,6 +1,7 @@
 {
   "workspaces": [
-    "packages/*"
+    "packages/languages/*",
+    "packages/libraries/*"
   ],
   "private": true,
   "name": "zxcvbn-ts",
@@ -16,7 +17,7 @@
   "files": [],
   "prettier": "./prettier.js",
   "scripts": {
-    "build": "lerna exec --parallel -- rollup -c ../../scripts/rollup.config.js",
+    "build": "lerna exec --parallel -- rollup -c ../../../scripts/rollup.config.js",
     "lint": "eslint --ext .js,.ts --fix --cache .",
     "test": "jest --coverage",
     "changed": "lerna changed",
