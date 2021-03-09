@@ -49,14 +49,3 @@ Please feel free to [open up an issue](https://github.com/zxcvbn-ts/zxcvbn/issue
 
 ## Language packages
 If your language is missing as a language pack checkout the [guide](https://zxcvbn-ts.github.io/zxcvbn/guide/Languages/#add-a-new-language-package) to add your own.
-
-
-# ideas
-- create interface to extend the matchers (https://github.com/dropbox/zxcvbn/issues/300)
-- language based keyboard layout, QWERTY-UK (BS 4822), JIS, maybe JCUKEN(https://github.com/dropbox/zxcvbn/issues/190)
-- strength meter
-- get warning for user input scoring (https://github.com/dropbox/zxcvbn/issues/231)
-- add loader for dictionaries (https://github.com/dropbox/zxcvbn/issues/212 https://github.com/dropbox/zxcvbn/issues/90)
-- fix links in documentations
-- improve documentation (my english sucks)
-- use match type for each matcher
