@@ -151,15 +151,16 @@ class Feedback {
   getDictionaryWarning(match: ExtendedMatch, isSoleMatch: Boolean) {
     let warning = ''
     const dictName = match.dictionaryName
+    const isAName =
+      dictName === 'lastnames' || dictName.toLowerCase().includes('firstnames')
     if (dictName === 'passwords') {
       warning = this.getDictionaryWarningPassword(match, isSoleMatch)
     } else if (dictName.includes('wikipedia')) {
       warning = this.getDictionaryWarningWikipedia(match, isSoleMatch)
-    } else if (
-      dictName === 'lastnames' ||
-      dictName.toLowerCase().includes('firstnames')
-    ) {
+    } else if (isAName) {
       warning = this.getDictionaryWarningNames(match, isSoleMatch)
+    } else if (dictName === 'userInputs') {
+      warning = Options.translations.warnings.userInputs
     }
     return warning
   }
