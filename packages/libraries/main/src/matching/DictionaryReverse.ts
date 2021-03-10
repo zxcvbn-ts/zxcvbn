@@ -1,6 +1,6 @@
 import { sorted } from '../helper'
 import MatchDictionary from './Dictionary'
-import { ExtendedMatch } from '../types'
+import { DictionaryMatch } from '../types'
 
 interface DictionaryReverseMatchOptions {
   password: string
@@ -21,7 +21,7 @@ class MatchDictionaryReverse {
     const passwordReversed = password.split('').reverse().join('')
     const matches = this.MatchDictionary.match({
       password: passwordReversed,
-    }).map((match: ExtendedMatch) => ({
+    }).map((match: DictionaryMatch) => ({
       ...match,
       token: match.token.split('').reverse().join(''), // reverse back
       reversed: true,

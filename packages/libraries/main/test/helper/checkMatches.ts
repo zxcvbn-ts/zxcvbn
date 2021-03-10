@@ -1,9 +1,9 @@
-import { ExtendedMatch, LooseObject } from '../../src/types'
+import { LooseObject, MatchExtended } from '../../src/types'
 
 // eslint-disable-next-line jest/no-export
 export default (
   prefix: string,
-  matches: ExtendedMatch[],
+  matches: MatchExtended[],
   patternNames: string,
   patterns: string[],
   ijs: number[][],

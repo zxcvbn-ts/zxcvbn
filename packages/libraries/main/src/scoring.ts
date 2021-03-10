@@ -1,7 +1,7 @@
 import utils from './scoring/utils'
 import estimateGuesses from './scoring/estimate'
 import { MIN_GUESSES_BEFORE_GROWING_SEQUENCE } from './data/const'
-import { Match, ExtendedMatch } from './types'
+import { MatchExtended, BruteForceMatch } from './types'
 
 const scoringHelper = {
   password: '',
@@ -19,7 +19,7 @@ const scoringHelper = {
     return result
   },
   // helper: make bruteforce match objects spanning i to j, inclusive.
-  makeBruteforceMatch(i: number, j: number) {
+  makeBruteforceMatch(i: number, j: number): BruteForceMatch {
     return {
       pattern: 'bruteforce',
       token: this.password.slice(i, +j + 1 || 9e9),
@@ -30,7 +30,7 @@ const scoringHelper = {
   // helper: considers whether a length-sequenceLength
   // sequence ending at match m is better (fewer guesses)
   // than previously encountered sequences, updating state if so.
-  update(match: ExtendedMatch | Match, sequenceLength: number) {
+  update(match: MatchExtended, sequenceLength: number) {
     const k = match.j
     const estimatedMatch = estimateGuesses(match, this.password)
     let pi = estimatedMatch.guesses as number
@@ -70,13 +70,13 @@ const scoringHelper = {
   // helper: evaluate bruteforce matches ending at passwordCharIndex.
   bruteforceUpdate(passwordCharIndex: number) {
     // see if a single bruteforce match spanning the passwordCharIndex-prefix is optimal.
-    let match = this.makeBruteforceMatch(0, passwordCharIndex) as Match
+    let match = this.makeBruteforceMatch(0, passwordCharIndex)
     this.update(match, 1)
     for (let i = 1; i <= passwordCharIndex; i += 1) {
       // generate passwordCharIndex bruteforce matches, spanning from (i=1, j=passwordCharIndex) up to (i=passwordCharIndex, j=passwordCharIndex).
       // see if adding these new matches to any of the sequences in optimal[i-1]
       // leads to new bests.
-      match = this.makeBruteforceMatch(i, passwordCharIndex) as Match
+      match = this.makeBruteforceMatch(i, passwordCharIndex)
       const tmp = this.optimal.m[i - 1]
       // eslint-disable-next-line no-loop-func
       Object.keys(tmp).forEach((sequenceLength) => {
@@ -96,7 +96,7 @@ const scoringHelper = {
   // helper: step backwards through optimal.m starting at the end,
   // constructing the final optimal match sequence.
   unwind(passwordLength: number) {
-    const optimalMatchSequence: ExtendedMatch[] = []
+    const optimalMatchSequence: MatchExtended[] = []
     let k = passwordLength - 1
     // find the final best sequence length and score
     let sequenceLength = 0
@@ -110,7 +110,7 @@ const scoringHelper = {
       }
     })
     while (k >= 0) {
-      const match: ExtendedMatch = this.optimal.m[k][sequenceLength]
+      const match: MatchExtended = this.optimal.m[k][sequenceLength]
       optimalMatchSequence.unshift(match)
       k = match.i - 1
       sequenceLength -= 1
@@ -154,7 +154,7 @@ export default {
   // ------------------------------------------------------------------------------
   mostGuessableMatchSequence(
     password: string,
-    matches: ExtendedMatch[],
+    matches: MatchExtended[],
     excludeAdditive = false,
   ) {
     scoringHelper.password = password
@@ -171,7 +171,7 @@ export default {
     })
     // small detail: for deterministic output, sort each sublist by i.
     matchesByCoordinateJ = matchesByCoordinateJ.map((match) =>
-      match.sort((m1: Match, m2: Match) => m1.i - m2.i),
+      match.sort((m1: MatchExtended, m2: MatchExtended) => m1.i - m2.i),
     )
 
     scoringHelper.optimal = {
@@ -190,7 +190,7 @@ export default {
     }
 
     for (let k = 0; k < passwordLength; k += 1) {
-      matchesByCoordinateJ[k].forEach((match: ExtendedMatch) => {
+      matchesByCoordinateJ[k].forEach((match: MatchExtended) => {
         if (match.i > 0) {
           Object.keys(scoringHelper.optimal.m[match.i - 1]).forEach(
             (sequenceLength) => {

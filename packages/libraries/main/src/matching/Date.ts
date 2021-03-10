@@ -5,7 +5,7 @@ import {
   REFERENCE_YEAR,
 } from '../data/const'
 import { sorted } from '../helper'
-import { ExtendedMatch } from '../types'
+import { DateMatch } from '../types'
 
 interface DateMatchOptions {
   password: string
@@ -38,7 +38,7 @@ class MatchDate {
    * to every possible date match.
    */
   match({ password }: DateMatchOptions) {
-    const matches: ExtendedMatch[] = [
+    const matches: DateMatch[] = [
       ...this.getMatchesWithoutSeparator(password),
       ...this.getMatchesWithSeparator(password),
     ]
@@ -48,7 +48,7 @@ class MatchDate {
   }
 
   getMatchesWithSeparator(password: string) {
-    const matches: ExtendedMatch[] = []
+    const matches: DateMatch[] = []
     const maybeDateWithSeparator = /^(\d{1,4})([\s/\\_.-])(\d{1,2})\2(\d{1,4})$/
     // # dates with separators are between length 6 '1/1/91' and 10 '11/11/1991'
     for (let i = 0; i <= Math.abs(password.length - 6); i += 1) {
@@ -65,7 +65,6 @@ class MatchDate {
             parseInt(regexMatch[4], 10),
           ])
           if (dmy != null) {
-            // @ts-ignore
             matches.push({
               pattern: 'date',
               token,
@@ -85,9 +84,9 @@ class MatchDate {
 
   // eslint-disable-next-line max-statements
   getMatchesWithoutSeparator(password: string) {
-    const matches: ExtendedMatch[] = []
+    const matches: DateMatch[] = []
     const maybeDateNoSeparator = /^\d{4,8}$/
-    const metric = (candidate: ExtendedMatch) =>
+    const metric = (candidate: DateMatch) =>
       Math.abs(candidate.year - REFERENCE_YEAR)
     // # dates without separators are between length 4 '1191' and 8 '11111991'
     for (let i = 0; i <= Math.abs(password.length - 4); i += 1) {
@@ -129,7 +128,6 @@ class MatchDate {
                 minDistance = distance
               }
             })
-            // @ts-ignore
             matches.push({
               pattern: 'date',
               token,
@@ -156,7 +154,7 @@ class MatchDate {
    *
    * to reduce noise, remove date matches that are strict substrings of others
    */
-  filterNoise(matches: ExtendedMatch[]) {
+  filterNoise(matches: DateMatch[]) {
     return matches.filter((match) => {
       let isSubmatch = false
       const matchesLength = matches.length
