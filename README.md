@@ -1,5 +1,8 @@
 [![@zxcvbn-ts/core](https://badgen.net/bundlephobia/min/@zxcvbn-ts/core)](https://bundlephobia.com/result?p=@zxcvbn-ts/core)
 [![@zxcvbn-ts/core](https://badgen.net/npm/v/@zxcvbn-ts/core)](https://www.npmjs.com/package/@zxcvbn-ts/core)
+[![@zxcvbn-ts/core](https://img.shields.io/github/license/zxcvbn-ts/zxcvbn)](LICENSE.txt)
+[![@zxcvbn-ts/core](https://img.shields.io/github/workflow/status/zxcvbn-ts/zxcvbn/Build)](https://github.com/zxcvbn-ts/zxcvbn/actions/workflows/build.js.yml)
+
 
 # zxcvbn-ts
 
@@ -49,3 +52,12 @@ Please feel free to [open up an issue](https://github.com/zxcvbn-ts/zxcvbn/issue
 
 ## Language packages
 If your language is missing as a language pack checkout the [guide](https://zxcvbn-ts.github.io/zxcvbn/guide/Languages/#add-a-new-language-package) to add your own.
+
+
+#ideas
+- Dictionary matching has the ability to use Levenshtein Distance (LD) calculations to match passwords which are non-exact matches to a dictionary entry.
+- make the const options customizable
+- language based keyboard layout, QWERTY-UK (BS 4822), JIS, maybe JCUKEN(https://github.com/dropbox/zxcvbn/issues/190)
+- strength meter
+- add loader for dictionaries (https://github.com/dropbox/zxcvbn/issues/212 https://github.com/dropbox/zxcvbn/issues/90)
+- fix links in documentations
