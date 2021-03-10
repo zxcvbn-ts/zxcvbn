@@ -18,7 +18,7 @@ export default {
     namesByThemselves: 'Voor- en achternamen op zich zijn makkelijk te raden.',
     commonNames:
       'Veelvoorkomende voor- en achternamen zijn makkelijk te raden.',
-    userInputs: 'Je moet je persoonlijke informatie niet gebruiken.',
+    userInputs: 'Er mogen geen persoonlijke gegevens zijn.',
   },
   suggestions: {
     l33t: "Vermijd voorspelbare vervangingen, zoals '@' voor 'a'.",

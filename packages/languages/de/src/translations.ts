@@ -17,7 +17,7 @@ export default {
     wordByItself: 'Einzelne Wörter sind leicht zu erraten.',
     namesByThemselves: 'Einzelne Namen oder Nachnamen sind leicht zu erraten.',
     commonNames: 'Vornamen und Nachnamen sind leicht zu erraten.',
-    userInputs: 'Sie sollten Ihre persönlichen Daten nicht benutzen.',
+    userInputs: 'Es sollten keine persönlichen Daten vorhanden sein.',
   },
   suggestions: {
     l33t: "Vermeiden Sie vorhersehbare Buchstabenersetzungen wie '@' für 'a'.",
