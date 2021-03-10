@@ -1,5 +1,8 @@
 [![@zxcvbn-ts/core](https://badgen.net/bundlephobia/min/@zxcvbn-ts/core)](https://bundlephobia.com/result?p=@zxcvbn-ts/core)
 [![@zxcvbn-ts/core](https://badgen.net/npm/v/@zxcvbn-ts/core)](https://www.npmjs.com/package/@zxcvbn-ts/core)
+[![@zxcvbn-ts/core](https://img.shields.io/github/license/zxcvbn-ts/zxcvbn)](LICENSE.txt)
+[![@zxcvbn-ts/core](https://img.shields.io/github/workflow/status/zxcvbn-ts/zxcvbn/Build)](https://github.com/zxcvbn-ts/zxcvbn/actions/workflows/build.js.yml)
+
 
 # zxcvbn-ts
 
