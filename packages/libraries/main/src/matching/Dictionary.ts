@@ -42,7 +42,7 @@ class MatchDictionary {
         }
       }
     })
-    return sorted(matches)
+    return sorted(matches) as DictionaryMatch[]
   }
 }
 
