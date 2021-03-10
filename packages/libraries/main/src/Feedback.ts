@@ -1,6 +1,13 @@
 import { START_UPPER, ALL_UPPER_INVERTED } from './data/const'
 import Options from './Options'
-import { ExtendedMatch, FeedbackType } from './types'
+import {
+  DictionaryMatch,
+  Estimate,
+  FeedbackType,
+  MatchEstimated,
+  RepeatMatch,
+  SpatialMatch,
+} from './types'
 
 /*
  * -------------------------------------------------------------------------------
@@ -24,7 +31,7 @@ class Feedback {
     )
   }
 
-  getFeedback(score: number, sequence: ExtendedMatch[]) {
+  getFeedback(score: number, sequence: MatchEstimated[]) {
     if (sequence.length === 0) {
       return this.defaultFeedback
     }
@@ -51,10 +58,10 @@ class Feedback {
     return feedback
   }
 
-  getLongestMatch(sequence: ExtendedMatch[]) {
+  getLongestMatch(sequence: MatchEstimated[]) {
     let longestMatch = sequence[0]
     const slicedSequence = sequence.slice(1)
-    slicedSequence.forEach((match: ExtendedMatch) => {
+    slicedSequence.forEach((match: MatchEstimated) => {
       if (match.token.length > longestMatch.token.length) {
         longestMatch = match
       }
@@ -62,7 +69,7 @@ class Feedback {
     return longestMatch
   }
 
-  getMatchFeedback(match: ExtendedMatch, isSoleMatch: Boolean) {
+  getMatchFeedback(match: MatchEstimated, isSoleMatch: Boolean) {
     switch (match.pattern) {
       case 'dictionary':
         return this.getDictionaryMatchFeedback(match, isSoleMatch)
@@ -103,7 +110,7 @@ class Feedback {
     }
   }
 
-  getSpatialMatchFeedback(match: ExtendedMatch) {
+  getSpatialMatchFeedback(match: SpatialMatch) {
     let warning = Options.translations.warnings.keyPattern
     if (match.turns === 1) {
       warning = Options.translations.warnings.straightRow
@@ -114,7 +121,7 @@ class Feedback {
     }
   }
 
-  getRepeatMatchFeedback(match: ExtendedMatch) {
+  getRepeatMatchFeedback(match: RepeatMatch) {
     let warning = Options.translations.warnings.extendedRepeat
     if (match.baseToken.length === 1) {
       warning = Options.translations.warnings.simpleRepeat
@@ -126,7 +133,10 @@ class Feedback {
     }
   }
 
-  getDictionaryMatchFeedback(match: ExtendedMatch, isSoleMatch: Boolean) {
+  getDictionaryMatchFeedback(
+    match: DictionaryMatch & Estimate,
+    isSoleMatch: Boolean,
+  ) {
     const warning = this.getDictionaryWarning(match, isSoleMatch)
     const suggestions: string[] = []
     const word = match.token
@@ -148,7 +158,10 @@ class Feedback {
     }
   }
 
-  getDictionaryWarning(match: ExtendedMatch, isSoleMatch: Boolean) {
+  getDictionaryWarning(
+    match: DictionaryMatch & Estimate,
+    isSoleMatch: Boolean,
+  ) {
     let warning = ''
     const dictName = match.dictionaryName
     const isAName =
@@ -165,7 +178,10 @@ class Feedback {
     return warning
   }
 
-  getDictionaryWarningPassword(match: ExtendedMatch, isSoleMatch: Boolean) {
+  getDictionaryWarningPassword(
+    match: DictionaryMatch & Estimate,
+    isSoleMatch: Boolean,
+  ) {
     let warning = ''
     if (isSoleMatch && !match.l33t && !match.reversed) {
       if (match.rank <= 10) {
@@ -181,7 +197,7 @@ class Feedback {
     return warning
   }
 
-  getDictionaryWarningWikipedia(match: ExtendedMatch, isSoleMatch: Boolean) {
+  getDictionaryWarningWikipedia(match: DictionaryMatch, isSoleMatch: Boolean) {
     let warning = ''
     if (isSoleMatch) {
       warning = Options.translations.warnings.wordByItself
@@ -189,7 +205,7 @@ class Feedback {
     return warning
   }
 
-  getDictionaryWarningNames(match: ExtendedMatch, isSoleMatch: Boolean) {
+  getDictionaryWarningNames(match: DictionaryMatch, isSoleMatch: Boolean) {
     if (isSoleMatch) {
       return Options.translations.warnings.namesByThemselves
     }

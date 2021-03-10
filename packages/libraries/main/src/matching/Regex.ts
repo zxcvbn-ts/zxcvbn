@@ -1,6 +1,6 @@
 import { REGEXEN } from '../data/const'
 import { sorted } from '../helper'
-import { ExtendedMatch } from '../types'
+import { RegexMatch } from '../types'
 
 interface RegexMatchOptions {
   password: string
@@ -15,14 +15,13 @@ type RegexesKeys = keyof typeof REGEXEN
  */
 class MatchRegex {
   match({ password, regexes = REGEXEN }: RegexMatchOptions) {
-    const matches: ExtendedMatch[] = []
+    const matches: RegexMatch[] = []
     Object.keys(regexes).forEach((name) => {
       const regex = regexes[name as RegexesKeys]
       regex.lastIndex = 0 // keeps regexMatch stateless
       const regexMatch = regex.exec(password)
       if (regexMatch) {
         const token = regexMatch[0]
-        // @ts-ignore
         matches.push({
           pattern: 'regex',
           token,

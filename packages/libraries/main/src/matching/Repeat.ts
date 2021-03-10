@@ -1,4 +1,4 @@
-import { ExtendedMatch } from '../types'
+import { RepeatMatch } from '../types'
 import scoring from '../scoring'
 import Matching from '../Matching'
 
@@ -13,7 +13,7 @@ interface RepeatMatchOptions {
  */
 class MatchRepeat {
   match({ password, omniMatch }: RepeatMatchOptions) {
-    const matches: ExtendedMatch[] = []
+    const matches: RepeatMatch[] = []
     let lastIndex = 0
     while (lastIndex < password.length) {
       const greedyMatch = this.getGreedyMatch(password, lastIndex)
@@ -27,7 +27,6 @@ class MatchRepeat {
         const j = match.index + match[0].length - 1
         const baseGuesses = this.getBaseGuesses(baseToken, omniMatch)
 
-        // @ts-ignore
         matches.push({
           pattern: 'repeat',
           i: match.index,
