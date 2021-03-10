@@ -16,8 +16,8 @@ Options.setOptions({
 describe('dictionary matching', () => {
   describe('Default dictionary', () => {
     const matchDictionary = new MatchDictionary()
-    const matches = matchDictionary.match({ password: 'i' })
-    const patterns = ['i']
+    const matches = matchDictionary.match({ password: 'we' })
+    const patterns = ['we']
     const msg = 'default dictionaries'
     const ijs: number[][] = [[0, 2]]
     checkMatches(msg, matches, 'dictionary', patterns, ijs, {
