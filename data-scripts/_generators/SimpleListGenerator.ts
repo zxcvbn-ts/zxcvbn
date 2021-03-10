@@ -10,6 +10,7 @@ type Options = {
   encoding?: string
   hasOccurrences: boolean
   minOccurrences: number
+  minLength: number
 }
 
 const defaultOptions: Options = {
@@ -20,6 +21,7 @@ const defaultOptions: Options = {
   toLowerCase: true,
   hasOccurrences: false,
   minOccurrences: 500,
+  minLength: 2,
 }
 
 export default class SimpleListGenerator {
@@ -44,6 +46,15 @@ export default class SimpleListGenerator {
       return iconv.decode(result.data, this.options.encoding)
     }
     return result.data
+  }
+
+  private filterMinLength() {
+    if (this.options.minLength) {
+      console.info('Filtering password that are to short')
+      this.data = this.data.filter((item) => {
+        return item.length >= this.options.minLength
+      })
+    }
   }
 
   private filterOccurrences() {
@@ -103,6 +114,7 @@ export default class SimpleListGenerator {
     this.trimWhitespaces()
     this.convertToLowerCase()
     this.removeDuplicates()
+    this.filterMinLength()
     return this.data
   }
 }
