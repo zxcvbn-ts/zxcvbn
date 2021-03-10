@@ -81,7 +81,7 @@ describe('main', () => {
       },
       feedback: {
         suggestions: [zxcvbnEnPackage.translations.suggestions.anotherWord],
-        warning: '',
+        warning: zxcvbnEnPackage.translations.warnings.userInputs,
       },
       guesses: 2,
       guessesLog10: 0.30102999566398114,

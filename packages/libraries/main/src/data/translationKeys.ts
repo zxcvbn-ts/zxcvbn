@@ -14,6 +14,7 @@ export default {
     wordByItself: 'wordByItself',
     namesByThemselves: 'namesByThemselves',
     commonNames: 'commonNames',
+    userInputs: 'userInputs',
   },
   suggestions: {
     l33t: 'l33t',

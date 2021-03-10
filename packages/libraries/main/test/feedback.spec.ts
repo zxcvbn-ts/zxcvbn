@@ -226,6 +226,18 @@ describe('feedback', () => {
         warning: translations.warnings.commonNames,
         suggestions: [translations.suggestions.anotherWord],
       })
+
+      data = feedbackClass.getFeedback(1, [
+        // @ts-ignore
+        {
+          ...options,
+          dictionaryName: 'userInputs',
+        },
+      ])
+      expect(data).toEqual({
+        warning: translations.warnings.userInputs,
+        suggestions: [translations.suggestions.anotherWord],
+      })
     })
 
     it('should return feedback for spatial', () => {
