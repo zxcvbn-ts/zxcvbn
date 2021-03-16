@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { promises as fs } from 'fs'
+import * as JSZip from 'jszip';
 
 export type Options = {
     url: string
@@ -60,9 +61,6 @@ export class TxtGenerator {
     }
 
     public async run(output: string) {
-        var request = require('request');
-        var JSZip = require("jszip");
-
         // Download the file
         console.info('Fetching file')
         const response = await axios.get(this.options.url, {
@@ -80,7 +78,7 @@ export class TxtGenerator {
             return alltextlines;
 			
         });
-		 for (let i = 0; i < content.length; i++) {
+		 for (let i = 0; i < content.length; i += 1) {
 			 if(i > this.options.row) {
                 // split content 
 				const regexstring = this.options.separator;
@@ -92,7 +90,7 @@ export class TxtGenerator {
 				if (line[this.options.occurence_column]) {
 					occurence = line[this.options.occurence_column];
 				}
-				if (isNaN(+occurence)) {
+				if (Number.isNaN(+occurence)) {
 					throw new Error(`Expecting number at column ${this.options.occurence_column}`)
 				}
 				if (occurence < this.options.minOccurrences) {
