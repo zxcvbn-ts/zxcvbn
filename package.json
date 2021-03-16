@@ -92,5 +92,8 @@
     "scoring",
     "entropy",
     "bruteforce"
-  ]
+  ],
+  "dependencies": {
+    "jszip": "^3.6.0"
+  }
 }
