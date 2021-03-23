@@ -20,6 +20,7 @@ export default {
       'Des noms ou des prénoms simples sont faciles à deviner.',
     commonNames:
       'Les noms communs et les noms de famille sont faciles à deviner.',
+	userInputs: 'Le mot de passe ne doit pas comporter de données personelles.'
   },
   suggestions: {
     l33t: "Évitez les substitutions de lettres prévisibles comme '@' pour 'a'.",
