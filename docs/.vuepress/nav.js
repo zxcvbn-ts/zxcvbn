@@ -7,6 +7,6 @@ module.exports = [
   },
   {
     text: 'Changelog',
-    link: `${pkg.homepage}/blob/master/CHANGELOG.md`,
+    link: `${pkg.homepage}/blob/master/packages/libraries/main/CHANGELOG.md`,
   },
 ]
