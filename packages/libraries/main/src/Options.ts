@@ -3,13 +3,11 @@ import {
   TranslationKeys,
   OptionsType,
   OptionsDictionary,
-  DefaultAdjacencyGraphsKeys,
   OptionsL33tTable,
   OptionsGraph,
   RankedDictionaries,
 } from './types'
 import l33tTable from './data/l33tTable'
-import graphs from './data/adjacencyGraphs'
 import translationKeys from './data/translationKeys'
 
 class Options {
@@ -23,13 +21,12 @@ class Options {
 
   translations: TranslationKeys = translationKeys
 
-  graphs: OptionsGraph = graphs
+  graphs: OptionsGraph = {}
 
-  availableGraphs: DefaultAdjacencyGraphsKeys[] = []
+  availableGraphs: string[] = []
 
   constructor() {
     this.setRankedDictionaries()
-    this.setAdjacencyGraphs(graphs)
   }
 
   setOptions(options: OptionsType = {}) {
@@ -48,7 +45,7 @@ class Options {
     }
 
     if (options.graphs) {
-      this.setAdjacencyGraphs(options.graphs)
+      this.graphs = options.graphs
     }
   }
 
@@ -101,15 +98,6 @@ class Options {
       }
     })
     this.rankedDictionaries = rankedDictionaries
-  }
-
-  setAdjacencyGraphs(adjacencyGraphs: OptionsGraph) {
-    if (adjacencyGraphs) {
-      this.graphs = adjacencyGraphs
-      this.availableGraphs = Object.keys(
-        adjacencyGraphs,
-      ) as DefaultAdjacencyGraphsKeys[]
-    }
   }
 }
 

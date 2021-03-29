@@ -148,6 +148,10 @@ const buildGraph = (layoutStr: string, slanted: boolean) => {
 
   return adjacencyGraph
 }
+const getDirectories = (source: string) =>
+  readdirSync(source, { withFileTypes: true })
+    .filter((dirent) => dirent.isDirectory())
+    .map((dirent) => dirent.name)
 
 const getFiles = (source: string) =>
   readdirSync(source, { withFileTypes: true })
@@ -156,28 +160,31 @@ const getFiles = (source: string) =>
 
 export default class KeyboardAdjacencyGraph {
   run() {
-    const layoutFolder = path.join(__dirname, '..', 'keyboardLayouts')
-    const graphs: LooseObject = {}
-    const files = getFiles(layoutFolder)
-    files.forEach((file) => {
-      // eslint-disable-next-line global-require,import/no-dynamic-require
-      const fileData = require(`${layoutFolder}/${file}`)
-      const layout = fileData.default
-      const graph = buildGraph(layout.layout, layout.slanted)
+    const scriptsFolder = path.join(__dirname, '..')
+    const layoutsFolder = `${scriptsFolder}/keyboardLayouts`
+    const languages = getDirectories(layoutsFolder)
+    languages.forEach((language) => {
+      const layouts = `${layoutsFolder}/${language}`
+      const graphs: LooseObject = {}
+      const files = getFiles(layouts)
+      files.forEach((file) => {
+        // eslint-disable-next-line global-require,import/no-dynamic-require
+        const fileData = require(`${layouts}/${file}`)
+        const layout = fileData.default
+        const graph = buildGraph(layout.layout, layout.slanted)
 
-      const filename = file.split('.')[0]
-      graphs[filename] = graph
+        const filename = file.split('.')[0]
+        graphs[filename] = graph
+      })
+      const graphFile = path.join(
+        __dirname,
+        '../..',
+        `packages/languages/${language}/src/adjacencyGraphs.json`,
+      )
+
+      fs.writeFileSync(graphFile, JSON.stringify(graphs))
     })
 
-    const graphFile = path.join(
-      __dirname,
-      '../..',
-      `packages/libraries/main/src/data/adjacencyGraphs.ts`,
-    )
-
-    fs.writeFileSync(graphFile, `export default ${JSON.stringify(graphs)}`)
-
-    execSync(`eslint --ext .ts --fix --cache ${graphFile}`)
-    return graphs
+    return true
   }
 }

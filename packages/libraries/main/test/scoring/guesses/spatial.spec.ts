@@ -1,7 +1,10 @@
 import spatialGuesses from '../../../src/scoring/guesses/spatial'
+import zxcvbnCommonPackage from '../../../../../languages/common/src'
 import Options from '../../../src/Options'
 
-Options.setOptions()
+Options.setOptions({
+  graphs: zxcvbnCommonPackage.adjacencyGraphs,
+})
 
 describe('scoring: guesses spatial', () => {
   it('with no turns or shifts, guesses is starts * degree * (len-1)', () => {

@@ -8,6 +8,7 @@ ZxcvbnOptions.setOptions({
     ...zxcvbnCommonPackage.dictionary,
     ...zxcvbnEnPackage.dictionary,
   },
+  graphs: zxcvbnCommonPackage.adjacencyGraphs,
   translations: zxcvbnEnPackage.translations,
 })
 

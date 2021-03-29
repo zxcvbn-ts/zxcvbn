@@ -1,10 +1,7 @@
-import defaultAdjacencyGraphs from './data/adjacencyGraphs'
 import translationKeys from './data/translationKeys'
 import l33tTableDefault from './data/l33tTable'
 import { REGEXEN } from './data/const'
 
-export type DefaultAdjacencyGraphsKeys = keyof typeof defaultAdjacencyGraphs
-export type DefaultAdjacencyGraphs = typeof defaultAdjacencyGraphs
 export type TranslationKeys = typeof translationKeys
 export type L33tTableDefault = typeof l33tTableDefault
 
@@ -52,7 +49,7 @@ export interface L33tMatch extends DictionaryMatch {
 
 export interface SpatialMatch extends Match {
   pattern: 'spatial'
-  graph: DefaultAdjacencyGraphsKeys
+  graph: string
   turns: number
   shiftedCount: number
 }
@@ -154,16 +151,19 @@ export type OptionsL33tTable =
   | {
       [key: string]: string[]
     }
+
 export type OptionsDictionary = {
   [key: string]: string[] | number[]
 }
-export type OptionsGraph =
-  | DefaultAdjacencyGraphs
-  | {
-      [key: string]: {
-        [key: string]: string[]
-      }
-    }
+
+export interface OptionsGraphEntry {
+  [key: string]: (string | null)[]
+}
+
+export interface OptionsGraph {
+  [key: string]: OptionsGraphEntry
+}
+
 export interface OptionsType {
   translations?: TranslationKeys
   graphs?: OptionsGraph
