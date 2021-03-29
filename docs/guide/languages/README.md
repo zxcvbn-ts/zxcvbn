@@ -49,6 +49,25 @@ ZxcvbnOptions.setOptions(options)
 zxcvbn(password)
 ```
 
+
+## Keyboard patterns
+By default zxcvbn-ts don't use any keyboard patterns to let the developer decided how much of the library will be used.
+It is recommended to use at least the common keyboard patterns.
+
+```js
+import { zxcvbn, ZxcvbnOptions } from '@zxcvbn-ts/core'
+import zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
+
+const password = 'somePassword'
+const options = {
+  graphs: zxcvbnCommonPackage.adjacencyGraphs,
+}
+
+ZxcvbnOptions.setOptions(options)
+
+zxcvbn(password)
+```
+
 ## Add a new language package
 
 To add a missing language package you need to do the following things:

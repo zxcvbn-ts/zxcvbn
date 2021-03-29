@@ -21,6 +21,7 @@ import zxcvbnEnPackage from '@zxcvbn-ts/language-en'
 const password = 'somePassword'
 const options = {
   translations: zxcvbnEnPackage.translations,
+  graphs: zxcvbnCommonPackage.adjacencyGraphs,
   dictionary: {
     ...zxcvbnCommonPackage.dictionary,
     ...zxcvbnEnPackage.dictionary,
@@ -47,6 +48,7 @@ For example with the CDN jsdelivr
         // all package will be available under zxcvbnts
         const options = {
           translations: zxcvbnts['language-en'].translations,
+          graphs: zxcvbnts['language-common'].adjacencyGraphs,
           dictionary: {
             ...zxcvbnts['language-common'].dictionary,
             ...zxcvbnts['language-en'].dictionary,
@@ -127,8 +129,8 @@ The `esm` build is for modern browser and includes ES5 or higher.
 If you want to use it and want to include own polyfills you need to transpile it within your build process.
 
 ## Change prior to original library
-- I18n support for feedback and dictionaries. By default, the feedback are keys now
-- All dictionaries are optional but highly recommend (wished feature in some issues)
+- I18n support for feedback, dictionaries and keyboard patterns. By default, the feedback are keys now
+- All dictionaries are optional but the en dictionary highly recommend (wished feature in some issues)
 - Dictionaries are separated from the core library. This means zxcvbn-ts is relative small without dictionaries
 - The project is a monorepo with a core library `@zxcvbn-ts/core` and language packages `@txcvbn-ts/language-en`. At the beginning, there is only a German and English language package.
 - Keyboard layouts can be customised. This means you can overwrite the default set of layouts with your own or extend it. For example if you develop a Russian website the keyboard layouts are pretty much useless. 

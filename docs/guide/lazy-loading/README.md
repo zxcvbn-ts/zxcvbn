@@ -30,6 +30,7 @@ const loadOptions = async () => {
       ...zxcvbnCommonPackage.default.dictionary,
       ...zxcvbnEnPackage.default.dictionary,
     },
+    graphs: zxcvbnCommonPackage.adjacencyGraphs,
     translations: zxcvbnEnPackage.default.translations,
   }
 }
