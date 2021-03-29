@@ -1,6 +1,7 @@
 import PasswordGenerator from './_generators/PasswordGenerator'
 import KeyboardAdjacencyGraph from './_generators/KeyboardAdjacencyGraph'
 import { ExcelGenerator } from './_generators/ExcelGenerator'
+import { TxtGenerator } from './_generators/TxtGenerator'
 
 export interface LanguageListEntry {
   source?: string
@@ -86,6 +87,37 @@ export default {
           'https://statbel.fgov.be/sites/default/files/files/documents/bevolking/5.10%20Namen%20en%20voornamen/5.10.1%20Familienamen/Familienamen_2020.xlsx',
         column: 5,
         row: 2,
+      },
+    },
+  },
+  'fr': {
+    commonWords: {
+      source:
+        'https://github.com/hermitdave/FrequencyWords/raw/master/content/2018/fr/fr_50k.txt',
+      options: { hasOccurrences: true },
+    },
+    firstnames: {
+      generator: TxtGenerator,
+      customList: true,
+      options: {
+        url:
+          'https://www.insee.fr/fr/statistiques/fichier/3536630/noms2008nat_txt.zip',
+        occurence_column: 11,
+        row: 2,
+        minOccurrences: 100,
+      },
+    },
+    lastnames: {
+      generator: TxtGenerator,
+      customList: true,
+      options: {
+        url:
+          'https://www.insee.fr/fr/statistiques/fichier/2540004/nat2019_csv.zip',
+        occurence_column: 3,
+        value_column: 1,
+        separator: ';',
+        row: 2,
+        minOccurrences: 100,
       },
     },
   },
