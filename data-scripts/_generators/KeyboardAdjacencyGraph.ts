@@ -1,6 +1,5 @@
 import fs, { readdirSync } from 'fs'
 import path from 'path'
-import { execSync } from 'child_process'
 
 interface LooseObject {
   [key: string]: any
