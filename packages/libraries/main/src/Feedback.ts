@@ -1,13 +1,10 @@
-import { START_UPPER, ALL_UPPER_INVERTED } from './data/const'
 import Options from './Options'
-import {
-  DictionaryMatch,
-  Estimate,
-  FeedbackType,
-  MatchEstimated,
-  RepeatMatch,
-  SpatialMatch,
-} from './types'
+import { FeedbackType, MatchEstimated } from './types'
+
+const defaultFeedback = {
+  warning: '',
+  suggestions: [],
+}
 
 /*
  * -------------------------------------------------------------------------------
@@ -36,10 +33,7 @@ class Feedback {
       return this.defaultFeedback
     }
     if (score > 2) {
-      return {
-        warning: '',
-        suggestions: [],
-      }
+      return defaultFeedback
     }
     const extraFeedback = Options.translations.suggestions.anotherWord
     const longestMatch = this.getLongestMatch(sequence)
@@ -70,146 +64,17 @@ class Feedback {
   }
 
   getMatchFeedback(match: MatchEstimated, isSoleMatch: Boolean) {
-    switch (match.pattern) {
-      case 'dictionary':
-        return this.getDictionaryMatchFeedback(match, isSoleMatch)
-      case 'spatial':
-        return this.getSpatialMatchFeedback(match)
-      case 'repeat':
-        return this.getRepeatMatchFeedback(match)
-      case 'sequence':
-        return {
-          warning: Options.translations.warnings.sequences,
-          suggestions: [Options.translations.suggestions.sequences],
-        }
-      case 'regex':
-        if (match.regexName === 'recentYear') {
-          return {
-            warning: Options.translations.warnings.recentYears,
-            suggestions: [
-              Options.translations.suggestions.recentYears,
-              Options.translations.suggestions.associatedYears,
-            ],
-          }
-        }
-        break
-      case 'date':
-        return {
-          warning: Options.translations.warnings.dates,
-          suggestions: [Options.translations.suggestions.dates],
-        }
-      default:
-        return {
-          warning: '',
-          suggestions: [],
-        }
-    }
-    return {
-      warning: '',
-      suggestions: [],
-    }
-  }
-
-  getSpatialMatchFeedback(match: SpatialMatch) {
-    let warning = Options.translations.warnings.keyPattern
-    if (match.turns === 1) {
-      warning = Options.translations.warnings.straightRow
-    }
-    return {
-      warning,
-      suggestions: [Options.translations.suggestions.longerKeyboardPattern],
-    }
-  }
-
-  getRepeatMatchFeedback(match: RepeatMatch) {
-    let warning = Options.translations.warnings.extendedRepeat
-    if (match.baseToken.length === 1) {
-      warning = Options.translations.warnings.simpleRepeat
+    if (
+      Options.matchers[match.pattern] &&
+      Options.matchers[match.pattern].feedback
+    ) {
+      return (Options.matchers[match.pattern].feedback as Function)(
+        match,
+        isSoleMatch,
+      )
     }
 
-    return {
-      warning,
-      suggestions: [Options.translations.suggestions.repeated],
-    }
-  }
-
-  getDictionaryMatchFeedback(
-    match: DictionaryMatch & Estimate,
-    isSoleMatch: Boolean,
-  ) {
-    const warning = this.getDictionaryWarning(match, isSoleMatch)
-    const suggestions: string[] = []
-    const word = match.token
-
-    if (word.match(START_UPPER)) {
-      suggestions.push(Options.translations.suggestions.capitalization)
-    } else if (word.match(ALL_UPPER_INVERTED) && word.toLowerCase() !== word) {
-      suggestions.push(Options.translations.suggestions.allUppercase)
-    }
-    if (match.reversed && match.token.length >= 4) {
-      suggestions.push(Options.translations.suggestions.reverseWords)
-    }
-    if (match.l33t) {
-      suggestions.push(Options.translations.suggestions.l33t)
-    }
-    return {
-      warning,
-      suggestions,
-    }
-  }
-
-  getDictionaryWarning(
-    match: DictionaryMatch & Estimate,
-    isSoleMatch: Boolean,
-  ) {
-    let warning = ''
-    const dictName = match.dictionaryName
-    const isAName =
-      dictName === 'lastnames' || dictName.toLowerCase().includes('firstnames')
-    if (dictName === 'passwords') {
-      warning = this.getDictionaryWarningPassword(match, isSoleMatch)
-    } else if (dictName.includes('wikipedia')) {
-      warning = this.getDictionaryWarningWikipedia(match, isSoleMatch)
-    } else if (isAName) {
-      warning = this.getDictionaryWarningNames(match, isSoleMatch)
-    } else if (dictName === 'userInputs') {
-      warning = Options.translations.warnings.userInputs
-    }
-    return warning
-  }
-
-  getDictionaryWarningPassword(
-    match: DictionaryMatch & Estimate,
-    isSoleMatch: Boolean,
-  ) {
-    let warning = ''
-    if (isSoleMatch && !match.l33t && !match.reversed) {
-      if (match.rank <= 10) {
-        warning = Options.translations.warnings.topTen
-      } else if (match.rank <= 100) {
-        warning = Options.translations.warnings.topHundred
-      } else {
-        warning = Options.translations.warnings.common
-      }
-    } else if (match.guessesLog10 <= 4) {
-      warning = Options.translations.warnings.similarToCommon
-    }
-    return warning
-  }
-
-  getDictionaryWarningWikipedia(match: DictionaryMatch, isSoleMatch: Boolean) {
-    let warning = ''
-    if (isSoleMatch) {
-      warning = Options.translations.warnings.wordByItself
-    }
-    return warning
-  }
-
-  getDictionaryWarningNames(match: DictionaryMatch, isSoleMatch: Boolean) {
-    if (isSoleMatch) {
-      return Options.translations.warnings.namesByThemselves
-    }
-    return Options.translations.warnings.commonNames
+    return defaultFeedback
   }
 }
 

@@ -9,8 +9,33 @@ import {
 } from './types'
 import l33tTable from './data/l33tTable'
 import translationKeys from './data/translationKeys'
+import bruteforceMatcher from './matcher/bruteforce'
+import dateMatcher from './matcher/date'
+import dictionaryMatcher from './matcher/dictionary'
+import regexMatcher from './matcher/regex'
+import repeatMatcher from './matcher/repeat'
+import sequenceMatcher from './matcher/sequence'
+import spatialMatcher from './matcher/spatial'
+
+export type Matchers = {
+  [key: string]: {
+    feedback?: Function
+    scoring: Function
+    Matching?: any
+  }
+}
 
 class Options {
+  matchers: Matchers = {
+    bruteforce: bruteforceMatcher,
+    date: dateMatcher,
+    dictionary: dictionaryMatcher,
+    regex: regexMatcher,
+    repeat: repeatMatcher,
+    sequence: sequenceMatcher,
+    spatial: spatialMatcher,
+  }
+
   l33tTable: OptionsL33tTable = l33tTable
 
   dictionary: OptionsDictionary = {

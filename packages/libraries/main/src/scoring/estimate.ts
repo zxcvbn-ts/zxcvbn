@@ -2,25 +2,9 @@ import {
   MIN_SUBMATCH_GUESSES_SINGLE_CHAR,
   MIN_SUBMATCH_GUESSES_MULTI_CHAR,
 } from '../data/const'
-import bruteforceGuesses from './guesses/bruteforce'
-import dateGuesses from './guesses/date'
-import dictionaryGuesses from './guesses/dictionary'
-import regexGuesses from './guesses/regex'
-import repeatGuesses from './guesses/repeat'
-import sequenceGuesses from './guesses/sequence'
-import spatialGuesses from './guesses/spatial'
 import utils from './utils'
 import { LooseObject, MatchEstimated, MatchExtended } from '../types'
-
-const estimationFunctions = {
-  bruteforce: bruteforceGuesses,
-  dictionary: dictionaryGuesses,
-  spatial: spatialGuesses,
-  repeat: repeatGuesses,
-  sequence: sequenceGuesses,
-  regex: regexGuesses,
-  date: dateGuesses,
-}
+import Options from '../Options'
 
 const getMinGuesses = (
   match: MatchExtended | MatchEstimated,
@@ -48,8 +32,8 @@ export default (match: MatchExtended | MatchEstimated, password: string) => {
   }
 
   const minGuesses = getMinGuesses(match, password)
-  // @ts-ignore
-  const estimationResult = estimationFunctions[match.pattern](match)
+
+  const estimationResult = Options.matchers[match.pattern].scoring(match)
   let guesses = 0
   if (typeof estimationResult === 'number') {
     guesses = estimationResult

@@ -1,5 +1,5 @@
 import estimate from '../../../src/scoring/estimate'
-import dateGuesses from '../../../src/scoring/guesses/date'
+import dateGuesses from '../../../src/matcher/date/scoring'
 
 describe('scoring', () => {
   it('estimate_guesses returns cached guesses when available', () => {
