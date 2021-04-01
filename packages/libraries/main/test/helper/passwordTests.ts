@@ -820,4 +820,51 @@ export default [
       ],
     },
   },
+  {
+    calcTime: 0,
+    password: 'zxcftzuio',
+    guesses: 12790064,
+    guessesLog10: 7.106872717643415,
+    sequence: [
+      {
+        pattern: 'bruteforce',
+        token: 'z',
+        i: 0,
+        j: 0,
+        guesses: 11,
+        guessesLog10: 1.041392685158225,
+      },
+      {
+        pattern: 'spatial',
+        i: 1,
+        j: 8,
+        token: 'xcftzuio',
+        graph: 'qwertz',
+        turns: 3,
+        shiftedCount: 0,
+        guesses: 580912,
+        guessesLog10: 5.7641103478653735,
+      },
+    ],
+    crackTimesSeconds: {
+      onlineThrottling100PerHour: 460442304,
+      onlineNoThrottling10PerSecond: 1279006.4,
+      offlineSlowHashing1e4PerSecond: 1279.0064,
+      offlineFastHashing1e10PerSecond: 0.0012790064,
+    },
+    crackTimesDisplay: {
+      onlineThrottling100PerHour: '14 years',
+      onlineNoThrottling10PerSecond: '15 days',
+      offlineSlowHashing1e4PerSecond: '21 minutes',
+      offlineFastHashing1e10PerSecond: 'less than a second',
+    },
+    score: 2,
+    feedback: {
+      warning: 'Short keyboard patterns are easy to guess.',
+      suggestions: [
+        'Add more words that are less common.',
+        'Use longer keyboard patterns and change typing direction multiple times.',
+      ],
+    },
+  },
 ]
