@@ -30,8 +30,8 @@ const estimatePossiblePatterns = ({
   graph,
   turns,
 }: EstimatePossiblePatternsOptions) => {
-  const startingPosition = calcAverageDegree(Options.graphs[graph])
-  const averageDegree = Object.keys(Options.graphs[graph]).length
+  const startingPosition = Object.keys(Options.graphs[graph]).length
+  const averageDegree = calcAverageDegree(Options.graphs[graph])
 
   let guesses = 0
   const tokenLength = token.length

@@ -50,6 +50,6 @@ describe('scoring: guesses spatial', () => {
     }
 
     // @ts-ignore
-    expect(spatialGuesses(match)).toEqual(211042800)
+    expect(spatialGuesses(match)).toEqual(558461)
   })
 })
