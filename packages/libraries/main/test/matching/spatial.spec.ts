@@ -1,8 +1,10 @@
 import MatchSpatial from '../../src/matching/Spatial'
 import checkMatches from '../helper/checkMatches'
-import adjacencyGraphs from '../../src/data/adjacencyGraphs'
+import zxcvbnCommonPackage from '../../../../languages/common/src'
 import Options from '../../src/Options'
 import { LooseObject } from '../../src/types'
+
+const { adjacencyGraphs } = zxcvbnCommonPackage
 
 describe('spatial matching', () => {
   it("doesn't match 1- and 2-character spatial patterns", () => {

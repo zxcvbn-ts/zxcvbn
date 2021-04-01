@@ -1,6 +1,6 @@
 import { sorted, extend } from '../helper'
 import Options from '../Options'
-import { DefaultAdjacencyGraphsKeys, LooseObject, SpatialMatch } from '../types'
+import { LooseObject, SpatialMatch } from '../types'
 
 interface SpatialMatchOptions {
   password: string
@@ -16,11 +16,8 @@ class MatchSpatial {
   match({ password }: SpatialMatchOptions) {
     const matches: SpatialMatch[] = []
     Object.keys(Options.graphs).forEach((graphName) => {
-      const graph = Options.graphs[graphName as DefaultAdjacencyGraphsKeys]
-      extend(
-        matches,
-        this.helper(password, graph, graphName as DefaultAdjacencyGraphsKeys),
-      )
+      const graph = Options.graphs[graphName]
+      extend(matches, this.helper(password, graph, graphName))
     })
     return sorted(matches)
   }
@@ -37,11 +34,7 @@ class MatchSpatial {
   }
 
   // eslint-disable-next-line complexity, max-statements
-  helper(
-    password: string,
-    graph: LooseObject,
-    graphName: DefaultAdjacencyGraphsKeys,
-  ) {
+  helper(password: string, graph: LooseObject, graphName: string) {
     let shiftedCount
     const matches: SpatialMatch[] = []
     let i = 0

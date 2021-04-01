@@ -1,16 +1,16 @@
 import utils from '../utils'
 import Options from '../../Options'
-import { DefaultAdjacencyGraphsKeys, LooseObject } from '../../types'
+import { LooseObject } from '../../types'
 
 interface EstimatePossiblePatternsOptions {
   token: string
-  graph: DefaultAdjacencyGraphsKeys
+  graph: string
   turns: number
 }
 
 interface SpatialOptions {
   token: string
-  graph: DefaultAdjacencyGraphsKeys
+  graph: string
   turns: number
   shiftedCount: number
 }

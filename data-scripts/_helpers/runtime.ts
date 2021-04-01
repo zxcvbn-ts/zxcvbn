@@ -105,12 +105,17 @@ export default class ListHandler {
       const imports = files
         .map((file) => `import ${file.replace('.json', '')} from "./${file}"`)
         .join('\n')
+
+      const hasAdjacencyGraphs = files.includes('adjacencyGraphs.json')
+
+      const filesToIgnore = ['translations', 'adjacencyGraphs']
       const dictionaryExports = files
         .map((file) => file.replace('.json', ''))
-        .filter((file) => file !== 'translations')
+        .filter((file) => !filesToIgnore.includes(file))
         .join(',\n  ')
 
       const translations = isCommon ? '' : 'translations,'
+      const adjacencyGraphs = hasAdjacencyGraphs ? 'adjacencyGraphs,' : ''
 
       fs.writeFileSync(
         indexPath,
@@ -124,6 +129,7 @@ export default {
       ${dictionaryExports}
     },
     ${translations}
+    ${adjacencyGraphs}
 }`,
       )
       try {
