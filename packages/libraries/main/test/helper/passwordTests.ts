@@ -877,21 +877,21 @@ export default [
       onlineThrottling100PerHour: 36,
       onlineNoThrottling10PerSecond: 0.1,
       offlineSlowHashing1e4PerSecond: 0.0001,
-      offlineFastHashing1e10PerSecond: 1e-10
+      offlineFastHashing1e10PerSecond: 1e-10,
     },
     crackTimesDisplay: {
       onlineThrottling100PerHour: '36 seconds',
       onlineNoThrottling10PerSecond: 'less than a second',
       offlineSlowHashing1e4PerSecond: 'less than a second',
-      offlineFastHashing1e10PerSecond: 'less than a second'
+      offlineFastHashing1e10PerSecond: 'less than a second',
     },
     score: 0,
     feedback: {
       warning: '',
       suggestions: [
         'Use multiple words, but avoid common phrases.',
-        'You can create strong passwords without using symbols, numbers, or uppercase letters.'
-      ]
-    }
+        'You can create strong passwords without using symbols, numbers, or uppercase letters.',
+      ],
+    },
   },
 ]
