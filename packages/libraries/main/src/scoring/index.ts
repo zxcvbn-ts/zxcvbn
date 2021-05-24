@@ -102,7 +102,8 @@ const scoringHelper = {
     let sequenceLength = 0
     let g = 2e308
     const temp = this.optimal.g[k]
-    if (temp) { // safety check for empty passwords
+    // safety check for empty passwords
+    if (temp) {
       Object.keys(temp).forEach((candidateSequenceLength) => {
         const candidateMetricMatch = temp[candidateSequenceLength]
         if (candidateMetricMatch < g) {
