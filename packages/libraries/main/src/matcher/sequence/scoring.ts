@@ -1,9 +1,6 @@
-export interface SequenceOptions {
-  token: string
-  ascending: boolean
-}
+import { MatchEstimated, MatchExtended } from '../../types'
 
-export default ({ token, ascending }: SequenceOptions) => {
+export default ({ token, ascending }: MatchExtended | MatchEstimated) => {
   const firstChr = token.charAt(0)
   let baseGuesses = 0
   const startingPoints = ['a', 'A', 'z', 'Z', '0', '1', '9']

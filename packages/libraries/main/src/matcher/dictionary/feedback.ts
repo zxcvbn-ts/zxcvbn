@@ -1,10 +1,10 @@
 import Options from '../../Options'
-import { DictionaryMatch, Estimate } from '../../types'
+import { MatchEstimated, MatchExtended } from '../../types'
 import { ALL_UPPER_INVERTED, START_UPPER } from '../../data/const'
 
 const getDictionaryWarningPassword = (
-  match: DictionaryMatch & Estimate,
-  isSoleMatch: Boolean,
+  match: MatchExtended | MatchEstimated,
+  isSoleMatch?: Boolean,
 ) => {
   let warning = ''
   if (isSoleMatch && !match.l33t && !match.reversed) {
@@ -22,8 +22,8 @@ const getDictionaryWarningPassword = (
 }
 
 const getDictionaryWarningWikipedia = (
-  match: DictionaryMatch,
-  isSoleMatch: Boolean,
+  match: MatchExtended | MatchEstimated,
+  isSoleMatch?: Boolean,
 ) => {
   let warning = ''
   if (isSoleMatch) {
@@ -33,8 +33,8 @@ const getDictionaryWarningWikipedia = (
 }
 
 const getDictionaryWarningNames = (
-  match: DictionaryMatch,
-  isSoleMatch: Boolean,
+  match: MatchExtended | MatchEstimated,
+  isSoleMatch?: Boolean,
 ) => {
   if (isSoleMatch) {
     return Options.translations.warnings.namesByThemselves
@@ -43,8 +43,8 @@ const getDictionaryWarningNames = (
 }
 
 const getDictionaryWarning = (
-  match: DictionaryMatch & Estimate,
-  isSoleMatch: Boolean,
+  match: MatchExtended | MatchEstimated,
+  isSoleMatch?: Boolean,
 ) => {
   let warning = ''
   const dictName = match.dictionaryName
@@ -62,7 +62,10 @@ const getDictionaryWarning = (
   return warning
 }
 
-export default (match: DictionaryMatch & Estimate, isSoleMatch: Boolean) => {
+export default (
+  match: MatchExtended | MatchEstimated,
+  isSoleMatch?: Boolean,
+) => {
   const warning = getDictionaryWarning(match, isSoleMatch)
   const suggestions: string[] = []
   const word = match.token

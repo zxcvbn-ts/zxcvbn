@@ -1,12 +1,11 @@
 import { MIN_YEAR_SPACE, REFERENCE_YEAR } from '../../data/const'
+import { MatchEstimated, MatchExtended } from '../../types'
 
-export interface RegexOptions {
-  regexName: string
-  regexMatch: string[]
-  token: string
-}
-
-export default ({ regexName, regexMatch, token }: RegexOptions) => {
+export default ({
+  regexName,
+  regexMatch,
+  token,
+}: MatchExtended | MatchEstimated) => {
   const charClassBases = {
     alphaLower: 26,
     alphaUpper: 26,

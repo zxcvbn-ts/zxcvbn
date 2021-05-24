@@ -16,11 +16,13 @@ import regexMatcher from './matcher/regex'
 import repeatMatcher from './matcher/repeat'
 import sequenceMatcher from './matcher/sequence'
 import spatialMatcher from './matcher/spatial'
+import { defaultFeedbackFunction } from './Feedback'
+import { defaultScoringFunction } from './scoring/estimate'
 
 export type Matchers = {
   [key: string]: {
-    feedback?: Function
-    scoring: Function
+    feedback?: typeof defaultFeedbackFunction
+    scoring: typeof defaultScoringFunction
     Matching?: any
   }
 }

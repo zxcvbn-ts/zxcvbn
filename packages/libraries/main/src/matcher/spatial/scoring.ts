@@ -1,18 +1,11 @@
 import utils from '../../scoring/utils'
 import Options from '../../Options'
-import { LooseObject } from '../../types'
+import { LooseObject, MatchEstimated, MatchExtended } from '../../types'
 
 interface EstimatePossiblePatternsOptions {
   token: string
   graph: string
   turns: number
-}
-
-interface SpatialOptions {
-  token: string
-  graph: string
-  turns: number
-  shiftedCount: number
 }
 
 const calcAverageDegree = (graph: LooseObject) => {
@@ -45,7 +38,12 @@ const estimatePossiblePatterns = ({
   return guesses
 }
 
-export default ({ graph, token, shiftedCount, turns }: SpatialOptions) => {
+export default ({
+  graph,
+  token,
+  shiftedCount,
+  turns,
+}: MatchExtended | MatchEstimated) => {
   let guesses = estimatePossiblePatterns({ token, graph, turns })
 
   // add extra guesses for shifted keys. (% instead of 5, A instead of a.)

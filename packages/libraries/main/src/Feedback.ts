@@ -1,10 +1,20 @@
 import Options from './Options'
-import { FeedbackType, MatchEstimated } from './types'
+import { FeedbackType, MatchEstimated, MatchExtended } from './types'
+
+export interface FeedbackReturnValue {
+  warning: string
+  suggestions: string[]
+}
 
 const defaultFeedback = {
   warning: '',
   suggestions: [],
 }
+
+export const defaultFeedbackFunction = (
+  _match: MatchExtended | MatchEstimated,
+  _isSoleMatch?: Boolean,
+): FeedbackReturnValue | null => defaultFeedback
 
 /*
  * -------------------------------------------------------------------------------

@@ -1,11 +1,7 @@
 import { MIN_YEAR_SPACE, REFERENCE_YEAR } from '../../data/const'
+import { MatchEstimated, MatchExtended } from '../../types'
 
-export interface DateOptions {
-  year: number
-  separator: string
-}
-
-export default ({ year, separator }: DateOptions) => {
+export default ({ year, separator }: MatchExtended | MatchEstimated) => {
   // base guesses: (year distance from REFERENCE_YEAR) * num_days * num_years
   const yearSpace = Math.max(Math.abs(year - REFERENCE_YEAR), MIN_YEAR_SPACE)
 

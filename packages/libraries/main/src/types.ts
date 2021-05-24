@@ -17,6 +17,7 @@ export type Pattern =
   | 'regex'
   | 'date'
   | 'bruteforce'
+  | string
 
 export type DictionaryNames =
   | 'passwords'
@@ -31,6 +32,7 @@ export interface Match {
   i: number
   j: number
   token: string
+  [key: string]: any
 }
 
 export interface DictionaryMatch extends Match {
@@ -94,6 +96,7 @@ export type MatchExtended =
   | RegexMatch
   | DateMatch
   | BruteForceMatch
+  | Match
 
 export interface Estimate {
   guesses: number

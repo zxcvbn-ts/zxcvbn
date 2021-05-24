@@ -1,7 +1,7 @@
 import Options from '../../Options'
-import { SpatialMatch } from '../../types'
+import { MatchEstimated, MatchExtended } from '../../types'
 
-export default (match: SpatialMatch) => {
+export default (match: MatchExtended | MatchEstimated) => {
   let warning = Options.translations.warnings.keyPattern
   if (match.turns === 1) {
     warning = Options.translations.warnings.straightRow

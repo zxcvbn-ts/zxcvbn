@@ -1,7 +1,4 @@
-export interface RepeatOptions {
-  baseGuesses: number
-  repeatCount: number
-}
+import { MatchEstimated, MatchExtended } from '../../types'
 
-export default ({ baseGuesses, repeatCount }: RepeatOptions) =>
+export default ({ baseGuesses, repeatCount }: MatchExtended | MatchEstimated) =>
   baseGuesses * repeatCount
