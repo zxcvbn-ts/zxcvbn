@@ -176,9 +176,9 @@ describe('feedback', () => {
       })
 
       data = feedbackClass.getFeedback(1, [
+        // @ts-ignore
         {
           ...options,
-          // @ts-ignore
           dictionaryName: 'test_name',
         },
       ])

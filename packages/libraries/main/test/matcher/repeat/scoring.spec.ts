@@ -32,6 +32,7 @@ describe('scoring guesses repeated', () => {
 
     // eslint-disable-next-line jest/valid-title
     it(msg, () => {
+      // @ts-ignore
       expect(repeatGuesses(match)).toEqual(expectedGuesses)
     })
   })

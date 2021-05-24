@@ -28,6 +28,7 @@ describe('scoring: guesses bruteforce', () => {
       },
     ]
     testData.forEach((data) => {
+      // @ts-ignore
       expect(bruteforce(data.match)).toEqual(data.result)
     })
   })
@@ -37,6 +38,7 @@ describe('scoring: guesses bruteforce', () => {
     const match = {
       token,
     }
+    // @ts-ignore
     expect(bruteforce(match)).toEqual(Number.MAX_VALUE)
   })
 
@@ -44,6 +46,7 @@ describe('scoring: guesses bruteforce', () => {
     const match = {
       token: 'a',
     }
+    // @ts-ignore
     expect(bruteforce(match)).toEqual(11)
   })
 
@@ -53,6 +56,7 @@ describe('scoring: guesses bruteforce', () => {
     const match = {
       token: 'ab',
     }
+    // @ts-ignore
     expect(bruteforce(match)).toEqual(11)
   })
 })
