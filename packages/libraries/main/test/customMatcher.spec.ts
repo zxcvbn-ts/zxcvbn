@@ -1,9 +1,8 @@
 import zxcvbnCommonPackage from '../../../languages/common/src'
 import zxcvbnEnPackage from '../../../languages/en/src'
-import { zxcvbn, ZxcvbnOptions } from '../src'
-import { Match } from '../src/types'
+import { zxcvbn, ZxcvbnOptions, ZxcvbnMatcher } from '../src'
+import { Match, Matcher } from '../src/types'
 import { sorted } from '../src/helper'
-import { Matcher } from '../src/matcher'
 
 ZxcvbnOptions.setOptions({
   dictionary: {
@@ -42,7 +41,7 @@ const minLengthMatcher: Matcher = {
   },
 }
 
-ZxcvbnOptions.addMatcher('minLength', minLengthMatcher)
+ZxcvbnMatcher.addMatcher('minLength', minLengthMatcher)
 
 describe('customMatcher', () => {
   it('should use minLength custom matcher', () => {

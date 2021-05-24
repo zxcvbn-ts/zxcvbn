@@ -9,7 +9,6 @@ import {
 } from './types'
 import l33tTable from './data/l33tTable'
 import translationKeys from './data/translationKeys'
-import matcher, { Matcher } from './matcher'
 
 class Options {
   l33tTable: OptionsL33tTable = l33tTable
@@ -28,10 +27,6 @@ class Options {
 
   constructor() {
     this.setRankedDictionaries()
-  }
-
-  addMatcher(name: string, newMatcher: Matcher) {
-    matcher.addMatcher(name, newMatcher)
   }
 
   setOptions(options: OptionsType = {}) {

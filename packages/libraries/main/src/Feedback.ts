@@ -2,20 +2,10 @@ import Options from './Options'
 import { FeedbackType, MatchEstimated } from './types'
 import matcher from './matcher'
 
-export interface FeedbackReturnValue {
-  warning: string
-  suggestions: string[]
-}
-
 const defaultFeedback = {
   warning: '',
   suggestions: [],
 }
-
-export const defaultFeedbackFunction = (
-  _match: MatchEstimated,
-  _isSoleMatch?: Boolean,
-): FeedbackReturnValue | null => defaultFeedback
 
 /*
  * -------------------------------------------------------------------------------

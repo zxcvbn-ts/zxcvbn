@@ -1,6 +1,7 @@
 import translationKeys from './data/translationKeys'
 import l33tTableDefault from './data/l33tTable'
 import { REGEXEN } from './data/const'
+import { DictionaryReturn } from './matcher/dictionary/scoring'
 
 export type TranslationKeys = typeof translationKeys
 export type L33tTableDefault = typeof l33tTableDefault
@@ -178,4 +179,23 @@ export interface RankedDictionaries {
   [key: string]: {
     [key: string]: number
   }
+}
+
+export type DefaultFeedbackFunction = (
+  match: MatchEstimated,
+  isSoleMatch?: Boolean,
+) => FeedbackType | null
+
+export type DefaultScoringFunction = (
+  match: MatchExtended | MatchEstimated,
+) => number | DictionaryReturn
+
+export interface Matcher {
+  feedback?: DefaultFeedbackFunction
+  scoring: DefaultScoringFunction
+  Matching?: any
+}
+
+export interface Matchers {
+  [key: string]: Matcher
 }

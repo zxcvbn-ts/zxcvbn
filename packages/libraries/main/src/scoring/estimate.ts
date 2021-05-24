@@ -5,11 +5,6 @@ import {
 import utils from './utils'
 import { LooseObject, MatchEstimated, MatchExtended } from '../types'
 import matcher from '../matcher'
-import { DictionaryReturn } from '../matcher/dictionary/scoring'
-
-export const defaultScoringFunction = (
-  _match: MatchExtended | MatchEstimated,
-): number | DictionaryReturn => 0
 
 const getMinGuesses = (
   match: MatchExtended | MatchEstimated,

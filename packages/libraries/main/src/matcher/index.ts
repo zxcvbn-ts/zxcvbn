@@ -5,18 +5,7 @@ import regexMatcher from './regex'
 import repeatMatcher from './repeat'
 import sequenceMatcher from './sequence'
 import spatialMatcher from './spatial'
-import { defaultFeedbackFunction } from '../Feedback'
-import { defaultScoringFunction } from '../scoring/estimate'
-
-export interface Matcher {
-  feedback?: typeof defaultFeedbackFunction
-  scoring: typeof defaultScoringFunction
-  Matching?: any
-}
-
-export interface Matchers {
-  [key: string]: Matcher
-}
+import { Matchers, Matcher } from '../types'
 
 class MatcherClass {
   readonly matchers: Matchers = {
