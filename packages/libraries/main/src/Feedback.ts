@@ -1,5 +1,5 @@
 import Options from './Options'
-import { FeedbackType, MatchEstimated, MatchExtended } from './types'
+import { FeedbackType, MatchEstimated } from './types'
 
 export interface FeedbackReturnValue {
   warning: string
@@ -12,7 +12,7 @@ const defaultFeedback = {
 }
 
 export const defaultFeedbackFunction = (
-  _match: MatchExtended | MatchEstimated,
+  _match: MatchEstimated,
   _isSoleMatch?: Boolean,
 ): FeedbackReturnValue | null => defaultFeedback
 

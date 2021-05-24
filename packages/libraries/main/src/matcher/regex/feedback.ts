@@ -1,7 +1,7 @@
 import Options from '../../Options'
-import { MatchEstimated, MatchExtended } from '../../types'
+import { MatchEstimated } from '../../types'
 
-export default (match: MatchExtended | MatchEstimated) => {
+export default (match: MatchEstimated) => {
   if (match.regexName === 'recentYear') {
     return {
       warning: Options.translations.warnings.recentYears,
