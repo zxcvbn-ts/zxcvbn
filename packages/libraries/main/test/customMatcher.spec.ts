@@ -3,6 +3,7 @@ import zxcvbnEnPackage from '../../../languages/en/src'
 import { zxcvbn, ZxcvbnOptions } from '../src'
 import { Match } from '../src/types'
 import { sorted } from '../src/helper'
+import { Matcher } from '../src/matcher'
 
 ZxcvbnOptions.setOptions({
   dictionary: {
@@ -13,7 +14,7 @@ ZxcvbnOptions.setOptions({
   translations: zxcvbnEnPackage.translations,
 })
 
-ZxcvbnOptions.matchers.minLength = {
+const minLengthMatcher: Matcher = {
   Matching: class MatchMinLength {
     minLength = 10
 
@@ -36,13 +37,15 @@ ZxcvbnOptions.matchers.minLength = {
       suggestions: [],
     }
   },
-  scoring() {
-    return 100
+  scoring(match) {
+    return match.token.length * 10
   },
 }
 
+ZxcvbnOptions.addMatcher('minLength', minLengthMatcher)
+
 describe('customMatcher', () => {
-  it('should check without userInputs', () => {
+  it('should use minLength custom matcher', () => {
     const result = zxcvbn('ep8fkw8ds')
     expect(result.calcTime).toBeDefined()
     result.calcTime = 0
@@ -51,27 +54,27 @@ describe('customMatcher', () => {
       crackTimesDisplay: {
         offlineFastHashing1e10PerSecond: 'less than a second',
         offlineSlowHashing1e4PerSecond: 'less than a second',
-        onlineNoThrottling10PerSecond: '10 seconds',
-        onlineThrottling100PerHour: '1 hour',
+        onlineNoThrottling10PerSecond: '9 seconds',
+        onlineThrottling100PerHour: '55 minutes',
       },
       crackTimesSeconds: {
-        offlineFastHashing1e10PerSecond: 1.01e-8,
-        offlineSlowHashing1e4PerSecond: 0.0101,
-        onlineNoThrottling10PerSecond: 10.1,
-        onlineThrottling100PerHour: 3636,
+        offlineFastHashing1e10PerSecond: 9.1e-9,
+        offlineSlowHashing1e4PerSecond: 0.0091,
+        onlineNoThrottling10PerSecond: 9.1,
+        onlineThrottling100PerHour: 3276,
       },
       feedback: {
         suggestions: ['Add more words that are less common.'],
         warning: 'You password is not long enough',
       },
-      guesses: 101,
-      guessesLog10: 2.0043213737826426,
+      guesses: 91,
+      guessesLog10: 1.9590413923210932,
       password: 'ep8fkw8ds',
       score: 0,
       sequence: [
         {
-          guesses: 100,
-          guessesLog10: 2,
+          guesses: 90,
+          guessesLog10: 1.9542425094393248,
           i: 0,
           j: 8,
           pattern: 'minLength',

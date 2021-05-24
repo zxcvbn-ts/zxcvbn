@@ -4,7 +4,7 @@ import {
 } from '../data/const'
 import utils from './utils'
 import { LooseObject, MatchEstimated, MatchExtended } from '../types'
-import Options from '../Options'
+import matcher from '../matcher'
 import { DictionaryReturn } from '../matcher/dictionary/scoring'
 
 export const defaultScoringFunction = (
@@ -38,7 +38,7 @@ export default (match: MatchExtended | MatchEstimated, password: string) => {
 
   const minGuesses = getMinGuesses(match, password)
 
-  const estimationResult = Options.matchers[match.pattern].scoring(match)
+  const estimationResult = matcher.matchers[match.pattern].scoring(match)
   let guesses = 0
   if (typeof estimationResult === 'number') {
     guesses = estimationResult

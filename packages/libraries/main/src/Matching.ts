@@ -1,5 +1,5 @@
 import { extend, sorted } from './helper'
-import Options from './Options'
+import matcher from './matcher'
 
 /*
  * -------------------------------------------------------------------------------
@@ -11,15 +11,15 @@ class Matching {
   match(password: string) {
     const matches: any[] = []
 
-    const matchers = Object.keys(Options.matchers)
+    const matchers = Object.keys(matcher.matchers)
     matchers.forEach((key) => {
-      if (!Options.matchers[key].Matching) {
+      if (!matcher.matchers[key].Matching) {
         return
       }
-      const matcher = new Options.matchers[key].Matching()
+      const usedMatcher = new matcher.matchers[key].Matching()
       extend(
         matches,
-        matcher.match({
+        usedMatcher.match({
           password,
           omniMatch: this,
         }),

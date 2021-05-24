@@ -28,17 +28,17 @@ The sequence matcher tries to identify sequences by looking for repeated differe
 The spatial matcher tries to find patterns from keyboard layout for example `qwertz`
 
 ## custom 
-You can create/edit/remove matcher as you need needs.
+You can create matcher if you need.
 
 ### create a custom matcher
-This is an example to create a custom matcher to check for the minLength. The scoring is just for showing purpose and should be adjusted to your need. 
-We don't recommend using a minLength matcher
+This is an example to create a custom matcher to check for the minLength. The scoring is just for showing purpose and should be adjusted to your needs. 
+Be aware that we don't recommend using a minLength matcher
 
 ```ts
 import { ZxcvbnOptions } from '@zxcvbn-ts/core'
 import { MatchEstimated, ExtendedMatch } from '@zxcvbn-ts/core/dist/types'
 
-ZxcvbnOptions.matchers.minLength = {
+const minLengthMatcher = {
   Matching: class MatchMinLength {
     minLength = 10
 
@@ -64,31 +64,9 @@ ZxcvbnOptions.matchers.minLength = {
   scoring(match: ExtendedMatch) {
     // this will take the length of the password and multiple it by 10 
     // to create a higher scoring the more characters are added
-    return match.password.length * 10
+    return match.token.length * 10
   },
 }
-```
 
-### edit
-If you don't like how a current matcher works you could theoretically edit it which is not recommended. It would be better to raise an issue in the repository.
-
-```ts
-import { ZxcvbnOptions } from '@zxcvbn-ts/core'
-import { ExtendedMatch } from '@zxcvbn-ts/core/dist/types'
-
-ZxcvbnOptions.matchers.repeat.scoring = (match: ExtendedMatch) => {
-  return baseGuesses * repeatCount + 5
-}
-
-```
-
-
-### remove
-If you don't like one of the matchers you could theoretically remove it which is not recommended.
-
-```ts
-import { ZxcvbnOptions } from '@zxcvbn-ts/core'
-
-delete ZxcvbnOptions.matchers.repeat
-
+ZxcvbnOptions.addMatcher('minLength', minLengthMatcher)
 ```

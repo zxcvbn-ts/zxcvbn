@@ -9,35 +9,9 @@ import {
 } from './types'
 import l33tTable from './data/l33tTable'
 import translationKeys from './data/translationKeys'
-import bruteforceMatcher from './matcher/bruteforce'
-import dateMatcher from './matcher/date'
-import dictionaryMatcher from './matcher/dictionary'
-import regexMatcher from './matcher/regex'
-import repeatMatcher from './matcher/repeat'
-import sequenceMatcher from './matcher/sequence'
-import spatialMatcher from './matcher/spatial'
-import { defaultFeedbackFunction } from './Feedback'
-import { defaultScoringFunction } from './scoring/estimate'
-
-export type Matchers = {
-  [key: string]: {
-    feedback?: typeof defaultFeedbackFunction
-    scoring: typeof defaultScoringFunction
-    Matching?: any
-  }
-}
+import matcher, { Matcher } from './matcher'
 
 class Options {
-  matchers: Matchers = {
-    bruteforce: bruteforceMatcher,
-    date: dateMatcher,
-    dictionary: dictionaryMatcher,
-    regex: regexMatcher,
-    repeat: repeatMatcher,
-    sequence: sequenceMatcher,
-    spatial: spatialMatcher,
-  }
-
   l33tTable: OptionsL33tTable = l33tTable
 
   dictionary: OptionsDictionary = {
@@ -54,6 +28,10 @@ class Options {
 
   constructor() {
     this.setRankedDictionaries()
+  }
+
+  addMatcher(name: string, newMatcher: Matcher) {
+    matcher.addMatcher(name, newMatcher)
   }
 
   setOptions(options: OptionsType = {}) {

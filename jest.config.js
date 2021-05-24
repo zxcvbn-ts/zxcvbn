@@ -25,5 +25,5 @@ module.exports = {
   },
   moduleFileExtensions: ['ts', 'json', 'js'],
   collectCoverageFrom: ['packages/libraries/main/**/*.{js,ts}'],
-  coveragePathIgnorePatterns: ['dist'],
+  coveragePathIgnorePatterns: ['dist', 'test'],
 }

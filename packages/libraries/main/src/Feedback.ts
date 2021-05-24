@@ -1,5 +1,6 @@
 import Options from './Options'
 import { FeedbackType, MatchEstimated } from './types'
+import matcher from './matcher'
 
 export interface FeedbackReturnValue {
   warning: string
@@ -75,10 +76,10 @@ class Feedback {
 
   getMatchFeedback(match: MatchEstimated, isSoleMatch: Boolean) {
     if (
-      Options.matchers[match.pattern] &&
-      Options.matchers[match.pattern].feedback
+      matcher.matchers[match.pattern] &&
+      matcher.matchers[match.pattern].feedback
     ) {
-      return (Options.matchers[match.pattern].feedback as Function)(
+      return (matcher.matchers[match.pattern].feedback as Function)(
         match,
         isSoleMatch,
       )
