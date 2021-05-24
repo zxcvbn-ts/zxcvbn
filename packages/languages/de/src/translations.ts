@@ -1,44 +1,44 @@
 export default {
   warnings: {
     straightRow:
-      'Gerade Reihen von Tasten auf der Tastatur sind leicht zu erraten.',
+      'Gerade Linien von Tasten auf der Tastatur sind leicht zu erraten.',
     keyPattern: 'Kurze Tastaturmuster sind leicht zu erraten.',
     simpleRepeat:
       'Sich wiederholende Zeichen wie "aaa" sind leicht zu erraten.',
     extendedRepeat:
       'Sich wiederholende Zeichenmuster wie "abcabcabc" sind leicht zu erraten.',
     sequences: 'Häufige Zeichenfolgen wie "abc" sind leicht zu erraten.',
-    recentYears: 'Die letzten Jahreszahlen sind leicht zu erraten.',
+    recentYears: 'Die jüngsten Jahreszahlen sind leicht zu erraten.',
     dates: 'Ein Datum ist leicht zu erraten.',
     topTen: 'Dies ist ein sehr häufig verwendetes Passwort.',
     topHundred: 'Dies ist ein häufig verwendetes Passwort.',
-    common: 'Dies ist ein weniger häufig verwendetes Passwort.',
-    similarToCommon: 'Dies ist ähnlich wie ein häufig verwendetes Passwort.',
+    common: 'Dies ist ein oft verwendetes Passwort.',
+    similarToCommon:
+      'Dies weist Ähnlichkeit zu anderen oft verwendeten Passwörtern auf.',
     wordByItself: 'Einzelne Wörter sind leicht zu erraten.',
     namesByThemselves: 'Einzelne Namen oder Nachnamen sind leicht zu erraten.',
     commonNames: 'Vornamen und Nachnamen sind leicht zu erraten.',
-    userInputs: 'Es sollten keine persönlichen Daten vorhanden sein.',
+    userInputs: 'Es sollten keine persönlichen Daten vorkommen.',
   },
   suggestions: {
-    l33t: "Vermeiden Sie vorhersehbare Buchstabenersetzungen wie '@' für 'a'.",
+    l33t: "Vorhersehbare Buchstabenersetzungen wie '@' für 'a' vermeiden.",
     reverseWords:
-      'Vermeiden Sie die umgekehrte Schreibweise von gebräuchlichen Wörtern.',
+      'Umgekehrte Schreibweise von gebräuchlichen Wörtern vermeiden.',
     allUppercase: 'Einige, aber nicht alle Buchstaben groß schreiben.',
-    capitalization: 'Schreiben Sie mehr als den ersten Buchstaben groß.',
-    dates: 'Vermeiden Sie Daten, die mit Ihnen in Verbindung gebracht werden.',
-    recentYears: 'Vermeiden Sie die letzten Jahreszahlen.',
+    capitalization: 'Nicht nur den ersten Buchstaben groß schreiben.',
+    dates:
+      'Daten, die mit persönlichen Daten in Verbindung gebracht werden können, vermeiden.',
+    recentYears: 'Die jüngsten Jahreszahlen vermeiden.',
     associatedYears:
-      'Vermeiden Sie Jahre, die mit Ihnen in Verbindung gebracht werden.',
-    sequences: 'Vermeiden Sie häufige Zeichenfolgen.',
-    repeated: 'Vermeiden Sie Wort- und Zeichenwiederholungen.',
+      'Jahre, die mit persönlichen Daten in Verbindung gebracht werden können, vermeiden.',
+    sequences: 'Häufige Zeichenfolgen vermeiden.',
+    repeated: 'Wort- und Zeichenwiederholungen vermeiden.',
     longerKeyboardPattern:
-      'Verwenden Sie längere Tastaturmuster und ändern Sie die Tipprichtung mehrfach.',
-    anotherWord:
-      'Fügen Sie weitere Wörter hinzu, die weniger häufig vorkommen.',
-    useWords:
-      'Verwenden Sie mehrere Wörter, aber vermeiden Sie allgemeine Phrasen.',
+      'Längere Tastaturmuster in unterschiedlicher Tipprichtung verwenden.',
+    anotherWord: 'Weitere Wörter, die weniger häufig vorkommen, hinzufügen.',
+    useWords: 'Mehrere Wörter verwenden, aber allgemeine Phrasen vermeiden.',
     noNeed:
-      'Sie können sichere Kennwörter erstellen, ohne Symbole, Zahlen oder Großbuchstaben zu verwenden.',
+      'Es ist möglich, starke Passwörter zu erstellen, ohne Symbole, Zahlen oder Großbuchstaben zu verwenden.',
   },
   timeEstimation: {
     ltSecond: 'weniger als eine Sekunde',

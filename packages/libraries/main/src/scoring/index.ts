@@ -102,13 +102,15 @@ const scoringHelper = {
     let sequenceLength = 0
     let g = 2e308
     const temp = this.optimal.g[k]
-    Object.keys(this.optimal.g[k]).forEach((candidateSequenceLength) => {
-      const candidateMetricMatch = temp[candidateSequenceLength]
-      if (candidateMetricMatch < g) {
-        sequenceLength = parseInt(candidateSequenceLength, 10)
-        g = candidateMetricMatch
-      }
-    })
+    if (temp) { // safety check for empty passwords
+      Object.keys(temp).forEach((candidateSequenceLength) => {
+        const candidateMetricMatch = temp[candidateSequenceLength]
+        if (candidateMetricMatch < g) {
+          sequenceLength = parseInt(candidateSequenceLength, 10)
+          g = candidateMetricMatch
+        }
+      })
+    }
     while (k >= 0) {
       const match: MatchExtended = this.optimal.m[k][sequenceLength]
       optimalMatchSequence.unshift(match)
