@@ -36,9 +36,9 @@ Be aware that we don't recommend using a minLength matcher
 
 ```ts
 import { ZxcvbnOptions } from '@zxcvbn-ts/core'
-import { MatchEstimated, ExtendedMatch } from '@zxcvbn-ts/core/dist/types'
+import { MatchEstimated, ExtendedMatch, Matcher, Match } from '@zxcvbn-ts/core/dist/types'
 
-const minLengthMatcher = {
+const minLengthMatcher: Matcher = {
   Matching: class MatchMinLength {
     minLength = 10
 
@@ -52,7 +52,7 @@ const minLengthMatcher = {
           j: password.length - 1,
         })
       }
-      return sorted(matches)
+      return matches
     }
   },
   feedback(match: MatchEstimated, isSoleMatch: boolean) {
