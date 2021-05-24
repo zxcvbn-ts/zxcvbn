@@ -1,5 +1,6 @@
 import { extend, sorted } from './helper'
 import matcher from './matcher'
+import { MatchExtended } from './types'
 
 /*
  * -------------------------------------------------------------------------------
@@ -9,13 +10,14 @@ import matcher from './matcher'
 
 class Matching {
   match(password: string) {
-    const matches: any[] = []
+    const matches: MatchExtended[] = []
 
     const matchers = Object.keys(matcher.matchers)
     matchers.forEach((key) => {
       if (!matcher.matchers[key].Matching) {
         return
       }
+      // @ts-ignore
       const usedMatcher = new matcher.matchers[key].Matching()
       extend(
         matches,

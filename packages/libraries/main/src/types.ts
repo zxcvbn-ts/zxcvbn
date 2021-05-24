@@ -2,6 +2,7 @@ import translationKeys from './data/translationKeys'
 import l33tTableDefault from './data/l33tTable'
 import { REGEXEN } from './data/const'
 import { DictionaryReturn } from './matcher/dictionary/scoring'
+import Matching from './Matching'
 
 export type TranslationKeys = typeof translationKeys
 export type L33tTableDefault = typeof l33tTableDefault
@@ -134,22 +135,6 @@ export interface FeedbackType {
   suggestions: string[]
 }
 
-export type MatchingMatcherParams =
-  | 'userInputs'
-  | 'dictionary'
-  | 'l33tTable'
-  | 'graphs'
-
-export type MatchingMatcherNames =
-  | 'dictionary'
-  | 'dictionaryReverse'
-  | 'l33t'
-  | 'spatial'
-  | 'repeat'
-  | 'sequence'
-  | 'regex'
-  | 'date'
-
 export type OptionsL33tTable =
   | L33tTableDefault
   | {
@@ -190,10 +175,17 @@ export type DefaultScoringFunction = (
   match: MatchExtended | MatchEstimated,
 ) => number | DictionaryReturn
 
+interface MatchOptions {
+  password: string
+  omniMatch: Matching
+}
+
 export interface Matcher {
   feedback?: DefaultFeedbackFunction
   scoring: DefaultScoringFunction
-  Matching?: any
+  Matching?: new () => {
+    match({ password, omniMatch }: MatchOptions): MatchExtended[]
+  }
 }
 
 export interface Matchers {
