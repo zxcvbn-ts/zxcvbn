@@ -1,6 +1,8 @@
 import translationKeys from './data/translationKeys'
 import l33tTableDefault from './data/l33tTable'
 import { REGEXEN } from './data/const'
+import { DictionaryReturn } from './matcher/dictionary/scoring'
+import Matching from './Matching'
 
 export type TranslationKeys = typeof translationKeys
 export type L33tTableDefault = typeof l33tTableDefault
@@ -17,6 +19,7 @@ export type Pattern =
   | 'regex'
   | 'date'
   | 'bruteforce'
+  | string
 
 export type DictionaryNames =
   | 'passwords'
@@ -31,6 +34,7 @@ export interface Match {
   i: number
   j: number
   token: string
+  [key: string]: any
 }
 
 export interface DictionaryMatch extends Match {
@@ -94,6 +98,7 @@ export type MatchExtended =
   | RegexMatch
   | DateMatch
   | BruteForceMatch
+  | Match
 
 export interface Estimate {
   guesses: number
@@ -130,22 +135,6 @@ export interface FeedbackType {
   suggestions: string[]
 }
 
-export type MatchingMatcherParams =
-  | 'userInputs'
-  | 'dictionary'
-  | 'l33tTable'
-  | 'graphs'
-
-export type MatchingMatcherNames =
-  | 'dictionary'
-  | 'dictionaryReverse'
-  | 'l33t'
-  | 'spatial'
-  | 'repeat'
-  | 'sequence'
-  | 'regex'
-  | 'date'
-
 export type OptionsL33tTable =
   | L33tTableDefault
   | {
@@ -175,4 +164,30 @@ export interface RankedDictionaries {
   [key: string]: {
     [key: string]: number
   }
+}
+
+export type DefaultFeedbackFunction = (
+  match: MatchEstimated,
+  isSoleMatch?: Boolean,
+) => FeedbackType | null
+
+export type DefaultScoringFunction = (
+  match: MatchExtended | MatchEstimated,
+) => number | DictionaryReturn
+
+interface MatchOptions {
+  password: string
+  omniMatch: Matching
+}
+
+export interface Matcher {
+  feedback?: DefaultFeedbackFunction
+  scoring: DefaultScoringFunction
+  Matching?: new () => {
+    match({ password, omniMatch }: MatchOptions): MatchExtended[]
+  }
+}
+
+export interface Matchers {
+  [key: string]: Matcher
 }

@@ -1,4 +1,4 @@
-const prettierConfig = require('./prettier.js')
+const prettierConfig = require('./prettier')
 
 module.exports = {
   root: true,
@@ -7,9 +7,6 @@ module.exports = {
     'airbnb-base',
     'plugin:compat/recommended',
     'prettier',
-    'prettier/@typescript-eslint',
-    'prettier/babel',
-    'prettier/vue',
     'plugin:jest/recommended',
     'plugin:@typescript-eslint/eslint-recommended',
   ],
