@@ -23,6 +23,7 @@
     "changed": "lerna changed",
     "lerna-publish": "yarn build && lerna publish --conventional-commits -y",
     "generate:languageData": "yarn start-ts-file ./data-scripts/generate.ts",
+    "generate:deduplicate": "yarn start-ts-file ./data-scripts/deduplicate.ts",
     "wikipediaExtractor": "yarn start-ts-file ./data-scripts/wikiExtractor/index.ts ./data-scripts/extracts",
     "start-ts-file": "node -r esm -r esbuild-register --unhandled-rejections=strict",
     "docs:dev": "vuepress dev docs",
