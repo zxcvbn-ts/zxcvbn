@@ -3,7 +3,6 @@ import scoring from './scoring'
 import TimeEstimates from './TimeEstimates'
 import Feedback from './Feedback'
 import Options from './Options'
-import matcher from './matcher'
 import { MatchEstimated } from './types'
 
 const time = () => new Date().getTime()
@@ -33,5 +32,3 @@ export const zxcvbn = (password: string) => {
 }
 
 export { Options as ZxcvbnOptions }
-
-export { matcher as ZxcvbnMatcher }

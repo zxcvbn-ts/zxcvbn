@@ -3,8 +3,20 @@ import {
   MIN_SUBMATCH_GUESSES_MULTI_CHAR,
 } from '../data/const'
 import utils from './utils'
-import { LooseObject, MatchEstimated, MatchExtended } from '../types'
-import matcher from '../matcher'
+import Options from '../Options'
+import {
+  DefaultScoringFunction,
+  LooseObject,
+  MatchEstimated,
+  MatchExtended,
+} from '../types'
+import bruteforceMatcher from '../matcher/bruteforce/scoring'
+import dateMatcher from '../matcher/date/scoring'
+import dictionaryMatcher from '../matcher/dictionary/scoring'
+import regexMatcher from '../matcher/regex/scoring'
+import repeatMatcher from '../matcher/repeat/scoring'
+import sequenceMatcher from '../matcher/sequence/scoring'
+import spatialMatcher from '../matcher/spatial/scoring'
 
 const getMinGuesses = (
   match: MatchExtended | MatchEstimated,
@@ -21,6 +33,30 @@ const getMinGuesses = (
   return minGuesses
 }
 
+type Matchers = {
+  [key: string]: DefaultScoringFunction
+}
+
+const matchers: Matchers = {
+  bruteforce: bruteforceMatcher,
+  date: dateMatcher,
+  dictionary: dictionaryMatcher,
+  regex: regexMatcher,
+  repeat: repeatMatcher,
+  sequence: sequenceMatcher,
+  spatial: spatialMatcher,
+}
+
+const getScoring = (name: string, match: MatchExtended | MatchEstimated) => {
+  if (matchers[name]) {
+    return matchers[name](match)
+  }
+  if (Options.matchers[name] && 'scoring' in Options.matchers[name]) {
+    return Options.matchers[name].scoring(match)
+  }
+  return 0
+}
+
 // ------------------------------------------------------------------------------
 // guess estimation -- one function per match pattern ---------------------------
 // ------------------------------------------------------------------------------
@@ -33,7 +69,7 @@ export default (match: MatchExtended | MatchEstimated, password: string) => {
 
   const minGuesses = getMinGuesses(match, password)
 
-  const estimationResult = matcher.matchers[match.pattern].scoring(match)
+  const estimationResult = getScoring(match.pattern, match)
   let guesses = 0
   if (typeof estimationResult === 'number') {
     guesses = estimationResult

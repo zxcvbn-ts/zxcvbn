@@ -1,18 +1,37 @@
 import Options from './Options'
-import { FeedbackType, MatchEstimated } from './types'
-import matcher from './matcher'
+import { DefaultFeedbackFunction, FeedbackType, MatchEstimated } from './types'
+import bruteforceMatcher from './matcher/bruteforce/feedback'
+import dateMatcher from './matcher/date/feedback'
+import dictionaryMatcher from './matcher/dictionary/feedback'
+import regexMatcher from './matcher/regex/feedback'
+import repeatMatcher from './matcher/repeat/feedback'
+import sequenceMatcher from './matcher/sequence/feedback'
+import spatialMatcher from './matcher/spatial/feedback'
 
 const defaultFeedback = {
   warning: '',
   suggestions: [],
 }
 
+type Matchers = {
+  [key: string]: DefaultFeedbackFunction
+}
 /*
  * -------------------------------------------------------------------------------
  *  Generate feedback ---------------------------------------------------------------
  * -------------------------------------------------------------------------------
  */
 class Feedback {
+  readonly matchers: Matchers = {
+    bruteforce: bruteforceMatcher,
+    date: dateMatcher,
+    dictionary: dictionaryMatcher,
+    regex: regexMatcher,
+    repeat: repeatMatcher,
+    sequence: sequenceMatcher,
+    spatial: spatialMatcher,
+  }
+
   defaultFeedback: FeedbackType = {
     warning: '',
     suggestions: [],
@@ -65,16 +84,15 @@ class Feedback {
   }
 
   getMatchFeedback(match: MatchEstimated, isSoleMatch: Boolean) {
-    if (
-      matcher.matchers[match.pattern] &&
-      matcher.matchers[match.pattern].feedback
-    ) {
-      return (matcher.matchers[match.pattern].feedback as Function)(
-        match,
-        isSoleMatch,
-      )
+    if (this.matchers[match.pattern]) {
+      return this.matchers[match.pattern](match, isSoleMatch)
     }
-
+    if (
+      Options.matchers[match.pattern] &&
+      'feedback' in Options.matchers[match.pattern]
+    ) {
+      return Options.matchers[match.pattern].feedback(match, isSoleMatch)
+    }
     return defaultFeedback
   }
 }

@@ -6,11 +6,15 @@ import {
   OptionsL33tTable,
   OptionsGraph,
   RankedDictionaries,
+  Matchers,
+  Matcher,
 } from './types'
 import l33tTable from './data/l33tTable'
 import translationKeys from './data/translationKeys'
 
 class Options {
+  matchers: Matchers = {}
+
   l33tTable: OptionsL33tTable = l33tTable
 
   dictionary: OptionsDictionary = {
@@ -98,6 +102,13 @@ class Options {
       }
     })
     this.rankedDictionaries = rankedDictionaries
+  }
+
+  public addMatcher(name: string, matcher: Matcher) {
+    if (this.matchers[name]) {
+      throw new Error('Matcher already exists')
+    }
+    this.matchers[name] = matcher
   }
 }
 
