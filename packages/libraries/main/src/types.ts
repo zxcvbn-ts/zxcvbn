@@ -180,12 +180,14 @@ interface MatchOptions {
   omniMatch: Matching
 }
 
+export type MatchingType = new () => {
+  match({ password, omniMatch }: MatchOptions): MatchExtended[]
+}
+
 export interface Matcher {
-  feedback?: DefaultFeedbackFunction
+  feedback: DefaultFeedbackFunction
   scoring: DefaultScoringFunction
-  Matching?: new () => {
-    match({ password, omniMatch }: MatchOptions): MatchExtended[]
-  }
+  Matching: MatchingType
 }
 
 export interface Matchers {
