@@ -1,8 +1,8 @@
 # @zxcvbn-ts/language-de
 
-The German dictionary and language package for zxcvbn-ts
+The German dictionary and language package for **zxcvbn-ts**
 
-## Install
+## Installation
 
 #### npm:
 

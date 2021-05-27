@@ -1,6 +1,6 @@
 # Getting started
 
-## Install
+## Installation
 
 ### npm:
 
@@ -34,7 +34,7 @@ zxcvbn(password)
 ```
 
 ### As script tag
-For example with the CDN jsdelivr
+Example using jsdelivr (a CDN)
 ```
 <html>
   <head>
@@ -122,21 +122,22 @@ result.calcTime  # how long it took zxcvbn to calculate an answer,
                   # in milliseconds.
 ```
 
-We highly recommend to always use the common and english language package for a useful scoring result.
-If your own language is available as a package you should include it as well. If your language is missing feel free to open a PR, in the meantime you can extend the default set.
+We highly recommend always using the common and English language packages for the optimal scoring result.
+If your language is available as a package, you should import it as well. If your language is missing, feel free to open a PR. For the time being, you could extend the default set.
 
-The `esm` build is for modern browser and includes ES5 or higher.
-If you want to use it and want to include own polyfills you need to transpile it within your build process.
+The `esm` build is for modern browsers and includes ES5 or higher.
+If you want to use it and want to include your own polyfills, you need to transpile it within your build process.
 
 ## Change prior to original library
 - I18n support for feedback, dictionaries and keyboard patterns. By default, the feedback are keys now
-- All dictionaries are optional but the en dictionary highly recommend (wished feature in some issues)
-- Dictionaries are separated from the core library. This means zxcvbn-ts is relative small without dictionaries
-- The project is a monorepo with a core library `@zxcvbn-ts/core` and language packages `@txcvbn-ts/language-en`. At the beginning, there is only a German and English language package.
-- Keyboard layouts can be customised. This means you can overwrite the default set of layouts with your own or extend it. For example if you develop a Russian website the keyboard layouts are pretty much useless. 
-  Now you could add a Russian keyboard layout by yourself for a fast implementation and create a PR for the long run.
-- Multiple keyboard layouts are used which means that every layout that is added to the library will be checked against by default.
-- Tests are now made with jest, so we get a coverage
-- Included eslint/prettier for consistent code
-- Added static-page docs https://zxcvbn-ts.github.io/zxcvbn/
-- There is an esm, commonJS and browser build use it as needed
+- All dictionaries are optional, but the en dictionary highly recommend (wished feature in some issues)
+- Dictionaries are separate from the core library. This means zxcvbn-ts is relatively small without its dictionaries
+- The project is a monorepo with a core library `@zxcvbn-ts/core` and language packages `@txcvbn-ts/language-en`. 
+  Initially, there are only German and English language packages.
+- Keyboard layouts can be customised. This means you can overwrite the default set of layouts with your own or extend it. 
+  E.g., if you are developing a Russian website, you need to include a Cyrillic keyboard set. Create a PR so that others can benefit from it.
+- You can use multiple keyboard layouts, which means that the library will check against them by default. 
+- the tests are Jest based, so we get a coverage score
+- eslint/prettier for consistent code style
+- Added static page docs https://zxcvbn-ts.github.io/zxcvbn/
+- esm, commonJS and browser build

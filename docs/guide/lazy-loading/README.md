@@ -1,20 +1,18 @@
 # Lazy loading
 
-The dictionaries are huge, so it should be loaded with lazyLoading
+The dictionaries are sizable, so it is recommended to use lazy loading.
 
 ## Webpack
 
-Webpack supports lazyloading with some configuration check out the documentation of [webpack](https://webpack.js.org/guides/lazy-loading/)
-for further information.
+Webpack supports lazy-loading with some configuration; check out the [documentation](https://webpack.js.org/guides/lazy-loading/).
 
-The core library can be imported normally
+Here's how you import it:
 
 ```js
 import { zxcvbn } from '@zxcvbn-ts/core'
 ```
 
-To lazyload the dictionaries you need to do something like this:
-Create a function which imports the dictionaries and returns an options object
+This is how you lazy load dictionaries:
 
 ```js
 const loadOptions = async () => {
@@ -36,7 +34,7 @@ const loadOptions = async () => {
 }
 ```
 
-At some point in your application you can call the "loadOptions" function. Only then will the dictionaries be loaded
+Somewhere in your application you can call the "loadOptions" function, then the dictionary load is executed.
 
 ```js
 //
@@ -53,7 +51,7 @@ const run = async () => {
 
 ## Fetch
 
-If you don't use webpack or another bundler you could get the dictionaries with fetch from github or from some self hosted website:
+If you don't use a bundler like webpack, you could fetch the dictionaries from GitHub or a hosted website:
 
 ```js
 const packages = [

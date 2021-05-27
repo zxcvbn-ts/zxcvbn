@@ -1,22 +1,24 @@
 # Introduction
 
-zxcvbn is a password strength estimator inspired by password crackers.
-Through pattern matching and conservative estimation,
-it recognizes and weighs 40k common passwords,
-common names surnames, popular words from Wikipedia and common word in different language from different countries,
-and other common patterns like dates, repeats (aaa), sequences (abcd), keyboard patterns (qwertyuiop), and l33t speak.
+**zxcvbn** is a password strength estimator inspired by password crackers.
+It recognizes and analyzes over 40 thousand common passwords using pattern matching and conservative estimation and
+filters out common first names, last names, popular words from Wikipedia and common words in many cultures,
+and recognizes common patterns like dates, repetitions (e.g. 'aaa'), sequences (e.g. 'abcd'), keyboard smashes (e.g. 'qwertyuiop'), and l33t speak.
 
-Consider using zxcvbn as an algorithmic alternative to password composition policy — it is more secure,
-flexible, and usable when sites require a minimal complexity score in place of annoying rules like "passwords must contain three of {lower, upper, numbers, symbols}".
+Consider using **zxcvbn** as an algorithmic alternative to password composition policy — it is more secure,
+flexible, and convenient in websites that require a minimal complexity score.
 
-- More secure: policies often fail both ways, allowing weak passwords (P@ssword1) and disallowing strong passwords.
-- More flexible: zxcvbn allows many password styles to flourish so long as it detects sufficient complexity — passphrases are rated highly given enough uncommon words, keyboard patterns are ranked based on length and number of turns, and capitalization adds more complexity when it's unpredictaBle.
-- More usable: zxcvbn is designed to power simple, rule-free interfaces that give instant feedback. In addition to strength estimation, zxcvbn includes minimal, targeted verbal feedback that can help guide users towards less guessable passwords.
-For further detail and motivation, please refer to the USENIX Security '16 [paper and presentation](https://www.usenix.org/conference/usenixsecurity16/technical-sessions/presentation/wheeler).
+- More secure: policies often fail, allowing weak passwords (P@ssword1) and blocking strong passwords.
+- More flexible: **zxcvbn** allows many password styles to flourish as long as sufficient complexity is provided, i.e. 
+  passphrases are rated highly given enough uncommon words, keyboard patterns are ranked based on length and number of repetitions, 
+  and capitalization adds more complexity when it's _unpredictaBle_.
+- More convenient: **zxcvbn** is designed to power simple, rule-free interfaces that give instant feedback. 
+  Additionally, **zxcvbn** includes minimal, targeted, verbose feedback that can help guide users towards more complex passwords.
+For more details, please refer to the USENIX Security '16 [paper and presentation](https://www.usenix.org/conference/usenixsecurity16/technical-sessions/presentation/wheeler).
 
-This is a complete rewrite of [zxcvbn](https://github.com/dropbox/zxcvbn) into typescript
+This is a complete rewrite of [zxcvbn](https://github.com/dropbox/zxcvbn) in TypeScript
 which is licensed under the [MIT](https://github.com/dropbox/zxcvbn/blob/master/LICENSE.txt) license.
-Thanks to the original creators [dropbox](https://github.com/dropbox) for the great work.
+Thanks to the original creators [dropbox](https://github.com/dropbox) for their great work.
 
 
 ## Other implementation
@@ -41,5 +43,5 @@ Thanks to the original creators [dropbox](https://github.com/dropbox) for the gr
 
 ## Performance
 
-zxcvbn operates below human perception of delay for most input: ~5-20ms for ~25 char passwords on modern browsers/CPUs, ~100ms for passwords around 100 characters. 
-To bound runtime latency for really long passwords, consider sending `zxcvbn()` only the first 100 characters or so of user input.
+**zxcvbn** operates below human perception of delay for most input: ~5-20ms for ~25 character passwords on modern browsers/CPUs, ~100ms for passwords around 100 characters. 
+To curb runtime latency for really long passwords, consider sending `zxcvbn()` only the first 100 characters or so of user input.
