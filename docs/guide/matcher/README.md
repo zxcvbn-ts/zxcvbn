@@ -3,7 +3,7 @@
 There are multiple build in matchers to identify the strength of a password.
 
 ## bruteforce
-The bruteforce matcher is the last matcher to check if parts of the password can be guessed by brute force
+The bruteforce is the matcher that needs to be used last, in order to check if the password can be guessed by brute force
 
 ## date
 The date matcher tries to find dates inside a password for example 2020-05-05 or dates without separators.

@@ -1,6 +1,6 @@
 # Languages
 
-zxcvbn-ts is available for multiple languages. If your language is not supported you can set the options by yourself.
+**zxcvbn-ts** is available for multiple languages. If your language is not supported you can set the options by yourself.
 
 Current supported languages:
 - German
