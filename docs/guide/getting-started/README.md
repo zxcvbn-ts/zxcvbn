@@ -13,6 +13,7 @@
 ## Usage
 
 ### Bundler like webpack
+
 ```js
 import { zxcvbn, ZxcvbnOptions } from '@zxcvbn-ts/core'
 import zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
@@ -34,7 +35,9 @@ zxcvbn(password)
 ```
 
 ### As script tag
+
 Example using jsdelivr (a CDN)
+
 ```
 <html>
   <head>
@@ -129,14 +132,15 @@ The `esm` build is for modern browsers and includes ES5 or higher.
 If you want to use it and want to include your own polyfills, you need to transpile it within your build process.
 
 ## Change prior to original library
+
 - I18n support for feedback, dictionaries and keyboard patterns. By default, the feedback are keys now
 - All dictionaries are optional, but the en dictionary highly recommend (wished feature in some issues)
 - Dictionaries are separate from the core library. This means zxcvbn-ts is relatively small without its dictionaries
-- The project is a monorepo with a core library `@zxcvbn-ts/core` and language packages `@txcvbn-ts/language-en`. 
+- The project is a monorepo with a core library `@zxcvbn-ts/core` and language packages `@txcvbn-ts/language-en`.
   Initially, there are only German and English language packages.
-- Keyboard layouts can be customised. This means you can overwrite the default set of layouts with your own or extend it. 
+- Keyboard layouts can be customised. This means you can overwrite the default set of layouts with your own or extend it.
   E.g., if you are developing a Russian website, you need to include a Cyrillic keyboard set. Create a PR so that others can benefit from it.
-- You can use multiple keyboard layouts, which means that the library will check against them by default. 
+- You can use multiple keyboard layouts, which means that the library will check against them by default.
 - the tests are Jest based, so we get a coverage score
 - eslint/prettier for consistent code style
 - Added static page docs https://zxcvbn-ts.github.io/zxcvbn/

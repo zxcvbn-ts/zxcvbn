@@ -8,7 +8,7 @@ features:
   - title: Password scoring
     details: Get a score for a password from 0-4
   - title: I18n
-    details: Choose your language for feedback translations and dictionaries 
+    details: Choose your language for feedback translations and dictionaries
   - title: Customizable
     details: You can customize dictionaries, l33t table and the keyboard layout
   - title: Typescript

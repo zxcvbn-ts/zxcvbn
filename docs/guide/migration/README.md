@@ -2,7 +2,7 @@
 
 ## `zxcvbn-ts 0.2.x` to `zxcvbn-ts 0.3.x`
 
-We moved the options handling out of the **zxcvbn** call to improve performance. 
+We moved the options handling out of the **zxcvbn** call to improve performance.
 
 Related [issue](https://github.com/zxcvbn-ts/zxcvbn/issues/31)
 
@@ -103,10 +103,10 @@ const options = {
 
 zxcvbn(password, options)
 ```
+
 - there are a few things that will slightly change the password crack estimation:
   - the password list is newly generated: this means that some passwords are in a different rank.
   - dates should be recognized better
   - passwords as single tokens are now consistently ranked better for capitalization like in [#232](https://github.com/dropbox/zxcvbn/issues/232) described.
   - there are new keyboard layouts.
 - the german language package should not be used without the english and common language package because it is not matured yet
-
