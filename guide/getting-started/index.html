@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Getting started | zxcvbn-ts</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    
+    <meta name="description" content="Realistic password strength estimation written in typescript">
+    
+    <link rel="preload" href="/zxcvbn/assets/css/0.styles.43cc6c28.css" as="style"><link rel="preload" href="/zxcvbn/assets/js/app.f90679cd.js" as="script"><link rel="preload" href="/zxcvbn/assets/js/3.8583075f.js" as="script"><link rel="preload" href="/zxcvbn/assets/js/13.cddb5bc8.js" as="script"><link rel="prefetch" href="/zxcvbn/assets/js/10.e0f399eb.js"><link rel="prefetch" href="/zxcvbn/assets/js/11.d59e74c8.js"><link rel="prefetch" href="/zxcvbn/assets/js/12.fb91643d.js"><link rel="prefetch" href="/zxcvbn/assets/js/14.b9b86741.js"><link rel="prefetch" href="/zxcvbn/assets/js/15.ce9454ae.js"><link rel="prefetch" href="/zxcvbn/assets/js/16.7fc8e367.js"><link rel="prefetch" href="/zxcvbn/assets/js/17.57ff3461.js"><link rel="prefetch" href="/zxcvbn/assets/js/18.354a85a6.js"><link rel="prefetch" href="/zxcvbn/assets/js/19.bc0e9292.js"><link rel="prefetch" href="/zxcvbn/assets/js/2.a49a4011.js"><link rel="prefetch" href="/zxcvbn/assets/js/4.74d55e8b.js"><link rel="prefetch" href="/zxcvbn/assets/js/5.81e37324.js"><link rel="prefetch" href="/zxcvbn/assets/js/6.c8690f84.js"><link rel="prefetch" href="/zxcvbn/assets/js/7.263ea6f2.js"><link rel="prefetch" href="/zxcvbn/assets/js/8.c32c5401.js"><link rel="prefetch" href="/zxcvbn/assets/js/9.961a3933.js">
+    <link rel="stylesheet" href="/zxcvbn/assets/css/0.styles.43cc6c28.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/zxcvbn/" class="home-link router-link-active"><!----> <span class="site-name">zxcvbn-ts</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/zxcvbn/guide/" class="nav-link router-link-active">
+  Guide
+</a></div><div class="nav-item"><a href="https://github.com/zxcvbn-ts/zxcvbn/blob/master/packages/libraries/main/CHANGELOG.md" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Changelog
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <a href="https://github.com/zxcvbn-ts/zxcvbn" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/zxcvbn/guide/" class="nav-link router-link-active">
+  Guide
+</a></div><div class="nav-item"><a href="https://github.com/zxcvbn-ts/zxcvbn/blob/master/packages/libraries/main/CHANGELOG.md" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Changelog
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <a href="https://github.com/zxcvbn-ts/zxcvbn" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>Guide</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/zxcvbn/guide/" aria-current="page" class="sidebar-link">Introduction</a></li><li><a href="/zxcvbn/guide/getting-started/" aria-current="page" class="active sidebar-link">Getting started</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/zxcvbn/guide/getting-started/#installation" class="sidebar-link">Installation</a></li><li class="sidebar-sub-header"><a href="/zxcvbn/guide/getting-started/#usage" class="sidebar-link">Usage</a></li><li class="sidebar-sub-header"><a href="/zxcvbn/guide/getting-started/#output" class="sidebar-link">Output</a></li><li class="sidebar-sub-header"><a href="/zxcvbn/guide/getting-started/#change-prior-to-original-library" class="sidebar-link">Change prior to original library</a></li></ul></li><li><a href="/zxcvbn/guide/migration/" class="sidebar-link">Migration</a></li><li><a href="/zxcvbn/guide/languages/" class="sidebar-link">Languages</a></li><li><a href="/zxcvbn/guide/lazy-loading/" class="sidebar-link">Lazy loading</a></li><li><a href="/zxcvbn/guide/matcher/" class="sidebar-link">Matcher</a></li><li><a href="/zxcvbn/guide/options/" class="sidebar-link">Options</a></li><li><a href="/zxcvbn/guide/user-input/" class="sidebar-link">User input</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>Demo</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/zxcvbn/demo/" class="sidebar-link">Demo</a></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="getting-started"><a href="#getting-started" class="header-anchor">#</a> Getting started</h1> <h2 id="installation"><a href="#installation" class="header-anchor">#</a> Installation</h2> <h3 id="npm"><a href="#npm" class="header-anchor">#</a> npm:</h3> <p><code>npm install @zxcvbn-ts/core @zxcvbn-ts/language-common @zxcvbn-ts/language-en --save</code></p> <h3 id="yarn"><a href="#yarn" class="header-anchor">#</a> yarn:</h3> <p><code>yarn add @zxcvbn-ts/core @zxcvbn-ts/language-common @zxcvbn-ts/language-en</code></p> <h2 id="usage"><a href="#usage" class="header-anchor">#</a> Usage</h2> <h3 id="bundler-like-webpack"><a href="#bundler-like-webpack" class="header-anchor">#</a> Bundler like webpack</h3> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">import</span> <span class="token punctuation">{</span> zxcvbn<span class="token punctuation">,</span> ZxcvbnOptions <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@zxcvbn-ts/core'</span>
+<span class="token keyword">import</span> zxcvbnCommonPackage <span class="token keyword">from</span> <span class="token string">'@zxcvbn-ts/language-common'</span>
+<span class="token keyword">import</span> zxcvbnEnPackage <span class="token keyword">from</span> <span class="token string">'@zxcvbn-ts/language-en'</span>
+
+<span class="token keyword">const</span> password <span class="token operator">=</span> <span class="token string">'somePassword'</span>
+<span class="token keyword">const</span> options <span class="token operator">=</span> <span class="token punctuation">{</span>
+  translations<span class="token operator">:</span> zxcvbnEnPackage<span class="token punctuation">.</span>translations<span class="token punctuation">,</span>
+  graphs<span class="token operator">:</span> zxcvbnCommonPackage<span class="token punctuation">.</span>adjacencyGraphs<span class="token punctuation">,</span>
+  dictionary<span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token operator">...</span>zxcvbnCommonPackage<span class="token punctuation">.</span>dictionary<span class="token punctuation">,</span>
+    <span class="token operator">...</span>zxcvbnEnPackage<span class="token punctuation">.</span>dictionary<span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
+
+ZxcvbnOptions<span class="token punctuation">.</span><span class="token function">setOptions</span><span class="token punctuation">(</span>options<span class="token punctuation">)</span>
+
+<span class="token function">zxcvbn</span><span class="token punctuation">(</span>password<span class="token punctuation">)</span>
+</code></pre></div><h3 id="as-script-tag"><a href="#as-script-tag" class="header-anchor">#</a> As script tag</h3> <p>Example using jsdelivr (a CDN)</p> <div class="language- extra-class"><pre class="language-text"><code>&lt;html&gt;
+  &lt;head&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/@zxcvbn-ts/core@0.3.0/dist/zxcvbn-ts.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/@zxcvbn-ts/language-common@0.3.0/dist/zxcvbn-ts.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/@zxcvbn-ts/language-en@0.3.0/dist/zxcvbn-ts.js&quot;&gt;&lt;/script&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;script&gt;
+      ;(function () {
+        // all package will be available under zxcvbnts
+        const options = {
+          translations: zxcvbnts['language-en'].translations,
+          graphs: zxcvbnts['language-common'].adjacencyGraphs,
+          dictionary: {
+            ...zxcvbnts['language-common'].dictionary,
+            ...zxcvbnts['language-en'].dictionary,
+          },
+        }
+        zxcvbnts.core.Options.setOptions(options)
+        console.log(zxcvbnts.core.zxcvbn('somePassword'))
+      })()
+    &lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre></div><h2 id="output"><a href="#output" class="header-anchor">#</a> Output</h2> <div class="language- extra-class"><pre class="language-text"><code>result.guesses            # estimated guesses needed to crack password
+result.guessesLog10      # order of magnitude of result.guesses
+
+result.crackTimesSeconds # dictionary of back-of-the-envelope crack time
+                          # estimations, in seconds, based on a few scenarios:
+{
+  # online attack on a service that ratelimits password auth attempts.
+  onlineThrottling100PerHour
+
+  # online attack on a service that doesn't ratelimit,
+  # or where an attacker has outsmarted ratelimiting.
+  onlineNoThrottling10PerSecond
+
+  # offline attack. assumes multiple attackers,
+  # proper user-unique salting, and a slow hash function
+  # w/ moderate work factor, such as bcrypt, scrypt, PBKDF2.
+  offlineSlowHashing1e4PerSecond
+
+  # offline attack with user-unique salting but a fast hash
+  # function like SHA-1, SHA-256 or MD5. A wide range of
+  # reasonable numbers anywhere from one billion - one trillion
+  # guesses per second, depending on number of cores and machines.
+  # ballparking at 10B/sec.
+  offlineFastHashing1e10PerSecond
+}
+
+result.crackTimesDisplay # same keys as result.crackTimesSeconds,
+                           # with friendlier display string values:
+                           # &quot;less than a second&quot;, &quot;3 hours&quot;, &quot;centuries&quot;, etc.
+
+result.score      # Integer from 0-4 (useful for implementing a strength bar)
+
+  0 # too guessable: risky password. (guesses &lt; 10^3)
+
+  1 # very guessable: protection from throttled online attacks. (guesses &lt; 10^6)
+
+  2 # somewhat guessable: protection from unthrottled online attacks. (guesses &lt; 10^8)
+
+  3 # safely unguessable: moderate protection from offline slow-hash scenario. (guesses &lt; 10^10)
+
+  4 # very unguessable: strong protection from offline slow-hash scenario. (guesses &gt;= 10^10)
+
+result.feedback   # verbal feedback to help choose better passwords. set when score &lt;= 2.
+
+  result.feedback.warning     # explains what's wrong, eg. 'this is a top-10 common password'.
+                              # not always set -- sometimes an empty string
+
+  result.feedback.suggestions # a possibly-empty list of suggestions to help choose a less
+                              # guessable password. eg. 'Add another word or two'
+
+result.sequence   # the list of patterns that zxcvbn based the
+                  # guess calculation on.
+
+result.calcTime  # how long it took zxcvbn to calculate an answer,
+                  # in milliseconds.
+</code></pre></div><p>We highly recommend always using the common and English language packages for the optimal scoring result.
+If your language is available as a package, you should import it as well. If your language is missing, feel free to open a PR. For the time being, you could extend the default set.</p> <p>The <code>esm</code> build is for modern browsers and includes ES5 or higher.
+If you want to use it and want to include your own polyfills, you need to transpile it within your build process.</p> <h2 id="change-prior-to-original-library"><a href="#change-prior-to-original-library" class="header-anchor">#</a> Change prior to original library</h2> <ul><li>I18n support for feedback, dictionaries and keyboard patterns. By default, the feedback are keys now</li> <li>All dictionaries are optional, but the en dictionary highly recommend (wished feature in some issues)</li> <li>Dictionaries are separate from the core library. This means zxcvbn-ts is relatively small without its dictionaries</li> <li>The project is a monorepo with a core library <code>@zxcvbn-ts/core</code> and language packages <code>@txcvbn-ts/language-en</code>.
+Initially, there are only German and English language packages.</li> <li>Keyboard layouts can be customised. This means you can overwrite the default set of layouts with your own or extend it.
+E.g., if you are developing a Russian website, you need to include a Cyrillic keyboard set. Create a PR so that others can benefit from it.</li> <li>You can use multiple keyboard layouts, which means that the library will check against them by default.</li> <li>the tests are Jest based, so we get a coverage score</li> <li>eslint/prettier for consistent code style</li> <li>Added static page docs https://zxcvbn-ts.github.io/zxcvbn/</li> <li>esm, commonJS and browser build</li></ul></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/zxcvbn/guide/" class="prev router-link-active">
+        Introduction
+      </a></span> <span class="next"><a href="/zxcvbn/guide/migration/">
+        Migration
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/zxcvbn/assets/js/app.f90679cd.js" defer></script><script src="/zxcvbn/assets/js/3.8583075f.js" defer></script><script src="/zxcvbn/assets/js/13.cddb5bc8.js" defer></script>
+  </body>
+</html>

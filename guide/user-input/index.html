@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>UserInput | zxcvbn-ts</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    
+    <meta name="description" content="Realistic password strength estimation written in typescript">
+    
+    <link rel="preload" href="/zxcvbn/assets/css/0.styles.43cc6c28.css" as="style"><link rel="preload" href="/zxcvbn/assets/js/app.f90679cd.js" as="script"><link rel="preload" href="/zxcvbn/assets/js/3.8583075f.js" as="script"><link rel="preload" href="/zxcvbn/assets/js/19.bc0e9292.js" as="script"><link rel="prefetch" href="/zxcvbn/assets/js/10.e0f399eb.js"><link rel="prefetch" href="/zxcvbn/assets/js/11.d59e74c8.js"><link rel="prefetch" href="/zxcvbn/assets/js/12.fb91643d.js"><link rel="prefetch" href="/zxcvbn/assets/js/13.cddb5bc8.js"><link rel="prefetch" href="/zxcvbn/assets/js/14.b9b86741.js"><link rel="prefetch" href="/zxcvbn/assets/js/15.ce9454ae.js"><link rel="prefetch" href="/zxcvbn/assets/js/16.7fc8e367.js"><link rel="prefetch" href="/zxcvbn/assets/js/17.57ff3461.js"><link rel="prefetch" href="/zxcvbn/assets/js/18.354a85a6.js"><link rel="prefetch" href="/zxcvbn/assets/js/2.a49a4011.js"><link rel="prefetch" href="/zxcvbn/assets/js/4.74d55e8b.js"><link rel="prefetch" href="/zxcvbn/assets/js/5.81e37324.js"><link rel="prefetch" href="/zxcvbn/assets/js/6.c8690f84.js"><link rel="prefetch" href="/zxcvbn/assets/js/7.263ea6f2.js"><link rel="prefetch" href="/zxcvbn/assets/js/8.c32c5401.js"><link rel="prefetch" href="/zxcvbn/assets/js/9.961a3933.js">
+    <link rel="stylesheet" href="/zxcvbn/assets/css/0.styles.43cc6c28.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/zxcvbn/" class="home-link router-link-active"><!----> <span class="site-name">zxcvbn-ts</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/zxcvbn/guide/" class="nav-link router-link-active">
+  Guide
+</a></div><div class="nav-item"><a href="https://github.com/zxcvbn-ts/zxcvbn/blob/master/packages/libraries/main/CHANGELOG.md" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Changelog
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <a href="https://github.com/zxcvbn-ts/zxcvbn" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/zxcvbn/guide/" class="nav-link router-link-active">
+  Guide
+</a></div><div class="nav-item"><a href="https://github.com/zxcvbn-ts/zxcvbn/blob/master/packages/libraries/main/CHANGELOG.md" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Changelog
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <a href="https://github.com/zxcvbn-ts/zxcvbn" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav>  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><p class="sidebar-heading open"><span>Guide</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/zxcvbn/guide/" aria-current="page" class="sidebar-link">Introduction</a></li><li><a href="/zxcvbn/guide/getting-started/" class="sidebar-link">Getting started</a></li><li><a href="/zxcvbn/guide/migration/" class="sidebar-link">Migration</a></li><li><a href="/zxcvbn/guide/languages/" class="sidebar-link">Languages</a></li><li><a href="/zxcvbn/guide/lazy-loading/" class="sidebar-link">Lazy loading</a></li><li><a href="/zxcvbn/guide/matcher/" class="sidebar-link">Matcher</a></li><li><a href="/zxcvbn/guide/options/" class="sidebar-link">Options</a></li><li><a href="/zxcvbn/guide/user-input/" aria-current="page" class="active sidebar-link">User input</a></li></ul></section></li><li><section class="sidebar-group depth-0"><p class="sidebar-heading"><span>Demo</span> <!----></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/zxcvbn/demo/" class="sidebar-link">Demo</a></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="userinput"><a href="#userinput" class="header-anchor">#</a> UserInput</h1> <p>Often you want to check if the password matches some user content like their username or email.
+For this purpose, add a <code>userInputs</code> dictionary with its own sanitizer.</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token keyword">import</span> <span class="token punctuation">{</span> zxcvbn<span class="token punctuation">,</span> ZxcvbnOptions <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@zxcvbn-ts/core'</span>
+
+<span class="token keyword">const</span> password <span class="token operator">=</span> <span class="token string">'somePassword'</span>
+<span class="token keyword">const</span> options <span class="token operator">=</span> <span class="token punctuation">{</span>
+  dictionary<span class="token operator">:</span> <span class="token punctuation">{</span>
+    userInputs<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">'someEmail@email.de'</span><span class="token punctuation">,</span> <span class="token string">'someUsername'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
+ZxcvbnOptions<span class="token punctuation">.</span><span class="token function">setOptions</span><span class="token punctuation">(</span>options<span class="token punctuation">)</span>
+
+<span class="token function">zxcvbn</span><span class="token punctuation">(</span>password<span class="token punctuation">)</span>
+</code></pre></div></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/zxcvbn/guide/options/" class="prev">
+        Options
+      </a></span> <span class="next"><a href="/zxcvbn/demo/">
+        Demo
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/zxcvbn/assets/js/app.f90679cd.js" defer></script><script src="/zxcvbn/assets/js/3.8583075f.js" defer></script><script src="/zxcvbn/assets/js/19.bc0e9292.js" defer></script>
+  </body>
+</html>
