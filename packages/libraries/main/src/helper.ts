@@ -20,7 +20,7 @@ export const sorted = (matches: MatchExtended[]) =>
 
 export const buildRankedDictionary = (orderedList: any[]) => {
   const result: LooseObject = {}
-  let counter = 1 // rank starts at 1, not 0
+  let counter:number = 1 // rank starts at 1, not 0
   orderedList.forEach((word) => {
     result[word] = counter
     counter += 1

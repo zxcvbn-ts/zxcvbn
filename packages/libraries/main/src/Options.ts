@@ -33,7 +33,7 @@ class Options {
     this.setRankedDictionaries()
   }
 
-  setOptions(options: OptionsType = {}) {
+  setOptions(options: OptionsType = {}):void {
     if (options.l33tTable) {
       this.l33tTable = options.l33tTable
     }
@@ -53,7 +53,7 @@ class Options {
     }
   }
 
-  setTranslations(translations: TranslationKeys) {
+  setTranslations(translations: TranslationKeys):void {
     if (this.checkCustomTranslations(translations)) {
       this.translations = translations
     } else {
@@ -61,8 +61,8 @@ class Options {
     }
   }
 
-  checkCustomTranslations(translations: TranslationKeys) {
-    let valid = true
+  checkCustomTranslations(translations: TranslationKeys):boolean {
+    let valid:boolean = true
     Object.keys(translationKeys).forEach((type) => {
       if (type in translations) {
         const translationType = type as keyof typeof translationKeys
@@ -78,7 +78,7 @@ class Options {
     return valid
   }
 
-  setRankedDictionaries() {
+  setRankedDictionaries():void {
     const rankedDictionaries: RankedDictionaries = {}
     Object.keys(this.dictionary).forEach((name) => {
       const list = this.dictionary[name]
@@ -104,7 +104,7 @@ class Options {
     this.rankedDictionaries = rankedDictionaries
   }
 
-  public addMatcher(name: string, matcher: Matcher) {
+  public addMatcher(name: string, matcher: Matcher):void {
     if (this.matchers[name]) {
       throw new Error('Matcher already exists')
     }

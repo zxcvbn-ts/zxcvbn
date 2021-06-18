@@ -28,7 +28,7 @@ class Matching {
     spatial: spatialMatcher,
   }
 
-  match(password: string) {
+  match(password: string):MatchExtended[] {
     const matches: MatchExtended[] = []
 
     const matchers = [

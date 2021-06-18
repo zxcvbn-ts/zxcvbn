@@ -79,9 +79,9 @@ class TimeEstimates {
     return 4
   }
 
-  displayTime(seconds: number) {
-    let displayStr = 'centuries'
-    let base
+  displayTime(seconds: number):string {
+    let displayStr:string = 'centuries'
+    let base:number | undefined
     const timeKeys = Object.keys(times)
     const foundIndex = timeKeys.findIndex(
       (time) => seconds < times[time as keyof typeof times],
