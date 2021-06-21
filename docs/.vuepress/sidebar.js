@@ -6,6 +6,7 @@ module.exports = [
       ['/guide/', 'Introduction'],
       ['/guide/getting-started/', 'Getting started'],
       ['/guide/migration/', 'Migration'],
+      ['/guide/comparison/', 'Comparison'],
       ['/guide/languages/', 'Languages'],
       ['/guide/lazy-loading/', 'Lazy loading'],
       ['/guide/matcher/', 'Matcher'],
