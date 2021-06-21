@@ -1,5 +1,31 @@
 # Migration
 
+## `zxcvbn-ts 0.3.x` to `zxcvbn-ts 1.x.x`
+
+To decrease the bundle size of the core package the keyboard layout are now optional and can be customized.
+This means that if you want to have the recommended scoring you need to add it to your `setOptions` call.
+
+```js
+import { zxcvbn, ZxcvbnOptions } from '@zxcvbn-ts/core'
+import zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
+import zxcvbnEnPackage from '@zxcvbn-ts/language-en'
+
+const password = 'somePassword'
+const options = {
+  translations: zxcvbnEnPackage.translations,
+  dictionary: {
+    ...zxcvbnCommonPackage.dictionary,
+    ...zxcvbnEnPackage.dictionary,
+  }, 
+  // The next line is now recommended to get a good scoring.
+  graphs: zxcvbnCommonPackage.adjacencyGraphs,
+}
+
+ZxcvbnOptions.setOptions(options)
+
+zxcvbn(password)
+```
+
 ## `zxcvbn-ts 0.2.x` to `zxcvbn-ts 0.3.x`
 
 We moved the options handling out of the **zxcvbn** call to improve performance.
