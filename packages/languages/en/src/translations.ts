@@ -15,7 +15,7 @@ export default {
     wordByItself: 'Single words are easy to guess.',
     namesByThemselves: 'Single names or surnames are easy to guess.',
     commonNames: 'Common names and surnames are easy to guess.',
-    userInputs: 'There should not be any personal data.',
+    userInputs: 'There should not be any personal or page related data.',
   },
   suggestions: {
     l33t: "Avoid predictable letter substitutions like '@' for 'a'.",
