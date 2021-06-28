@@ -3,8 +3,6 @@ import l33tTableDefault from './data/l33tTable'
 import { REGEXEN } from './data/const'
 import { DictionaryReturn } from './matcher/dictionary/scoring'
 import Matching from './Matching'
-import Feedback from './Feedback'
-import utils from './scoring/utils'
 
 export type TranslationKeys = typeof translationKeys
 export type L33tTableDefault = typeof l33tTableDefault
