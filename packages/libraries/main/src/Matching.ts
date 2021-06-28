@@ -28,9 +28,10 @@ class Matching {
     spatial: spatialMatcher,
   }
 
-  match(password: string) {
+  match(password: string): MatchExtended[] | Promise<MatchExtended[]> {
     const matches: MatchExtended[] = []
 
+    const promises: Promise<MatchExtended[]>[] = []
     const matchers = [
       ...Object.keys(this.matchers),
       ...Object.keys(Options.matchers),
@@ -43,15 +44,27 @@ class Matching {
         ? this.matchers[key]
         : Options.matchers[key].Matching
       const usedMatcher = new Matcher()
+      const result = usedMatcher.match({
+        password,
+        omniMatch: this,
+      })
 
-      extend(
-        matches,
-        usedMatcher.match({
-          password,
-          omniMatch: this,
-        }),
-      )
+      if (result instanceof Promise) {
+        result.then((response) => {
+          extend(matches, response)
+        })
+        promises.push(result)
+      } else {
+        extend(matches, result)
+      }
     })
+    if (promises.length > 0) {
+      return new Promise((resolve) => {
+        return Promise.all(promises).then(() => {
+          resolve(sorted(matches))
+        })
+      })
+    }
     return sorted(matches)
   }
 }

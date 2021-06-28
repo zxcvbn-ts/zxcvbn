@@ -1,5 +1,5 @@
 import Options from './Options'
-import { CrackTimesDisplay, CrackTimesSeconds, LooseObject } from './types'
+import { CrackTimesDisplay, CrackTimesSeconds } from './types'
 
 const SECOND = 1
 const MINUTE = SECOND * 60
@@ -44,10 +44,17 @@ class TimeEstimates {
       offlineSlowHashing1e4PerSecond: guesses / 1e4,
       offlineFastHashing1e10PerSecond: guesses / 1e10,
     }
-    const crackTimesDisplay: CrackTimesDisplay | LooseObject = {}
-    Object.keys(crackTimesSeconds).forEach((scenario: string) => {
+    const crackTimesDisplay: CrackTimesDisplay = {
+      onlineThrottling100PerHour: '',
+      onlineNoThrottling10PerSecond: '',
+      offlineSlowHashing1e4PerSecond: '',
+      offlineFastHashing1e10PerSecond: '',
+    }
+    Object.keys(crackTimesSeconds).forEach((scenario) => {
       const seconds = crackTimesSeconds[scenario as keyof CrackTimesSeconds]
-      crackTimesDisplay[scenario] = this.displayTime(seconds)
+      crackTimesDisplay[scenario as keyof CrackTimesDisplay] = this.displayTime(
+        seconds,
+      )
     })
     return {
       crackTimesSeconds,

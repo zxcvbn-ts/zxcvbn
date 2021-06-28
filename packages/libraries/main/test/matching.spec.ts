@@ -2,6 +2,7 @@ import zxcvbnCommonPackage from '../../../languages/common/src'
 import zxcvbnEnPackage from '../../../languages/en/src'
 import MatchOmni from '../src/Matching'
 import Options from '../src/Options'
+import { MatchExtended } from '../src/types'
 
 Options.setOptions({
   dictionary: {
@@ -19,7 +20,7 @@ describe('omnimatch matching', () => {
   })
 
   const password = 'r0sebudmaelstrom11/20/91aaaa'
-  const matches = omniMatch.match(password)
+  const matches = omniMatch.match(password) as MatchExtended[]
   const data = [
     ['dictionary', [0, 6]],
     ['dictionary', [7, 14]],

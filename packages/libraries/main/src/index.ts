@@ -3,20 +3,21 @@ import scoring from './scoring'
 import TimeEstimates from './TimeEstimates'
 import Feedback from './Feedback'
 import Options from './Options'
-import { MatchEstimated } from './types'
+import { MatchEstimated, MatchExtended, ZxcvbnResult } from './types'
 
 const time = () => new Date().getTime()
 
-export const zxcvbn = (password: string) => {
+const createReturnValue = (
+  resolvedMatches: MatchExtended[],
+  password: string,
+  start: number,
+) => {
   const feedback = new Feedback()
-  const matching = new Matching()
   const timeEstimates = new TimeEstimates()
-
-  const start = time()
-
-  const matches = matching.match(password)
-
-  const matchSequence = scoring.mostGuessableMatchSequence(password, matches)
+  const matchSequence = scoring.mostGuessableMatchSequence(
+    password,
+    resolvedMatches,
+  )
   const calcTime = time() - start
   const attackTimes = timeEstimates.estimateAttackTimes(matchSequence.guesses)
 
@@ -29,6 +30,23 @@ export const zxcvbn = (password: string) => {
       matchSequence.sequence as MatchEstimated[],
     ),
   }
+}
+
+export const zxcvbn = (
+  password: string,
+): ZxcvbnResult | Promise<ZxcvbnResult> => {
+  const matching = new Matching()
+
+  const start = time()
+
+  const matches = matching.match(password)
+
+  if (matches instanceof Promise) {
+    return matches.then((resolvedMatches) => {
+      return createReturnValue(resolvedMatches, password, start)
+    })
+  }
+  return createReturnValue(matches, password, start)
 }
 
 export { Options as ZxcvbnOptions }

@@ -1,4 +1,4 @@
-import { RepeatMatch } from '../../types'
+import { MatchExtended, RepeatMatch } from '../../types'
 import scoring from '../../scoring'
 import Matching from '../../Matching'
 
@@ -92,7 +92,7 @@ class MatchRepeat {
   getBaseGuesses(baseToken: string, omniMatch: Matching) {
     const baseAnalysis = scoring.mostGuessableMatchSequence(
       baseToken,
-      omniMatch.match(baseToken),
+      omniMatch.match(baseToken) as MatchExtended[],
     )
     return baseAnalysis.guesses
   }
