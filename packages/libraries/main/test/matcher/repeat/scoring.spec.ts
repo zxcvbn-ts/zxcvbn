@@ -2,6 +2,7 @@ import repeatGuesses from '../../../src/matcher/repeat/scoring'
 import scoring from '../../../src/scoring'
 import MatchOmni from '../../../src/Matching'
 import Options from '../../../src/Options'
+import { MatchExtended } from '../../../src/types'
 
 Options.setOptions()
 
@@ -18,7 +19,7 @@ describe('scoring guesses repeated', () => {
   data.forEach(([token, baseToken, repeatCount]) => {
     const baseGuesses = scoring.mostGuessableMatchSequence(
       baseToken,
-      omniMatch.match(baseToken),
+      omniMatch.match(baseToken) as MatchExtended[],
     ).guesses
     const match = {
       token,
