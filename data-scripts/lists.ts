@@ -107,19 +107,19 @@ export default {
         minOccurrences: 100,
       },
     },
-    // lastnames: {
-    //   generator: TxtGenerator,
-    //   customList: true,
-    //   options: {
-    //     url:
-    //       'https://www.insee.fr/fr/statistiques/fichier/2540004/nat2019_csv.zip',
-    //     occurrenceColumn: 3,
-    //     valueColumn: 1,
-    //     separator: ';',
-    //     row: 2,
-    //     minOccurrences: 100,
-    //   },
-    // },
+    lastnames: {
+      generator: TxtGenerator,
+      customList: true,
+      options: {
+        url:
+          'https://www.insee.fr/fr/statistiques/fichier/2540004/nat2019_csv.zip',
+        occurrenceColumn: 3,
+        valueColumn: 1,
+        separator: ';',
+        row: 2,
+        minOccurrences: 100,
+      },
+    },
   },
   'common': {
     passwords: {
