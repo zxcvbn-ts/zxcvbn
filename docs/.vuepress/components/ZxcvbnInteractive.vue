@@ -53,6 +53,7 @@ export default {
       const options = {
         dictionary: {},
         translations: translationKeys,
+        graphs: zxcvbnCommonPackage.adjacencyGraphs,
       }
       if (this.useDictionaries) {
         options.dictionary = {

@@ -35,8 +35,8 @@ If you find something missing in this table, feel free to open an issue or a PR.
 
 ### translations
 
-By default, every feedback is a key. If you want to get real translated feedback you can use one of the [language](/languages) packages.
+By default, every feedback is a key. If you want to get real translated feedback you can use one of the [language](../languages) packages.
 
 ## addMatcher
 
-With this function you can add your own matcher for more information checkout the [matcher documentation](/matcher)
+With this function you can add your own matcher for more information checkout the [matcher documentation](../matcher)
