@@ -20,7 +20,7 @@ import zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
 
 const password = 'somePassword'
 const options = {
-  ...zxcvbnCommonPackage
+  ...zxcvbnCommonPackage,
 }
 
 ZxcvbnOptions.setOptions(options)
