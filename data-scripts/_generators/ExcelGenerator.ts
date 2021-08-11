@@ -63,6 +63,7 @@ export class ExcelGenerator {
     }
   }
 
+  // eslint-disable-next-line complexity,max-statements
   public async run(output: string) {
     // Download the file
     console.info('Fetching excel file')

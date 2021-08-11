@@ -102,7 +102,7 @@ export default {
       options: {
         url:
           'https://www.insee.fr/fr/statistiques/fichier/3536630/noms2008nat_txt.zip',
-        occurence_column: 11,
+        occurrenceColumn: 11,
         row: 2,
         minOccurrences: 100,
       },
@@ -113,8 +113,8 @@ export default {
       options: {
         url:
           'https://www.insee.fr/fr/statistiques/fichier/2540004/nat2019_csv.zip',
-        occurence_column: 3,
-        value_column: 1,
+        occurrenceColumn: 3,
+        valueColumn: 1,
         separator: ';',
         row: 2,
         minOccurrences: 100,

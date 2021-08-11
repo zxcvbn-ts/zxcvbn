@@ -1,6 +1,7 @@
 import fs from 'fs'
 import byline from 'byline'
 import sprintfClass from 'sprintf-js'
+import { MatchExtended } from '@zxcvbn-ts/core/src/types'
 import Matching from '../../packages/libraries/main/src/Matching'
 import estimateGuesses from '../../packages/libraries/main/src/scoring/estimate'
 import Options from '../../packages/libraries/main/src/Options'
@@ -36,7 +37,9 @@ export default class PasswordGenerator {
       }
     }
 
-    const matches = matching.match(password).filter((match) => {
+    const foundMatches = matching.match(password) as MatchExtended[]
+
+    const matches = foundMatches.filter((match) => {
       // only keep matches that span full password
       const isFullPassword = match.i === 0 && match.j === password.length - 1
       // ignore dictionaries
@@ -81,6 +84,7 @@ export default class PasswordGenerator {
           encoding: 'utf8',
         }),
       )
+      // eslint-disable-next-line max-statements
       stream.on('readable', () => {
         let line
         const results: number[] = []
@@ -110,6 +114,7 @@ export default class PasswordGenerator {
         }
         return results
       })
+      // eslint-disable-next-line max-statements
       return stream.on('end', () => {
         console.info('skipped lines:', skippedLines)
         let pairs: [string, number][] = []
