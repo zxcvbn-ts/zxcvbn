@@ -19,7 +19,7 @@ const main = async () => {
     .filter((dirent) => dirent.isDirectory())
     .map((dirent) => dirent.name)
 
-  languages.forEach(async (language) => {
+  languages.map(async (language) => {
     console.info(`loading ${language} files...`)
     if (forceLanguage !== undefined && language !== forceLanguage) {
       return

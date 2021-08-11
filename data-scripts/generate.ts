@@ -15,20 +15,20 @@ const main = async () => {
       const data = languageLists[name as keyof typeof languageLists]
 
       if (data.customList) {
-        listHandler.registerCustomList(
+        listHandler.registerCustomList({
           language,
-          name,
-          data.generator,
-          data.options,
-        )
+          filename: name,
+          generator: data.generator,
+          options: data.options,
+        })
       } else {
-        listHandler.registerList(
+        listHandler.registerList({
           language,
-          name,
-          data.source as string,
-          data.generator || SimpleListGenerator,
-          data.options,
-        )
+          filename: name,
+          url: data.source as string,
+          generator: data.generator || SimpleListGenerator,
+          options: data.options,
+        })
       }
     })
   })

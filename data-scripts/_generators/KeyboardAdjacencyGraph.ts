@@ -78,6 +78,7 @@ const getPositionTable = (
       for (const token of lineArray) {
         if (token) {
           const [x, remainder] = divmod(line.indexOf(token) - slant, xUnit)
+          // eslint-disable-next-line max-depth
           if (remainder !== 0) {
             throw new Error(`unexpected x offset for ${token} in: ${layoutStr}`)
           }

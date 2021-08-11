@@ -17,6 +17,21 @@ export interface ListConfig extends CustomListConfig {
   url: string
 }
 
+interface RegisterListOptions {
+  language: string
+  filename: string
+  url: string
+  generator: any
+  options?: LooseObject
+}
+
+interface RegisterCustomListOptions {
+  language: string
+  filename: string
+  generator: any
+  options?: LooseObject
+}
+
 export default class ListHandler {
   lists: ListConfig[] = []
 
@@ -24,6 +39,7 @@ export default class ListHandler {
 
   languages: Set<string> = new Set()
 
+  // eslint-disable-next-line max-statements
   async generateData() {
     // eslint-disable-next-line no-restricted-syntax
     for (const options of this.lists) {
@@ -90,6 +106,7 @@ export default class ListHandler {
       .readdirSync(dataFolder)
       .filter((language) => this.languages.has(language))
 
+    // eslint-disable-next-line max-statements
     languages.forEach((language) => {
       const isCommon = language === 'common'
       const languageFolder = path.join(dataFolder, language, 'src')
@@ -149,22 +166,11 @@ export default {
     await this.generateIndices()
   }
 
-  registerCustomList(
-    language: string,
-    filename: string,
-    generator: any,
-    options?: LooseObject,
-  ) {
-    this.listsCustom.push({ language, filename, generator, options })
+  registerCustomList(options: RegisterCustomListOptions) {
+    this.listsCustom.push(options)
   }
 
-  registerList(
-    language: string,
-    filename: string,
-    url: string,
-    generator: any,
-    options?: LooseObject,
-  ) {
-    this.lists.push({ language, filename, url, generator, options })
+  registerList(options: RegisterListOptions) {
+    this.lists.push(options)
   }
 }

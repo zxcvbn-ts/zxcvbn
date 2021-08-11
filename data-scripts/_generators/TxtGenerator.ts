@@ -10,30 +10,31 @@ export type Options = {
   toLowerCase?: boolean
   removeDuplicates?: boolean
   /**
-   * The occurences count should be the cell after (right side) of the name.
-   * Set to undefined if occurences are missing in the excel file
+   * The occurrences count should be the cell after (right side) of the name.
+   * Set to undefined if occurrences are missing in the excel file
    */
   minOccurrences?: number
-}
-
-const defaultOptions: Options = {
-  url: '',
-  row: 1,
-  occurence_column: 1,
-  value_column: 0,
-  separator: '\t', // default tab separator
-  trimWhitespaces: true,
-  toLowerCase: true,
-  removeDuplicates: true,
+  valueColumn: number
+  occurrenceColumn: number
+  separator: string
 }
 
 export class TxtGenerator {
-  public options: Options
+  public options: Options = {
+    url: '',
+    row: 1,
+    column: 0,
+    occurrenceColumn: 1,
+    valueColumn: 0,
+    separator: '\t', // default tab separator
+    trimWhitespaces: true,
+    toLowerCase: true,
+    removeDuplicates: true,
+  }
 
   values: string[] = []
 
   constructor(options: Options) {
-    this.options = { ...defaultOptions }
     Object.assign(this.options, options)
   }
 
@@ -60,6 +61,7 @@ export class TxtGenerator {
     }
   }
 
+  // eslint-disable-next-line max-statements
   public async run(output: string) {
     // Download the file
     console.info('Fetching file')
@@ -72,35 +74,40 @@ export class TxtGenerator {
 
     content = await JSZip.loadAsync(data)
       .then((zip) => {
-        return zip.file(Object.keys(zip.files)[0]).async('string')
+        const keys = Object.keys(zip.files)
+        const zipObject = zip.file(keys[0]) as JSZip.JSZipObject
+        return zipObject.async('string')
       })
       .then((text) => {
-        const alltextlines = text.split(/\r/)
-        return alltextlines
+        const allTextLines = text.split(/\r/)
+        return allTextLines
       })
     for (let i = 0; i < content.length; i += 1) {
       if (i > this.options.row) {
         // split content
-        const regexstring = this.options.separator
-        const regexp = new RegExp(regexstring, 'g')
+        const regexString = this.options.separator
+        const regexp = new RegExp(regexString, 'g')
         const line = content[i].split(regexp)
 
-        // If no occurence found in file, use 0 by default
-        let occurence = 0
-        if (line[this.options.occurence_column]) {
-          occurence = line[this.options.occurence_column]
+        // If no occurrence found in file, use 0 by default
+        let occurrence = 0
+        if (line[this.options.occurrenceColumn]) {
+          occurrence = parseInt(line[this.options.occurrenceColumn], 10)
         }
-        if (Number.isNaN(+occurence)) {
+        if (Number.isNaN(+occurrence)) {
           throw new Error(
-            `Expecting number at column ${this.options.occurence_column}`,
+            `Expecting number at column ${this.options.occurrenceColumn}`,
           )
         }
-        if (occurence < this.options.minOccurrences) {
+        if (
+          this.options.minOccurrences &&
+          occurrence < this.options.minOccurrences
+        ) {
           // Don't add this one
           // eslint-disable-next-line no-continue
           continue
-        } else if (!this.values.includes(line[this.options.value_column])) {
-          this.values.push(line[this.options.value_column])
+        } else if (!this.values.includes(line[this.options.valueColumn])) {
+          this.values.push(line[this.options.valueColumn])
         }
       }
     }
@@ -115,6 +122,6 @@ export class TxtGenerator {
 
     console.info('Saving to disk')
     const json = JSON.stringify(this.values)
-    fs.writeFile(`${output}.json`, json)
+    await fs.writeFile(`${output}.json`, json)
   }
 }
