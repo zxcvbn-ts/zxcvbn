@@ -3,6 +3,7 @@ import scoring from './scoring'
 import TimeEstimates from './TimeEstimates'
 import Feedback from './Feedback'
 import Options from './Options'
+import matcherPwnedFactory from './matcher/pwned'
 import { MatchEstimated, MatchExtended, ZxcvbnResult } from './types'
 
 const time = () => new Date().getTime()
@@ -50,3 +51,5 @@ export const zxcvbn = (
 }
 
 export { Options as ZxcvbnOptions }
+
+export { matcherPwnedFactory as ZxcvbnMatcherPwnedFactory }
