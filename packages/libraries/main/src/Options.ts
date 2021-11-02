@@ -106,9 +106,10 @@ class Options {
 
   public addMatcher(name: string, matcher: Matcher) {
     if (this.matchers[name]) {
-      throw new Error('Matcher already exists')
+      console.info('Matcher already exists')
+    } else {
+      this.matchers[name] = matcher
     }
-    this.matchers[name] = matcher
   }
 }
 
