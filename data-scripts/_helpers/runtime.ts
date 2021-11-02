@@ -138,11 +138,8 @@ export default class ListHandler {
         indexPath,
         `${imports}
 
-const userInputs: string[] = []
-
 export default {
     dictionary: {
-      userInputs,
       ${dictionaryExports}
     },
     ${translations}
