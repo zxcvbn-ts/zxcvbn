@@ -219,6 +219,7 @@ describe('l33t matching', () => {
       ]
 
       data.forEach(([table, subs]) => {
+        // @ts-ignore
         expect(matchL33t.enumerateL33tSubs(table)).toEqual(subs)
       })
     })

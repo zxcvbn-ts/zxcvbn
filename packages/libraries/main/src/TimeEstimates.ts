@@ -52,9 +52,8 @@ class TimeEstimates {
     }
     Object.keys(crackTimesSeconds).forEach((scenario) => {
       const seconds = crackTimesSeconds[scenario as keyof CrackTimesSeconds]
-      crackTimesDisplay[scenario as keyof CrackTimesDisplay] = this.displayTime(
-        seconds,
-      )
+      crackTimesDisplay[scenario as keyof CrackTimesDisplay] =
+        this.displayTime(seconds)
     })
     return {
       crackTimesSeconds,

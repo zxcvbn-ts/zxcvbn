@@ -1,5 +1,6 @@
 node_modules
 dist
+dist2
 demo
 coverage
 data-scripts/wikiExtractor/extracts

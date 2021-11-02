@@ -11,10 +11,12 @@ import {
 
 const getVariations = (cleanedWord: string) => {
   const wordArray = cleanedWord.split('')
-  const upperCaseCount = wordArray.filter((char) => char.match(ONE_UPPER))
-    .length
-  const lowerCaseCount = wordArray.filter((char) => char.match(ONE_LOWER))
-    .length
+  const upperCaseCount = wordArray.filter((char) =>
+    char.match(ONE_UPPER),
+  ).length
+  const lowerCaseCount = wordArray.filter((char) =>
+    char.match(ONE_LOWER),
+  ).length
 
   let variations = 0
   const variationLength = Math.min(upperCaseCount, lowerCaseCount)

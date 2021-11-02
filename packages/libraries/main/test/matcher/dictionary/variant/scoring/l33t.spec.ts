@@ -1,6 +1,7 @@
 import l33t from '../../../../../src/matcher/dictionary/variants/scoring/l33t'
 import utils from '../../../../../src/scoring/utils'
 import { empty } from '../../../../../src/helper'
+import { LooseObject } from '../../../../../src/types'
 
 const { nCk } = utils
 
@@ -81,7 +82,7 @@ describe('scoring: variant l33t', () => {
       const match = {
         token: word,
         sub,
-        l33t: !empty(sub),
+        l33t: !empty(sub as LooseObject),
       }
       // @ts-ignore
       expect(l33t(match)).toEqual(variants)
