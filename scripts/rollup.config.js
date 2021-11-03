@@ -2,8 +2,8 @@ import path from 'path'
 import babel from '@rollup/plugin-babel'
 import commonjs from '@rollup/plugin-commonjs'
 import typescript from '@rollup/plugin-typescript'
-import json from '@rollup/plugin-json'
 import del from 'rollup-plugin-delete'
+import json from './jsonPlugin'
 
 const packagePath = process.cwd()
 // eslint-disable-next-line import/no-dynamic-require
@@ -57,9 +57,7 @@ const generateConfig = (type) => {
     output,
     plugins: [
       ...pluginsOnlyOnce,
-      json({
-        compact: true,
-      }),
+      json(),
       typescript(typescriptOptions),
       commonjs(),
       babel({
