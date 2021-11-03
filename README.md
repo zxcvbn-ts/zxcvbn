@@ -29,6 +29,8 @@ The reason of this project is to modernize zxcvbn and make it maintainable with 
 
 - [Features](#features)
 - [Documentation](#Documentation)
+- [Language packages](#Language packages)
+- [Comparison](#Comparison)
 - [Contribution](#Contribution)
 
 ## Features
@@ -39,6 +41,7 @@ The reason of this project is to modernize zxcvbn and make it maintainable with 
 - extend existing dictionaries with your own
 - usable without dictionaries at all, which reduce the scoring efficiency rapidly. This is not recommended
 - types
+- custom matcher
 
 ## Documentation
 
@@ -46,9 +49,14 @@ Checkout the [Documentation](https://zxcvbn-ts.github.io/zxcvbn/).
 There you will also find the [Demo](https://zxcvbn-ts.github.io/zxcvbn/demo/) pages
 and the [Migration](https://zxcvbn-ts.github.io/zxcvbn/guide/migration) guide.
 
+## Language packages
+
+If your language is missing as a language pack checkout the [guide](https://zxcvbn-ts.github.io/zxcvbn/guide/Languages/#add-a-new-language-package) to add your own.
+
+## Comparison
+
+If you want to know how much the scoring changed compared to the original checkout the [comparison](https://zxcvbn-ts.github.io/zxcvbn/guide/comparison) page.
+
 ## Contribution
 
 Please feel free to [open up an issue](https://github.com/zxcvbn-ts/zxcvbn/issues/new) or provide a pull request.
-
-## Language packages
-If your language is missing as a language pack checkout the [guide](https://zxcvbn-ts.github.io/zxcvbn/guide/Languages/#add-a-new-language-package) to add your own.
