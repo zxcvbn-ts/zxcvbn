@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-beta.1](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/language-nl-be@1.0.0-beta.0...@zxcvbn-ts/language-nl-be@1.0.0-beta.1) (2021-11-03)
+
+
+### Bug Fixes
+
+* **dictionaries:** delet userInput from lang dictionaries ([a8aee74](https://github.com/zxcvbn-ts/zxcvbn/commit/a8aee74aec1e01e8c9948a10be83422ba0ed1fbb))
+
+
+### Features
+
+* **translations:** improve user input feedback ([57ce211](https://github.com/zxcvbn-ts/zxcvbn/commit/57ce211883018e08a454b9dfc1983ac19ced9787))
+
+
+
+
+
 # [1.0.0-beta.0](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/language-nl-be@0.3.0...@zxcvbn-ts/language-nl-be@1.0.0-beta.0) (2021-06-09)
 
 
