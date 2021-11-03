@@ -29,7 +29,7 @@ The reason of this project is to modernize zxcvbn and make it maintainable with 
 
 - [Features](#features)
 - [Documentation](#Documentation)
-- [Language packages](#Language packages)
+- [LanguagePackages](#LanguagePackages)
 - [Comparison](#Comparison)
 - [Contribution](#Contribution)
 
@@ -49,7 +49,7 @@ Checkout the [Documentation](https://zxcvbn-ts.github.io/zxcvbn/).
 There you will also find the [Demo](https://zxcvbn-ts.github.io/zxcvbn/demo/) pages
 and the [Migration](https://zxcvbn-ts.github.io/zxcvbn/guide/migration) guide.
 
-## Language packages
+## LanguagePackages
 
 If your language is missing as a language pack checkout the [guide](https://zxcvbn-ts.github.io/zxcvbn/guide/Languages/#add-a-new-language-package) to add your own.
 
