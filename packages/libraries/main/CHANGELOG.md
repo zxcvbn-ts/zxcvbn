@@ -3,18 +3,6 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [1.0.0-beta.1](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/core@1.0.0-beta.0...@zxcvbn-ts/core@1.0.0-beta.1) (2021-11-03)
-
-
-### Features
-
-* **matcher:** add support for async matcher ([8b73e31](https://github.com/zxcvbn-ts/zxcvbn/commit/8b73e3177ef6bf38b35d129f722d67fb11f18683))
-* **options:** addMatcher only informs instead of error for available matcher ([160ac97](https://github.com/zxcvbn-ts/zxcvbn/commit/160ac9784f06bdf616bde5b5b0ba5ee57a2c9968))
-
-
-
-
-
 # [1.0.0-beta.0](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/core@0.3.0...@zxcvbn-ts/core@1.0.0-beta.0) (2021-06-09)
 
 

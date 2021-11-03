@@ -3,17 +3,6 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [1.0.0-beta.1](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/language-common@1.0.0-beta.0...@zxcvbn-ts/language-common@1.0.0-beta.1) (2021-11-03)
-
-
-### Bug Fixes
-
-* **dictionaries:** delet userInput from lang dictionaries ([a8aee74](https://github.com/zxcvbn-ts/zxcvbn/commit/a8aee74aec1e01e8c9948a10be83422ba0ed1fbb))
-
-
-
-
-
 # [1.0.0-beta.0](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/language-common@0.1.2...@zxcvbn-ts/language-common@1.0.0-beta.0) (2021-06-09)
 
 
