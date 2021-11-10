@@ -49,4 +49,4 @@ export const zxcvbn = (
   return createReturnValue(matches, password, start)
 }
 
-export { Options as ZxcvbnOptions }
+export { Options as ZxcvbnOptions, ZxcvbnResult }
