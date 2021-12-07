@@ -1,6 +1,7 @@
 # Matcher
 
-There are multiple build in matchers to identify the strength of a password.
+There are multiple build in matchers to identify the strength of a password. All build in matchers are sync but custom matcher have the possibility to be async.
+Therefor if you are using an async custom matcher the `zxcvbn` core function returns a promise which resolves into the `ZxcvbnResult`
 
 ## bruteforce
 
@@ -37,7 +38,7 @@ The spatial matcher tries to find patterns from keyboard layout for example `qwe
 
 ## custom
 
-You can create matcher if you need.
+You can create matcher if you need which can be async.
 
 ### create a custom matcher
 
