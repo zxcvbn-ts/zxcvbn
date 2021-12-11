@@ -1,4 +1,4 @@
-# @zxcvbn-ts/language-es
+# @zxcvbn-ts/language-es-es
 
 The European Spanish dictionary and language package for zxcvbn-ts
 
