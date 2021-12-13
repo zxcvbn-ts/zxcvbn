@@ -18,7 +18,7 @@ class Options {
   l33tTable: OptionsL33tTable = l33tTable
 
   dictionary: OptionsDictionary = {
-    userInput: [],
+    userInputs: [],
   }
 
   rankedDictionaries: RankedDictionaries = {}
@@ -81,27 +81,43 @@ class Options {
   setRankedDictionaries() {
     const rankedDictionaries: RankedDictionaries = {}
     Object.keys(this.dictionary).forEach((name) => {
-      const list = this.dictionary[name]
-      if (name === 'userInputs') {
-        const sanitizedInputs: string[] = []
-
-        list.forEach((input: string | number | boolean) => {
-          const inputType = typeof input
-          if (
-            inputType === 'string' ||
-            inputType === 'number' ||
-            inputType === 'boolean'
-          ) {
-            sanitizedInputs.push(input.toString().toLowerCase())
-          }
-        })
-
-        rankedDictionaries[name] = buildRankedDictionary(sanitizedInputs)
-      } else {
-        rankedDictionaries[name] = buildRankedDictionary(list)
-      }
+      rankedDictionaries[name] = this.getRankedDictionary(name)
     })
     this.rankedDictionaries = rankedDictionaries
+  }
+
+  getRankedDictionary(name: string) {
+    const list = this.dictionary[name]
+    if (name === 'userInputs') {
+      const sanitizedInputs: string[] = []
+
+      list.forEach((input: string | number | boolean) => {
+        const inputType = typeof input
+        if (
+          inputType === 'string' ||
+          inputType === 'number' ||
+          inputType === 'boolean'
+        ) {
+          sanitizedInputs.push(input.toString().toLowerCase())
+        }
+      })
+
+      return buildRankedDictionary(sanitizedInputs)
+    }
+    return buildRankedDictionary(list)
+  }
+
+  extendUserInputsDictionary(dictionary: (string | number)[]) {
+    if (this.dictionary.userInputs) {
+      this.dictionary.userInputs = [
+        ...this.dictionary.userInputs,
+        ...dictionary,
+      ]
+    } else {
+      this.dictionary.userInputs = dictionary
+    }
+
+    this.rankedDictionaries.userInputs = this.getRankedDictionary('userInputs')
   }
 
   public addMatcher(name: string, matcher: Matcher) {
