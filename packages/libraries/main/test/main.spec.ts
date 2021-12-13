@@ -4,16 +4,18 @@ import { zxcvbn, ZxcvbnOptions } from '../src'
 import passwordTests from './helper/passwordTests'
 import { ZxcvbnResult } from '../src/types'
 
-ZxcvbnOptions.setOptions({
-  dictionary: {
-    ...zxcvbnCommonPackage.dictionary,
-    ...zxcvbnEnPackage.dictionary,
-  },
-  graphs: zxcvbnCommonPackage.adjacencyGraphs,
-  translations: zxcvbnEnPackage.translations,
-})
-
 describe('main', () => {
+  beforeEach(() => {
+    ZxcvbnOptions.setOptions({
+      dictionary: {
+        ...zxcvbnCommonPackage.dictionary,
+        ...zxcvbnEnPackage.dictionary,
+      },
+      graphs: zxcvbnCommonPackage.adjacencyGraphs,
+      translations: zxcvbnEnPackage.translations,
+    })
+  })
+
   it('should check without userInputs', () => {
     const result = zxcvbn('test') as ZxcvbnResult
     expect(result.calcTime).toBeDefined()
@@ -106,6 +108,52 @@ describe('main', () => {
           reversed: false,
           token: 'test',
           uppercaseVariations: 1,
+        },
+      ],
+    })
+  })
+
+  it('should check with userInputs on the fly', () => {
+    const result = zxcvbn('onTheFly', ['onTheFly']) as ZxcvbnResult
+    result.calcTime = 0
+    expect(result).toEqual({
+      calcTime: 0,
+      crackTimesDisplay: {
+        offlineFastHashing1e10PerSecond: 'less than a second',
+        offlineSlowHashing1e4PerSecond: 'less than a second',
+        onlineNoThrottling10PerSecond: '4 seconds',
+        onlineThrottling100PerHour: '22 minutes',
+      },
+      crackTimesSeconds: {
+        offlineFastHashing1e10PerSecond: 3.7e-9,
+        offlineSlowHashing1e4PerSecond: 0.0037,
+        onlineNoThrottling10PerSecond: 3.7,
+        onlineThrottling100PerHour: 1332,
+      },
+      feedback: {
+        suggestions: ['Add more words that are less common.'],
+        warning: 'There should not be any personal or page related data.',
+      },
+      guesses: 37,
+      guessesLog10: 1.5682017240669948,
+      password: 'onTheFly',
+      score: 0,
+      sequence: [
+        {
+          baseGuesses: 1,
+          dictionaryName: 'userInputs',
+          guesses: 36,
+          guessesLog10: 1.556302500767287,
+          i: 0,
+          j: 7,
+          l33t: false,
+          l33tVariations: 1,
+          matchedWord: 'onthefly',
+          pattern: 'dictionary',
+          rank: 1,
+          reversed: false,
+          token: 'onTheFly',
+          uppercaseVariations: 36,
         },
       ],
     })

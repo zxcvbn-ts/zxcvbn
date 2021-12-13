@@ -32,7 +32,11 @@ const createReturnValue = (
   }
 }
 
-export const zxcvbn = (password: string) => {
+export const zxcvbn = (password: string, userInputs?: (string | number)[]) => {
+  if (userInputs) {
+    Options.extendUserInputsDictionary(userInputs)
+  }
+
   const matching = new Matching()
 
   const start = time()
