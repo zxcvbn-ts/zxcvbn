@@ -15,13 +15,16 @@ export default {
     wordByItself: 'Palabras únicas son fáciles de adivinar.',
     namesByThemselves: 'Nombres o apellidos a solas son fáciles de adivinar.',
     commonNames: 'Nombre y apellidos comunes son fáciles de adivinar.',
-    userInputs: 'No debería haber datos personales o relacionados con esta página.',
+    userInputs:
+      'No debería haber datos personales o relacionados con esta página.',
+    pwned: 'Su contraseña fue expuesta por una violación de datos en Internet.',
   },
   suggestions: {
     l33t: "Evita sustituciones predecibles como '@' por '@'",
     reverseWords: 'Evita palabras comunes escritas al revés',
     allUppercase: 'Escribe en mayúsculas algunas, pero no todas las letras.',
-    capitalization: 'Escribe en mayúsculas alguna letra más además de la primera.',
+    capitalization:
+      'Escribe en mayúsculas alguna letra más además de la primera.',
     dates: 'Evita fechas que estén asociadas contigo.',
     recentYears: 'Evita años recientes.',
     associatedYears: 'Evita años asociados contigo.',
@@ -33,6 +36,7 @@ export default {
     useWords: 'Usa varias palabras, pero evita frases comunes.',
     noNeed:
       'Puedes crear contraseñas seguras sin usar símbolos, números o mayúsculas.',
+    pwned: 'Si utiliza esta contraseña en otro lugar, debería cambiarla.',
   },
   timeEstimation: {
     ltSecond: 'menos de un segundo',
