@@ -22,6 +22,8 @@ export default {
       'Les noms communs et les noms de famille sont faciles à deviner.',
     userInputs:
       'Le mot de passe ne doit pas comporter de données personnelles ou liées au site.',
+    pwned:
+      'Votre mot de passe a été divulgué suite à une violation de données sur Internet.',
   },
   suggestions: {
     l33t: "Évitez les substitutions de lettres prévisibles comme '@' pour 'a'.",
@@ -41,6 +43,8 @@ export default {
     useWords: 'Utilisez plusieurs mots, mais évitez les phrases courantes.',
     noNeed:
       'Vous pouvez créer des mots de passe forts sans utiliser de symboles, de chiffres ou de lettres majuscules.',
+    pwned:
+      'Si vous utilisez ce mot de passe ailleurs, vous devriez le modifier.',
   },
   timeEstimation: {
     ltSecond: "moins d'une seconde",

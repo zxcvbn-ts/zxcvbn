@@ -20,6 +20,7 @@ export default {
     commonNames: 'Vornamen und Nachnamen sind leicht zu erraten.',
     userInputs:
       'Es sollten keine persönlichen oder Seiten relevanten Daten vorkommen.',
+    pwned: 'Ihr Kennwort wurde durch eine Datenpanne im Internet offengelegt.',
   },
   suggestions: {
     l33t: "Vorhersehbare Buchstabenersetzungen wie '@' für 'a' vermeiden.",
@@ -40,6 +41,8 @@ export default {
     useWords: 'Mehrere Wörter verwenden, aber allgemeine Phrasen vermeiden.',
     noNeed:
       'Es ist möglich, starke Passwörter zu erstellen, ohne Symbole, Zahlen oder Großbuchstaben zu verwenden.',
+    pwned:
+      'Wenn Sie dieses Kennwort an anderer Stelle verwenden, sollten Sie es ändern.',
   },
   timeEstimation: {
     ltSecond: 'weniger als eine Sekunde',

@@ -175,7 +175,7 @@ export type DefaultScoringFunction = (
   match: MatchExtended | MatchEstimated,
 ) => number | DictionaryReturn
 
-interface MatchOptions {
+export interface MatchOptions {
   password: string
   omniMatch: Matching
 }

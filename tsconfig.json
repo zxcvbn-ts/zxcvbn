@@ -14,7 +14,7 @@
     "sourceMap": true,
     "experimentalDecorators": true,
     "resolveJsonModule": true,
-    "lib": ["es2018"],
+    "lib": ["es2018", "dom"],
     "types": ["node", "jest"],
     "noImplicitReturns": true,
     "noImplicitThis": true,
