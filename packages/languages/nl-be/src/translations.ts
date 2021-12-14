@@ -19,6 +19,7 @@ export default {
     commonNames:
       'Veelvoorkomende voor- en achternamen zijn makkelijk te raden.',
     userInputs: 'Vermijd persoonlijke of website gerelateerde woorden.',
+    pwned: 'Ihr Kennwort wurde durch eine Datenpanne im Internet offengelegt.',
   },
   suggestions: {
     l33t: "Vermijd voorspelbare vervangingen, zoals '@' voor 'a'.",
@@ -36,6 +37,7 @@ export default {
     useWords: 'Gebruik meerdere woorden, maar vermijd veelvoorkomende zinnen.',
     noNeed:
       'Je kan ook een sterk wachtwoord maken zonder speciale tekens, hoofdletters of nummers.',
+    pwned: 'Als u dit wachtwoord elders gebruikt, moet u het veranderen.',
   },
   timeEstimation: {
     ltSecond: 'minder dan één second',
