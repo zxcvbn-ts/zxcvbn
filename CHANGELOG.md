@@ -1,3 +1,3 @@
 # Changelog
 
-All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+You can find the changelog in the packages for example for the [main](https://github.com/zxcvbn-ts/zxcvbn/blob/master/packages/libraries/main/CHANGELOG.md) package.

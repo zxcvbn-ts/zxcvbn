@@ -142,7 +142,7 @@ export type OptionsL33tTable =
     }
 
 export type OptionsDictionary = {
-  [key: string]: string[] | number[]
+  [key: string]: (string | number)[]
 }
 
 export interface OptionsGraphEntry {

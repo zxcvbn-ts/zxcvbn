@@ -20,11 +20,11 @@ It is highly recommended using at least the common and english language package 
 By default, there are no keyboard layouts used. It is recommended to add the common keyboard layout from the common language package
 Currently these keyboard layouts are supported:
 
-- qwertz
-- qwerty
+- azerty
 - dvorak
 - keypads
-- azerty
+- qwerty
+- qwertz
 
 ### l33tTable
 

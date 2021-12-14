@@ -35,7 +35,12 @@ const createReturnValue = (
 
 export const zxcvbn = (
   password: string,
+  userInputs?: (string | number)[],
 ): ZxcvbnResult | Promise<ZxcvbnResult> => {
+  if (userInputs) {
+    Options.extendUserInputsDictionary(userInputs)
+  }
+
   const matching = new Matching()
 
   const start = time()
@@ -50,6 +55,6 @@ export const zxcvbn = (
   return createReturnValue(matches, password, start)
 }
 
-export { Options as ZxcvbnOptions }
+export { Options as ZxcvbnOptions, ZxcvbnResult }
 
 export { matcherPwnedFactory as ZxcvbnMatcherPwnedFactory }

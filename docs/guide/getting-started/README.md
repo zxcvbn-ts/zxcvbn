@@ -145,3 +145,5 @@ If you want to use it and want to include your own polyfills, you need to transp
 - eslint/prettier for consistent code style
 - Added static page docs https://zxcvbn-ts.github.io/zxcvbn/
 - esm, commonJS and browser build
+- Custom matcher can be added which means you can create your own matcher
+- Async matcher can be added which means you can create a matcher that makes an API call

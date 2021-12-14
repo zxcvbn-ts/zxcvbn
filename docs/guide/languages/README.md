@@ -7,12 +7,13 @@ Current supported languages:
 - German
 - English
 - Dutch (Belgium)
+- French
 
 ## Feedback
 
-By default zxcvbn-ts uses `keys` as feedback. This way you can integrate zxcvbn-ts into your own translation system.
-If you don't have a own translation system or want to use predefined translation you can use one of the language packs.
-Each language pack has it's own translation file that you can use like this:
+By default, zxcvbn-ts uses `keys` as feedback. This way you can integrate zxcvbn-ts into your own translation system.
+If you don't have an own translation system or want to use predefined translation you can use one of the language packs.
+Each language pack has its own translation file that you can use like this:
 
 ```js
 import { zxcvbn, ZxcvbnOptions } from '@zxcvbn-ts/core'
@@ -30,7 +31,7 @@ zxcvbn(password)
 
 ## Dictionary
 
-By default zxcvbn-ts don't use any dictionaries to let the developer decided how much of the library will be used.
+By default, zxcvbn-ts don't use any dictionaries to let the developer decided how much of the library will be used.
 This makes the library tiny but inefficient compared to the original library.
 It is recommended to use at least the common and english language package.
 
@@ -54,7 +55,7 @@ zxcvbn(password)
 
 ## Keyboard patterns
 
-By default zxcvbn-ts don't use any keyboard patterns to let the developer decided how much of the library will be used.
+By default, zxcvbn-ts don't use any keyboard patterns to let the developer decided how much of the library will be used.
 It is recommended to use at least the common keyboard patterns.
 
 ```js
