@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/core@1.0.0...@zxcvbn-ts/core@1.1.0) (2021-12-14)
+
+
+### Features
+
+* **dictionary:** add parameter to add userInputs on the fly ([df3d6f5](https://github.com/zxcvbn-ts/zxcvbn/commit/df3d6f5fae1edf3b921a746f5f196a574d365809))
+* **matcher:** add optional have i been pwned matcher ([5685a2c](https://github.com/zxcvbn-ts/zxcvbn/commit/5685a2c9b234f04006e8546e1cc909a313def2bb))
+* **project:** explain async behaviour ([9fd8d5c](https://github.com/zxcvbn-ts/zxcvbn/commit/9fd8d5c79bb90d35bae54e5f980993a2d38d79f8))
+* **project:** export ZxcvbnResult type ([632ab81](https://github.com/zxcvbn-ts/zxcvbn/commit/632ab81e154906f9e151e84e9a3e3c125fd66add))
+* **project:** move pwned matcher into own package ([26290d7](https://github.com/zxcvbn-ts/zxcvbn/commit/26290d7ac43174ca9fcecabc5869b79965702cc3))
+
+
+
+
+
 # [1.0.0](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/core@1.0.0-beta.0...@zxcvbn-ts/core@1.0.0) (2021-11-03)
 
 
