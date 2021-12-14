@@ -1,0 +1,29 @@
+{
+  "name": "@zxcvbn-ts/language-es-es",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "description": "The European Spanish language package for zxcvbn-ts",
+  "license": "MIT",
+  "homepage": "https://github.com/zxcvbn-ts/zxcvbn",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zxcvbn-ts/zxcvbn.git"
+  },
+  "author": "https://github.com/JonL1",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "zxcvbn",
+    "language",
+    "translation",
+    "spanish",
+    "spain"
+  ]
+}
