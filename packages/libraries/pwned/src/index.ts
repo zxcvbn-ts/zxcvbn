@@ -1,4 +1,4 @@
-import { Matcher } from '../../types'
+import { Matcher } from '@zxcvbn-ts/core/src/types'
 import MatchPwned from './matching'
 import scoring from './scoring'
 import feedback from './feedback'

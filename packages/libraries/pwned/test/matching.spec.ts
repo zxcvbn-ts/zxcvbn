@@ -1,4 +1,4 @@
-import matchPwnedFactory from '../../../src/matcher/pwned'
+import matchPwnedFactory from '../src'
 
 const fetch = jest.fn(() => ({
   text() {
@@ -17,7 +17,10 @@ describe('pwned matching', () => {
 
   it('should return a scoring', async () => {
     // @ts-ignore
-    const match = await matcherPwned.scoring({ pattern: 'pwned', pwnedAmount: 244 })
-    expect(match).toEqual(5)
+    const match = await matcherPwned.scoring({
+      pattern: 'pwned',
+      pwnedAmount: 244,
+    })
+    expect(match).toEqual(1)
   })
 })
