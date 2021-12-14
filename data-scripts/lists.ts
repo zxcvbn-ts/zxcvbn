@@ -116,6 +116,33 @@ export default {
       },
     },
   },
+  'es-es': {
+    commonWords: {
+      source:
+        'https://github.com/hermitdave/FrequencyWords/raw/master/content/2018/es/es_50k.txt',
+      options: { hasOccurrences: true },
+    },
+    firstnames: {
+      generator: ExcelGenerator,
+      customList: true,
+      options: {
+        url: 'https://www.ine.es/daco/daco42/nombyapel/nombres_por_edad_media.xls',
+        column: 2,
+        row: 8,
+        minOccurrences: 500,
+      },
+    },
+    lastnames: {
+      generator: ExcelGenerator,
+      customList: true,
+      options: {
+        url: 'https://www.ine.es/daco/daco42/nombyapel/apellidos_frecuencia.xls',
+        column: 2,
+        row: 6,
+        minOccurrences: 500,
+      },
+    },
+  },
   'common': {
     passwords: {
       generator: PasswordGenerator,

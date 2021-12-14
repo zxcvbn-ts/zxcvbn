@@ -11,7 +11,7 @@ const createReturnValue = (
   resolvedMatches: MatchExtended[],
   password: string,
   start: number,
-) => {
+): ZxcvbnResult => {
   const feedback = new Feedback()
   const timeEstimates = new TimeEstimates()
   const matchSequence = scoring.mostGuessableMatchSequence(
@@ -32,10 +32,7 @@ const createReturnValue = (
   }
 }
 
-export const zxcvbn = (
-  password: string,
-  userInputs?: (string | number)[],
-): ZxcvbnResult | Promise<ZxcvbnResult> => {
+export const zxcvbn = (password: string, userInputs?: (string | number)[]) => {
   if (userInputs) {
     Options.extendUserInputsDictionary(userInputs)
   }
