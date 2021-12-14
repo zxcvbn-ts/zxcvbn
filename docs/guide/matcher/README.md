@@ -86,3 +86,10 @@ const minLengthMatcher: Matcher = {
 
 ZxcvbnOptions.addMatcher('minLength', minLengthMatcher)
 ```
+
+## Matcher libraries
+
+There are different matcher libraries that can extend the core matchers
+
+### @zxcvbn-ts/matcher-pwned 
+The pwned matcher is an async matcher that will make a k-anonymity password request to the [have i been pwned](https://haveibeenpwned.com/) api.
