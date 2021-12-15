@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/jeromes80/zxcvbn/compare/@zxcvbn-ts/language-fr@1.0.0...@zxcvbn-ts/language-fr@1.2.0) (2021-12-15)
+
+
+### Features
+
+* **project:** Add HaveIBeenPwned matcher ([#66](https://github.com/jeromes80/zxcvbn/issues/66)) ([5c4141c](https://github.com/jeromes80/zxcvbn/commit/5c4141cd34f6566fe753ce76572f74bb8229b414))
+
+
+
+
+
 # [1.1.0](https://github.com/jeromes80/zxcvbn/compare/@zxcvbn-ts/language-fr@1.0.0...@zxcvbn-ts/language-fr@1.1.0) (2021-12-14)
 
 
