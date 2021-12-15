@@ -38,7 +38,7 @@ class MatchRepeat {
     if (hasPromises) {
       return Promise.all(matches)
     }
-    return matches
+    return matches as RepeatMatch[]
   }
 
   // eslint-disable-next-line max-params
