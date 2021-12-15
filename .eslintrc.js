@@ -106,6 +106,18 @@ module.exports = {
         'max-params': 'off',
       },
     },
+    {
+      files: [
+        './data-scripts/**/*.ts',
+        '*.spec.ts',
+        '*.config.ts',
+        '*.config.js',
+        '**/test/**/*.ts',
+      ],
+      rules: {
+        'import/no-relative-packages': 'off',
+      },
+    },
   ],
   env: {
     browser: true,
