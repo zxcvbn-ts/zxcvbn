@@ -1,5 +1,7 @@
 const isNodeJs =
-  typeof process !== 'undefined' && process.release.name === 'node'
+  typeof process !== 'undefined' &&
+  process.release &&
+  process.release.name === 'node'
 
 const textEncode = (text: string) => {
   if (isNodeJs) {

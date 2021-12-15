@@ -16,6 +16,9 @@ export default (universalFetch: Function, url?: string) => {
         matches.push({
           pattern: 'pwned',
           pwnedAmount: parseInt(pwned.split(':')[1], 10),
+          i: 0,
+          j: password.length - 1,
+          token: password,
         })
       }
       return matches
