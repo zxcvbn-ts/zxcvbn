@@ -1,4 +1,4 @@
-import { MatchExtended, RepeatMatch } from '../../types'
+import { RepeatMatch } from '../../types'
 import scoring from '../../scoring'
 import Matching from '../../Matching'
 
@@ -13,7 +13,7 @@ interface RepeatMatchOptions {
  */
 class MatchRepeat {
   match({ password, omniMatch }: RepeatMatchOptions) {
-    const matches: RepeatMatch[] = []
+    const matches: (RepeatMatch | Promise<RepeatMatch>)[] = []
     let lastIndex = 0
     while (lastIndex < password.length) {
       const greedyMatch = this.getGreedyMatch(password, lastIndex)
@@ -26,20 +26,49 @@ class MatchRepeat {
       if (match) {
         const j = match.index + match[0].length - 1
         const baseGuesses = this.getBaseGuesses(baseToken, omniMatch)
+        matches.push(this.normalizeMatch(baseToken, j, match, baseGuesses))
 
-        matches.push({
-          pattern: 'repeat',
-          i: match.index,
-          j,
-          token: match[0],
-          baseToken,
-          baseGuesses,
-          repeatCount: match[0].length / baseToken.length,
-        })
         lastIndex = j + 1
       }
     }
+
+    const hasPromises = matches.some((match) => {
+      return match instanceof Promise
+    })
+    if (hasPromises) {
+      return Promise.all(matches)
+    }
     return matches
+  }
+
+  // eslint-disable-next-line max-params
+  normalizeMatch(
+    baseToken: string,
+    j: number,
+    match: RegExpExecArray,
+    baseGuesses: number | Promise<number>,
+  ) {
+    const baseMatch: RepeatMatch = {
+      pattern: 'repeat',
+      i: match.index,
+      j,
+      token: match[0],
+      baseToken,
+      baseGuesses: 0,
+      repeatCount: match[0].length / baseToken.length,
+    }
+    if (baseGuesses instanceof Promise) {
+      return baseGuesses.then((resolvedBaseGuesses) => {
+        return {
+          ...baseMatch,
+          baseGuesses: resolvedBaseGuesses,
+        } as RepeatMatch
+      })
+    }
+    return {
+      ...baseMatch,
+      baseGuesses,
+    } as RepeatMatch
   }
 
   getGreedyMatch(password: string, lastIndex: number) {
@@ -90,10 +119,17 @@ class MatchRepeat {
   }
 
   getBaseGuesses(baseToken: string, omniMatch: Matching) {
-    const baseAnalysis = scoring.mostGuessableMatchSequence(
-      baseToken,
-      omniMatch.match(baseToken) as MatchExtended[],
-    )
+    const matches = omniMatch.match(baseToken)
+    if (matches instanceof Promise) {
+      return matches.then((resolvedMatches) => {
+        const baseAnalysis = scoring.mostGuessableMatchSequence(
+          baseToken,
+          resolvedMatches,
+        )
+        return baseAnalysis.guesses
+      })
+    }
+    const baseAnalysis = scoring.mostGuessableMatchSequence(baseToken, matches)
     return baseAnalysis.guesses
   }
 }
