@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/language-de@1.0.0...@zxcvbn-ts/language-de@1.1.0) (2021-12-14)
+
+
+### Features
+
+* **language:** add new translations ([0a87424](https://github.com/zxcvbn-ts/zxcvbn/commit/0a874242d139314907d7b33db1cdb85d2363d338))
+
+
+
+
+
 # [1.0.0](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/language-de@1.0.0-beta.0...@zxcvbn-ts/language-de@1.0.0) (2021-11-03)
 
 
