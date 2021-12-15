@@ -12,7 +12,15 @@ describe('pwned matching', () => {
     const matchPwned = new matcherPwned.Matching()
     // @ts-ignore
     const match = await matchPwned.match({ password: 'P4$$w0rd' })
-    expect(match).toEqual([{ pattern: 'pwned', pwnedAmount: 244 }])
+    expect(match).toEqual([
+      {
+        i: 0,
+        j: 7,
+        pattern: 'pwned',
+        pwnedAmount: 244,
+        token: 'P4$$w0rd',
+      },
+    ])
   })
 
   it('should return a scoring', async () => {
