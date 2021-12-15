@@ -100,6 +100,7 @@ const scoringHelper = {
     let k = passwordLength - 1
     // find the final best sequence length and score
     let sequenceLength = 0
+    // eslint-disable-next-line no-loss-of-precision
     let g = 2e308
     const temp = this.optimal.g[k]
     // safety check for empty passwords

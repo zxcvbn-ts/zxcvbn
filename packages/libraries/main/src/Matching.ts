@@ -61,7 +61,7 @@ class Matching {
     })
     if (promises.length > 0) {
       return new Promise((resolve) => {
-        return Promise.all(promises).then(() => {
+        Promise.all(promises).then(() => {
           resolve(sorted(matches))
         })
       })

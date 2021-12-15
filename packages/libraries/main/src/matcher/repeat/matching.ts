@@ -12,6 +12,7 @@ interface RepeatMatchOptions {
  *-------------------------------------------------------------------------------
  */
 class MatchRepeat {
+  // eslint-disable-next-line max-statements
   match({ password, omniMatch }: RepeatMatchOptions) {
     const matches: (RepeatMatch | Promise<RepeatMatch>)[] = []
     let lastIndex = 0

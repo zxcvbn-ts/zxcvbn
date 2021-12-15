@@ -115,7 +115,7 @@ export default class PasswordGenerator {
         return results
       })
       // eslint-disable-next-line max-statements
-      return stream.on('end', () => {
+      stream.on('end', () => {
         console.info('skipped lines:', skippedLines)
         let pairs: [string, number][] = []
         console.info('copying to tuples')
