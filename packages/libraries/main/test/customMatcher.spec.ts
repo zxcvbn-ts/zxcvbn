@@ -45,7 +45,7 @@ ZxcvbnOptions.addMatcher('minLength', minLengthMatcher)
 
 describe('customMatcher', () => {
   it('should use minLength custom matcher', () => {
-    const result = zxcvbn('ep8fkw8ds') as ZxcvbnResult
+    const result = zxcvbn('ep8fkw8ds')
     expect(result.calcTime).toBeDefined()
     result.calcTime = 0
     expect(result).toEqual({
