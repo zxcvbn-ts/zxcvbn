@@ -51,7 +51,7 @@ and the [Migration](https://zxcvbn-ts.github.io/zxcvbn/guide/migration) guide.
 
 ## LanguagePackages
 
-If your language is missing as a language pack checkout the [guide](https://zxcvbn-ts.github.io/zxcvbn/guide/Languages/#add-a-new-language-package) to add your own.
+If your language is missing as a language pack checkout the [guide](https://zxcvbn-ts.github.io/zxcvbn/guide/languages/#add-a-new-language-package) to add your own.
 
 ## Comparison
 
