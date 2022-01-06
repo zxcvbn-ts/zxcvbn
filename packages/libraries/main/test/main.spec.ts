@@ -2,7 +2,6 @@ import zxcvbnCommonPackage from '../../../languages/common/src'
 import zxcvbnEnPackage from '../../../languages/en/src'
 import { zxcvbn, ZxcvbnOptions } from '../src'
 import passwordTests from './helper/passwordTests'
-import { ZxcvbnResult } from '../src/types'
 
 describe('main', () => {
   beforeEach(() => {
@@ -17,7 +16,7 @@ describe('main', () => {
   })
 
   it('should check without userInputs', () => {
-    const result = zxcvbn('test') as ZxcvbnResult
+    const result = zxcvbn('test')
     expect(result.calcTime).toBeDefined()
     result.calcTime = 0
     expect(result).toEqual({
@@ -68,7 +67,7 @@ describe('main', () => {
       // @ts-ignore
       dictionary: { userInputs: ['test', 12, true, []] },
     })
-    const result = zxcvbn('test') as ZxcvbnResult
+    const result = zxcvbn('test')
     result.calcTime = 0
     expect(result).toEqual({
       crackTimesDisplay: {
@@ -114,7 +113,7 @@ describe('main', () => {
   })
 
   it('should check with userInputs on the fly', () => {
-    const result = zxcvbn('onTheFly', ['onTheFly']) as ZxcvbnResult
+    const result = zxcvbn('onTheFly', ['onTheFly'])
     result.calcTime = 0
     expect(result).toEqual({
       calcTime: 0,
@@ -168,7 +167,7 @@ describe('main', () => {
             ...zxcvbnEnPackage.dictionary,
           },
         })
-        const result = zxcvbn(data.password) as ZxcvbnResult
+        const result = zxcvbn(data.password)
         result.calcTime = 0
         expect(JSON.stringify(result)).toEqual(JSON.stringify(data))
       })

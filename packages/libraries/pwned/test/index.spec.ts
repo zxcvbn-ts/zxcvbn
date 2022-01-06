@@ -1,4 +1,4 @@
-import { zxcvbn, ZxcvbnOptions } from '../../main/src'
+import { zxcvbnAsync, ZxcvbnOptions} from '../../main/src'
 import matcherPwnedFactory from '../src'
 
 const fetch = jest.fn(() => ({
@@ -14,7 +14,7 @@ describe('main', () => {
   })
 
   it('should use pwned matcher', async () => {
-    const result = await zxcvbn('P4$$w0rd')
+    const result = await zxcvbnAsync('P4$$w0rd')
 
     expect(result.calcTime).toBeDefined()
     result.calcTime = 0

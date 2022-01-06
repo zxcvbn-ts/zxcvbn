@@ -32,22 +32,35 @@ const createReturnValue = (
   }
 }
 
-export const zxcvbn = (password: string, userInputs?: (string | number)[]) => {
+const main = (password: string, userInputs?: (string | number)[]) => {
   if (userInputs) {
     Options.extendUserInputsDictionary(userInputs)
   }
 
   const matching = new Matching()
 
-  const start = time()
+  return matching.match(password)
+}
 
-  const matches = matching.match(password)
+export const zxcvbn = (password: string, userInputs?: (string | number)[]) => {
+  const start = time()
+  const matches = main(password, userInputs)
 
   if (matches instanceof Promise) {
-    return matches.then((resolvedMatches) => {
-      return createReturnValue(resolvedMatches, password, start)
-    })
+    throw new Error(
+      'You are using a Promised matcher, please use `zxcvbnAsync` for it.',
+    )
   }
+  return createReturnValue(matches, password, start)
+}
+
+export const zxcvbnAsync = async (
+  password: string,
+  userInputs?: (string | number)[],
+): Promise<ZxcvbnResult> => {
+  const start = time()
+  const matches = await main(password, userInputs)
+
   return createReturnValue(matches, password, start)
 }
 
