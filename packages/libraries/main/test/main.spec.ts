@@ -2,7 +2,6 @@ import zxcvbnCommonPackage from '../../../languages/common/src'
 import zxcvbnEnPackage from '../../../languages/en/src'
 import { zxcvbn, ZxcvbnOptions } from '../src'
 import passwordTests from './helper/passwordTests'
-import { ZxcvbnResult } from '../src/types'
 
 describe('main', () => {
   beforeEach(() => {

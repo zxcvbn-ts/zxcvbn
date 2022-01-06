@@ -1,7 +1,7 @@
 import zxcvbnCommonPackage from '../../../languages/common/src'
 import zxcvbnEnPackage from '../../../languages/en/src'
 import { zxcvbn, ZxcvbnOptions } from '../src'
-import { Match, Matcher, ZxcvbnResult } from '../src/types'
+import { Match, Matcher } from '../src/types'
 import { sorted } from '../src/helper'
 
 ZxcvbnOptions.setOptions({
