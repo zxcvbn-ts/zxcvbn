@@ -84,6 +84,7 @@ export default {
           ...zxcvbnEnPackage.dictionary,
         },
         graphs: zxcvbnCommonPackage.adjacencyGraphs,
+        useLevenshteinDistance: true
       }
       zxcvbnOptions.setOptions(options)
     },
