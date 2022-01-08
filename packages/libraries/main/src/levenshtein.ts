@@ -1,6 +1,20 @@
 import { distance } from 'fastest-levenshtein'
 import { LooseObject } from './types'
 
+const getUsedThreshold = (
+  password: string,
+  entry: string,
+  threshold: number,
+) => {
+  const isPasswordToShort = password.length <= entry.length
+  const isThresholdLongerThanPassword = password.length <= threshold
+  const shouldUsePasswordLength =
+    isPasswordToShort || isThresholdLongerThanPassword
+
+  // if password is too small use the password length divided by 4 while the threshold needs to be at least 1
+  return shouldUsePasswordLength ? Math.ceil(password.length / 4) : threshold
+}
+
 const findLevenshteinDistance = (
   password: string,
   rankedDictionary: LooseObject,
@@ -8,15 +22,10 @@ const findLevenshteinDistance = (
 ) => {
   let foundDistance = 0
   const found = Object.keys(rankedDictionary).find((entry) => {
-    const isPasswordToShort = password.length <= entry.length
-    const isThresholdLongerThanPassword = password.length <= threshold
-    const shouldUsePasswordLength =
-      isPasswordToShort || isThresholdLongerThanPassword
-    const usedThreshold = shouldUsePasswordLength
-      ? Math.ceil(password.length / 4)
-      : threshold
+    const usedThreshold = getUsedThreshold(password, entry, threshold)
     const foundEntryDistance = distance(password, entry)
     const isInThreshold = foundEntryDistance <= usedThreshold
+
     if (isInThreshold) {
       foundDistance = foundEntryDistance
     }
@@ -24,11 +33,11 @@ const findLevenshteinDistance = (
   })
   if (found) {
     return {
-      distance: foundDistance,
-      foundEntry: found,
+      levenshteinDistance: foundDistance,
+      levenshteinDistanceEntry: found,
     }
   }
-  return undefined
+  return {}
 }
 
 export default findLevenshteinDistance

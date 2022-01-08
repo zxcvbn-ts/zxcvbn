@@ -41,24 +41,17 @@ class MatchDictionary {
         for (let j = i; j < passwordLength; j += 1) {
           const usedPassword = passwordLower.slice(i, +j + 1 || 9e9)
           const isInDictionary = usedPassword in rankedDict
-          let isLevenshteinMatch = false
-          let levenshteinDistance = 0
-          let levenshteinDistanceEntry = ''
+          let foundLevenshteinDistance = {}
           const isFullPassword = i === 0 && j === passwordLength - 1
           if (zxcvbnOptions.useLevenshteinDistance && isFullPassword) {
-            const foundLevenshteinDistance = findLevenshteinDistance(
+            foundLevenshteinDistance = findLevenshteinDistance(
               usedPassword,
               rankedDict,
               zxcvbnOptions.levenshteinThreshold,
             )
-            if (foundLevenshteinDistance) {
-              isLevenshteinMatch = true
-              levenshteinDistance = foundLevenshteinDistance.distance
-              levenshteinDistanceEntry = foundLevenshteinDistance.foundEntry
-            }
           }
 
-          if (isInDictionary || isLevenshteinMatch) {
+          if (isInDictionary || foundLevenshteinDistance) {
             const rank = rankedDict[usedPassword as keyof typeof rankedDict]
             matches.push({
               pattern: 'dictionary',
@@ -70,10 +63,7 @@ class MatchDictionary {
               dictionaryName: dictionaryName as DictionaryNames,
               reversed: false,
               l33t: false,
-              ...(isLevenshteinMatch && {
-                levenshteinDistance,
-                levenshteinDistanceEntry,
-              }),
+              ...foundLevenshteinDistance,
             })
           }
         }
