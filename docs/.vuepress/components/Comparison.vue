@@ -87,7 +87,7 @@ export default {
       }
       zxcvbnOptions.setOptions(options)
     },
-    //https://github.com/keratin/authn-server/pull/177
+
     setData() {
       this.passwords.forEach((password) => {
         const zxcvbnResult = zxcvbn(password)
