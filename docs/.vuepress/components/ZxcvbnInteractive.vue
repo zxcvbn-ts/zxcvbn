@@ -8,7 +8,7 @@
       userInputs separated by a comma like John,Smith
       <input v-model="userInputs" type="text" />
     </label>
-    <ul>
+    <ul class="demo-options">
       <li>
         <label>
           <input v-model="useDictionaries" type="checkbox" />
@@ -170,7 +170,7 @@ export default {
   box-sizing: border-box;
 }
 
-ul {
+.demo-options {
   width: 100%;
   list-style: none;
   float: left;
