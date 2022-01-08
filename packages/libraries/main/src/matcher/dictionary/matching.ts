@@ -44,16 +44,27 @@ class MatchDictionary {
           // only use levenshtein distance on full password to minimize the performance drop
           // and because otherwise there would be to many false positives
           const isFullPassword = i === 0 && j === passwordLength - 1
-          if (zxcvbnOptions.useLevenshteinDistance && isFullPassword) {
+          if (
+            zxcvbnOptions.useLevenshteinDistance &&
+            isFullPassword &&
+            !isInDictionary
+          ) {
             foundLevenshteinDistance = findLevenshteinDistance(
               usedPassword,
               rankedDict,
               zxcvbnOptions.levenshteinThreshold,
             )
           }
+          const isLevenshteinMatch =
+            Object.keys(foundLevenshteinDistance).length !== 0
 
-          if (isInDictionary || foundLevenshteinDistance) {
-            const rank = rankedDict[usedPassword as keyof typeof rankedDict]
+          if (isInDictionary || isLevenshteinMatch) {
+            const usedRankPassword = isInDictionary
+              ? usedPassword
+              : // @ts-ignore
+                foundLevenshteinDistance.levenshteinDistanceEntry
+
+            const rank = rankedDict[usedRankPassword]
             matches.push({
               pattern: 'dictionary',
               i,
