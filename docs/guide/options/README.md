@@ -2,12 +2,14 @@
 
 ## setOptions
 
-| Prop         | Type   | Default           | Description                                                           |
-| ------------ | ------ | ----------------- | --------------------------------------------------------------------- |
-| dictionary   | Object | {}                | Dictionaries for password comparison with common words/names etc.     |
-| graphs       | Object | {}                | Keyboard layout to check for patterns on different kind of keyboards  |
-| l33tTable    | Object | L33tTable         | Table with matching alphabetical chars into numbers and special chars |
-| translations | Object | Translations keys | Translations for the feedback                                         |
+| Prop                   | Type    | Default           | Description                                                           |
+| ---------------------- | ------- | ----------------- | --------------------------------------------------------------------- |
+| dictionary             | Object  | {}                | Dictionaries for password comparison with common words/names etc.     |
+| graphs                 | Object  | {}                | Keyboard layout to check for patterns on different kind of keyboards  |
+| l33tTable              | Object  | L33tTable         | Table with matching alphabetical chars into numbers and special chars |
+| translations           | Object  | Translations keys | Translations for the feedback                                         |
+| useLevenshteinDistance | Boolean | false             | Activate levenshtein                                                  |
+| levenshteinThreshold   | number  | 2                 | Threshold for levenshtein                                             |
 
 ### dictionary
 
@@ -37,14 +39,14 @@ If you find something missing in this table, feel free to open an issue or a PR.
 
 By default, every feedback is a key. If you want to get real translated feedback you can use one of the [language](../languages) packages.
 
-## addMatcher
-
-With this function you can add your own matcher for more information checkout the [matcher documentation](../matcher)
-
-## useLevenshteinDistance
+### useLevenshteinDistance
 
 This variable is to activate the levenshtein distance check on the dictionary matcher. This will decrease the performance, and it is recommended to use the debounce helper.
 
-## levenshteinThreshold
+### levenshteinThreshold
 
 This variable is to define the threshold of the levenshtein check
+
+## addMatcher
+
+With this function you can add your own matcher for more information checkout the [matcher documentation](../matcher)
