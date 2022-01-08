@@ -55,6 +55,14 @@ export class Options {
     if (options.graphs) {
       this.graphs = options.graphs
     }
+
+    if (options.useLevenshteinDistance !== undefined) {
+      this.useLevenshteinDistance = options.useLevenshteinDistance
+    }
+
+    if (options.levenshteinThreshold !== undefined) {
+      this.levenshteinThreshold = options.levenshteinThreshold
+    }
   }
 
   setTranslations(translations: TranslationKeys) {

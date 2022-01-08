@@ -158,6 +158,8 @@ export interface OptionsType {
   graphs?: OptionsGraph
   l33tTable?: OptionsL33tTable
   dictionary?: OptionsDictionary
+  useLevenshteinDistance?: boolean
+  levenshteinThreshold?: number
 }
 
 export interface RankedDictionary {
