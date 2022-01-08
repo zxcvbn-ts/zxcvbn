@@ -1,13 +1,13 @@
-import Options from '../../Options'
+import zxcvbnOptions from '../../Options'
 import { MatchEstimated } from '../../types'
 
 export default (match: MatchEstimated) => {
   if (match.regexName === 'recentYear') {
     return {
-      warning: Options.translations.warnings.recentYears,
+      warning: zxcvbnOptions.translations.warnings.recentYears,
       suggestions: [
-        Options.translations.suggestions.recentYears,
-        Options.translations.suggestions.associatedYears,
+        zxcvbnOptions.translations.suggestions.recentYears,
+        zxcvbnOptions.translations.suggestions.associatedYears,
       ],
     }
   }

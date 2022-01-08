@@ -15,7 +15,7 @@ The German dictionary and language package for **zxcvbn-ts**
 ## Setup
 
 ```js
-import { zxcvbn, ZxcvbnOptions } from '@zxcvbn-ts/core'
+import { zxcvbn, zxcvbnOptions } from '@zxcvbn-ts/core'
 import zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
 import zxcvbnDePackage from '@zxcvbn-ts/language-de'
 
@@ -28,7 +28,7 @@ const options = {
     ...zxcvbnDePackage.dictionary,
   },
 }
-ZxcvbnOptions.setOptions(options)
+zxcvbnOptions.setOptions(options)
 
 zxcvbn(password)
 ```

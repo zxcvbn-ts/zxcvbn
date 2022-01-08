@@ -17,7 +17,7 @@ If you don't have an own translation system or want to use predefined translatio
 Each language pack has its own translation file that you can use like this:
 
 ```js
-import { zxcvbn, ZxcvbnOptions } from '@zxcvbn-ts/core'
+import { zxcvbn, zxcvbnOptions } from '@zxcvbn-ts/core'
 import { translations } from '@zxcvbn-ts/language-en'
 
 const password = 'somePassword'
@@ -25,7 +25,7 @@ const options = {
   translations,
 }
 
-ZxcvbnOptions.setOptions(options)
+zxcvbnOptions.setOptions(options)
 
 zxcvbn(password)
 ```
@@ -37,7 +37,7 @@ This makes the library tiny but inefficient compared to the original library.
 It is recommended to use at least the common and english language package.
 
 ```js
-import { zxcvbn, ZxcvbnOptions } from '@zxcvbn-ts/core'
+import { zxcvbn, zxcvbnOptions } from '@zxcvbn-ts/core'
 import zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
 import zxcvbnEnPackage from '@zxcvbn-ts/language-en'
 
@@ -49,7 +49,7 @@ const options = {
   },
 }
 
-ZxcvbnOptions.setOptions(options)
+zxcvbnOptions.setOptions(options)
 
 zxcvbn(password)
 ```
@@ -60,7 +60,7 @@ By default, zxcvbn-ts don't use any keyboard patterns to let the developer decid
 It is recommended to use at least the common keyboard patterns.
 
 ```js
-import { zxcvbn, ZxcvbnOptions } from '@zxcvbn-ts/core'
+import { zxcvbn, zxcvbnOptions } from '@zxcvbn-ts/core'
 import zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
 
 const password = 'somePassword'
@@ -68,7 +68,7 @@ const options = {
   graphs: zxcvbnCommonPackage.adjacencyGraphs,
 }
 
-ZxcvbnOptions.setOptions(options)
+zxcvbnOptions.setOptions(options)
 
 zxcvbn(password)
 ```

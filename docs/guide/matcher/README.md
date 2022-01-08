@@ -46,7 +46,7 @@ This is an example to create a custom matcher to check for the minLength. The sc
 Be aware that we don't recommend using a minLength matcher
 
 ```ts
-import { ZxcvbnOptions } from '@zxcvbn-ts/core'
+import { zxcvbnOptions } from '@zxcvbn-ts/core'
 import {
   MatchEstimated,
   ExtendedMatch,
@@ -84,7 +84,7 @@ const minLengthMatcher: Matcher = {
   },
 }
 
-ZxcvbnOptions.addMatcher('minLength', minLengthMatcher)
+zxcvbnOptions.addMatcher('minLength', minLengthMatcher)
 ```
 
 ## Matcher libraries

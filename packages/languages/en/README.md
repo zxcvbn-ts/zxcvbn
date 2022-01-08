@@ -15,7 +15,7 @@ The English dictionary and language package for zxcvbn-ts
 ## Setup
 
 ```js
-import { zxcvbn, ZxcvbnOptions } from '@zxcvbn-ts/core'
+import { zxcvbn, zxcvbnOptions } from '@zxcvbn-ts/core'
 import zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
 import zxcvbnEnPackage from '@zxcvbn-ts/language-en'
 
@@ -29,7 +29,7 @@ const options = {
   },
 }
 
-ZxcvbnOptions.setOptions(options)
+zxcvbnOptions.setOptions(options)
 
 zxcvbn(password)
 ```

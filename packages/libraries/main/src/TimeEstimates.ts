@@ -1,4 +1,4 @@
-import Options from './Options'
+import zxcvbnOptions from './Options'
 import { CrackTimesDisplay, CrackTimesSeconds } from './types'
 
 const SECOND = 1
@@ -30,7 +30,7 @@ class TimeEstimates {
     if (value !== undefined && value !== 1) {
       key += 's'
     }
-    const { timeEstimation } = Options.translations
+    const { timeEstimation } = zxcvbnOptions.translations
     return timeEstimation[key as keyof typeof timeEstimation].replace(
       '{base}',
       `${value}`,

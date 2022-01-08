@@ -1,5 +1,5 @@
 import utils from '../../scoring/utils'
-import Options from '../../Options'
+import zxcvbnOptions from '../../Options'
 import { LooseObject, MatchEstimated, MatchExtended } from '../../types'
 
 interface EstimatePossiblePatternsOptions {
@@ -23,8 +23,8 @@ const estimatePossiblePatterns = ({
   graph,
   turns,
 }: EstimatePossiblePatternsOptions) => {
-  const startingPosition = Object.keys(Options.graphs[graph]).length
-  const averageDegree = calcAverageDegree(Options.graphs[graph])
+  const startingPosition = Object.keys(zxcvbnOptions.graphs[graph]).length
+  const averageDegree = calcAverageDegree(zxcvbnOptions.graphs[graph])
 
   let guesses = 0
   const tokenLength = token.length

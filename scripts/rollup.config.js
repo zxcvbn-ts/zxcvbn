@@ -21,7 +21,7 @@ const generateConfig = (type) => {
     entryFileNames: '[name].js',
     assetFileNames: '[name].js',
     sourcemap: true,
-    exports: 'auto',
+    exports: 'named',
   }
   if (type === 'esm') {
     typescriptOptions = {

@@ -1,8 +1,8 @@
-import Options from '../../Options'
+import zxcvbnOptions from '../../Options'
 
 export default () => {
   return {
-    warning: Options.translations.warnings.dates,
-    suggestions: [Options.translations.suggestions.dates],
+    warning: zxcvbnOptions.translations.warnings.dates,
+    suggestions: [zxcvbnOptions.translations.suggestions.dates],
   }
 }

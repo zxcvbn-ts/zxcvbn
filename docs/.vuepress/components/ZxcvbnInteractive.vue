@@ -1,16 +1,52 @@
 <template>
   <div class="example">
     <label>
-      Use recommended dictionary
-      <input v-model="useDictionaries" type="checkbox" />
+      <b>Options</b>
     </label>
+    <hr style="width:100%"/>
+    <label>
+      userInputs separated by a comma like John,Smith
+      <input v-model="userInputs" type="text" />
+    </label>
+    <ul class="demo-options">
+      <li>
+        <label>
+          <input v-model="useDictionaries" type="checkbox" />
+          Use recommended dictionary
+        </label>
+      </li>
 
+      <li>
+        <label>
+          <input v-model="useGraphs" type="checkbox" />
+          Use recommended graphs
+        </label>
+      </li>
+
+      <li>
+        <label>
+          <input v-model="useTranslations" type="checkbox" />
+          Use english translations
+        </label>
+      </li>
+
+      <li>
+        <label>
+          <input v-model="useDebounce" type="checkbox" />
+          Use debounce helper
+        </label>
+      </li>
+
+      <li>
+        <label>
+          <input v-model="usePwned" type="checkbox" />
+          Use pwned matcher
+        </label>
+      </li>
+    </ul>
+    <hr style="width:100%"/>
     <label>
-      Use english translations
-      <input v-model="useTranslations" type="checkbox" />
-    </label>
-    <label>
-      Password
+      <b>Password</b>
       <input v-model="password" type="text" />
     </label>
     <template v-if="result">
@@ -23,10 +59,15 @@
 <script>
 import Result from './Result'
 import Sequence from './Sequence'
-import { zxcvbn, ZxcvbnOptions, debounce } from '../../../packages/libraries/main/dist'
+import {
+  zxcvbnAsync,
+  zxcvbnOptions,
+  debounce,
+} from '../../../packages/libraries/main/dist'
 import zxcvbnCommonPackage from '../../../packages/languages/common/dist'
 import zxcvbnEnPackage from '../../../packages/languages/en/dist'
 import translationKeys from '../../../packages/libraries/main/dist/data/translationKeys'
+import matcherPwnedFactory from '@zxcvbn-ts/matcher-pwned'
 
 export default {
   name: 'ZxcvbnInteractive',
@@ -39,12 +80,17 @@ export default {
       password: '',
       result: null,
       useTranslations: true,
+      useGraphs: true,
       useDictionaries: true,
-      debounce: debounce(this.useZxcvbn, 200)
+      useDebounce: true,
+      usePwned: true,
+      debounce: debounce(this.useZxcvbn, 200),
+      userInputs: '',
     }
   },
   mounted() {
     this.setOptions()
+    this.addPwnedMatcher()
   },
   methods: {
     setResult(result) {
@@ -54,7 +100,7 @@ export default {
       const options = {
         dictionary: {},
         translations: translationKeys,
-        graphs: zxcvbnCommonPackage.adjacencyGraphs,
+        graphs: {},
       }
       if (this.useDictionaries) {
         options.dictionary = {
@@ -65,19 +111,31 @@ export default {
       if (this.useTranslations) {
         options.translations = zxcvbnEnPackage.translations
       }
-      ZxcvbnOptions.setOptions(options)
+      if (this.useGraphs) {
+        options.graphs = zxcvbnCommonPackage.adjacencyGraphs
+      }
+      zxcvbnOptions.setOptions(options)
     },
-    useZxcvbn(){
+    async useZxcvbn() {
       if (this.password) {
-        this.result = zxcvbn(this.password)
+        const userInputs = this.userInputs.split(',')
+        this.result = await zxcvbnAsync(this.password, userInputs)
       } else {
         this.result = null
       }
-    }
+    },
+    addPwnedMatcher() {
+      const matcherPwned = matcherPwnedFactory(fetch, zxcvbnOptions)
+      zxcvbnOptions.addMatcher('pwned', matcherPwned)
+    },
   },
   watch: {
     password() {
-      this.debounce()
+      if (this.useDebounce) {
+        this.debounce()
+      } else {
+        this.useZxcvbn()
+      }
     },
     useTranslations() {
       this.password = ''
@@ -87,17 +145,37 @@ export default {
       this.password = ''
       this.setOptions()
     },
+    useGraphs() {
+      this.password = ''
+      this.setOptions()
+    },
+    usePwned(newValue) {
+      this.password = ''
+      if (newValue) {
+        this.addPwnedMatcher()
+      } else {
+        delete zxcvbnOptions.matchers.pwned
+      }
+    },
   },
 }
 </script>
 
 <style>
-.example input {
+.example input[type='text'] {
   padding: 0.75em 0.5em;
   font-size: 100%;
   border: 1px solid #cccccc;
   width: 100%;
   box-sizing: border-box;
+}
+
+.demo-options {
+  width: 100%;
+  list-style: none;
+  float: left;
+  padding-left: 0;
+  margin: 15px 0;
 }
 
 .example {

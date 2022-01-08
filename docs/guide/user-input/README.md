@@ -4,7 +4,7 @@ Often you want to check if the password matches some user content like their use
 For this purpose, add a `userInputs` dictionary with its own sanitizer.
 
 ```js
-import { zxcvbn, ZxcvbnOptions } from '@zxcvbn-ts/core'
+import { zxcvbn, zxcvbnOptions } from '@zxcvbn-ts/core'
 
 const password = 'somePassword'
 const options = {
@@ -12,7 +12,7 @@ const options = {
     userInputs: ['someEmail@email.de', 'someUsername'],
   },
 }
-ZxcvbnOptions.setOptions(options)
+zxcvbnOptions.setOptions(options)
 
 zxcvbn(password)
 ```

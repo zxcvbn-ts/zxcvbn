@@ -12,7 +12,7 @@ import {
 import l33tTable from './data/l33tTable'
 import translationKeys from './data/translationKeys'
 
-class Options {
+export class Options {
   matchers: Matchers = {}
 
   l33tTable: OptionsL33tTable = l33tTable
@@ -129,4 +129,6 @@ class Options {
   }
 }
 
-export default new Options()
+const zxcvbnOptions = new Options()
+
+export default zxcvbnOptions

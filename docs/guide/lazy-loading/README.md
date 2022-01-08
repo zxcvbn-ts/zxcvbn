@@ -43,7 +43,7 @@ Somewhere in your application you can call the "loadOptions" function, then the 
 const run = async () => {
   const password = 'asdnlja978o'
   const options = await loadOptions()
-  ZxcvbnOptions.setOptions(options)
+  zxcvbnOptions.setOptions(options)
   const results = zxcvbn(password)
   console.log(results)
 }

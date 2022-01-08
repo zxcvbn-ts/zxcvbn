@@ -1,6 +1,10 @@
-export default () => {
-  return {
-    warning: 'pwned',
-    suggestions: ['pwned'],
+import { Options } from '@zxcvbn-ts/core/src/Options'
+
+export default (options: Options) => {
+  return () => {
+    return {
+      warning: options.translations.warnings.pwned,
+      suggestions: [options.translations.suggestions.pwned],
+    }
   }
 }

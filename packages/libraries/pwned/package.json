@@ -19,8 +19,8 @@
   "publishConfig": {
     "access": "public"
   },
-  "peerDependencies": {
-    "@zxcvbn-ts/core": "^1.0.0"
+  "dependencies": {
+    "@zxcvbn-ts/core": "^1.2.0"
   },
   "keywords": [
     "pwned",

@@ -1,9 +1,9 @@
 import zxcvbnCommonPackage from '../../../languages/common/src'
 import zxcvbnEnPackage from '../../../languages/en/src'
-import { zxcvbn, zxcvbnAsync, ZxcvbnOptions } from '../src'
+import { zxcvbn, zxcvbnAsync, zxcvbnOptions } from '../src'
 import { Matcher, MatchExtended } from '../src/types'
 
-ZxcvbnOptions.setOptions({
+zxcvbnOptions.setOptions({
   dictionary: {
     ...zxcvbnCommonPackage.dictionary,
     ...zxcvbnEnPackage.dictionary,
@@ -41,7 +41,7 @@ const asyncMatcher: Matcher = {
   },
 }
 
-ZxcvbnOptions.addMatcher('minLength', asyncMatcher)
+zxcvbnOptions.addMatcher('minLength', asyncMatcher)
 
 describe('asyncMatcher', () => {
   it('should use async matcher as a promise', async () => {

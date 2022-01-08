@@ -1,13 +1,13 @@
-import Options from '../../Options'
+import zxcvbnOptions from '../../Options'
 import { MatchEstimated } from '../../types'
 
 export default (match: MatchEstimated) => {
-  let warning = Options.translations.warnings.keyPattern
+  let warning = zxcvbnOptions.translations.warnings.keyPattern
   if (match.turns === 1) {
-    warning = Options.translations.warnings.straightRow
+    warning = zxcvbnOptions.translations.warnings.straightRow
   }
   return {
     warning,
-    suggestions: [Options.translations.suggestions.longerKeyboardPattern],
+    suggestions: [zxcvbnOptions.translations.suggestions.longerKeyboardPattern],
   }
 }

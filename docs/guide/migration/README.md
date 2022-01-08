@@ -6,7 +6,7 @@ To decrease the bundle size of the core package the keyboard layout are now opti
 This means that if you want to have the recommended scoring you need to add it to your `setOptions` call.
 
 ```js
-import { zxcvbn, ZxcvbnOptions } from '@zxcvbn-ts/core'
+import { zxcvbn, zxcvbnOptions } from '@zxcvbn-ts/core'
 import zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
 import zxcvbnEnPackage from '@zxcvbn-ts/language-en'
 
@@ -21,7 +21,7 @@ const options = {
   graphs: zxcvbnCommonPackage.adjacencyGraphs,
 }
 
-ZxcvbnOptions.setOptions(options)
+zxcvbnOptions.setOptions(options)
 
 zxcvbn(password)
 ```
@@ -33,7 +33,7 @@ We moved the options handling out of the **zxcvbn** call to improve performance.
 Related [issue](https://github.com/zxcvbn-ts/zxcvbn/issues/31)
 
 - @zxcvbn-ts/core has only named exports
-- options need to be set by `ZxcvbnOptions.setOptions`
+- options need to be set by `zxcvbnOptions.setOptions`
 
 Old
 
@@ -57,7 +57,7 @@ zxcvbn(password, options)
 New
 
 ```js
-import { zxcvbn, ZxcvbnOptions } from '@zxcvbn-ts/core'
+import { zxcvbn, zxcvbnOptions } from '@zxcvbn-ts/core'
 import zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
 import zxcvbnEnPackage from '@zxcvbn-ts/language-en'
 
@@ -70,12 +70,12 @@ const options = {
   },
 }
 
-ZxcvbnOptions.setOptions(options)
+zxcvbnOptions.setOptions(options)
 
 zxcvbn(password)
 ```
 
-The `ZxcvbnOptions.setOptions` should be in another place as the **zxcvbn** call for example directly after you load your options.
+The `zxcvbnOptions.setOptions` should be in another place as the **zxcvbn** call for example directly after you load your options.
 
 ## `zxcvbn 4.4.2` to `zxcvbn-ts 0.1.0`
 
