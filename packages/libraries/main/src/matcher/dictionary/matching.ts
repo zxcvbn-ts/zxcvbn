@@ -29,7 +29,6 @@ class MatchDictionary {
   }
 
   defaultMatch({ password }: DictionaryMatchOptions) {
-    // rankedDictionaries variable is for unit testing purposes
     const matches: DictionaryMatch[] = []
     const passwordLength = password.length
     const passwordLower = password.toLowerCase()
@@ -42,6 +41,8 @@ class MatchDictionary {
           const usedPassword = passwordLower.slice(i, +j + 1 || 9e9)
           const isInDictionary = usedPassword in rankedDict
           let foundLevenshteinDistance = {}
+          // only use levenshtein distance on full password to minimize the performance drop
+          // and because otherwise there would be to many false positives
           const isFullPassword = i === 0 && j === passwordLength - 1
           if (zxcvbnOptions.useLevenshteinDistance && isFullPassword) {
             foundLevenshteinDistance = findLevenshteinDistance(

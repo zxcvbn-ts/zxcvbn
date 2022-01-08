@@ -149,3 +149,4 @@ If you want to use it and want to include your own polyfills, you need to transp
 - Async matcher can be added which means you can create a matcher that makes an API call
 - [haveibeenpwned](https://haveibeenpwned.com/Passwords) matcher
 - included debounce helper
+- levenshtein check for the dictionaries

@@ -40,3 +40,11 @@ By default, every feedback is a key. If you want to get real translated feedback
 ## addMatcher
 
 With this function you can add your own matcher for more information checkout the [matcher documentation](../matcher)
+
+## useLevenshteinDistance
+
+This variable is to activate the levenshtein distance check on the dictionary matcher. This will decrease the performance, and it is recommended to use the debounce helper.
+
+## levenshteinThreshold
+
+This variable is to define the threshold of the levenshtein check
