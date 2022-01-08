@@ -1,5 +1,5 @@
 import { sorted } from '../../helper'
-import Options from '../../Options'
+import zxcvbnOptions from '../../Options'
 import { DictionaryNames, DictionaryMatch, L33tMatch } from '../../types'
 import Reverse from './variants/matching/reverse'
 import L33t from './variants/matching/l33t'
@@ -33,9 +33,9 @@ class MatchDictionary {
     const passwordLength = password.length
     const passwordLower = password.toLowerCase()
 
-    Object.keys(Options.rankedDictionaries).forEach((dictionaryName) => {
+    Object.keys(zxcvbnOptions.rankedDictionaries).forEach((dictionaryName) => {
       const rankedDict =
-        Options.rankedDictionaries[dictionaryName as DictionaryNames]
+        zxcvbnOptions.rankedDictionaries[dictionaryName as DictionaryNames]
       for (let i = 0; i < passwordLength; i += 1) {
         for (let j = i; j < passwordLength; j += 1) {
           if (passwordLower.slice(i, +j + 1 || 9e9) in rankedDict) {

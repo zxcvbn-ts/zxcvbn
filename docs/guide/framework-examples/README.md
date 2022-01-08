@@ -19,14 +19,14 @@ Those examples are using the full feature set of zxcvbn, and are marked with `re
 </template>
 
 <script>
-import { zxcvbn, ZxcvbnOptions, debounce } from '@zxcvbn-ts/core'
+import { zxcvbn, zxcvbnOptions, debounce } from '@zxcvbn-ts/core'
 import zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
 import zxcvbnEnPackage from '@zxcvbn-ts/language-en'
 import matcherPwnedFactory from '@zxcvbn-ts/matcher-pwned'
 
 // optional
-const matcherPwned = matcherPwnedFactory(fetch, ZxcvbnOptions)
-ZxcvbnOptions.addMatcher('pwned', matcherPwned)
+const matcherPwned = matcherPwnedFactory(fetch, zxcvbnOptions)
+zxcvbnOptions.addMatcher('pwned', matcherPwned)
 
 const options = {
   // recommended
@@ -39,7 +39,7 @@ const options = {
   // optional
   translations: zxcvbnEnPackage.translations,
 }
-ZxcvbnOptions.setOptions(options)
+zxcvbnOptions.setOptions(options)
 
 export default {
   name: 'ZxcvbnInput',

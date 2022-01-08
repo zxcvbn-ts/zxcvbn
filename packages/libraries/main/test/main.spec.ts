@@ -1,11 +1,11 @@
 import zxcvbnCommonPackage from '../../../languages/common/src'
 import zxcvbnEnPackage from '../../../languages/en/src'
-import { zxcvbn, ZxcvbnOptions } from '../src'
+import { zxcvbn, zxcvbnOptions } from '../src'
 import passwordTests from './helper/passwordTests'
 
 describe('main', () => {
   beforeEach(() => {
-    ZxcvbnOptions.setOptions({
+    zxcvbnOptions.setOptions({
       dictionary: {
         ...zxcvbnCommonPackage.dictionary,
         ...zxcvbnEnPackage.dictionary,
@@ -63,7 +63,7 @@ describe('main', () => {
   })
 
   it('should check with userInputs', () => {
-    ZxcvbnOptions.setOptions({
+    zxcvbnOptions.setOptions({
       // @ts-ignore
       dictionary: { userInputs: ['test', 12, true, []] },
     })
@@ -161,7 +161,7 @@ describe('main', () => {
   describe('password tests', () => {
     passwordTests.forEach((data) => {
       it(`should resolve ${data.password}`, () => {
-        ZxcvbnOptions.setOptions({
+        zxcvbnOptions.setOptions({
           dictionary: {
             ...zxcvbnCommonPackage.dictionary,
             ...zxcvbnEnPackage.dictionary,

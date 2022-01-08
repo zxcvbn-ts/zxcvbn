@@ -90,7 +90,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### BREAKING CHANGES
 
-* **main:** the library serves now only named exports and the options need to be set with `ZxcvbnOptions.setOptions`
+* **main:** the library serves now only named exports and the options need to be set with `zxcvbnOptions.setOptions`
 
 
 

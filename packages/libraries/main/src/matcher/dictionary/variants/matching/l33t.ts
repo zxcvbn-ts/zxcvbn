@@ -1,5 +1,5 @@
 import { empty, translate } from '../../../../helper'
-import Options from '../../../../Options'
+import zxcvbnOptions from '../../../../Options'
 import {
   DictionaryMatch,
   L33tMatch,
@@ -24,7 +24,7 @@ class MatchL33t {
   match({ password }: { password: string }) {
     const matches: L33tMatch[] = []
     const enumeratedSubs = this.enumerateL33tSubs(
-      this.relevantL33tSubtable(password, Options.l33tTable),
+      this.relevantL33tSubtable(password, zxcvbnOptions.l33tTable),
     )
     for (let i = 0; i < enumeratedSubs.length; i += 1) {
       const sub = enumeratedSubs[i]

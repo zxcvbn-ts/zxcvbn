@@ -29,7 +29,7 @@
 <script>
 import {
   zxcvbn as zxcvbnTs,
-  ZxcvbnOptions,
+  zxcvbnOptions,
 } from '../../../packages/libraries/main/dist'
 import zxcvbnCommonPackage from '../../../packages/languages/common/dist'
 import zxcvbnEnPackage from '../../../packages/languages/en/dist'
@@ -85,7 +85,7 @@ export default {
         },
         graphs: zxcvbnCommonPackage.adjacencyGraphs,
       }
-      ZxcvbnOptions.setOptions(options)
+      zxcvbnOptions.setOptions(options)
     },
     //https://github.com/keratin/authn-server/pull/177
     setData() {

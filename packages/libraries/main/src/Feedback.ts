@@ -1,4 +1,4 @@
-import Options from './Options'
+import zxcvbnOptions from './Options'
 import { DefaultFeedbackFunction, FeedbackType, MatchEstimated } from './types'
 import bruteforceMatcher from './matcher/bruteforce/feedback'
 import dateMatcher from './matcher/date/feedback'
@@ -43,8 +43,8 @@ class Feedback {
 
   setDefaultSuggestions() {
     this.defaultFeedback.suggestions.push(
-      Options.translations.suggestions.useWords,
-      Options.translations.suggestions.noNeed,
+      zxcvbnOptions.translations.suggestions.useWords,
+      zxcvbnOptions.translations.suggestions.noNeed,
     )
   }
 
@@ -55,7 +55,7 @@ class Feedback {
     if (score > 2) {
       return defaultFeedback
     }
-    const extraFeedback = Options.translations.suggestions.anotherWord
+    const extraFeedback = zxcvbnOptions.translations.suggestions.anotherWord
     const longestMatch = this.getLongestMatch(sequence)
     let feedback = this.getMatchFeedback(longestMatch, sequence.length === 1)
     if (feedback !== null && feedback !== undefined) {
@@ -88,10 +88,10 @@ class Feedback {
       return this.matchers[match.pattern](match, isSoleMatch)
     }
     if (
-      Options.matchers[match.pattern] &&
-      'feedback' in Options.matchers[match.pattern]
+      zxcvbnOptions.matchers[match.pattern] &&
+      'feedback' in zxcvbnOptions.matchers[match.pattern]
     ) {
-      return Options.matchers[match.pattern].feedback(match, isSoleMatch)
+      return zxcvbnOptions.matchers[match.pattern].feedback(match, isSoleMatch)
     }
     return defaultFeedback
   }

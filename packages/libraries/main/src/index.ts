@@ -2,7 +2,7 @@ import Matching from './Matching'
 import scoring from './scoring'
 import TimeEstimates from './TimeEstimates'
 import Feedback from './Feedback'
-import Options from './Options'
+import zxcvbnOptions from './Options'
 import debounce from './debounce'
 import { MatchEstimated, MatchExtended, ZxcvbnResult } from './types'
 
@@ -35,7 +35,7 @@ const createReturnValue = (
 
 const main = (password: string, userInputs?: (string | number)[]) => {
   if (userInputs) {
-    Options.extendUserInputsDictionary(userInputs)
+    zxcvbnOptions.extendUserInputsDictionary(userInputs)
   }
 
   const matching = new Matching()
@@ -65,4 +65,4 @@ export const zxcvbnAsync = async (
   return createReturnValue(matches, password, start)
 }
 
-export { Options as ZxcvbnOptions, ZxcvbnResult, debounce }
+export { zxcvbnOptions, ZxcvbnResult, debounce }

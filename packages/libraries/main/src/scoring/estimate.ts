@@ -3,7 +3,7 @@ import {
   MIN_SUBMATCH_GUESSES_MULTI_CHAR,
 } from '../data/const'
 import utils from './utils'
-import Options from '../Options'
+import zxcvbnOptions from '../Options'
 import {
   DefaultScoringFunction,
   LooseObject,
@@ -51,8 +51,11 @@ const getScoring = (name: string, match: MatchExtended | MatchEstimated) => {
   if (matchers[name]) {
     return matchers[name](match)
   }
-  if (Options.matchers[name] && 'scoring' in Options.matchers[name]) {
-    return Options.matchers[name].scoring(match)
+  if (
+    zxcvbnOptions.matchers[name] &&
+    'scoring' in zxcvbnOptions.matchers[name]
+  ) {
+    return zxcvbnOptions.matchers[name].scoring(match)
   }
   return 0
 }

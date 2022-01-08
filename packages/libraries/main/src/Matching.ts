@@ -6,7 +6,7 @@ import regexMatcher from './matcher/regex/matching'
 import repeatMatcher from './matcher/repeat/matching'
 import sequenceMatcher from './matcher/sequence/matching'
 import spatialMatcher from './matcher/spatial/matching'
-import Options from './Options'
+import zxcvbnOptions from './Options'
 
 /*
  * -------------------------------------------------------------------------------
@@ -35,15 +35,15 @@ class Matching {
     const promises: Promise<MatchExtended[]>[] = []
     const matchers = [
       ...Object.keys(this.matchers),
-      ...Object.keys(Options.matchers),
+      ...Object.keys(zxcvbnOptions.matchers),
     ]
     matchers.forEach((key) => {
-      if (!this.matchers[key] && !Options.matchers[key]) {
+      if (!this.matchers[key] && !zxcvbnOptions.matchers[key]) {
         return
       }
       const Matcher = this.matchers[key]
         ? this.matchers[key]
-        : Options.matchers[key].Matching
+        : zxcvbnOptions.matchers[key].Matching
       const usedMatcher = new Matcher()
       const result = usedMatcher.match({
         password,

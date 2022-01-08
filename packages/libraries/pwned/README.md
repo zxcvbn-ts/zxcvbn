@@ -15,13 +15,13 @@ The pwned matcher is an async matcher that will make a k-anonymity password requ
 ## Setup
 
 ```js
-import { zxcvbn, ZxcvbnOptions } from '@zxcvbn-ts/core'
+import { zxcvbn, zxcvbnOptions } from '@zxcvbn-ts/core'
 import matcherPwnedFactory from '@zxcvbn-ts/matcher-pwned'
 
 const password = 'somePassword'
 
-const matcherPwned = matcherPwnedFactory(fetch, ZxcvbnOptions)
-ZxcvbnOptions.addMatcher('pwned', matcherPwned)
+const matcherPwned = matcherPwnedFactory(fetch, zxcvbnOptions)
+zxcvbnOptions.addMatcher('pwned', matcherPwned)
 
 // @zxcvbn-ts/matcher-pwned is async so zxcvbn will return a promise
 zxcvbn(password).then((result) => {

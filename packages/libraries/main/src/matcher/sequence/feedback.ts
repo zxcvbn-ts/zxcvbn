@@ -1,8 +1,8 @@
-import Options from '../../Options'
+import zxcvbnOptions from '../../Options'
 
 export default () => {
   return {
-    warning: Options.translations.warnings.sequences,
-    suggestions: [Options.translations.suggestions.sequences],
+    warning: zxcvbnOptions.translations.warnings.sequences,
+    suggestions: [zxcvbnOptions.translations.suggestions.sequences],
   }
 }

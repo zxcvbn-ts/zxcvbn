@@ -23,14 +23,14 @@
 <script>
 import Result from './Result'
 import Sequence from './Sequence'
-import { zxcvbnAsync, ZxcvbnOptions, debounce } from '../../../packages/libraries/main/dist'
+import { zxcvbnAsync, zxcvbnOptions, debounce } from '../../../packages/libraries/main/dist'
 import zxcvbnCommonPackage from '../../../packages/languages/common/dist'
 import zxcvbnEnPackage from '../../../packages/languages/en/dist'
 import translationKeys from '../../../packages/libraries/main/dist/data/translationKeys'
 import matcherPwnedFactory from '@zxcvbn-ts/matcher-pwned'
 
-const matcherPwned = matcherPwnedFactory(fetch, ZxcvbnOptions)
-ZxcvbnOptions.addMatcher('pwned', matcherPwned)
+const matcherPwned = matcherPwnedFactory(fetch, zxcvbnOptions)
+zxcvbnOptions.addMatcher('pwned', matcherPwned)
 
 export default {
   name: 'ZxcvbnInteractive',
@@ -69,10 +69,10 @@ export default {
       if (this.useTranslations) {
         options.translations = zxcvbnEnPackage.translations
       }
-      ZxcvbnOptions.setOptions(options)
+      zxcvbnOptions.setOptions(options)
     },
     async useZxcvbn(){
-      console.log('lol',ZxcvbnOptions.translations.warnings)
+      console.log('lol',zxcvbnOptions.translations.warnings)
       if (this.password) {
         this.result = await zxcvbnAsync(this.password)
         console.log(this.result)

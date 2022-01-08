@@ -129,4 +129,6 @@ export class Options {
   }
 }
 
-export default new Options()
+const zxcvbnOptions = new Options()
+
+export default zxcvbnOptions

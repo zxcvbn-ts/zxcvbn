@@ -19,7 +19,7 @@ and recognizes common patterns like dates, repetitions (e.g. 'aaa'), sequences (
 ## Setup
 
 ```js
-import { zxcvbn, ZxcvbnOptions } from '@zxcvbn-ts/core'
+import { zxcvbn, zxcvbnOptions } from '@zxcvbn-ts/core'
 import zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
 import zxcvbnEnPackage from '@zxcvbn-ts/language-en'
 
@@ -32,7 +32,7 @@ const options = {
   graphs: zxcvbnCommonPackage.adjacencyGraphs,
   translations: zxcvbnEnPackage.translations,
 }
-ZxcvbnOptions.setOptions(options)
+zxcvbnOptions.setOptions(options)
 
 zxcvbn(password)
 ```
