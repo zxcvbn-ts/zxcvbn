@@ -6,8 +6,9 @@ Current supported languages:
 
 - German
 - English
-- Dutch (Belgium)
+- Spain (Spain)
 - French
+- Dutch (Belgium)
 
 ## Feedback
 

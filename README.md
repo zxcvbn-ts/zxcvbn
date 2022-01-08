@@ -42,6 +42,7 @@ The reason of this project is to modernize zxcvbn and make it maintainable with 
 - usable without dictionaries at all, which reduce the scoring efficiency rapidly. This is not recommended
 - types
 - custom matcher
+- [haveibeenpwned](https://haveibeenpwned.com/Passwords) matcher
 
 ## Documentation
 

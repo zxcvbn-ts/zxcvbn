@@ -29,6 +29,7 @@ const options = {
     ...zxcvbnCommonPackage.dictionary,
     ...zxcvbnEnPackage.dictionary,
   },
+  graphs: zxcvbnCommonPackage.adjacencyGraphs,
   translations: zxcvbnEnPackage.translations,
 }
 ZxcvbnOptions.setOptions(options)
