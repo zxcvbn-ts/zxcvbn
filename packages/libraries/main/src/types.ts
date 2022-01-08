@@ -160,10 +160,12 @@ export interface OptionsType {
   dictionary?: OptionsDictionary
 }
 
+export interface RankedDictionary {
+  [key: string]: number
+}
+
 export interface RankedDictionaries {
-  [key: string]: {
-    [key: string]: number
-  }
+  [key: string]: RankedDictionary
 }
 
 export type DefaultFeedbackFunction = (

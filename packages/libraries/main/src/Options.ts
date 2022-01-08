@@ -29,6 +29,10 @@ export class Options {
 
   availableGraphs: string[] = []
 
+  useLevenshteinDistance: boolean = false
+
+  levenshteinThreshold: number = 2
+
   constructor() {
     this.setRankedDictionaries()
   }

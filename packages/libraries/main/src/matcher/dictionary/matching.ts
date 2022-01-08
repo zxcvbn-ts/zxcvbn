@@ -1,3 +1,4 @@
+import findLevenshteinDistance from '../../levenshtein'
 import { sorted } from '../../helper'
 import zxcvbnOptions from '../../Options'
 import { DictionaryNames, DictionaryMatch, L33tMatch } from '../../types'
@@ -38,19 +39,41 @@ class MatchDictionary {
         zxcvbnOptions.rankedDictionaries[dictionaryName as DictionaryNames]
       for (let i = 0; i < passwordLength; i += 1) {
         for (let j = i; j < passwordLength; j += 1) {
-          if (passwordLower.slice(i, +j + 1 || 9e9) in rankedDict) {
-            const word = passwordLower.slice(i, +j + 1 || 9e9)
-            const rank = rankedDict[word as keyof typeof rankedDict]
+          const usedPassword = passwordLower.slice(i, +j + 1 || 9e9)
+          const isInDictionary = usedPassword in rankedDict
+          let isLevenshteinMatch = false
+          let levenshteinDistance = 0
+          let levenshteinDistanceEntry = ''
+          const isFullPassword = i === 0 && j === passwordLength - 1
+          if (zxcvbnOptions.useLevenshteinDistance && isFullPassword) {
+            const foundLevenshteinDistance = findLevenshteinDistance(
+              usedPassword,
+              rankedDict,
+              zxcvbnOptions.levenshteinThreshold,
+            )
+            if (foundLevenshteinDistance) {
+              isLevenshteinMatch = true
+              levenshteinDistance = foundLevenshteinDistance.distance
+              levenshteinDistanceEntry = foundLevenshteinDistance.foundEntry
+            }
+          }
+
+          if (isInDictionary || isLevenshteinMatch) {
+            const rank = rankedDict[usedPassword as keyof typeof rankedDict]
             matches.push({
               pattern: 'dictionary',
               i,
               j,
               token: password.slice(i, +j + 1 || 9e9),
-              matchedWord: word,
+              matchedWord: usedPassword,
               rank,
               dictionaryName: dictionaryName as DictionaryNames,
               reversed: false,
               l33t: false,
+              ...(isLevenshteinMatch && {
+                levenshteinDistance,
+                levenshteinDistanceEntry,
+              }),
             })
           }
         }
