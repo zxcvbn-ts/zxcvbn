@@ -25,7 +25,7 @@ import zxcvbnEnPackage from '@zxcvbn-ts/language-en'
 import matcherPwnedFactory from '@zxcvbn-ts/matcher-pwned'
 
 // optional
-const matcherPwned = matcherPwnedFactory(fetch)
+const matcherPwned = matcherPwnedFactory(fetch, ZxcvbnOptions)
 ZxcvbnOptions.addMatcher('pwned', matcherPwned)
 
 const options = {

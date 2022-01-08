@@ -23,10 +23,14 @@
 <script>
 import Result from './Result'
 import Sequence from './Sequence'
-import { zxcvbn, ZxcvbnOptions, debounce } from '../../../packages/libraries/main/dist'
+import { zxcvbnAsync, ZxcvbnOptions, debounce } from '../../../packages/libraries/main/dist'
 import zxcvbnCommonPackage from '../../../packages/languages/common/dist'
 import zxcvbnEnPackage from '../../../packages/languages/en/dist'
 import translationKeys from '../../../packages/libraries/main/dist/data/translationKeys'
+import matcherPwnedFactory from '@zxcvbn-ts/matcher-pwned'
+
+const matcherPwned = matcherPwnedFactory(fetch, ZxcvbnOptions)
+ZxcvbnOptions.addMatcher('pwned', matcherPwned)
 
 export default {
   name: 'ZxcvbnInteractive',
@@ -67,9 +71,11 @@ export default {
       }
       ZxcvbnOptions.setOptions(options)
     },
-    useZxcvbn(){
+    async useZxcvbn(){
+      console.log('lol',ZxcvbnOptions.translations.warnings)
       if (this.password) {
-        this.result = zxcvbn(this.password)
+        this.result = await zxcvbnAsync(this.password)
+        console.log(this.result)
       } else {
         this.result = null
       }

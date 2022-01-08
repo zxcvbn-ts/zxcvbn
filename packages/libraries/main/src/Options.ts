@@ -12,7 +12,7 @@ import {
 import l33tTable from './data/l33tTable'
 import translationKeys from './data/translationKeys'
 
-class Options {
+export class Options {
   matchers: Matchers = {}
 
   l33tTable: OptionsL33tTable = l33tTable

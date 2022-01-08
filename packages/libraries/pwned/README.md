@@ -20,7 +20,7 @@ import matcherPwnedFactory from '@zxcvbn-ts/matcher-pwned'
 
 const password = 'somePassword'
 
-const matcherPwned = matcherPwnedFactory(fetch)
+const matcherPwned = matcherPwnedFactory(fetch, ZxcvbnOptions)
 ZxcvbnOptions.addMatcher('pwned', matcherPwned)
 
 // @zxcvbn-ts/matcher-pwned is async so zxcvbn will return a promise

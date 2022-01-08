@@ -1,4 +1,4 @@
-import { zxcvbnAsync, ZxcvbnOptions} from '../../main/src'
+import { zxcvbnAsync, ZxcvbnOptions } from '../../main/src'
 import matcherPwnedFactory from '../src'
 
 const fetch = jest.fn(() => ({
@@ -9,7 +9,7 @@ const fetch = jest.fn(() => ({
 
 describe('main', () => {
   beforeAll(() => {
-    const matcherPwned = matcherPwnedFactory(fetch)
+    const matcherPwned = matcherPwnedFactory(fetch, ZxcvbnOptions)
     ZxcvbnOptions.addMatcher('pwned', matcherPwned)
   })
 
