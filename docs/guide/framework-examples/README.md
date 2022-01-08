@@ -75,8 +75,9 @@ export default {
 
 
 ## React
-
+tbd.
 
 
 
 ## Angular 
+tbd.
