@@ -38,7 +38,7 @@ The spatial matcher tries to find patterns from keyboard layout for example `qwe
 
 ## custom
 
-You can create matcher if you need which can be async.
+You can create matcher if you need which can be async. If you create an async matcher you should debounce the function. For this you can use the included debounce function
 
 ### create a custom matcher
 
@@ -92,4 +92,5 @@ ZxcvbnOptions.addMatcher('minLength', minLengthMatcher)
 There are different matcher libraries that can extend the core matchers
 
 ### @zxcvbn-ts/matcher-pwned 
-The pwned matcher is an async matcher that will make a k-anonymity password request to the [have i been pwned](https://haveibeenpwned.com/) api.
+The pwned matcher is an async matcher that will make a k-anonymity password request to the [have i been pwned](https://haveibeenpwned.com/) api. 
+If you bind zxcvbn-ts to your input field and execute the function on every new character typed, be sure to use the provided debounce function.

@@ -3,6 +3,7 @@ import scoring from './scoring'
 import TimeEstimates from './TimeEstimates'
 import Feedback from './Feedback'
 import Options from './Options'
+import debounce from './debounce'
 import { MatchEstimated, MatchExtended, ZxcvbnResult } from './types'
 
 const time = () => new Date().getTime()
@@ -64,4 +65,4 @@ export const zxcvbnAsync = async (
   return createReturnValue(matches, password, start)
 }
 
-export { Options as ZxcvbnOptions, ZxcvbnResult }
+export { Options as ZxcvbnOptions, ZxcvbnResult, debounce }

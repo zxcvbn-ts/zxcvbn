@@ -134,7 +134,7 @@ If you want to use it and want to include your own polyfills, you need to transp
 ## Change prior to original library
 
 - I18n support for feedback, dictionaries and keyboard patterns. By default, the feedback are keys now
-- All dictionaries are optional, but the en dictionary highly recommend (wished feature in some issues)
+- All dictionaries are optional, but the `en` dictionary is highly recommend (wished feature in some issues)
 - Dictionaries are separate from the core library. This means zxcvbn-ts is relatively small without its dictionaries
 - The project is a monorepo with a core library `@zxcvbn-ts/core` and language packages `@txcvbn-ts/language-en`.
   Initially, there are only German and English language packages.
@@ -147,3 +147,5 @@ If you want to use it and want to include your own polyfills, you need to transp
 - esm, commonJS and browser build
 - Custom matcher can be added which means you can create your own matcher
 - Async matcher can be added which means you can create a matcher that makes an API call
+- [haveibeenpwned](https://haveibeenpwned.com/Passwords) matcher
+- included debounce helper

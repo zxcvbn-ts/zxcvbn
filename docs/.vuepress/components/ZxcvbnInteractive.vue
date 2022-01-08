@@ -23,7 +23,7 @@
 <script>
 import Result from './Result'
 import Sequence from './Sequence'
-import { zxcvbn, ZxcvbnOptions } from '../../../packages/libraries/main/dist'
+import { zxcvbn, ZxcvbnOptions, debounce } from '../../../packages/libraries/main/dist'
 import zxcvbnCommonPackage from '../../../packages/languages/common/dist'
 import zxcvbnEnPackage from '../../../packages/languages/en/dist'
 import translationKeys from '../../../packages/libraries/main/dist/data/translationKeys'
@@ -40,6 +40,7 @@ export default {
       result: null,
       useTranslations: true,
       useDictionaries: true,
+      debounce: debounce(this.useZxcvbn, 200)
     }
   },
   mounted() {
@@ -66,14 +67,17 @@ export default {
       }
       ZxcvbnOptions.setOptions(options)
     },
-  },
-  watch: {
-    password() {
+    useZxcvbn(){
       if (this.password) {
         this.result = zxcvbn(this.password)
       } else {
         this.result = null
       }
+    }
+  },
+  watch: {
+    password() {
+      this.debounce()
     },
     useTranslations() {
       this.password = ''

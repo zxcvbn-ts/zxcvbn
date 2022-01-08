@@ -22,6 +22,7 @@ import zxcvbnDePackage from '@zxcvbn-ts/language-de'
 const password = 'somePassword'
 const options = {
   translations: zxcvbnDePackage.translations,
+  graphs: zxcvbnCommonPackage.adjacencyGraphs,
   dictionary: {
     ...zxcvbnCommonPackage.dictionary,
     ...zxcvbnDePackage.dictionary,
