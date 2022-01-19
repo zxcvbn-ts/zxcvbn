@@ -159,6 +159,22 @@ export default {
         'https://gist.github.com/allanlewis/ddfe6e7053fd12986589c52edf6ef856/raw/bc6ca7a55527930ec5f25e448c3aa0a7deee2de6/italian-last-names.txt',
     },
   },
+  'pt-br': {
+    commonWords: {
+      source:
+        'https://raw.githubusercontent.com/hermitdave/FrequencyWords/master/content/2018/pt_br/pt_br_50k.txt',
+      options: { hasOccurrences: true },
+    },
+    firstnames: {
+      source:
+        'https://raw.githubusercontent.com/lacerdev/zxcvbn-ts-language-pt-br/main/dist/firstnames.txt',
+      options: { hasOccurrences: true },
+    },
+    lastnames: {
+      source:
+        'https://raw.githubusercontent.com/lacerdev/zxcvbn-ts-language-pt-br/main/dist/lastnames.txt',
+    },
+  },
   'common': {
     passwords: {
       generator: PasswordGenerator,
