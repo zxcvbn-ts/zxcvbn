@@ -2,6 +2,8 @@ import PasswordGenerator from './_generators/PasswordGenerator'
 import KeyboardAdjacencyGraph from './_generators/KeyboardAdjacencyGraph'
 import { ExcelGenerator } from './_generators/ExcelGenerator'
 import { TxtGenerator } from './_generators/TxtGenerator'
+import ApiGenerator from './_generators/ApiGenerator'
+import HTMLGenerator from './_generators/HTMLGenerator'
 
 export interface LanguageListEntry {
   source?: string
@@ -166,13 +168,38 @@ export default {
       options: { hasOccurrences: true },
     },
     firstnames: {
-      source:
-        'https://raw.githubusercontent.com/lacerdev/zxcvbn-ts-language-pt-br/main/dist/firstnames.txt',
-      options: { hasOccurrences: true },
+      generator: ApiGenerator,
+      source: 'https://servicodados.ibge.gov.br/api/v1/censos/nomes/faixa',
+      options: {
+        hasOccurrences: true,
+        requestConfig: {
+          params: {
+            qtd: 5000,
+            faixa: 2010,
+          },
+        },
+        mapFunction: (entry: any) => {
+          return {
+            name: entry.nome,
+            occurrences: entry.freq,
+          }
+        },
+      },
     },
     lastnames: {
+      generator: HTMLGenerator,
       source:
-        'https://raw.githubusercontent.com/lacerdev/zxcvbn-ts-language-pt-br/main/dist/lastnames.txt',
+        'https://pt.wiktionary.org/wiki/Ap%C3%AAndice:Sobrenomes_em_portugu%C3%AAs',
+      options: {
+        extractorFunction: (HTMLData: Buffer) => {
+          const REGEX = /<li><a .*>([A-z]+)<\/a><\/li>/g
+          const lastnamesArray = Array.from(
+            HTMLData.toString().matchAll(REGEX),
+            (m: Array<string>) => m[1],
+          )
+          return lastnamesArray
+        },
+      },
     },
   },
   'common': {
