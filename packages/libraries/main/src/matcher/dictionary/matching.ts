@@ -1,4 +1,6 @@
-import findLevenshteinDistance from '../../levenshtein'
+import findLevenshteinDistance, {
+  FindLevenshteinDistanceResult,
+} from '../../levenshtein'
 import { sorted } from '../../helper'
 import zxcvbnOptions from '../../Options'
 import { DictionaryNames, DictionaryMatch, L33tMatch } from '../../types'
@@ -40,7 +42,8 @@ class MatchDictionary {
         for (let j = i; j < passwordLength; j += 1) {
           const usedPassword = passwordLower.slice(i, +j + 1 || 9e9)
           const isInDictionary = usedPassword in rankedDict
-          let foundLevenshteinDistance = {}
+          let foundLevenshteinDistance: Partial<FindLevenshteinDistanceResult> =
+            {}
           // only use levenshtein distance on full password to minimize the performance drop
           // and because otherwise there would be to many false positives
           const isFullPassword = i === 0 && j === passwordLength - 1
@@ -59,10 +62,9 @@ class MatchDictionary {
             Object.keys(foundLevenshteinDistance).length !== 0
 
           if (isInDictionary || isLevenshteinMatch) {
-            const usedRankPassword = isInDictionary
-              ? usedPassword
-              : // @ts-ignore
-                foundLevenshteinDistance.levenshteinDistanceEntry
+            const usedRankPassword = isLevenshteinMatch
+              ? (foundLevenshteinDistance.levenshteinDistanceEntry as string)
+              : usedPassword
 
             const rank = rankedDict[usedRankPassword]
             matches.push({

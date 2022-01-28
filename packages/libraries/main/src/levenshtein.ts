@@ -15,11 +15,16 @@ const getUsedThreshold = (
   return shouldUsePasswordLength ? Math.ceil(password.length / 4) : threshold
 }
 
+export interface FindLevenshteinDistanceResult {
+  levenshteinDistance: number
+  levenshteinDistanceEntry: string
+}
+
 const findLevenshteinDistance = (
   password: string,
   rankedDictionary: LooseObject,
   threshold: number,
-) => {
+): Partial<FindLevenshteinDistanceResult> => {
   let foundDistance = 0
   const found = Object.keys(rankedDictionary).find((entry) => {
     const usedThreshold = getUsedThreshold(password, entry, threshold)
@@ -27,6 +32,14 @@ const findLevenshteinDistance = (
     const isInThreshold = foundEntryDistance <= usedThreshold
 
     if (isInThreshold) {
+      console.log(
+        'hey',
+        password,
+        isInThreshold,
+        foundEntryDistance,
+        usedThreshold,
+        threshold,
+      )
       foundDistance = foundEntryDistance
     }
     return isInThreshold
