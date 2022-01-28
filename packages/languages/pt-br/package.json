@@ -1,0 +1,32 @@
+{
+  "name": "@zxcvbn-ts/language-pt-br",
+  "version": "0.2.0",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "description": "The Brazilian portuguese language package for zxcvbn-ts",
+  "license": "MIT",
+  "homepage": "https://github.com/zxcvbn-ts/zxcvbn",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zxcvbn-ts/zxcvbn.git"
+  },
+  "author": "https://github.com/lacerdev",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "zxcvbn",
+    "zxcvbn-ts",
+    "language",
+    "translation",
+    "brazilian",
+    "portuguese",
+    "pt-br",
+    "ptbr"
+  ]
+}

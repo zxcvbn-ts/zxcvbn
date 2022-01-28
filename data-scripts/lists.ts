@@ -2,6 +2,8 @@ import PasswordGenerator from './_generators/PasswordGenerator'
 import KeyboardAdjacencyGraph from './_generators/KeyboardAdjacencyGraph'
 import { ExcelGenerator } from './_generators/ExcelGenerator'
 import { TxtGenerator } from './_generators/TxtGenerator'
+import ApiGenerator from './_generators/ApiGenerator'
+import HTMLGenerator from './_generators/HTMLGenerator'
 
 export interface LanguageListEntry {
   source?: string
@@ -140,6 +142,63 @@ export default {
         column: 2,
         row: 6,
         minOccurrences: 500,
+      },
+    },
+  },
+  'it': {
+    commonWords: {
+      source:
+        'https://github.com/hermitdave/FrequencyWords/raw/master/content/2018/it/it_50k.txt',
+      options: { hasOccurrences: true },
+    },
+    firstnames: {
+      source:
+        'https://gist.github.com/allanlewis/ddfe6e7053fd12986589c52edf6ef856/raw/bc6ca7a55527930ec5f25e448c3aa0a7deee2de6/italian-first-names.txt',
+    },
+    lastnames: {
+      // Same as English
+      source:
+        'https://gist.github.com/allanlewis/ddfe6e7053fd12986589c52edf6ef856/raw/bc6ca7a55527930ec5f25e448c3aa0a7deee2de6/italian-last-names.txt',
+    },
+  },
+  'pt-br': {
+    commonWords: {
+      source:
+        'https://raw.githubusercontent.com/hermitdave/FrequencyWords/master/content/2018/pt_br/pt_br_50k.txt',
+      options: { hasOccurrences: true },
+    },
+    firstnames: {
+      generator: ApiGenerator,
+      source: 'https://servicodados.ibge.gov.br/api/v1/censos/nomes/faixa',
+      options: {
+        hasOccurrences: true,
+        requestConfig: {
+          params: {
+            qtd: 5000,
+            faixa: 2010,
+          },
+        },
+        mapFunction: (entry: any) => {
+          return {
+            name: entry.nome,
+            occurrences: entry.freq,
+          }
+        },
+      },
+    },
+    lastnames: {
+      generator: HTMLGenerator,
+      source:
+        'https://pt.wiktionary.org/wiki/Ap%C3%AAndice:Sobrenomes_em_portugu%C3%AAs',
+      options: {
+        extractorFunction: (HTMLData: Buffer) => {
+          const REGEX = /<li><a .*>([A-z]+)<\/a><\/li>/g
+          const lastnamesArray = Array.from(
+            HTMLData.toString().matchAll(REGEX),
+            (m: Array<string>) => m[1],
+          )
+          return lastnamesArray
+        },
       },
     },
   },
