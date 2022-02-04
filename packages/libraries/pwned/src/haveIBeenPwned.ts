@@ -5,7 +5,7 @@ const isNodeJs =
 
 const textEncode = (text: string) => {
   if (isNodeJs) {
-    const utf8 = unescape(encodeURIComponent(text))
+    const utf8 = decodeURI(encodeURIComponent(text))
     const result = new Uint8Array(utf8.length)
     for (let i = 0; i < utf8.length; i += 1) {
       result[i] = utf8.charCodeAt(i)
