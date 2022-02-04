@@ -32,14 +32,6 @@ const findLevenshteinDistance = (
     const isInThreshold = foundEntryDistance <= usedThreshold
 
     if (isInThreshold) {
-      console.log(
-        'hey',
-        password,
-        isInThreshold,
-        foundEntryDistance,
-        usedThreshold,
-        threshold,
-      )
       foundDistance = foundEntryDistance
     }
     return isInThreshold
