@@ -39,6 +39,13 @@
 
       <li>
         <label>
+          <input v-model="useLevenshteinDistance" type="checkbox" />
+          Use levenstein distance
+        </label>
+      </li>
+
+      <li>
+        <label>
           <input v-model="usePwned" type="checkbox" />
           Use pwned matcher
         </label>
@@ -84,6 +91,7 @@ export default {
       useDictionaries: true,
       useDebounce: true,
       usePwned: true,
+      useLevenshteinDistance: true,
       debounce: debounce(this.useZxcvbn, 200),
       userInputs: '',
     }
@@ -101,6 +109,7 @@ export default {
         dictionary: {},
         translations: translationKeys,
         graphs: {},
+        useLevenshteinDistance: this.useLevenshteinDistance
       }
       if (this.useDictionaries) {
         options.dictionary = {
@@ -123,6 +132,7 @@ export default {
       } else {
         this.result = null
       }
+      console.log(        this.result)
     },
     addPwnedMatcher() {
       const matcherPwned = matcherPwnedFactory(fetch, zxcvbnOptions)
@@ -146,6 +156,10 @@ export default {
       this.setOptions()
     },
     useGraphs() {
+      this.password = ''
+      this.setOptions()
+    },
+    useLevenshteinDistance() {
       this.password = ''
       this.setOptions()
     },

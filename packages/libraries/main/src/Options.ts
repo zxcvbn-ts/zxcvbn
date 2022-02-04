@@ -29,6 +29,10 @@ export class Options {
 
   availableGraphs: string[] = []
 
+  useLevenshteinDistance: boolean = false
+
+  levenshteinThreshold: number = 2
+
   constructor() {
     this.setRankedDictionaries()
   }
@@ -50,6 +54,14 @@ export class Options {
 
     if (options.graphs) {
       this.graphs = options.graphs
+    }
+
+    if (options.useLevenshteinDistance !== undefined) {
+      this.useLevenshteinDistance = options.useLevenshteinDistance
+    }
+
+    if (options.levenshteinThreshold !== undefined) {
+      this.levenshteinThreshold = options.levenshteinThreshold
     }
   }
 

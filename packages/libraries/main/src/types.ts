@@ -158,12 +158,16 @@ export interface OptionsType {
   graphs?: OptionsGraph
   l33tTable?: OptionsL33tTable
   dictionary?: OptionsDictionary
+  useLevenshteinDistance?: boolean
+  levenshteinThreshold?: number
+}
+
+export interface RankedDictionary {
+  [key: string]: number
 }
 
 export interface RankedDictionaries {
-  [key: string]: {
-    [key: string]: number
-  }
+  [key: string]: RankedDictionary
 }
 
 export type DefaultFeedbackFunction = (
