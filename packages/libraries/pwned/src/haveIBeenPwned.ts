@@ -12,10 +12,12 @@ const textEncode = (text: string) => {
     }
     return result
   }
-  if (window.TextEncoder) {
+  try {
+    // eslint-disable-next-line compat/compat
     return new TextEncoder().encode(text)
+  } catch (error) {
+    throw new Error(`No encoder found, ${error}`)
   }
-  throw new Error('No encoder found')
 }
 
 const digestMessage = async (message: string) => {
