@@ -23,7 +23,6 @@ const generateConfig = (type) => {
     entryFileNames: '[name].js',
     assetFileNames: '[name].js',
     sourcemap: true,
-    exports: 'named',
   }
   if (type === 'esm') {
     typescriptOptions = {
@@ -34,7 +33,11 @@ const generateConfig = (type) => {
     }
     output.entryFileNames = '[name].esm.js'
     output.assetFileNames = '[name].esm.js'
+    output.exports = 'named'
     babelrc = false
+  }
+  if (type === 'cjs') {
+    output.exports = 'auto'
   }
 
   if (type === 'iife') {
