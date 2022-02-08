@@ -8,7 +8,9 @@ Current supported languages:
 - English
 - Spain (Spain)
 - French
+- Italian
 - Dutch (Belgium)
+- Portuguese (Brazilian)
 
 ## Feedback
 

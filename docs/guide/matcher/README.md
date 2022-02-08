@@ -1,7 +1,7 @@
 # Matcher
 
 There are multiple build in matchers to identify the strength of a password. All build in matchers are sync but custom matcher have the possibility to be async.
-Therefor if you are using an async custom matcher you need to the `zxcvbnAsync` function.
+Therefor if you are using an async custom matcher you need to use the `zxcvbnAsync` function.
 
 ## bruteforce
 

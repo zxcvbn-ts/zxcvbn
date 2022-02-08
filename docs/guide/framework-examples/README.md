@@ -22,6 +22,7 @@ Those examples are using the full feature set of zxcvbn, and are marked with `re
 import { zxcvbn, zxcvbnOptions, debounce } from '@zxcvbn-ts/core'
 import zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
 import zxcvbnEnPackage from '@zxcvbn-ts/language-en'
+import zxcvbnDePackage from '@zxcvbn-ts/language-de'
 import matcherPwnedFactory from '@zxcvbn-ts/matcher-pwned'
 
 // optional
@@ -33,9 +34,13 @@ const options = {
   dictionary: {
     ...zxcvbnCommonPackage.dictionary,
     ...zxcvbnEnPackage.dictionary,
+    // recommended the language of the country that the user will be in
+    ...zxcvbnDePackage.dictionary,
   },
   // recommended
   graphs: zxcvbnCommonPackage.adjacencyGraphs,
+  // recommended
+  useLevenshteinDistance: true,
   // optional
   translations: zxcvbnEnPackage.translations,
 }
