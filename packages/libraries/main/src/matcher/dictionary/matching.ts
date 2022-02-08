@@ -35,6 +35,7 @@ class MatchDictionary {
     const passwordLength = password.length
     const passwordLower = password.toLowerCase()
 
+    // eslint-disable-next-line complexity
     Object.keys(zxcvbnOptions.rankedDictionaries).forEach((dictionaryName) => {
       const rankedDict =
         zxcvbnOptions.rankedDictionaries[dictionaryName as DictionaryNames]
