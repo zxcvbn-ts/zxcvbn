@@ -41,9 +41,9 @@ Example using jsdelivr (a CDN)
 ```
 <html>
   <head>
-    <script src="https://cdn.jsdelivr.net/npm/@zxcvbn-ts/core@0.3.0/dist/zxcvbn-ts.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@zxcvbn-ts/language-common@0.3.0/dist/zxcvbn-ts.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@zxcvbn-ts/language-en@0.3.0/dist/zxcvbn-ts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@zxcvbn-ts/core@2.0.0/dist/zxcvbn-ts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@zxcvbn-ts/language-common@2.0.0/dist/zxcvbn-ts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@zxcvbn-ts/language-en@2.0.0/dist/zxcvbn-ts.js"></script>
   </head>
   <body>
     <script>
@@ -57,7 +57,7 @@ Example using jsdelivr (a CDN)
             ...zxcvbnts['language-en'].dictionary,
           },
         }
-        zxcvbnts.core.Options.setOptions(options)
+        zxcvbnts.core.zxcvbnOptions.setOptions(options)
         console.log(zxcvbnts.core.zxcvbn('somePassword'))
       })()
     </script>
