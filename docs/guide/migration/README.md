@@ -6,9 +6,12 @@ To fix the typing for async and non async matcher we separated the matcher into 
 The non async original will be kept as `zxcvbn` and the async function will be named to `zxcvbnAsync`.
 If you try to use an async matcher with the original function name it will throw an error.
 This means if you don't have any async matcher in use you don't have to do anything. Maybe you can fix some types that were broken.
-If you are using async matcher you need to move from `zxcvbn` to `zxcvnAsync`.
 
 There is a new option for levenshtein calculation which can be activated to be stricter with the dictionary matcher.
+
+- If you are using async matcher you need to move from `zxcvbn` to `zxcvnAsync`.
+- `ZxcvbnOptions` export renamed to `zxcvbnOptions`
+- `@zxcvbn-ts/matcher-pwned` needs `zxcvbnOptions` as the second parameter 
 
 ## `zxcvbn-ts 0.3.x` to `zxcvbn-ts 1.x.x`
 
