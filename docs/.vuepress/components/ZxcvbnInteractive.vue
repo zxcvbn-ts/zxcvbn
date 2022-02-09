@@ -64,24 +64,18 @@
 </template>
 
 <script>
-import Result from './Result'
-import Sequence from './Sequence'
 import {
   zxcvbnAsync,
   zxcvbnOptions,
   debounce,
-} from '../../../packages/libraries/main/dist'
-import zxcvbnCommonPackage from '../../../packages/languages/common/dist'
-import zxcvbnEnPackage from '../../../packages/languages/en/dist'
-import translationKeys from '../../../packages/libraries/main/dist/data/translationKeys'
+} from '../../../packages/libraries/main/dist/index.esm'
+import zxcvbnCommonPackage from '../../../packages/languages/common/dist/index.esm'
+import zxcvbnEnPackage from '../../../packages/languages/en/dist/index.esm'
+import translationKeys from '../../../packages/libraries/main/dist/data/translationKeys.esm'
 import matcherPwnedFactory from '@zxcvbn-ts/matcher-pwned'
 
 export default {
   name: 'ZxcvbnInteractive',
-  components: {
-    Result,
-    Sequence,
-  },
   data() {
     return {
       password: '',

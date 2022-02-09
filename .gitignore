@@ -23,6 +23,7 @@ dist_storybook
 .npmrc
 .eslintcache
 .tmp
+.temp
 dist
 coverage
 node_modules/
