@@ -64,6 +64,7 @@
 </template>
 
 <script>
+import crossFetch from 'cross-fetch'
 import {
   zxcvbnAsync,
   zxcvbnOptions,
@@ -129,7 +130,7 @@ export default {
       console.log(        this.result)
     },
     addPwnedMatcher() {
-      const matcherPwned = matcherPwnedFactory(fetch, zxcvbnOptions)
+      const matcherPwned = matcherPwnedFactory(crossFetch, zxcvbnOptions)
       zxcvbnOptions.addMatcher('pwned', matcherPwned)
     },
   },
