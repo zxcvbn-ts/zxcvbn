@@ -30,9 +30,9 @@
 import {
   zxcvbn as zxcvbnTs,
   zxcvbnOptions,
-} from '../../../packages/libraries/main/dist'
-import zxcvbnCommonPackage from '../../../packages/languages/common/dist'
-import zxcvbnEnPackage from '../../../packages/languages/en/dist'
+} from '../../../packages/libraries/main/dist/index.esm'
+import zxcvbnCommonPackage from '../../../packages/languages/common/dist/index.esm'
+import zxcvbnEnPackage from '../../../packages/languages/en/dist/index.esm'
 import zxcvbn from 'zxcvbn'
 
 export default {

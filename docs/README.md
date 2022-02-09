@@ -1,7 +1,12 @@
 ---
 home: true
-actionText: Get Started →
-actionLink: /guide/
+actions:
+- text: Get Started
+  link: /guide/getting-started/
+  type: primary
+- text: Introduction
+  link: /guide/
+  type: secondary
 features:
   - title: Password strength
     details: Estimate your password strength

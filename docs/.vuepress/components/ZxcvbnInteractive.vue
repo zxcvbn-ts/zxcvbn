@@ -64,24 +64,19 @@
 </template>
 
 <script>
-import Result from './Result'
-import Sequence from './Sequence'
+import crossFetch from 'cross-fetch'
 import {
   zxcvbnAsync,
   zxcvbnOptions,
   debounce,
-} from '../../../packages/libraries/main/dist'
-import zxcvbnCommonPackage from '../../../packages/languages/common/dist'
-import zxcvbnEnPackage from '../../../packages/languages/en/dist'
-import translationKeys from '../../../packages/libraries/main/dist/data/translationKeys'
+} from '../../../packages/libraries/main/dist/index.esm'
+import zxcvbnCommonPackage from '../../../packages/languages/common/dist/index.esm'
+import zxcvbnEnPackage from '../../../packages/languages/en/dist/index.esm'
+import translationKeys from '../../../packages/libraries/main/dist/data/translationKeys.esm'
 import matcherPwnedFactory from '@zxcvbn-ts/matcher-pwned'
 
 export default {
   name: 'ZxcvbnInteractive',
-  components: {
-    Result,
-    Sequence,
-  },
   data() {
     return {
       password: '',
@@ -135,7 +130,7 @@ export default {
       console.log(        this.result)
     },
     addPwnedMatcher() {
-      const matcherPwned = matcherPwnedFactory(fetch, zxcvbnOptions)
+      const matcherPwned = matcherPwnedFactory(crossFetch, zxcvbnOptions)
       zxcvbnOptions.addMatcher('pwned', matcherPwned)
     },
   },
