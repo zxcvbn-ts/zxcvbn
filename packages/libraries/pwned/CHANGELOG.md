@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/matcher-pwned@1.2.0...@zxcvbn-ts/matcher-pwned@2.0.0) (2022-02-10)
+
+
+### Bug Fixes
+
+* **translations:** transfere ZxcvbnOptions as parameter ([3ff0f75](https://github.com/zxcvbn-ts/zxcvbn/commit/3ff0f751890a24b8cbb39aad78875e13ed5e6b6d))
+
+
+### Features
+
+* **pwned:** use try/catch for TextEncoder ([0a46bf7](https://github.com/zxcvbn-ts/zxcvbn/commit/0a46bf7a0f6f08059f60efac145be15043c8540d))
+
+
+
+
+
 # 1.2.0 (2021-12-15)
 
 

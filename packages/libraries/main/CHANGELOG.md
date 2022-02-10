@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/core@1.2.0...@zxcvbn-ts/core@2.0.0) (2022-02-10)
+
+
+### Bug Fixes
+
+* **translations:** transfere ZxcvbnOptions as parameter ([3ff0f75](https://github.com/zxcvbn-ts/zxcvbn/commit/3ff0f751890a24b8cbb39aad78875e13ed5e6b6d))
+
+
+### Features
+
+* **core:** add debounce helper ([5b41bcd](https://github.com/zxcvbn-ts/zxcvbn/commit/5b41bcd976b642f42f8873db5472094f687d0353))
+* **dictionary:** add levenshtein distance ([475dc76](https://github.com/zxcvbn-ts/zxcvbn/commit/475dc766ca0ae8855c49658abfc57a66c7b92924))
+* **dictionary:** set levensthein vars over setOptions ([1121d84](https://github.com/zxcvbn-ts/zxcvbn/commit/1121d8408bc03017a08c0a97615ec837c07bab4b))
+* **dictionary:** set rank for levenstein matches ([ab453e3](https://github.com/zxcvbn-ts/zxcvbn/commit/ab453e329e6bb64b19460e965ce378d7a93c0811))
+* **levenshtein:** add tests ([b653720](https://github.com/zxcvbn-ts/zxcvbn/commit/b653720798199b6369fd1ad44b7d55071875c477))
+
+
+
+
+
 # [1.2.0](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/core@1.0.0...@zxcvbn-ts/core@1.2.0) (2021-12-15)
 
 
