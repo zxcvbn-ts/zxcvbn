@@ -2,6 +2,7 @@
 
 The common dictionary and language package for zxcvbn-ts
 
+
 ## Install
 
 #### npm:
