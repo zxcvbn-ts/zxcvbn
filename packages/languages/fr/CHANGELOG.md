@@ -8,7 +8,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Features
 
-* **project:** Add HaveIBeenPwned matcher ([#66](https://github.com/jeromes80/zxcvbn/issues/66)) ([5c4141c](https://github.com/jeromes80/zxcvbn/commit/5c4141cd34f6566fe753ce76572f74bb8229b414))
+* **project:** Add HaveIBeenPwned matcherr ([#66](https://github.com/jeromes80/zxcvbn/issues/66)) ([5c4141c](https://github.com/jeromes80/zxcvbn/commit/5c4141cd34f6566fe753ce76572f74bb8229b414))
 
 
 
