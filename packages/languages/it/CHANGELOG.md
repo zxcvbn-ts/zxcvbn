@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/language-it@2.0.0...@zxcvbn-ts/language-it@2.1.0) (2022-03-17)
+
+
+### Features
+
+* **languages:** update italian translations following proofreading ([#105](https://github.com/zxcvbn-ts/zxcvbn/issues/105)) ([5dc5407](https://github.com/zxcvbn-ts/zxcvbn/commit/5dc54075c87ad317ba95ebef7cb7414a0e2db112))
+
+
+
+
+
 # 2.0.0 (2022-02-10)
 
 
