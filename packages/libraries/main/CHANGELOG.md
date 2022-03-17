@@ -3,14 +3,6 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [2.0.1](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/core@2.0.0...@zxcvbn-ts/core@2.0.1) (2022-03-17)
-
-**Note:** Version bump only for package @zxcvbn-ts/core
-
-
-
-
-
 # [2.0.0](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/core@1.2.0...@zxcvbn-ts/core@2.0.0) (2022-02-10)
 
 
