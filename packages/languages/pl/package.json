@@ -1,5 +1,5 @@
 {
-  "name": "@zxcvbn-ts/language-en",
+  "name": "@zxcvbn-ts/language-pl",
   "version": "2.0.1",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
