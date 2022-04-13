@@ -43,4 +43,4 @@ zxcvbn(password)
 
 ## Author
 
-The Polish dictionary and language package was prepared by Oskar Gmerek <https://github.com/oskar-gmerek> | <https://oskargmerek.com>
+The Polish dictionary and language package was prepared by [Oskar Gmerek](https://oskargmerek.com) | [GitHub](https://github.com/oskar-gmerek)
