@@ -36,6 +36,29 @@ export default {
         'https://raw.githubusercontent.com/arineng/arincli/master/lib/last-names.txt',
     },
   },
+  'pl': {
+    commonWords: {
+      source:
+        'https://raw.githubusercontent.com/hermitdave/FrequencyWords/master/content/2018/pl/pl_50k.txt',
+      options: { hasOccurrences: true },
+    },
+    maleFirstnames: {
+      source:
+        'https://raw.githubusercontent.com/oskar-gmerek/polish_database/main/male_first_names_poland.csv',
+    },
+    femaleFirstnames: {
+      source:
+        'https://raw.githubusercontent.com/oskar-gmerek/polish_database/main/female_first_names_poland.csv',
+    },
+    maleLastnames: {
+      source:
+        'https://raw.githubusercontent.com/oskar-gmerek/polish_database/main/male_last_names_poland.csv',
+    },
+    femaleLastnames: {
+      source:
+        'https://raw.githubusercontent.com/oskar-gmerek/polish_database/main/female_last_names_poland.csv',
+    },
+  },
   'de': {
     commonWords: {
       source:

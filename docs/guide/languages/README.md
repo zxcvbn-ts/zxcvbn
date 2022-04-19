@@ -11,6 +11,7 @@ Current supported languages:
 - Italian
 - Dutch (Belgium)
 - Portuguese (Brazilian)
+- Polish
 
 ## Feedback
 
