@@ -41,6 +41,14 @@ export const sidebar: SidebarGroupCollapsible[] = [
         text: 'User input',
         link: '/guide/user-input/',
       },
+      {
+        text: 'Framework examples',
+        link: '/guide/framework-examples/',
+      },
+      {
+        text: 'Examples',
+        link: '/guide/examples/',
+      },
     ],
   },
   {
