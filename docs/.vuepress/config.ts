@@ -2,9 +2,7 @@ import { resolve } from 'path'
 import { defineUserConfig } from 'vuepress'
 import type { DefaultThemeOptions } from 'vuepress'
 
-// @ts-ignore
 import { sidebar } from './sidebar'
-// @ts-ignore
 import { navbar } from './nav'
 // @ts-ignore
 import pkg from '../../package.json'
