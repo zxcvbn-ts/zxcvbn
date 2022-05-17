@@ -22,13 +22,16 @@
         <td>{{ entry.zxcvbn.score }}</td>
         <td>{{ entry.zxcvbnTs.score }}</td>
       </tr>
+      <tr>
+        <td colspan="3"></td>
+      </tr>
     </template>
   </table>
 </template>
 
 <script>
 import {
-  zxcvbn as zxcvbnTs,
+  zxcvbnAsync as zxcvbnTsAsync,
   zxcvbnOptions,
 } from '../../../packages/libraries/main/dist/index.esm'
 import zxcvbnCommonPackage from '../../../packages/languages/common/dist/index.esm'
@@ -68,6 +71,7 @@ export default {
         'AZERTY',
         'zxcftzuio',
         'aoeuidh',
+        'Tiger@0177'
       ],
       data: [],
     }
@@ -90,9 +94,9 @@ export default {
     },
 
     setData() {
-      this.passwords.forEach((password) => {
+      this.passwords.forEach(async (password) => {
         const zxcvbnResult = zxcvbn(password)
-        const zxcvbnTsResult = zxcvbnTs(password)
+        const zxcvbnTsResult = await zxcvbnTsAsync(password)
         console.log(zxcvbnResult, zxcvbnTsResult)
         this.data.push({
           password: password,
