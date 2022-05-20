@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/jeromes80/zxcvbn/compare/@zxcvbn-ts/language-fr@2.0.1...@zxcvbn-ts/language-fr@2.1.0) (2022-05-20)
+
+
+### Features
+
+* **languages:** swap french firstnames with lastnames ([bb85a14](https://github.com/jeromes80/zxcvbn/commit/bb85a142ff851b6666561cde542d0136c039bd22))
+
+
+
+
+
 # [1.2.0](https://github.com/jeromes80/zxcvbn/compare/@zxcvbn-ts/language-fr@1.0.0...@zxcvbn-ts/language-fr@1.2.0) (2021-12-15)
 
 
