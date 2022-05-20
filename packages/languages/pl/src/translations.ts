@@ -1,7 +1,7 @@
 export default {
   warnings: {
     straightRow:
-      'Występujące kolejno po sobie znaki na klawiaturze, są łatwe do odgadnięcia.',
+      'Występujące kolejno po sobie znaki na klawiaturze są łatwe do odgadnięcia.',
     keyPattern: 'Krótkie wzory klawiaturowe są łatwe do odgadnięcia.',
     simpleRepeat:
       'Powtarzające się znaki, takie jak „aaa”, są łatwe do odgadnięcia.',
