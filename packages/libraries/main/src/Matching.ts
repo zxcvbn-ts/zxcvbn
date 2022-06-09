@@ -6,6 +6,7 @@ import regexMatcher from './matcher/regex/matching'
 import repeatMatcher from './matcher/repeat/matching'
 import sequenceMatcher from './matcher/sequence/matching'
 import spatialMatcher from './matcher/spatial/matching'
+import separatorMatcher from './matcher/separator/matching'
 import { zxcvbnOptions } from './Options'
 
 /*
@@ -27,6 +28,7 @@ class Matching {
     repeat: repeatMatcher,
     sequence: sequenceMatcher,
     spatial: spatialMatcher,
+    separator: separatorMatcher,
   }
 
   match(password: string): MatchExtended[] | Promise<MatchExtended[]> {

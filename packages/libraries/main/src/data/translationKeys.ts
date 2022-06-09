@@ -16,6 +16,7 @@ export default {
     commonNames: 'commonNames',
     userInputs: 'userInputs',
     pwned: 'pwned',
+    separators: 'separators',
   },
   suggestions: {
     l33t: 'l33t',
@@ -32,6 +33,7 @@ export default {
     useWords: 'useWords',
     noNeed: 'noNeed',
     pwned: 'pwned',
+    separators: 'separators',
   },
   timeEstimation: {
     ltSecond: 'ltSecond',

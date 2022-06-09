@@ -1,6 +1,9 @@
 import utils from './utils'
 import estimateGuesses from './estimate'
-import { MIN_GUESSES_BEFORE_GROWING_SEQUENCE } from '../data/const'
+import {
+  HAS_SEPARATOR,
+  MIN_GUESSES_BEFORE_GROWING_SEQUENCE,
+} from '../data/const'
 import {
   MatchExtended,
   BruteForceMatch,
@@ -77,12 +80,14 @@ const scoringHelper = {
   bruteforceUpdate(passwordCharIndex: number) {
     // see if a single bruteforce match spanning the passwordCharIndex-prefix is optimal.
     let match = this.makeBruteforceMatch(0, passwordCharIndex)
-    this.update(match, 1)
+    if (!HAS_SEPARATOR.test(match.token)) this.update(match, 1)
+
     for (let i = 1; i <= passwordCharIndex; i += 1) {
       // generate passwordCharIndex bruteforce matches, spanning from (i=1, j=passwordCharIndex) up to (i=passwordCharIndex, j=passwordCharIndex).
       // see if adding these new matches to any of the sequences in optimal[i-1]
       // leads to new bests.
       match = this.makeBruteforceMatch(i, passwordCharIndex)
+      if (HAS_SEPARATOR.test(match.token)) return
       const tmp = this.optimal.m[i - 1]
       // eslint-disable-next-line no-loop-func
       Object.keys(tmp).forEach((sequenceLength) => {

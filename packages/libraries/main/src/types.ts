@@ -20,6 +20,7 @@ export type Pattern =
   | 'regex'
   | 'date'
   | 'bruteforce'
+  | 'separator'
   | string
 
 export type DictionaryNames =
@@ -102,6 +103,10 @@ export interface BruteForceMatch extends Match {
   pattern: 'bruteforce'
 }
 
+export interface SeparatorMatch extends Match {
+  pattern: 'separator'
+}
+
 export type MatchExtended =
   | DictionaryMatch
   | L33tMatch
@@ -111,6 +116,7 @@ export type MatchExtended =
   | RegexMatch
   | DateMatch
   | BruteForceMatch
+  | SeparatorMatch
   | Match
 
 export interface Estimate {
@@ -151,8 +157,8 @@ export interface FeedbackType {
 export type OptionsL33tTable =
   | L33tTableDefault
   | {
-      [key: string]: string[]
-    }
+    [key: string]: string[]
+  }
 
 export type OptionsDictionary = {
   [key: string]: (string | number)[]

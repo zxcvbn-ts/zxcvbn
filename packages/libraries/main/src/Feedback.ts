@@ -7,6 +7,7 @@ import regexMatcher from './matcher/regex/feedback'
 import repeatMatcher from './matcher/repeat/feedback'
 import sequenceMatcher from './matcher/sequence/feedback'
 import spatialMatcher from './matcher/spatial/feedback'
+import separatorMatcher from './matcher/separator/feedback'
 
 const defaultFeedback = {
   warning: null,
@@ -30,6 +31,7 @@ class Feedback {
     repeat: repeatMatcher,
     sequence: sequenceMatcher,
     spatial: spatialMatcher,
+    separator: separatorMatcher,
   }
 
   defaultFeedback: FeedbackType = {
