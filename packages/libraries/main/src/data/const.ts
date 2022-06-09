@@ -25,3 +25,6 @@ export const REGEXEN = { recentYear: /19\d\d|200\d|201\d|202\d/g }
 export const VALID_SEPARATORS = ['.', ' ', '_', ',', '-'] as const // `-` must be last
 export const HAS_SEPARATOR = new RegExp(`[${VALID_SEPARATORS.join('')}]`)
 export const IS_SEPARATOR = new RegExp(`^[${VALID_SEPARATORS.join('')}]$`)
+export const BASE_REPEAT_PATTERN = new RegExp(
+  `[^${VALID_SEPARATORS.join('')}]+`,
+)

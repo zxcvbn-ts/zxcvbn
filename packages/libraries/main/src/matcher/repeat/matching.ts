@@ -1,6 +1,11 @@
 import { RepeatMatch } from '../../types'
 import scoring from '../../scoring'
 import Matching from '../../Matching'
+import { BASE_REPEAT_PATTERN } from '../../data/const'
+
+function createRegex(isLazy: boolean): RegExp {
+  return new RegExp(`(${BASE_REPEAT_PATTERN}${isLazy ? '?' : ''})\\1+`, 'g')
+}
 
 interface RepeatMatchOptions {
   password: string
@@ -73,13 +78,13 @@ class MatchRepeat {
   }
 
   getGreedyMatch(password: string, lastIndex: number) {
-    const greedy = /(.+)\1+/g
+    const greedy = createRegex(false)
     greedy.lastIndex = lastIndex
     return greedy.exec(password)
   }
 
   getLazyMatch(password: string, lastIndex: number) {
-    const lazy = /(.+?)\1+/g
+    const lazy = createRegex(true)
     lazy.lastIndex = lastIndex
     return lazy.exec(password)
   }
