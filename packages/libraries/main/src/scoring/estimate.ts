@@ -63,6 +63,7 @@ const getScoring = (name: string, match: MatchExtended | MatchEstimated) => {
 // ------------------------------------------------------------------------------
 // guess estimation -- one function per match pattern ---------------------------
 // ------------------------------------------------------------------------------
+// eslint-disable-next-line complexity, max-statements
 export default (match: MatchExtended | MatchEstimated, password: string) => {
   const extraData: LooseObject = {}
   // a match's guess estimate doesn't change. cache it.
@@ -70,7 +71,7 @@ export default (match: MatchExtended | MatchEstimated, password: string) => {
     return match
   }
 
-  const minGuesses = getMinGuesses(match, password)
+  let minGuesses = getMinGuesses(match, password)
 
   const estimationResult = getScoring(match.pattern, match)
   let guesses = 0
@@ -81,6 +82,14 @@ export default (match: MatchExtended | MatchEstimated, password: string) => {
     extraData.baseGuesses = estimationResult.baseGuesses
     extraData.uppercaseVariations = estimationResult.uppercaseVariations
     extraData.l33tVariations = estimationResult.l33tVariations
+  }
+  // If this is not the first instance of a separator, set guesses to 0
+  if (
+    match.pattern === 'separator' &&
+    match.i > password.indexOf(match.token)
+  ) {
+    guesses = 0
+    minGuesses = 0
   }
 
   const matchGuesses = Math.max(guesses, minGuesses)

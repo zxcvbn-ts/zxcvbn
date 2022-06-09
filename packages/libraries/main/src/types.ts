@@ -157,8 +157,8 @@ export interface FeedbackType {
 export type OptionsL33tTable =
   | L33tTableDefault
   | {
-    [key: string]: string[]
-  }
+      [key: string]: string[]
+    }
 
 export type OptionsDictionary = {
   [key: string]: (string | number)[]

@@ -18,6 +18,7 @@ export default {
     return coEff
   },
   log10(n: number) {
+    if (n === 0) return 0
     return Math.log(n) / Math.log(10) // IE doesn't support Math.log10 :(
   },
   log2(n: number) {
