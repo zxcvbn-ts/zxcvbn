@@ -225,6 +225,24 @@ export default {
       },
     },
   },
+  'ja': {
+    commonWords: {
+      // fixme We must convert Japanese characters (Hiragana, Katanaka and Kanji) into Romaji as a dictionary
+      // because Japanese characters are not permitted to use for password in general.
+      // It would be too difficult to do programmatically.
+      source:
+        'https://github.com/hermitdave/FrequencyWords/raw/master/content/2018/ja/ja_full.txt',
+      options: { hasOccurrences: true },
+    },
+    firstnames: {
+      source:
+        'https://raw.githubusercontent.com/tomoyukikashiro/zxcvbn-japanese-data/main/data/first-names.txt.txt',
+    },
+    lastnames: {
+      source:
+        'https://raw.githubusercontent.com/tomoyukikashiro/zxcvbn-japanese-data/main/data/last-names.txt.txt',
+    },
+  },
   'common': {
     passwords: {
       generator: PasswordGenerator,
