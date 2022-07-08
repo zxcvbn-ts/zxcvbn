@@ -12,6 +12,7 @@ Current supported languages:
 - Dutch (Belgium)
 - Portuguese (Brazilian)
 - Polish
+- Japanese
 
 ## Feedback
 
