@@ -140,17 +140,18 @@ const readLinePromise = (readInterface: any, callback: Function) => {
 }
 
 const getTokens = async (inputDir: string, counter: TopTokenCounter) => {
-  const files = globAll.sync([`${inputDir}/**/wiki_*`])
+  const files: string[] = globAll.sync([`${inputDir}/**/wiki_*`])
+  // const tokenizer = new natural.TokenizerJa()
   const tokenizer = new natural.RegexpTokenizer({
     pattern: /[^A-Za-z\xbf-\xdf\xdf-\xff]/,
   })
   let lines = 0
-  const promises = files.map(async (filePath: string) => {
+  const promises = files.map(async (filePath) => {
     const readInterface = readline.createInterface({
       input: fs.createReadStream(filePath),
       terminal: false,
     })
-    await readLinePromise(readInterface, (line: string) => {
+    await readLinePromise(readInterface, async (line: string) => {
       const tokens = tokenizer.tokenize(line)
       counter.addTokens(tokens)
       lines += 1
