@@ -25,11 +25,11 @@ const defaultOptions: Options = {
 }
 
 export default class SimpleListGenerator {
-  public data: any[] = []
+  public data: string[] = []
 
-  private readonly url: string
+  protected readonly url: string
 
-  private readonly options: Options
+  protected readonly options: Options
 
   constructor(url: string, options: any) {
     this.url = url
@@ -37,7 +37,7 @@ export default class SimpleListGenerator {
     Object.assign(this.options, options)
   }
 
-  private async getData() {
+  protected async getData() {
     const result = await axios.get(this.url, {
       responseType: this.options.encoding ? 'arraybuffer' : undefined,
     })
@@ -48,7 +48,7 @@ export default class SimpleListGenerator {
     return result.data
   }
 
-  private filterMinLength() {
+  protected filterMinLength() {
     if (this.options.minLength) {
       console.info('Filtering password that are to short')
       this.data = this.data.filter((item) => {
@@ -57,15 +57,16 @@ export default class SimpleListGenerator {
     }
   }
 
-  private filterOccurrences() {
+  protected filterOccurrences() {
     if (this.options.hasOccurrences) {
       console.info('Removing occurrence info')
       this.data = this.data
         .filter((entry) => {
-          return (
-            entry.replace(/  +/g, ' ').split(' ')[1] >=
-            this.options.minOccurrences
+          const occurrence: number = parseInt(
+            entry.replace(/  +/g, ' ').split(' ')[1],
+            10,
           )
+          return occurrence >= this.options.minOccurrences
         })
         .map((entry) => {
           return entry.replace(/  +/g, ' ').split(' ')[0]
@@ -73,7 +74,7 @@ export default class SimpleListGenerator {
     }
   }
 
-  private commentPrefixes() {
+  protected commentPrefixes() {
     if (Array.isArray(this.options.commentPrefixes)) {
       console.info('Filtering comments')
       this.options.commentPrefixes.forEach((prefix) => {
@@ -82,21 +83,21 @@ export default class SimpleListGenerator {
     }
   }
 
-  private trimWhitespaces() {
+  protected trimWhitespaces() {
     if (this.options.trimWhitespaces) {
       console.info('Filtering whitespaces')
       this.data = this.data.map((l) => l.trim())
     }
   }
 
-  private convertToLowerCase() {
+  protected convertToLowerCase() {
     if (this.options.toLowerCase) {
       console.info('Converting to lowercase')
       this.data = this.data.map((l) => l.toLowerCase())
     }
   }
 
-  private removeDuplicates() {
+  protected removeDuplicates() {
     if (this.options.removeDuplicates) {
       console.info('Filtering duplicates')
       this.data = this.data.filter((item, pos) => {

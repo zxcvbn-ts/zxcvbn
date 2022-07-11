@@ -4,6 +4,7 @@ import { ExcelGenerator } from './_generators/ExcelGenerator'
 import { TxtGenerator } from './_generators/TxtGenerator'
 import ApiGenerator from './_generators/ApiGenerator'
 import HTMLGenerator from './_generators/HTMLGenerator'
+import SimpleJapaneseListGenerator from './_generators/SimpleJapaneseListGenerator'
 
 export interface LanguageListEntry {
   source?: string
@@ -233,6 +234,7 @@ export default {
       source:
         'https://github.com/hermitdave/FrequencyWords/raw/master/content/2018/ja/ja_full.txt',
       options: { hasOccurrences: true },
+      generator: SimpleJapaneseListGenerator,
     },
     firstnames: {
       source:
