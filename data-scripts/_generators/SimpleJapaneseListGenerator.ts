@@ -10,7 +10,16 @@ export default class SimpleJapaneseListGenerator extends SimpleListGenerator {
     await kuroshiro.init(new KuromojiAnalyzer())
     console.info('Converting hiragana and katakana to romaji')
     const promises = this.data.map(async (entry) => {
-      return kuroshiro.convert(entry, { to: 'romaji' })
+      const isKatakana = entry.split('').every((char) => {
+        return Kuroshiro.Util.isKatakana(char)
+      })
+      if (isKatakana) {
+        return entry
+      }
+      return kuroshiro.convert(entry, {
+        to: 'romaji',
+        romajiSystem: 'passport',
+      })
     })
     // eslint-disable-next-line compat/compat
     this.data = await Promise.all(promises)
@@ -23,10 +32,10 @@ export default class SimpleJapaneseListGenerator extends SimpleListGenerator {
     this.filterOccurrences()
     this.commentPrefixes()
     this.trimWhitespaces()
-    this.convertToLowerCase()
+    this.removeDuplicates()
+    await this.convertJapanese()
     this.removeDuplicates()
     this.filterMinLength()
-    await this.convertJapanese()
     return this.data
   }
 }
