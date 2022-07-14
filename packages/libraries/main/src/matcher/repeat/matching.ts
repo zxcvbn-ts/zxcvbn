@@ -3,8 +3,17 @@ import scoring from '../../scoring'
 import Matching from '../../Matching'
 import { BASE_REPEAT_PATTERN } from '../../data/const'
 
-function createRegex(isLazy: boolean): RegExp {
-  return new RegExp(`(${BASE_REPEAT_PATTERN}${isLazy ? '?' : ''})\\1+`, 'g')
+function createRegex({
+  isLazy = false,
+  isAnchored = false,
+  flags = '',
+}): RegExp {
+  return new RegExp(
+    `${isAnchored ? '^' : ''}(${BASE_REPEAT_PATTERN}${isLazy ? '?' : ''})\\1+${
+      isAnchored ? '$' : ''
+    }`,
+    flags,
+  )
 }
 
 interface RepeatMatchOptions {
@@ -78,13 +87,13 @@ class MatchRepeat {
   }
 
   getGreedyMatch(password: string, lastIndex: number) {
-    const greedy = createRegex(false)
+    const greedy = createRegex({ isLazy: false, flags: 'g' })
     greedy.lastIndex = lastIndex
     return greedy.exec(password)
   }
 
   getLazyMatch(password: string, lastIndex: number) {
-    const lazy = createRegex(true)
+    const lazy = createRegex({ isLazy: true, flags: 'g' })
     lazy.lastIndex = lastIndex
     return lazy.exec(password)
   }
@@ -93,7 +102,7 @@ class MatchRepeat {
     greedyMatch: RegExpExecArray,
     lazyMatch: RegExpExecArray | null,
   ) {
-    const lazyAnchored = /^(.+?)\1+$/
+    const lazyAnchored = createRegex({ isLazy: true, isAnchored: true })
     let match
     let baseToken = ''
     if (lazyMatch && greedyMatch[0].length > lazyMatch[0].length) {
