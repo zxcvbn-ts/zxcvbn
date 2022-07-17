@@ -4,6 +4,10 @@ import path from 'path'
 // @ts-ignore
 import globAll from 'glob-all'
 import natural from 'natural'
+// @ts-ignore
+import Kuroshiro from 'kuroshiro'
+// @ts-ignore
+import KuromojiAnalyzer from 'kuroshiro-analyzer-kuromoji'
 import { LooseObject } from '../../packages/libraries/main/src/types'
 
 const SENTENCES_PER_BATCH = 500000 // after each batch, delete all counts with count == 1 (hapax legomena)
@@ -20,17 +24,26 @@ class TopTokenCounter {
 
   discarded = new Set()
 
-  addTokens(tokens: string[], splitHyphens: boolean = true) {
-    tokens.forEach((token) => {
-      const hyphenArray = token.split('-')
-      if (splitHyphens && [1, 2].includes(hyphenArray.length)) {
-        hyphenArray.forEach((subToken) => {
-          this.addToken(subToken)
-        })
-      } else {
-        this.addToken(token)
-      }
+  async getConvertedToken(token: string, analyzer: any) {
+    const isKatakana = token.split('').every((char) => {
+      return Kuroshiro.Util.isKatakana(char)
     })
+    if (isKatakana) {
+      return ''
+    }
+    return analyzer.convert(token, {
+      to: 'romaji',
+      romajiSystem: 'passport',
+    })
+  }
+
+  async addTokens(tokens: string[], analyzer: any) {
+    const promises = tokens.map(async (token) => {
+      const convertedToken = await this.getConvertedToken(token, analyzer)
+      this.addToken(convertedToken)
+    })
+    // eslint-disable-next-line compat/compat
+    await Promise.all(promises)
   }
 
   addToken(token: string) {
@@ -49,11 +62,15 @@ class TopTokenCounter {
     }
   }
 
+  // eslint-disable-next-line complexity
   shouldInclude(token: string) {
+    const isKana = token.split('').every((char) => {
+      return Kuroshiro.Util.isKatakana(char)
+    })
     const isTooShort = token.length < 2
     const isTooShortAndABitSpecial =
-      token.length <= 2 && SOME_NON_ALPHA.test(token)
-    const isSpecialChar = ALL_NON_ALPHA.test(token)
+      token.length <= 2 && SOME_NON_ALPHA.test(token) && !isKana
+    const isSpecialChar = ALL_NON_ALPHA.test(token) && !isKana
     const isExcluded = EXCLUDED.test(token)
     const startWithSlash = token.startsWith('/')
     const endsWithEqual = token.endsWith('=')
@@ -142,29 +159,66 @@ const readLinePromise = (readInterface: any, callback: Function) => {
 const getTokens = async (inputDir: string, counter: TopTokenCounter) => {
   const files: string[] = globAll.sync([`${inputDir}/**/wiki_*`])
   // const tokenizer = new natural.TokenizerJa()
-  const tokenizer = new natural.RegexpTokenizer({
-    pattern: /[^A-Za-z\xbf-\xdf\xdf-\xff]/,
-  })
   let lines = 0
-  const promises = files.map(async (filePath) => {
+  const kuroshiro = new Kuroshiro()
+  await kuroshiro.init(new KuromojiAnalyzer())
+  let index = 0
+  // eslint-disable-next-line no-restricted-syntax
+  for (const file of files) {
+    console.info(`Current file: ${index}/${files.length}`)
     const readInterface = readline.createInterface({
-      input: fs.createReadStream(filePath),
+      input: fs.createReadStream(file),
       terminal: false,
     })
+    // eslint-disable-next-line no-loop-func,no-await-in-loop
     await readLinePromise(readInterface, async (line: string) => {
-      const tokens = tokenizer.tokenize(line)
-      counter.addTokens(tokens)
+      // const isKatakana = line.split('').every((char) => {
+      //   return Kuroshiro.Util.isKatakana(char)
+      // })
+      // const tokens = tokenizer.tokenize(line)
+      const romaji = await kuroshiro.convert(line, {
+        to: 'hiragana',
+        mode: 'spaced',
+      })
+
+      await counter.addTokens(romaji.split(' '), kuroshiro)
       lines += 1
       if (lines % SENTENCES_PER_BATCH === 0) {
         counter.batchPrune()
         console.info(counter.getStats())
-        console.info(`processing: ${filePath}`)
+        console.info(`processing: ${file}`)
       }
     })
-  })
-
-  // eslint-disable-next-line compat/compat
-  await Promise.all(promises)
+    index += 1
+  }
+  // const promises = files.map(async (filePath, index) => {
+  //  console.info(`Current file: ${index}/${files.length}`)
+  //     const readInterface = readline.createInterface({
+  //       input: fs.createReadStream(filePath),
+  //       terminal: false,
+  //     })
+  //     await readLinePromise(readInterface, async (line: string) => {
+  //       // const isKatakana = line.split('').every((char) => {
+  //       //   return Kuroshiro.Util.isKatakana(char)
+  //       // })
+  //       // const tokens = tokenizer.tokenize(line)
+  //       const romaji = await kuroshiro.convert(line, {
+  //         to: 'hiragana',
+  //         mode: 'spaced',
+  //       })
+  //
+  //       await counter.addTokens(romaji.split(' '), kuroshiro)
+  //       lines += 1
+  //       if (lines % SENTENCES_PER_BATCH === 0) {
+  //         counter.batchPrune()
+  //         console.info(counter.getStats())
+  //         console.info(`processing: ${filePath}`)
+  //       }
+  //     })
+  // })
+  //
+  // // eslint-disable-next-line compat/compat
+  // await Promise.all(promises)
 }
 
 const write = (output: string, pairs: LooseObject) => {
