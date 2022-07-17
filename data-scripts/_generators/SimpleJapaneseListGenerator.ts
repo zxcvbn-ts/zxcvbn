@@ -14,7 +14,7 @@ export default class SimpleJapaneseListGenerator extends SimpleListGenerator {
         return Kuroshiro.Util.isKatakana(char)
       })
       if (isKatakana) {
-        return entry
+        return ''
       }
       return kuroshiro.convert(entry, {
         to: 'romaji',
