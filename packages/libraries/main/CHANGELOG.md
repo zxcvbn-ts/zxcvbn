@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.2](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/core@2.0.1...@zxcvbn-ts/core@2.0.2) (2022-07-17)
+
+
+### Bug Fixes
+
+* **const:** set correct names for one lower/upper case ([d920247](https://github.com/zxcvbn-ts/zxcvbn/commit/d920247f4af7eb1b607022270642d302c5f937f6))
+* **date-splits:** add missing date split in 5 and add comments ([3694724](https://github.com/zxcvbn-ts/zxcvbn/commit/3694724173ec24dda98993b8a206f11b2720b62b))
+
+
+
+
+
 # [2.0.0](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/core@1.2.0...@zxcvbn-ts/core@2.0.0) (2022-02-10)
 
 
