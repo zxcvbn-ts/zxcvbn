@@ -1,32 +1,37 @@
 <template>
-  <table class="result">
-    <tr>
-      <td></td>
-      <td>zxcvbn</td>
-      <td>zxcvbn-ts</td>
-    </tr>
-    <template v-for="entry in data">
+  <div>
+    <div v-if="loading">
+      Currently comparing passwords...
+    </div>
+    <table class="result" v-else>
       <tr>
-        <td><strong>password:</strong></td>
-        <td colspan="2">
-          <strong>{{ entry.password }}</strong>
-        </td>
+        <td></td>
+        <td>zxcvbn</td>
+        <td>zxcvbn-ts</td>
       </tr>
-      <tr>
-        <td>guessesLog10:</td>
-        <td>{{ entry.zxcvbn.guessesLog10 }}</td>
-        <td>{{ entry.zxcvbnTs.guessesLog10 }}</td>
-      </tr>
-      <tr>
-        <td>score:</td>
-        <td>{{ entry.zxcvbn.score }}</td>
-        <td>{{ entry.zxcvbnTs.score }}</td>
-      </tr>
-      <tr>
-        <td colspan="3"></td>
-      </tr>
-    </template>
-  </table>
+      <template v-for="entry in data">
+        <tr>
+          <td><strong>password:</strong></td>
+          <td colspan="2">
+            <strong>{{ entry.password }}</strong>
+          </td>
+        </tr>
+        <tr>
+          <td>guessesLog10:</td>
+          <td>{{ entry.zxcvbn.guessesLog10 }}</td>
+          <td>{{ entry.zxcvbnTs.guessesLog10 }}</td>
+        </tr>
+        <tr>
+          <td>score:</td>
+          <td>{{ entry.zxcvbn.score }}</td>
+          <td>{{ entry.zxcvbnTs.score }}</td>
+        </tr>
+        <tr>
+          <td colspan="3"></td>
+        </tr>
+      </template>
+    </table>
+  </div>
 </template>
 
 <script>
@@ -74,9 +79,10 @@ export default {
         'Tiger@0177'
       ],
       data: [],
+      loading: true,
     }
   },
-  mounted() {
+  async mounted() {
     this.setOptions()
     this.setData()
   },
@@ -93,8 +99,9 @@ export default {
       zxcvbnOptions.setOptions(options)
     },
 
-    setData() {
-      this.passwords.forEach(async (password) => {
+    async setData() {
+      this.loading = true
+      for (const password of this.passwords) {
         const zxcvbnResult = zxcvbn(password)
         const zxcvbnTsResult = await zxcvbnTsAsync(password)
         console.log(zxcvbnResult, zxcvbnTsResult)
@@ -109,7 +116,8 @@ export default {
             score: zxcvbnTsResult.score,
           },
         })
-      })
+      }
+      this.loading = false
     },
   },
 }
