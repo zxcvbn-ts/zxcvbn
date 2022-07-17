@@ -3,7 +3,8 @@ import babel from '@rollup/plugin-babel'
 import commonjs from '@rollup/plugin-commonjs'
 import typescript from '@rollup/plugin-typescript'
 import del from 'rollup-plugin-delete'
-import nodeResolve from '@rollup/plugin-node-resolve'
+// TODO commented because of ./vendor/fastest-levenshtein.ts
+// import nodeResolve from '@rollup/plugin-node-resolve'
 import json from './jsonPlugin'
 
 const packagePath = process.cwd()
@@ -56,11 +57,12 @@ const generateConfig = (type) => {
 
     generateCounter += 1
   }
-  if (type === 'iife') {
-    pluginsOnlyOnce.push(nodeResolve({ resolveOnly: ['fastest-levenshtein'] }))
-  } else {
-    external.push('fastest-levenshtein')
-  }
+  // TODO commented because of ./vendor/fastest-levenshtein.ts
+  // if (type === 'iife') {
+  //   pluginsOnlyOnce.push(nodeResolve({ resolveOnly: ['fastest-levenshtein'] }))
+  // } else {
+  //   external.push('fastest-levenshtein')
+  // }
 
   return {
     input: ['./src/index.ts'],

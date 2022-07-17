@@ -4,3 +4,4 @@ dist2
 demo
 coverage
 data-scripts/wikiExtractor/extracts
+fastest-levenshtein.ts
