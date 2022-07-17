@@ -4,6 +4,7 @@ import { ExcelGenerator } from './_generators/ExcelGenerator'
 import { TxtGenerator } from './_generators/TxtGenerator'
 import ApiGenerator from './_generators/ApiGenerator'
 import HTMLGenerator from './_generators/HTMLGenerator'
+import SimpleJapaneseListGenerator from './_generators/SimpleJapaneseListGenerator'
 
 export interface LanguageListEntry {
   source?: string
@@ -227,12 +228,10 @@ export default {
   },
   'ja': {
     commonWords: {
-      // fixme We must convert Japanese characters (Hiragana, Katanaka and Kanji) into Romaji as a dictionary
-      // because Japanese characters are not permitted to use for password in general.
-      // It would be too difficult to do programmatically.
       source:
         'https://github.com/hermitdave/FrequencyWords/raw/master/content/2018/ja/ja_full.txt',
       options: { hasOccurrences: true },
+      generator: SimpleJapaneseListGenerator,
     },
     firstnames: {
       source:
