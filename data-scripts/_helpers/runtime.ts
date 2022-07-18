@@ -2,40 +2,28 @@ import * as fs from 'fs'
 import * as path from 'path'
 import { execSync } from 'child_process'
 
-interface LooseObject {
+export interface LooseObject {
   [key: string]: any
 }
 
-export interface CustomListConfig {
+export interface ListConfig {
   language: string
   filename: string
   generator: any
   options?: any
-}
-
-export interface ListConfig extends CustomListConfig {
-  url: string
+  url?: string
 }
 
 interface RegisterListOptions {
   language: string
   filename: string
-  url: string
-  generator: any
-  options?: LooseObject
-}
-
-interface RegisterCustomListOptions {
-  language: string
-  filename: string
+  url?: string
   generator: any
   options?: LooseObject
 }
 
 export default class ListHandler {
   lists: ListConfig[] = []
-
-  listsCustom: CustomListConfig[] = []
 
   languages: Set<string> = new Set()
 
@@ -49,7 +37,10 @@ export default class ListHandler {
       // eslint-disable-next-line no-console
       console.time(options.filename)
       // eslint-disable-next-line new-cap
-      const generator = new options.generator(options.url, options.options)
+      const generator = new options.generator({
+        options: options.options,
+        url: options.url,
+      })
       const folder = path.join(
         __dirname,
         '../../packages/languages/',
@@ -62,34 +53,6 @@ export default class ListHandler {
       // eslint-disable-next-line no-await-in-loop
       const data = JSON.stringify(await generator.run())
       fs.writeFileSync(path.join(folder, `${options.filename}.json`), `${data}`)
-      // eslint-disable-next-line no-console
-      console.timeEnd(options.filename)
-      console.info(
-        `----------- Finished ${options.language} ${options.filename} -----------`,
-      )
-      this.languages.add(options.language)
-    }
-    // eslint-disable-next-line no-restricted-syntax
-    for (const options of this.listsCustom) {
-      console.info(
-        `----------- Starting ${options.language} ${options.filename} -----------`,
-      )
-      // eslint-disable-next-line no-console
-      console.time(options.filename)
-      // eslint-disable-next-line new-cap
-      const generator = new options.generator(options.options)
-
-      const folder = path.join(
-        __dirname,
-        '../../packages/languages/',
-        options.language,
-        'src',
-      )
-      if (!fs.existsSync(folder)) {
-        fs.mkdirSync(folder, { recursive: true })
-      }
-      // eslint-disable-next-line no-await-in-loop
-      await generator.run(path.join(folder, `${options.filename}`))
       // eslint-disable-next-line no-console
       console.timeEnd(options.filename)
       console.info(
@@ -148,12 +111,12 @@ export default {
       )
       try {
         execSync(`eslint --ext .ts --fix --cache ${indexPath}`)
-      } catch (e) {
-        if (e.stdout) {
-          console.error((e.stdout as Buffer).toString('utf8'))
+      } catch (error: any) {
+        if (error.stdout) {
+          console.error((error.stdout as Buffer).toString('utf8'))
           throw new Error(`Eslint failed for file ${indexPath}`)
         }
-        throw e
+        throw error
       }
     })
   }
@@ -161,10 +124,6 @@ export default {
   async run() {
     await this.generateData()
     await this.generateIndices()
-  }
-
-  registerCustomList(options: RegisterCustomListOptions) {
-    this.listsCustom.push(options)
   }
 
   registerList(options: RegisterListOptions) {

@@ -1,68 +1,43 @@
 import axios from 'axios'
-import { promises as fs } from 'fs'
 import * as JSZip from 'jszip'
+import SimpleListGenerator, {
+  SimpleListGeneratorDefaultOptions,
+  SimpleListGeneratorOptions,
+} from './SimpleListGenerator'
 
-export type Options = {
+export interface Options extends SimpleListGeneratorOptions {
   url: string
   row: number
   column: number
-  trimWhitespaces?: boolean
-  toLowerCase?: boolean
-  removeDuplicates?: boolean
-  /**
-   * The occurrences count should be the cell after (right side) of the name.
-   * Set to undefined if occurrences are missing in the excel file
-   */
-  minOccurrences?: number
   valueColumn: number
   occurrenceColumn: number
   separator: string
 }
 
-export class TxtGenerator {
-  public options: Options = {
-    url: '',
-    row: 1,
-    column: 0,
-    occurrenceColumn: 1,
-    valueColumn: 0,
-    separator: '\t', // default tab separator
-    trimWhitespaces: true,
-    toLowerCase: true,
-    removeDuplicates: true,
-  }
+const defaultOptions: Options = {
+  ...SimpleListGeneratorDefaultOptions,
+  url: '',
+  row: 1,
+  column: 0,
+  occurrenceColumn: 1,
+  valueColumn: 0,
+  separator: '\t', // default tab separator
+}
 
-  values: string[] = []
+interface ConstructorOptions {
+  options: Options
+}
+export class TxtGenerator extends SimpleListGenerator<Options> {
+  data: string[] = []
 
-  constructor(options: Options) {
+  constructor({ options }: ConstructorOptions) {
+    super({ url: '', options })
+    this.options = { ...defaultOptions }
     Object.assign(this.options, options)
   }
 
-  private trimWhitespaces() {
-    if (this.options.trimWhitespaces) {
-      console.info('Filtering whitespaces')
-      this.values = this.values.map((l) => l.trim())
-    }
-  }
-
-  private convertToLowerCase() {
-    if (this.options.toLowerCase) {
-      console.info('Converting to lowercase')
-      this.values = this.values.map((l) => l.toLowerCase())
-    }
-  }
-
-  private removeDuplicates() {
-    if (this.options.removeDuplicates) {
-      console.info('Filtering duplicates')
-      this.values = this.values.filter((item, pos) => {
-        return this.values.indexOf(item) === pos
-      })
-    }
-  }
-
   // eslint-disable-next-line max-statements
-  public async run(output: string) {
+  public async run() {
     // Download the file
     console.info('Fetching file')
     const response = await axios.get(this.options.url, {
@@ -106,22 +81,19 @@ export class TxtGenerator {
           // Don't add this one
           // eslint-disable-next-line no-continue
           continue
-        } else if (!this.values.includes(line[this.options.valueColumn])) {
-          this.values.push(line[this.options.valueColumn])
+        } else if (!this.data.includes(line[this.options.valueColumn])) {
+          this.data.push(line[this.options.valueColumn])
         }
       }
     }
-    // remove empty values
-    this.values = this.values.filter((l) => l.length > 0)
     // get from requested row number
-    this.values = this.values.slice(this.options.row)
+    this.data = this.data.slice(this.options.row)
 
     this.trimWhitespaces()
     this.convertToLowerCase()
     this.removeDuplicates()
+    this.filterMinLength()
 
-    console.info('Saving to disk')
-    const json = JSON.stringify(this.values)
-    await fs.writeFile(`${output}.json`, json)
+    return this.data
   }
 }
