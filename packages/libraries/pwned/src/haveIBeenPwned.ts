@@ -56,7 +56,14 @@ export default async (
     headers: {
       'Add-Padding': true,
     },
+  }).catch(() => {
+    return false
   })
+
+  if (!response || response.status >= 400) {
+    return false
+  }
+
   const result = await response.text()
   const resultArray = result.split('\r\n')
 
