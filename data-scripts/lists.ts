@@ -121,11 +121,13 @@ export default {
     },
     firstnames: {
       source:
-        'https://gist.github.com/sasxa/90f9a6a03337230dd0ae340b8c42cda9/raw/a63075f2bda308d10d248810e17e00f047b1007e/fi_first_names.txt',
+        'https://gist.github.com/sasxa/90f9a6a03337230dd0ae340b8c42cda9/raw/3ab54c89d10b8ac945a4e3f282db27829555552a/fi_first_names.txt',
+      options: { hasOccurrences: true },
     },
     lastnames: {
       source:
-        'https://gist.github.com/sasxa/90f9a6a03337230dd0ae340b8c42cda9/raw/a63075f2bda308d10d248810e17e00f047b1007e/fi_last_names.txt',
+        'https://gist.github.com/sasxa/90f9a6a03337230dd0ae340b8c42cda9/raw/3ab54c89d10b8ac945a4e3f282db27829555552a/fi_last_names.txt',
+      options: { hasOccurrences: true },
     },
   },
   'fr': {
