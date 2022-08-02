@@ -113,6 +113,21 @@ export default {
       },
     },
   },
+  'fi': {
+    commonWords: {
+      source:
+        'https://github.com/hermitdave/FrequencyWords/raw/master/content/2018/fi/fi_50k.txt',
+      options: { hasOccurrences: true },
+    },
+    firstnames: {
+      source:
+        'https://gist.github.com/sasxa/90f9a6a03337230dd0ae340b8c42cda9/raw/a63075f2bda308d10d248810e17e00f047b1007e/fi_first_names.txt',
+    },
+    lastnames: {
+      source:
+        'https://gist.github.com/sasxa/90f9a6a03337230dd0ae340b8c42cda9/raw/a63075f2bda308d10d248810e17e00f047b1007e/fi_last_names.txt',
+    },
+  },
   'fr': {
     commonWords: {
       source:
