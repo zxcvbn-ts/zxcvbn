@@ -119,15 +119,38 @@ export default {
         'https://github.com/hermitdave/FrequencyWords/raw/master/content/2018/fi/fi_50k.txt',
       options: { hasOccurrences: true },
     },
-    firstnames: {
-      source:
-        'https://gist.github.com/sasxa/90f9a6a03337230dd0ae340b8c42cda9/raw/3ab54c89d10b8ac945a4e3f282db27829555552a/fi_first_names.txt',
-      options: { hasOccurrences: true },
+    maleFirstnames: {
+      generator: ExcelGenerator,
+      customList: true,
+      options: {
+        url: 'https://www.avoindata.fi/data/dataset/57282ad6-3ab1-48fb-983a-8aba5ff8d29a/resource/08c89936-a230-42e9-a9fc-288632e234f5/download/etunimitilasto-2022-02-07-dvv.xlsx',
+        column: 1,
+        row: 2,
+        sheetName: 'Miehet kaikki',
+        minOccurrences: 3000,
+      },
+    },
+    femaleFirstnames: {
+      generator: ExcelGenerator,
+      customList: true,
+      options: {
+        url: 'https://www.avoindata.fi/data/dataset/57282ad6-3ab1-48fb-983a-8aba5ff8d29a/resource/08c89936-a230-42e9-a9fc-288632e234f5/download/etunimitilasto-2022-02-07-dvv.xlsx',
+        column: 1,
+        row: 2,
+        sheetName: 'Naiset kaikki',
+        minOccurrences: 3000,
+      },
     },
     lastnames: {
-      source:
-        'https://gist.github.com/sasxa/90f9a6a03337230dd0ae340b8c42cda9/raw/3ab54c89d10b8ac945a4e3f282db27829555552a/fi_last_names.txt',
-      options: { hasOccurrences: true },
+      generator: ExcelGenerator,
+      customList: true,
+      options: {
+        url: 'https://www.avoindata.fi/data/dataset/57282ad6-3ab1-48fb-983a-8aba5ff8d29a/resource/957d19a5-b87a-4c4d-8595-49c22d9d3c58/download/sukunimitilasto-2022-02-07-dvv.xlsx',
+        column: 1,
+        row: 2,
+        sheetName: 'Nimet',
+        minOccurrences: 2000,
+      },
     },
   },
   'fr': {
