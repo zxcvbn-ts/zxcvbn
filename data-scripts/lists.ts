@@ -113,6 +113,46 @@ export default {
       },
     },
   },
+  'fi': {
+    commonWords: {
+      source:
+        'https://github.com/hermitdave/FrequencyWords/raw/master/content/2018/fi/fi_50k.txt',
+      options: { hasOccurrences: true },
+    },
+    maleFirstnames: {
+      generator: ExcelGenerator,
+      customList: true,
+      options: {
+        url: 'https://www.avoindata.fi/data/dataset/57282ad6-3ab1-48fb-983a-8aba5ff8d29a/resource/08c89936-a230-42e9-a9fc-288632e234f5/download/etunimitilasto-2022-02-07-dvv.xlsx',
+        column: 1,
+        row: 2,
+        sheetName: 'Miehet kaikki',
+        minOccurrences: 3000,
+      },
+    },
+    femaleFirstnames: {
+      generator: ExcelGenerator,
+      customList: true,
+      options: {
+        url: 'https://www.avoindata.fi/data/dataset/57282ad6-3ab1-48fb-983a-8aba5ff8d29a/resource/08c89936-a230-42e9-a9fc-288632e234f5/download/etunimitilasto-2022-02-07-dvv.xlsx',
+        column: 1,
+        row: 2,
+        sheetName: 'Naiset kaikki',
+        minOccurrences: 3000,
+      },
+    },
+    lastnames: {
+      generator: ExcelGenerator,
+      customList: true,
+      options: {
+        url: 'https://www.avoindata.fi/data/dataset/57282ad6-3ab1-48fb-983a-8aba5ff8d29a/resource/957d19a5-b87a-4c4d-8595-49c22d9d3c58/download/sukunimitilasto-2022-02-07-dvv.xlsx',
+        column: 1,
+        row: 2,
+        sheetName: 'Nimet',
+        minOccurrences: 2000,
+      },
+    },
+  },
   'fr': {
     commonWords: {
       source:
