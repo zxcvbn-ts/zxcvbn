@@ -18,15 +18,15 @@ The Czech dictionary and language package for zxcvbn-ts
 ```js
 import { zxcvbn, zxcvbnOptions } from '@zxcvbn-ts/core'
 import zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
-import zxcvbnEnPackage from '@zxcvbn-ts/language-cs'
+import zxcvbnCsPackage from '@zxcvbn-ts/language-cs'
 
 const password = 'somePassword'
 const options = {
-  translations: zxcvbnEnPackage.translations,
+  translations: zxcvbnCsPackage.translations,
   graphs: zxcvbnCommonPackage.adjacencyGraphs,
   dictionary: {
     ...zxcvbnCommonPackage.dictionary,
-    ...zxcvbnEnPackage.dictionary,
+    ...zxcvbnCsPackage.dictionary,
   },
 }
 
