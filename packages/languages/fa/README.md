@@ -1,4 +1,4 @@
-# @zxcvbn-ts/language-en
+# @zxcvbn-ts/language-fa
 
 The Persian dictionary and language package for zxcvbn-ts
 
