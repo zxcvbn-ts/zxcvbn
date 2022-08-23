@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.4](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/core@2.0.3...@zxcvbn-ts/core@2.0.4) (2022-08-04)
+
+
+### Bug Fixes
+
+* **types:** set correct sequence type ([c9d6a65](https://github.com/zxcvbn-ts/zxcvbn/commit/c9d6a6508e76133f2691eb9595ddc50ebd176982))
+
+
+
+
+
 ## [2.0.3](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/core@2.0.2...@zxcvbn-ts/core@2.0.3) (2022-07-17)
 
 

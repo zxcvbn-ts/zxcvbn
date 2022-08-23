@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.5](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/matcher-pwned@2.0.4...@zxcvbn-ts/matcher-pwned@2.0.5) (2022-08-04)
+
+**Note:** Version bump only for package @zxcvbn-ts/matcher-pwned
+
+
+
+
+
+## [2.0.4](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/matcher-pwned@2.0.3...@zxcvbn-ts/matcher-pwned@2.0.4) (2022-07-27)
+
+
+### Bug Fixes
+
+* **pwned:** catch pwned errors and return false ([a42483c](https://github.com/zxcvbn-ts/zxcvbn/commit/a42483c57a2d91f92177d9ce2058ace08573a952))
+
+
+
+
+
 ## [2.0.3](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/matcher-pwned@2.0.2...@zxcvbn-ts/matcher-pwned@2.0.3) (2022-07-17)
 
 **Note:** Version bump only for package @zxcvbn-ts/matcher-pwned

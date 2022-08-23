@@ -4,7 +4,7 @@ import TimeEstimates from './TimeEstimates'
 import Feedback from './Feedback'
 import zxcvbnOptions from './Options'
 import debounce from './debounce'
-import { MatchEstimated, MatchExtended, ZxcvbnResult } from './types'
+import { MatchExtended, ZxcvbnResult } from './types'
 
 const time = () => new Date().getTime()
 
@@ -26,10 +26,7 @@ const createReturnValue = (
     calcTime,
     ...matchSequence,
     ...attackTimes,
-    feedback: feedback.getFeedback(
-      attackTimes.score,
-      matchSequence.sequence as MatchEstimated[],
-    ),
+    feedback: feedback.getFeedback(attackTimes.score, matchSequence.sequence),
   }
 }
 

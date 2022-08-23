@@ -1,7 +1,7 @@
 import utils from './utils'
 import estimateGuesses from './estimate'
 import { MIN_GUESSES_BEFORE_GROWING_SEQUENCE } from '../data/const'
-import { MatchExtended, BruteForceMatch } from '../types'
+import { MatchExtended, BruteForceMatch, MatchEstimated } from '../types'
 
 const scoringHelper = {
   password: '',
@@ -96,7 +96,7 @@ const scoringHelper = {
   // helper: step backwards through optimal.m starting at the end,
   // constructing the final optimal match sequence.
   unwind(passwordLength: number) {
-    const optimalMatchSequence: MatchExtended[] = []
+    const optimalMatchSequence: MatchEstimated[] = []
     let k = passwordLength - 1
     // find the final best sequence length and score
     let sequenceLength = 0
@@ -114,7 +114,7 @@ const scoringHelper = {
       })
     }
     while (k >= 0) {
-      const match: MatchExtended = this.optimal.m[k][sequenceLength]
+      const match: MatchEstimated = this.optimal.m[k][sequenceLength]
       optimalMatchSequence.unshift(match)
       k = match.i - 1
       sequenceLength -= 1

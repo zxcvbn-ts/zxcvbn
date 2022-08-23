@@ -1,17 +1,17 @@
 {
-  "name": "@zxcvbn-ts/core",
-  "version": "2.0.4",
+  "name": "@zxcvbn-ts/language-fi",
+  "version": "2.1.0",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
-  "description": "Realistic password strength estimation written in typescript",
+  "description": "The Finnish language package for zxcvbn-ts",
   "license": "MIT",
   "homepage": "https://github.com/zxcvbn-ts/zxcvbn",
   "repository": {
     "type": "git",
     "url": "https://github.com/zxcvbn-ts/zxcvbn.git"
   },
-  "author": "zxcvbn-ts",
+  "author": "sasxa",
   "files": [
     "dist",
     "src"
@@ -20,18 +20,9 @@
     "access": "public"
   },
   "keywords": [
-    "password",
-    "passphrase",
-    "security",
-    "authentication",
-    "strength",
-    "meter",
-    "quality",
-    "estimation",
-    "pattern",
-    "cracking",
-    "scoring",
-    "entropy",
-    "bruteforce"
+    "zxcvbn",
+    "language",
+    "translation",
+    "finnish"
   ]
 }

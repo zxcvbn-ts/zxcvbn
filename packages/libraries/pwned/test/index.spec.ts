@@ -1,19 +1,14 @@
 import { zxcvbnAsync, zxcvbnOptions } from '../../main/src'
 import matcherPwnedFactory from '../src'
 
-const fetch = jest.fn(() => ({
-  text() {
-    return `008A205652858375D71117A63004CC75167:5\r\n3EA386688A0147AB736AABCEDE496610382:244`
-  },
-}))
-
 describe('main', () => {
-  beforeAll(() => {
-    const matcherPwned = matcherPwnedFactory(fetch, zxcvbnOptions)
-    zxcvbnOptions.addMatcher('pwned', matcherPwned)
-  })
-
   it('should use pwned matcher', async () => {
+    const fetch = jest.fn(async () => ({
+      text() {
+        return `008A205652858375D71117A63004CC75167:5\r\n3EA386688A0147AB736AABCEDE496610382:244`
+      },
+    }))
+    zxcvbnOptions.matchers.pwned = matcherPwnedFactory(fetch, zxcvbnOptions)
     const result = await zxcvbnAsync('P4$$w0rd')
 
     expect(result.calcTime).toBeDefined()
@@ -50,6 +45,50 @@ describe('main', () => {
       feedback: {
         warning: 'pwned',
         suggestions: ['anotherWord', 'pwned'],
+      },
+    })
+  })
+
+  it('should ignore pwned matcher on fetch error', async () => {
+    const fetch = jest.fn(async () => {
+      throw new Error('Some Network error')
+    })
+    zxcvbnOptions.matchers.pwned = matcherPwnedFactory(fetch, zxcvbnOptions)
+    const result = await zxcvbnAsync('P4$$w0rd')
+
+    expect(result.calcTime).toBeDefined()
+    result.calcTime = 0
+    expect(result).toEqual({
+      password: 'P4$$w0rd',
+      calcTime: 0,
+      guesses: 100000001,
+      guessesLog10: 8.000000004342944,
+      sequence: [
+        {
+          guesses: 100000000,
+          guessesLog10: 8,
+          i: 0,
+          j: 7,
+          pattern: 'bruteforce',
+          token: 'P4$$w0rd',
+        },
+      ],
+      crackTimesDisplay: {
+        offlineFastHashing1e10PerSecond: 'ltSecond',
+        offlineSlowHashing1e4PerSecond: 'hours',
+        onlineNoThrottling10PerSecond: 'months',
+        onlineThrottling100PerHour: 'centuries',
+      },
+      crackTimesSeconds: {
+        offlineFastHashing1e10PerSecond: 0.0100000001,
+        offlineSlowHashing1e4PerSecond: 10000.0001,
+        onlineNoThrottling10PerSecond: 10000000.1,
+        onlineThrottling100PerHour: 3600000036,
+      },
+      score: 2,
+      feedback: {
+        suggestions: ['anotherWord'],
+        warning: '',
       },
     })
   })
