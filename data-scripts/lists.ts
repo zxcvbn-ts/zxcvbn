@@ -21,6 +21,16 @@ export interface LanguageList {
   }
 }
 
+const polishFirstnamesOptions = {
+  hasOccurrences: true,
+  minOccurrences: 200,
+  splitter: '\r\n',
+  clearLine: (line: String) => {
+    const lineArray = line.split(',')
+    return `${lineArray[0]} ${lineArray[2]}`
+  },
+}
+
 export default {
   'en': {
     commonWords: {
@@ -45,19 +55,33 @@ export default {
     },
     maleFirstnames: {
       source:
-        'https://raw.githubusercontent.com/oskar-gmerek/polish_database/main/male_first_names_poland.csv',
+        'https://api.dane.gov.pl/resources/36411,lista-imion-meskich-w-rejestrze-pesel-stan-na-24012022-imie-pierwsze/csv',
+      options: polishFirstnamesOptions,
     },
     femaleFirstnames: {
       source:
-        'https://raw.githubusercontent.com/oskar-gmerek/polish_database/main/female_first_names_poland.csv',
+        'https://api.dane.gov.pl/resources/36412,lista-imion-zenskich-w-rejestrze-pesel-stan-na-24012022-imie-pierwsze/csv',
+      options: polishFirstnamesOptions,
     },
     maleLastnames: {
       source:
-        'https://raw.githubusercontent.com/oskar-gmerek/polish_database/main/male_last_names_poland.csv',
+        'https://api.dane.gov.pl/resources/36401,nazwiska-meskie-stan-na-2022-01-27/csv',
+      options: {
+        hasOccurrences: true,
+        occurrenceSeparator: ',',
+        splitter: '\r\n',
+        minOccurrences: 200,
+      },
     },
     femaleLastnames: {
       source:
-        'https://raw.githubusercontent.com/oskar-gmerek/polish_database/main/female_last_names_poland.csv',
+        'https://api.dane.gov.pl/resources/38772,nazwiska-zenskie-stan-na-2022-01-27/csv',
+      options: {
+        hasOccurrences: true,
+        occurrenceSeparator: ',',
+        splitter: '\r\n',
+        minOccurrences: 200,
+      },
     },
   },
   'de': {
@@ -123,33 +147,30 @@ export default {
       generator: ExcelGenerator,
       customList: true,
       options: {
-        url: 'https://www.avoindata.fi/data/dataset/57282ad6-3ab1-48fb-983a-8aba5ff8d29a/resource/08c89936-a230-42e9-a9fc-288632e234f5/download/etunimitilasto-2022-02-07-dvv.xlsx',
+        url: 'https://www.avoindata.fi/data/dataset/57282ad6-3ab1-48fb-983a-8aba5ff8d29a/resource/08c89936-a230-42e9-a9fc-288632e234f5/download/etunimitilasto-2022-08-04-dvv.xlsx',
         column: 1,
         row: 2,
         sheetName: 'Miehet kaikki',
-        minOccurrences: 3000,
       },
     },
     femaleFirstnames: {
       generator: ExcelGenerator,
       customList: true,
       options: {
-        url: 'https://www.avoindata.fi/data/dataset/57282ad6-3ab1-48fb-983a-8aba5ff8d29a/resource/08c89936-a230-42e9-a9fc-288632e234f5/download/etunimitilasto-2022-02-07-dvv.xlsx',
+        url: 'https://www.avoindata.fi/data/dataset/57282ad6-3ab1-48fb-983a-8aba5ff8d29a/resource/08c89936-a230-42e9-a9fc-288632e234f5/download/etunimitilasto-2022-08-04-dvv.xlsx',
         column: 1,
         row: 2,
         sheetName: 'Naiset kaikki',
-        minOccurrences: 3000,
       },
     },
     lastnames: {
       generator: ExcelGenerator,
       customList: true,
       options: {
-        url: 'https://www.avoindata.fi/data/dataset/57282ad6-3ab1-48fb-983a-8aba5ff8d29a/resource/957d19a5-b87a-4c4d-8595-49c22d9d3c58/download/sukunimitilasto-2022-02-07-dvv.xlsx',
+        url: 'https://www.avoindata.fi/data/dataset/57282ad6-3ab1-48fb-983a-8aba5ff8d29a/resource/957d19a5-b87a-4c4d-8595-49c22d9d3c58/download/sukunimitilasto-2022-08-04-dvv.xlsx',
         column: 1,
         row: 2,
         sheetName: 'Nimet',
-        minOccurrences: 2000,
       },
     },
   },
