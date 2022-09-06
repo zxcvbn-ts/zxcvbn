@@ -1,32 +1,31 @@
-# @zxcvbn-ts/language-en
+# @zxcvbn-ts/language-id
 
-The English dictionary and language package for zxcvbn-ts
-
+The Indonesia dictionary and language package for zxcvbn-ts
 
 ## Install
 
 #### npm:
 
-`npm install @zxcvbn-ts/language-en --save`
+`npm install @zxcvbn-ts/language-id --save`
 
 #### yarn:
 
-`yarn add @zxcvbn-ts/language-en`
+`yarn add @zxcvbn-ts/language-id`
 
 ## Setup
 
 ```js
 import { zxcvbn, zxcvbnOptions } from '@zxcvbn-ts/core'
 import zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
-import zxcvbnEnPackage from '@zxcvbn-ts/language-en'
+import zxcvbnIdPackage from '@zxcvbn-ts/language-id'
 
 const password = 'somePassword'
 const options = {
-  translations: zxcvbnEnPackage.translations,
-  graphs: zxcvbnCommonPackage.adjacencyGraphs,
+  translations: zxcvbnIdPackage.translations,
+  graphs: zxcvbnCommonPackage.adjacidcyGraphs,
   dictionary: {
     ...zxcvbnCommonPackage.dictionary,
-    ...zxcvbnEnPackage.dictionary,
+    ...zxcvbnIdPackage.dictionary,
   },
 }
 
