@@ -194,7 +194,7 @@ export default {
       generator: TxtGenerator,
       customList: true,
       options: {
-        url: 'https://www.insee.fr/fr/statistiques/fichier/2540004/nat2019_csv.zip',
+        url: 'https://www.insee.fr/fr/statistiques/fichier/2540004/nat2021_csv.zip',
         occurrenceColumn: 3,
         valueColumn: 1,
         separator: ';',
