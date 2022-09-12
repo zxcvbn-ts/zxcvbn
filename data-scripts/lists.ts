@@ -195,13 +195,28 @@ export default {
       generator: TxtGenerator,
       customList: true,
       options: {
-        url: 'https://www.insee.fr/fr/statistiques/fichier/2540004/nat2019_csv.zip',
+        url: 'https://www.insee.fr/fr/statistiques/fichier/2540004/nat2021_csv.zip',
         occurrenceColumn: 3,
         valueColumn: 1,
         separator: ';',
         row: 2,
         minOccurrences: 100,
       },
+    },
+  },
+  'id': {
+    commonWords: {
+      source:
+        'https://github.com/hermitdave/FrequencyWords/raw/master/content/2018/id/id_50k.txt',
+      options: { hasOccurrences: true },
+    },
+    firstnames: {
+      source:
+        'https://gist.githubusercontent.com/bagaswastu/35c80cdd8c32ca0b6aafa119e80e93ef/raw/13c57d71a3eaea0f59823eca5d22d1fb270aa56c/indonesia_names.txt',
+    },
+    lastnames: {
+      source:
+        'https://gist.githubusercontent.com/bagaswastu/35c80cdd8c32ca0b6aafa119e80e93ef/raw/13c57d71a3eaea0f59823eca5d22d1fb270aa56c/indonesia_names.txt',
     },
   },
   'es-es': {
