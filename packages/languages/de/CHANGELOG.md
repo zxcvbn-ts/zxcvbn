@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/language-de@2.0.1...@zxcvbn-ts/language-de@2.1.0) (2022-09-12)
+
+
+### Features
+
+* **languages:** update dictionaries ([7f67d3a](https://github.com/zxcvbn-ts/zxcvbn/commit/7f67d3a71ef3b1136fc965c21d9febbfa3e74193))
+
+
+
+
+
 ## [2.0.0](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/language-de@1.2.0...@zxcvbn-ts/language-de@2.0.0) (2022-02-10)
 
 **Note:** Version bump only for package @zxcvbn-ts/language-de

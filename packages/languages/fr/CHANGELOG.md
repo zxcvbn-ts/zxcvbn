@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0](https://github.com/jeromes80/zxcvbn/compare/@zxcvbn-ts/language-fr@2.1.0...@zxcvbn-ts/language-fr@2.2.0) (2022-09-12)
+
+
+### Features
+
+* **languages:** update dictionaries ([d3b0cd6](https://github.com/jeromes80/zxcvbn/commit/d3b0cd62c020e0a50a6fa3b00bb842d0dd3b1eb8))
+* **languages:** update dictionaries ([7f67d3a](https://github.com/jeromes80/zxcvbn/commit/7f67d3a71ef3b1136fc965c21d9febbfa3e74193))
+
+
+
+
+
 # [2.1.0](https://github.com/jeromes80/zxcvbn/compare/@zxcvbn-ts/language-fr@2.0.1...@zxcvbn-ts/language-fr@2.1.0) (2022-05-20)
 
 
