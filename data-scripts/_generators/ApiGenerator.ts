@@ -1,52 +1,40 @@
 import axios from 'axios'
+import SimpleListGenerator, {
+  SimpleListGeneratorDefaultOptions,
+  SimpleListGeneratorOptions,
+} from './SimpleListGenerator'
+import { LooseObject } from '../_helpers/runtime'
 
-type Options = {
-  requestConfig?: object
+interface Options extends SimpleListGeneratorOptions {
+  requestConfig?: LooseObject
   mapFunction: Function
-  hasOccurrences: boolean
-  minOccurrences: number
-  trimWhitespaces: boolean
-  toLowerCase: boolean
-  minLength: number
 }
 
 const defaultOptions: Options = {
+  ...SimpleListGeneratorDefaultOptions,
   mapFunction: (entry: any) => entry,
-  trimWhitespaces: true,
-  toLowerCase: true,
-  minLength: 2,
-  hasOccurrences: false,
-  minOccurrences: 500,
 }
 
-export default class ApiGenerator {
+interface ConstructorOptions {
+  url: string
+  options: Options
+}
+
+export default class ApiGenerator extends SimpleListGenerator<Options> {
   public data: any[] = []
 
-  private readonly url: string
-
-  private readonly options: Options
-
-  constructor(url: string, options: any) {
-    this.url = url
+  constructor({ url, options }: ConstructorOptions) {
+    super({ url, options })
     this.options = { ...defaultOptions }
     Object.assign(this.options, options)
   }
 
-  private async getData() {
+  protected async getData() {
     const result = await axios.get(this.url, { ...this.options.requestConfig })
     return result.data
   }
 
-  private filterMinLength() {
-    if (this.options.minLength) {
-      console.info('Filtering password that are to short')
-      this.data = this.data.filter((item) => {
-        return item.length >= this.options.minLength
-      })
-    }
-  }
-
-  private filterOccurrences() {
+  protected filterOccurrences() {
     if (this.options.hasOccurrences) {
       console.info('Removing occurrence info')
       this.data = this.data
@@ -57,29 +45,16 @@ export default class ApiGenerator {
     }
   }
 
-  private trimWhitespaces() {
-    if (this.options.trimWhitespaces) {
-      console.info('Filtering whitespaces')
-      this.data = this.data.map((l) => {
-        return l.trim()
-      })
-    }
-  }
-
-  private convertToLowerCase() {
-    if (this.options.toLowerCase) {
-      console.info('Converting to lowercase')
-      this.data = this.data.map((l) => l.toLowerCase())
-    }
-  }
-
   public async run(): Promise<string[]> {
     console.info('Downloading')
     const data = await this.getData()
-    this.data = data.map(this.options.mapFunction)
+    if (this.options.mapFunction) {
+      this.data = data.map(this.options.mapFunction)
+    }
     this.filterOccurrences()
     this.trimWhitespaces()
     this.convertToLowerCase()
+    this.removeDuplicates()
     this.filterMinLength()
     return this.data
   }

@@ -1,7 +1,7 @@
 import axios from 'axios'
 import iconv from 'iconv-lite'
 
-type Options = {
+export interface SimpleListGeneratorOptions {
   splitter: string
   commentPrefixes: string[]
   removeDuplicates: boolean
@@ -15,7 +15,7 @@ type Options = {
   clearLine: Function
 }
 
-const defaultOptions: Options = {
+export const SimpleListGeneratorDefaultOptions: SimpleListGeneratorOptions = {
   splitter: '\n',
   commentPrefixes: ['#', '//'],
   removeDuplicates: true,
@@ -28,16 +28,23 @@ const defaultOptions: Options = {
   clearLine: (entry: string) => entry,
 }
 
-export default class SimpleListGenerator {
+interface ConstructorOptions {
+  options: SimpleListGeneratorOptions
+  url: string
+}
+export default class SimpleListGenerator<
+  Options extends SimpleListGeneratorOptions = SimpleListGeneratorOptions,
+> {
   public data: string[] = []
 
   protected readonly url: string
 
-  protected readonly options: Options
+  protected options: Options
 
-  constructor(url: string, options: any) {
+  constructor({ url, options }: ConstructorOptions) {
     this.url = url
-    this.options = { ...defaultOptions }
+    // @ts-ignore
+    this.options = { ...SimpleListGeneratorDefaultOptions }
     Object.assign(this.options, options)
   }
 

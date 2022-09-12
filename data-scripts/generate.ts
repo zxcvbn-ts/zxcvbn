@@ -14,22 +14,13 @@ const main = async () => {
     Object.keys(languageLists).forEach((name) => {
       const data = languageLists[name as keyof typeof languageLists]
 
-      if (data.customList) {
-        listHandler.registerCustomList({
-          language,
-          filename: name,
-          generator: data.generator,
-          options: data.options,
-        })
-      } else {
-        listHandler.registerList({
-          language,
-          filename: name,
-          url: data.source as string,
-          generator: data.generator || SimpleListGenerator,
-          options: data.options,
-        })
-      }
+      listHandler.registerList({
+        language,
+        filename: name,
+        url: data.source,
+        generator: data.generator || SimpleListGenerator,
+        options: data.options,
+      })
     })
   })
 

@@ -1,66 +1,42 @@
 import axios from 'axios'
+import SimpleListGenerator, {
+  SimpleListGeneratorDefaultOptions,
+  SimpleListGeneratorOptions,
+} from './SimpleListGenerator'
+import { LooseObject } from '../_helpers/runtime'
 
-type Options = {
-  requestConfig?: object
+interface Options extends SimpleListGeneratorOptions {
+  requestConfig?: LooseObject
   extractorFunction: Function
-  trimWhitespaces: boolean
-  toLowerCase: boolean
-  minLength: number
 }
 
 const defaultOptions: Options = {
+  ...SimpleListGeneratorDefaultOptions,
   extractorFunction: (entry: any) => [entry.toString()],
-  trimWhitespaces: true,
-  toLowerCase: true,
-  minLength: 2,
 }
 
-export default class HTMLGenerator {
+interface ConstructorOptions {
+  url: string
+  options: Options
+}
+
+export default class HTMLGenerator extends SimpleListGenerator<Options> {
   public data: any[] = []
 
-  private readonly url: string
-
-  private readonly options: Options
-
-  constructor(url: string, options: any) {
-    this.url = url
+  constructor({ url, options }: ConstructorOptions) {
+    super({ url, options })
     this.options = { ...defaultOptions }
     Object.assign(this.options, options)
   }
 
-  private async getData() {
+  protected async getData() {
     const result = await axios.get(this.url, { ...this.options.requestConfig })
     return result.data
   }
 
-  private extractData(data: Buffer) {
+  protected extractData(data: Buffer) {
     console.info('Extracting data')
     return this.options.extractorFunction(data)
-  }
-
-  private filterMinLength() {
-    if (this.options.minLength) {
-      console.info('Filtering password that are to short')
-      this.data = this.data.filter((item) => {
-        return item.length >= this.options.minLength
-      })
-    }
-  }
-
-  private trimWhitespaces() {
-    if (this.options.trimWhitespaces) {
-      console.info('Filtering whitespaces')
-      this.data = this.data.map((l) => {
-        return l.trim()
-      })
-    }
-  }
-
-  private convertToLowerCase() {
-    if (this.options.toLowerCase) {
-      console.info('Converting to lowercase')
-      this.data = this.data.map((l) => l.toLowerCase())
-    }
   }
 
   public async run(): Promise<string[]> {
@@ -69,6 +45,7 @@ export default class HTMLGenerator {
     this.data = this.extractData(data)
     this.trimWhitespaces()
     this.convertToLowerCase()
+    this.removeDuplicates()
     this.filterMinLength()
     return this.data
   }

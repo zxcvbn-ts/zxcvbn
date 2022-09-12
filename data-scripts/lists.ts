@@ -134,6 +134,7 @@ export default {
         url: 'https://statbel.fgov.be/sites/default/files/files/documents/bevolking/5.10%20Namen%20en%20voornamen/5.10.1%20Familienamen/Familienamen_2020.xlsx',
         column: 5,
         row: 2,
+        minOccurrences: 50,
       },
     },
   },
@@ -151,6 +152,7 @@ export default {
         column: 1,
         row: 2,
         sheetName: 'Miehet kaikki',
+        minOccurrences: 50,
       },
     },
     femaleFirstnames: {
@@ -161,6 +163,7 @@ export default {
         column: 1,
         row: 2,
         sheetName: 'Naiset kaikki',
+        minOccurrences: 50,
       },
     },
     lastnames: {
@@ -171,6 +174,7 @@ export default {
         column: 1,
         row: 2,
         sheetName: 'Nimet',
+        minOccurrences: 50,
       },
     },
   },

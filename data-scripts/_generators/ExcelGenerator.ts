@@ -1,8 +1,11 @@
 import axios from 'axios'
 import XLSX from 'xlsx'
-import { promises as fs } from 'fs'
+import SimpleListGenerator, {
+  SimpleListGeneratorDefaultOptions,
+  SimpleListGeneratorOptions,
+} from './SimpleListGenerator'
 
-export type Options = {
+export interface Options extends SimpleListGeneratorOptions {
   url: string
   /**
    * Row + column indicate a cell coordinate, and will include all cells
@@ -10,61 +13,30 @@ export type Options = {
    */
   row: number
   column: number
-  trimWhitespaces?: boolean
-  toLowerCase?: boolean
-  removeDuplicates?: boolean
   sheetName?: string
-  /**
-   * The occurences count should be the cell after (right side) of the name.
-   * Set to undefined if occurences are missing in the excel file
-   */
-  minOccurrences?: number
 }
 
 const defaultOptions: Options = {
+  ...SimpleListGeneratorDefaultOptions,
   url: '',
   row: 1,
   column: 1,
-  trimWhitespaces: true,
-  toLowerCase: true,
-  removeDuplicates: true,
 }
 
-export class ExcelGenerator {
-  public options: Options
+interface ConstructorOptions {
+  options: Options
+}
 
-  values: string[] = []
+export class ExcelGenerator extends SimpleListGenerator<Options> {
+  data: string[] = []
 
-  constructor(options: Options) {
+  constructor({ options }: ConstructorOptions) {
+    super({ url: '', options })
     this.options = { ...defaultOptions }
     Object.assign(this.options, options)
   }
 
-  private trimWhitespaces() {
-    if (this.options.trimWhitespaces) {
-      console.info('Filtering whitespaces')
-      this.values = this.values.map((l) => l.trim())
-    }
-  }
-
-  private convertToLowerCase() {
-    if (this.options.toLowerCase) {
-      console.info('Converting to lowercase')
-      this.values = this.values.map((l) => l.toLowerCase())
-    }
-  }
-
-  private removeDuplicates() {
-    if (this.options.removeDuplicates) {
-      console.info('Filtering duplicates')
-      this.values = this.values.filter((item, pos) => {
-        return this.values.indexOf(item) === pos
-      })
-    }
-  }
-
-  // eslint-disable-next-line complexity,max-statements
-  public async run(output: string) {
+  async fetchValues() {
     // Download the file
     console.info('Fetching excel file')
     const response = await axios.get(this.options.url, {
@@ -82,6 +54,14 @@ export class ExcelGenerator {
     }
     const range = XLSX.utils.decode_range(sheet['!ref'])
 
+    return {
+      sheet,
+      range,
+    }
+  }
+
+  // eslint-disable-next-line complexity,max-statements
+  readSheet(range: XLSX.Range, sheet: XLSX.WorkSheet) {
     console.info('Reading values')
 
     // Loop until we reach an emtpy cell or the end
@@ -110,28 +90,31 @@ export class ExcelGenerator {
         if (!cellMin) {
           throw new Error(`Missing occurence at ${cellRefMin}`)
         }
-        const occurence = cellMin.v
+        const occurrence = cellMin.v
 
-        if (typeof occurence !== 'number') {
+        if (typeof occurrence !== 'number') {
           throw new Error(`Expecting number at ${cellRefMin}`)
         }
 
-        if (occurence < this.options.minOccurrences) {
+        if (occurrence < this.options.minOccurrences) {
           // Don't add this one
           // eslint-disable-next-line no-continue
           continue
         }
       }
-      this.values.push(value)
+      this.data.push(value)
     }
+  }
 
+  // eslint-disable-next-line complexity,max-statements
+  public async run(): Promise<string[]> {
+    const { range, sheet } = await this.fetchValues()
+
+    this.readSheet(range, sheet)
     this.trimWhitespaces()
     this.convertToLowerCase()
     this.removeDuplicates()
-
-    console.info('Saving to disk')
-
-    const json = JSON.stringify(this.values)
-    await fs.writeFile(`${output}.json`, json)
+    this.filterMinLength()
+    return this.data
   }
 }

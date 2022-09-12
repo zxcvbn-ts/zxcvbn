@@ -1,9 +1,6 @@
 import fs, { readdirSync } from 'fs'
 import path from 'path'
-
-interface LooseObject {
-  [key: string]: any
-}
+import { LooseObject } from '../_helpers/runtime'
 
 // returns the six adjacent coordinates on a standard keyboard, where each row is slanted to the
 // right from the last. adjacencies are clockwise, starting with key to the left, then two keys
