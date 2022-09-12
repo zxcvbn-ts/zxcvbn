@@ -7,12 +7,14 @@ Current supported languages:
 - German
 - English
 - Spain (Spain)
+- Finnish
 - French
+- Indonesia
 - Italian
-- Dutch (Belgium)
-- Portuguese (Brazilian)
-- Polish
 - Japanese
+- Dutch (Belgium)
+- Polish
+- Portuguese (Brazilian)
 
 ## Feedback
 
