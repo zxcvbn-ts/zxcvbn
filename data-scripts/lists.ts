@@ -203,6 +203,21 @@ export default {
       },
     },
   },
+  'id': {
+    commonWords: {
+      source:
+        'https://github.com/hermitdave/FrequencyWords/raw/master/content/2018/id/id_50k.txt',
+      options: { hasOccurrences: true },
+    },
+    firstnames: {
+      source:
+        'https://gist.githubusercontent.com/bagaswastu/35c80cdd8c32ca0b6aafa119e80e93ef/raw/13c57d71a3eaea0f59823eca5d22d1fb270aa56c/indonesia_names.txt',
+    },
+    lastnames: {
+      source:
+        'https://gist.githubusercontent.com/bagaswastu/35c80cdd8c32ca0b6aafa119e80e93ef/raw/13c57d71a3eaea0f59823eca5d22d1fb270aa56c/indonesia_names.txt',
+    },
+  },
   'es-es': {
     commonWords: {
       source:
