@@ -5,7 +5,7 @@ export default {
     simpleRepeat: 'Caracteres repetidos como "aaa" son fáciles de adivinar',
     extendedRepeat:
       'Patrones repetidos como "abcabcabc" son fáciles de adivinar.',
-    sequences: 'Common character sequences like "abc" are easy to guess.',
+    sequences: 'Patrones comunes como "abc" son fáciles de adivinar',
     recentYears: 'Los años recientes son fáciles de adivinar.',
     dates: 'Las fechas son fáciles de adivinar.',
     topTen: 'Es de las contraseñas más usadas.',
