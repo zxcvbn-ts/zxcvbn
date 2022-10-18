@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.1](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/language-es-es@2.1.0...@zxcvbn-ts/language-es-es@2.1.1) (2022-10-18)
+
+
+### Bug Fixes
+
+* **es-es:** resolve wrong sequences translation ([#141](https://github.com/zxcvbn-ts/zxcvbn/issues/141)) ([f2b3455](https://github.com/zxcvbn-ts/zxcvbn/commit/f2b345522971c8a08b13d745c8c5f7017ea2b0bf))
+
+
+
+
+
 # [2.1.0](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/language-es-es@2.0.1...@zxcvbn-ts/language-es-es@2.1.0) (2022-09-12)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/core@2.0.5...@zxcvbn-ts/core@2.1.0) (2022-10-18)
+
+
+### Features
+
+* **add-matcher:** add name for matcher warning ([f6ec48f](https://github.com/zxcvbn-ts/zxcvbn/commit/f6ec48f0bbe8e8b5225ac83b664d18349e45125e))
+
+
+
+
+
 ## [2.0.5](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/core@2.0.4...@zxcvbn-ts/core@2.0.5) (2022-09-12)
 
 **Note:** Version bump only for package @zxcvbn-ts/core
