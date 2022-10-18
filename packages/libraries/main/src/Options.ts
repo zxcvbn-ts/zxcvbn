@@ -134,7 +134,7 @@ export class Options {
 
   public addMatcher(name: string, matcher: Matcher) {
     if (this.matchers[name]) {
-      console.info('Matcher already exists')
+      console.info(`Matcher ${name} already exists`)
     } else {
       this.matchers[name] = matcher
     }
