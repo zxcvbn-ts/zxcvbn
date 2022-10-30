@@ -1,4 +1,4 @@
-import { distance } from './vendor/fastest-levenshtein'
+import { distance } from 'fastest-levenshtein'
 import { LooseObject } from './types'
 
 const getUsedThreshold = (
