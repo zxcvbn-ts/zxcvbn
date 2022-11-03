@@ -19,7 +19,7 @@ export default {
     commonNames:
       'Veelvoorkomende voor- en achternamen zijn makkelijk te raden.',
     userInputs: 'Vermijd persoonlijke of website gerelateerde woorden.',
-    pwned: 'Ihr Kennwort wurde durch eine Datenpanne im Internet offengelegt.',
+    pwned: 'Dit wachtwoord is in een datalek gevonden.',
   },
   suggestions: {
     l33t: "Vermijd voorspelbare vervangingen, zoals '@' voor 'a'.",
