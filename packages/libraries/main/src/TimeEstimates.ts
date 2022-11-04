@@ -1,5 +1,5 @@
 import zxcvbnOptions from './Options'
-import { CrackTimesDisplay, CrackTimesSeconds } from './types'
+import { CrackTimesDisplay, CrackTimesSeconds, Score } from './types'
 
 const SECOND = 1
 const MINUTE = SECOND * 60
@@ -62,7 +62,7 @@ class TimeEstimates {
     }
   }
 
-  guessesToScore(guesses: number) {
+  guessesToScore(guesses: number): Score {
     const DELTA = 5
     if (guesses < 1e3 + DELTA) {
       // risky password: "too guessable"
