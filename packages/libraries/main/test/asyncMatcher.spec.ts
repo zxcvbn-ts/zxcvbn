@@ -55,7 +55,7 @@ describe('asyncMatcher', () => {
   it('should throw an error for wrong function usage', async () => {
     expect(() => {
       zxcvbn('ep8fkw8ds')
-    }).toThrowError(
+    }).toThrow(
       'You are using a Promised matcher, please use `zxcvbnAsync` for it.',
     )
   })

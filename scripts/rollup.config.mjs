@@ -4,14 +4,16 @@ import commonjs from '@rollup/plugin-commonjs'
 import typescript from '@rollup/plugin-typescript'
 import del from 'rollup-plugin-delete'
 import nodeResolve from '@rollup/plugin-node-resolve'
-import json from './jsonPlugin'
+import json from './jsonPlugin.mjs'
 
 const packagePath = process.cwd()
-// eslint-disable-next-line import/no-dynamic-require
-const pkg = require(path.join(packagePath, 'package.json'))
 
 let generateCounter = 0
-const generateConfig = (type) => {
+const generateConfig = async (type) => {
+  // eslint-disable-next-line import/no-dynamic-require
+  const pkg = await import(path.join(packagePath, 'package.json'), {
+    assert: { type: "json" },
+  })
   let typescriptOptions = {
     declaration: false,
   }
@@ -23,6 +25,7 @@ const generateConfig = (type) => {
     entryFileNames: '[name].js',
     assetFileNames: '[name].js',
     sourcemap: true,
+    preserveModules: type !== 'iife',
   }
   if (type === 'esm') {
     typescriptOptions = {
@@ -41,7 +44,7 @@ const generateConfig = (type) => {
   }
 
   if (type === 'iife') {
-    output.name = pkg.name.replace('@', '').replace('-', '').replace('/', '.')
+    output.name = pkg.default.name.replace('@', '').replace('-', '').replace('/', '.')
     output.entryFileNames = 'zxcvbn-ts.js'
     output.assetFileNames = 'zxcvbn-ts.js'
   }
@@ -78,12 +81,11 @@ const generateConfig = (type) => {
       }),
     ],
     external,
-    preserveModules: type !== 'iife',
   }
 }
 
-export default [
+export default Promise.all([
   generateConfig('esm'),
   generateConfig('cjs'),
   generateConfig('iife'),
-]
+])
