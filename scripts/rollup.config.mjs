@@ -5,15 +5,17 @@ import typescript from '@rollup/plugin-typescript'
 import del from 'rollup-plugin-delete'
 import nodeResolve from '@rollup/plugin-node-resolve'
 import json from './jsonPlugin.mjs'
+import fs from 'fs'
 
 const packagePath = process.cwd()
 
 let generateCounter = 0
 const generateConfig = async (type) => {
-  // eslint-disable-next-line import/no-dynamic-require
-  const pkg = await import(path.join(packagePath, 'package.json'), {
-    assert: { type: "json" },
-  })
+  const pkgString = fs.readFileSync(
+    path.join(packagePath, 'package.json'),
+    'utf-8',
+  )
+  const pkg = JSON.parse(pkgString)
   let typescriptOptions = {
     declaration: false,
   }
@@ -44,7 +46,7 @@ const generateConfig = async (type) => {
   }
 
   if (type === 'iife') {
-    output.name = pkg.default.name.replace('@', '').replace('-', '').replace('/', '.')
+    output.name = pkg.name.replace('@', '').replace('-', '').replace('/', '.')
     output.entryFileNames = 'zxcvbn-ts.js'
     output.assetFileNames = 'zxcvbn-ts.js'
   }
