@@ -4,7 +4,7 @@ import { ALL_UPPER_INVERTED, START_UPPER } from '../../data/const'
 
 const getDictionaryWarningPassword = (
   match: MatchEstimated,
-  isSoleMatch?: Boolean,
+  isSoleMatch?: boolean,
 ) => {
   let warning = ''
   if (isSoleMatch && !match.l33t && !match.reversed) {
@@ -23,7 +23,7 @@ const getDictionaryWarningPassword = (
 
 const getDictionaryWarningWikipedia = (
   match: MatchEstimated,
-  isSoleMatch?: Boolean,
+  isSoleMatch?: boolean,
 ) => {
   let warning = ''
   if (isSoleMatch) {
@@ -34,7 +34,7 @@ const getDictionaryWarningWikipedia = (
 
 const getDictionaryWarningNames = (
   match: MatchEstimated,
-  isSoleMatch?: Boolean,
+  isSoleMatch?: boolean,
 ) => {
   if (isSoleMatch) {
     return zxcvbnOptions.translations.warnings.namesByThemselves
@@ -42,7 +42,7 @@ const getDictionaryWarningNames = (
   return zxcvbnOptions.translations.warnings.commonNames
 }
 
-const getDictionaryWarning = (match: MatchEstimated, isSoleMatch?: Boolean) => {
+const getDictionaryWarning = (match: MatchEstimated, isSoleMatch?: boolean) => {
   let warning = ''
   const dictName = match.dictionaryName
   const isAName =
@@ -59,7 +59,7 @@ const getDictionaryWarning = (match: MatchEstimated, isSoleMatch?: Boolean) => {
   return warning
 }
 
-export default (match: MatchEstimated, isSoleMatch?: Boolean) => {
+export default (match: MatchEstimated, isSoleMatch?: boolean) => {
   const warning = getDictionaryWarning(match, isSoleMatch)
   const suggestions: string[] = []
   const word = match.token

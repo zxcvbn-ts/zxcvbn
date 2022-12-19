@@ -8,7 +8,7 @@
 | graphs                 | Object  | {}                | Keyboard layout to check for patterns on different kind of keyboards  |
 | l33tTable              | Object  | L33tTable         | Table with matching alphabetical chars into numbers and special chars |
 | translations           | Object  | Translations keys | Translations for the feedback                                         |
-| useLevenshteinDistance | Boolean | false             | Activate levenshtein                                                  |
+| useLevenshteinDistance | boolean | false             | Activate levenshtein                                                  |
 | levenshteinThreshold   | number  | 2                 | Threshold for levenshtein                                             |
 
 ### dictionary
