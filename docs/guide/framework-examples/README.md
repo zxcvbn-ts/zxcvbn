@@ -1,5 +1,5 @@
 # Framework examples
-Those examples are using the full feature set of zxcvbn, and are marked with `recommanded` and `optional`
+Those examples are using the full feature set of zxcvbn, and are marked with `recommended` and `optional`
 
 
 ## Vue
@@ -80,7 +80,69 @@ export default {
 
 
 ## React
-tbd.
+```jsx
+import { useState, useEffect, useDeferredValue } from "react";
+import { zxcvbnOptions, zxcvbnAsync, ZxcvbnResult } from "@zxcvbn-ts/core";
+import zxcvbnCommonPackage from "@zxcvbn-ts/language-common";
+import zxcvbnEnPackage from "@zxcvbn-ts/language-en";
+import zxcvbnDePackage from "@zxcvbn-ts/language-de";
+import matcherPwnedFactory from "@zxcvbn-ts/matcher-pwned";
+
+// optional
+const matcherPwned = matcherPwnedFactory(fetch, zxcvbnOptions);
+zxcvbnOptions.addMatcher("pwned", matcherPwned);
+
+const options = {
+  // recommended
+  dictionary: {
+    ...zxcvbnCommonPackage.dictionary,
+    ...zxcvbnEnPackage.dictionary,
+    // recommended the language of the country that the user will be in
+    ...zxcvbnDePackage.dictionary
+  },
+  // recommended
+  graphs: zxcvbnCommonPackage.adjacencyGraphs,
+  // recommended
+  useLevenshteinDistance: true,
+  // optional
+  translations: zxcvbnEnPackage.translations
+};
+zxcvbnOptions.setOptions(options);
+
+const usePasswordStrength = (password: string) => {
+  const [result, setResult] = useState<ZxcvbnResult | null>(null);
+  // NOTE: useDeferredValue is React v18 only, for v17 or lower use debouncing
+  const deferredPassword = useDeferredValue(password);
+
+  useEffect(() => {
+    zxcvbnAsync(deferredPassword).then((response) => setResult(response));
+  }, [deferredPassword]);
+
+  return result;
+};
+
+export default function PasswordStrength() {
+  const [password, setPassword] = useState<string>("");
+  const result = usePasswordStrength(password);
+  return (
+    <div>
+      <label>
+        Password:
+        <input
+          value={password}
+          type="text"
+          onChange={(e) => {
+            setPassword(e.target.value);
+          }}
+        />
+      </label>
+      {result && <div>The password score is {result.score}/4</div>}
+    </div>
+  );
+}
+
+
+```
 
 
 
