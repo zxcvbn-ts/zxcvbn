@@ -1,5 +1,5 @@
-import { Matcher } from '@zxcvbn-ts/core/src/types'
-import { Options } from '@zxcvbn-ts/core/src/Options'
+import { Matcher } from '@zxcvbn-ts/core/dist/types'
+import { Options } from '@zxcvbn-ts/core/dist/Options'
 import MatchPwned from './matching'
 import scoring from './scoring'
 import FeedbackFactory from './feedback'

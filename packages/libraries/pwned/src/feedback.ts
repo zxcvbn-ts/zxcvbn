@@ -1,4 +1,4 @@
-import { Options } from '@zxcvbn-ts/core/src/Options'
+import { Options } from '@zxcvbn-ts/core/dist/Options'
 
 export default (options: Options) => {
   return () => {
