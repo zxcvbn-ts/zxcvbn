@@ -1,4 +1,4 @@
-import { MatchExtended, MatchOptions } from '@zxcvbn-ts/core/dist/types'
+import { MatchExtended, MatchOptions } from '@zxcvbn-ts/core'
 import haveIBeenPwned from './haveIBeenPwned'
 
 /*
