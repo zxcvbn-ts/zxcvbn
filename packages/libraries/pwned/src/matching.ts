@@ -1,12 +1,13 @@
 import { MatchExtended, MatchOptions } from '@zxcvbn-ts/core/src/types'
 import haveIBeenPwned from './haveIBeenPwned'
+import { FetchApi } from './types'
 
 /*
  * -------------------------------------------------------------------------------
  *  Have i been pwned matching factory ---------------------------------------------------
  * -------------------------------------------------------------------------------
  */
-export default (universalFetch: Function, url?: string) => {
+export default (universalFetch: FetchApi, url?: string) => {
   return class MatchPwned {
     async match({ password }: MatchOptions) {
       const matches: MatchExtended[] = []

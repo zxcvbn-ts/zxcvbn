@@ -94,6 +94,7 @@ module.exports = {
         object: true,
       },
     ],
+    '@typescript-eslint/ban-types': 'error',
   },
   overrides: [
     {

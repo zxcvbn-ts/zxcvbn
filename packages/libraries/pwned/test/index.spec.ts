@@ -8,6 +8,7 @@ describe('main', () => {
         return `008A205652858375D71117A63004CC75167:5\r\n3EA386688A0147AB736AABCEDE496610382:244`
       },
     }))
+    // @ts-ignore
     zxcvbnOptions.matchers.pwned = matcherPwnedFactory(fetch, zxcvbnOptions)
     const result = await zxcvbnAsync('P4$$w0rd')
 

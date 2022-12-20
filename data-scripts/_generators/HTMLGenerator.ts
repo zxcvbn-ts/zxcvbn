@@ -7,7 +7,7 @@ import { LooseObject } from '../_helpers/runtime'
 
 interface Options extends SimpleListGeneratorOptions {
   requestConfig?: LooseObject
-  extractorFunction: Function
+  extractorFunction: (entry: any) => string[]
 }
 
 const defaultOptions: Options = {

@@ -1,16 +1,22 @@
 import utils from './utils'
 import estimateGuesses from './estimate'
 import { MIN_GUESSES_BEFORE_GROWING_SEQUENCE } from '../data/const'
-import { MatchExtended, BruteForceMatch, MatchEstimated } from '../types'
+import {
+  MatchExtended,
+  BruteForceMatch,
+  MatchEstimated,
+  LooseObject,
+} from '../types'
 
 const scoringHelper = {
   password: '',
   optimal: {} as any,
   excludeAdditive: false,
   fillArray(size: number, valueType: 'object' | 'array') {
-    const result: typeof valueType extends 'array' ? string[] : {}[] = []
+    const result: typeof valueType extends 'array' ? string[] : LooseObject[] =
+      []
     for (let i = 0; i < size; i += 1) {
-      let value: [] | {} = []
+      let value: [] | LooseObject = []
       if (valueType === 'object') {
         value = {}
       }

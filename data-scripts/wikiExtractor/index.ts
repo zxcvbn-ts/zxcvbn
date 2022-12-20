@@ -129,7 +129,11 @@ class TopTokenCounter {
   }
 }
 
-const readLinePromise = (readInterface: any, callback: Function) => {
+type ReadLinePromiseCallback = (line: string) => void
+const readLinePromise = (
+  readInterface: readline.Interface,
+  callback: ReadLinePromiseCallback,
+) => {
   // eslint-disable-next-line compat/compat
   return new Promise((resolve) => {
     readInterface.on('line', callback)

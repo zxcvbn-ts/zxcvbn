@@ -1,3 +1,5 @@
+import { FetchApi } from './types'
+
 const isNodeJs =
   typeof process !== 'undefined' &&
   process.release &&
@@ -42,7 +44,7 @@ const pwnedUrl = 'https://api.pwnedpasswords.com/range/'
 
 export default async (
   password: string,
-  universalFetch: Function,
+  universalFetch: FetchApi,
   url: string = pwnedUrl,
 ) => {
   if (!universalFetch) {
@@ -54,13 +56,13 @@ export default async (
   const response = await universalFetch(`${url}${range}`, {
     method: 'GET',
     headers: {
-      'Add-Padding': true,
+      'Add-Padding': 'true',
     },
   }).catch(() => {
     return false
   })
 
-  if (!response || response.status >= 400) {
+  if (typeof response === 'boolean' || response.status >= 400) {
     return false
   }
 
