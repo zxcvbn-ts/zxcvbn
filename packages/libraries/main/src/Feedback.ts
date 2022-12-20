@@ -83,7 +83,7 @@ class Feedback {
     return longestMatch
   }
 
-  getMatchFeedback(match: MatchEstimated, isSoleMatch: Boolean) {
+  getMatchFeedback(match: MatchEstimated, isSoleMatch: boolean) {
     if (this.matchers[match.pattern]) {
       return this.matchers[match.pattern](match, isSoleMatch)
     }

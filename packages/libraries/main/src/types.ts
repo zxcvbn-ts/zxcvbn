@@ -172,7 +172,7 @@ export interface RankedDictionaries {
 
 export type DefaultFeedbackFunction = (
   match: MatchEstimated,
-  isSoleMatch?: Boolean,
+  isSoleMatch?: boolean,
 ) => FeedbackType | null
 
 export type DefaultScoringFunction = (
