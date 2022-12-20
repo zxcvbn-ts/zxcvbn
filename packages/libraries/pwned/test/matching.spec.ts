@@ -8,6 +8,7 @@ const fetch = jest.fn(async () => ({
 }))
 
 describe('pwned matching', () => {
+  // @ts-ignore
   const matcherPwned = matchPwnedFactory(fetch, zxcvbnOptions)
   it('should return a match', async () => {
     const matchPwned = new matcherPwned.Matching()

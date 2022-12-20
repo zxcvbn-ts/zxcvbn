@@ -1,14 +1,15 @@
 import { DictionaryMatch } from '../../../../types'
+import { DefaultMatch } from '../../types'
 
 /*
  * -------------------------------------------------------------------------------
  *  Dictionary reverse matching --------------------------------------------------
  * -------------------------------------------------------------------------------
  */
-class MatchL33t {
-  defaultMatch: Function
+class MatchReverse {
+  defaultMatch: DefaultMatch
 
-  constructor(defaultMatch: Function) {
+  constructor(defaultMatch: DefaultMatch) {
     this.defaultMatch = defaultMatch
   }
 
@@ -27,4 +28,4 @@ class MatchL33t {
   }
 }
 
-export default MatchL33t
+export default MatchReverse

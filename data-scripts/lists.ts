@@ -11,6 +11,7 @@ export interface LanguageListEntry {
   options?: {
     [key: string]: any
   }
+  // eslint-disable-next-line @typescript-eslint/ban-types
   generator?: Function
   customList?: boolean
 }
@@ -25,7 +26,7 @@ const polishFirstnamesOptions = {
   hasOccurrences: true,
   minOccurrences: 200,
   splitter: '\r\n',
-  clearLine: (line: String) => {
+  clearLine: (line: string) => {
     const lineArray = line.split(',')
     return `${lineArray[0]} ${lineArray[2]}`
   },

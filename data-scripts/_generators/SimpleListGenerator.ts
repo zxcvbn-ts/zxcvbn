@@ -12,7 +12,7 @@ export interface SimpleListGeneratorOptions {
   hasOccurrences: boolean
   minOccurrences: number
   minLength: number
-  clearLine: Function
+  clearLine: (entry: string) => string
 }
 
 export const SimpleListGeneratorDefaultOptions: SimpleListGeneratorOptions = {

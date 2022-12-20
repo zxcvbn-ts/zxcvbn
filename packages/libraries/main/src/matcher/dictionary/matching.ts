@@ -6,10 +6,7 @@ import zxcvbnOptions from '../../Options'
 import { DictionaryNames, DictionaryMatch, L33tMatch } from '../../types'
 import Reverse from './variants/matching/reverse'
 import L33t from './variants/matching/l33t'
-
-interface DictionaryMatchOptions {
-  password: string
-}
+import { DictionaryMatchOptions } from './types'
 
 class MatchDictionary {
   l33t: L33t

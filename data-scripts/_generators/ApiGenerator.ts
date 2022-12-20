@@ -7,7 +7,7 @@ import { LooseObject } from '../_helpers/runtime'
 
 interface Options extends SimpleListGeneratorOptions {
   requestConfig?: LooseObject
-  mapFunction: Function
+  mapFunction: (entry: any) => any
 }
 
 const defaultOptions: Options = {

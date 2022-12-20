@@ -6,6 +6,7 @@ import {
   LooseObject,
   OptionsL33tTable,
 } from '../../../../types'
+import { DefaultMatch } from '../../types'
 
 type Subs = string[][][]
 
@@ -15,9 +16,9 @@ type Subs = string[][][]
  * -------------------------------------------------------------------------------
  */
 class MatchL33t {
-  defaultMatch: Function
+  defaultMatch: DefaultMatch
 
-  constructor(defaultMatch: Function) {
+  constructor(defaultMatch: DefaultMatch) {
     this.defaultMatch = defaultMatch
   }
 
