@@ -45,9 +45,15 @@ export default class ApiGenerator extends SimpleListGenerator<Options> {
     }
   }
 
-  public async run(): Promise<string[]> {
+  public async run(): Promise<string[] | null> {
     console.info('Downloading')
-    const data = await this.getData()
+    let data = []
+    try {
+      data = await this.getData()
+    } catch (error: any) {
+      console.info('!!!!!! ERROR: getData had an error !!!!!!', error.message)
+      return null
+    }
     if (this.options.mapFunction) {
       this.data = data.map(this.options.mapFunction)
     }

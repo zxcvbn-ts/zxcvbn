@@ -39,10 +39,16 @@ export class ExcelGenerator extends SimpleListGenerator<Options> {
   async fetchValues() {
     // Download the file
     console.info('Fetching excel file')
-    const response = await axios.get(this.options.url, {
-      responseType: 'arraybuffer',
-    })
-    const data = new Uint8Array(response.data)
+    let data
+    try {
+      const response = await axios.get(this.options.url, {
+        responseType: 'arraybuffer',
+      })
+      data = new Uint8Array(response.data)
+    } catch (error: any) {
+      console.info('!!!!!! ERROR: getData had an error !!!!!!', error.message)
+      return null
+    }
 
     console.info('Parsing file')
     const workbook = XLSX.read(data, { type: 'array' })
@@ -106,11 +112,14 @@ export class ExcelGenerator extends SimpleListGenerator<Options> {
     }
   }
 
-  // eslint-disable-next-line complexity,max-statements
-  public async run(): Promise<string[]> {
-    const { range, sheet } = await this.fetchValues()
+  public async run(): Promise<string[] | null> {
+    const values = await this.fetchValues()
 
-    this.readSheet(range, sheet)
+    if (!values) {
+      return null
+    }
+
+    this.readSheet(values.range, values.sheet)
     this.trimWhitespaces()
     this.convertToLowerCase()
     this.removeDuplicates()
