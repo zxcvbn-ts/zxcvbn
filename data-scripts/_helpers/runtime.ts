@@ -50,9 +50,15 @@ export default class ListHandler {
       if (!fs.existsSync(folder)) {
         fs.mkdirSync(folder, { recursive: true })
       }
+
       // eslint-disable-next-line no-await-in-loop
-      const data = JSON.stringify(await generator.run())
-      fs.writeFileSync(path.join(folder, `${options.filename}.json`), `${data}`)
+      const data = await generator.run()
+      if (data) {
+        fs.writeFileSync(
+          path.join(folder, `${options.filename}.json`),
+          JSON.stringify(data),
+        )
+      }
       // eslint-disable-next-line no-console
       console.timeEnd(options.filename)
       console.info(

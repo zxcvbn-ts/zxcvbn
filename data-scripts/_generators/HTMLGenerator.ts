@@ -39,10 +39,15 @@ export default class HTMLGenerator extends SimpleListGenerator<Options> {
     return this.options.extractorFunction(data)
   }
 
-  public async run(): Promise<string[]> {
+  public async run(): Promise<string[] | null> {
     console.info('Downloading')
-    const data = await this.getData()
-    this.data = this.extractData(data)
+    try {
+      const data = await this.getData()
+      this.data = this.extractData(data)
+    } catch (error: any) {
+      console.info('!!!!!! ERROR: getData had an error !!!!!!', error.message)
+      return null
+    }
     this.trimWhitespaces()
     this.convertToLowerCase()
     this.removeDuplicates()

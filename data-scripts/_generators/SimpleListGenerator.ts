@@ -125,10 +125,15 @@ export default class SimpleListGenerator<
     }
   }
 
-  public async run(): Promise<string[]> {
+  public async run(): Promise<string[] | null> {
     console.info('Downloading')
-    const data = await this.getData()
-    this.data = data.split(this.options.splitter)
+    try {
+      const data = await this.getData()
+      this.data = data.split(this.options.splitter)
+    } catch (error: any) {
+      console.info('!!!!!! ERROR: getData had an error !!!!!!', error.message)
+      return null
+    }
     this.clearLine()
     this.filterOccurrences()
     this.commentPrefixes()
@@ -136,6 +141,7 @@ export default class SimpleListGenerator<
     this.convertToLowerCase()
     this.removeDuplicates()
     this.filterMinLength()
+
     return this.data
   }
 }
