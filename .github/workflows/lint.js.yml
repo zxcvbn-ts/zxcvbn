@@ -26,5 +26,8 @@ jobs:
       - name: Install Node.js dependencies
         run: yarn --frozen-lockfile
 
+      - name: Build source
+        run: yarn build
+
       - name: Run linter
         run: yarn lint
