@@ -1,3 +1,4 @@
+// @ts-ignore
 import { Matcher, Options } from '@zxcvbn-ts/core'
 import MatchPwned from './matching'
 import scoring from './scoring'

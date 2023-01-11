@@ -1,3 +1,4 @@
+// @ts-ignore
 import { Options } from '@zxcvbn-ts/core'
 
 export default (options: Options) => {

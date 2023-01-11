@@ -1,3 +1,4 @@
+// @ts-ignore
 import { MatchExtended, MatchOptions } from '@zxcvbn-ts/core'
 import haveIBeenPwned from './haveIBeenPwned'
 
