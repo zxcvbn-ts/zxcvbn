@@ -1,4 +1,5 @@
-import { Options } from '@zxcvbn-ts/core/src/Options'
+// @ts-ignore
+import { Options } from '@zxcvbn-ts/core'
 
 export default (options: Options) => {
   return () => {
