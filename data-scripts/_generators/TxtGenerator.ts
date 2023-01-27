@@ -36,7 +36,7 @@ export class TxtGenerator extends SimpleListGenerator<Options> {
     Object.assign(this.options, options)
   }
 
-  // eslint-disable-next-line max-statements
+  // eslint-disable-next-line max-statements,complexity
   public async run() {
     // Download the file
     console.info('Fetching file')
