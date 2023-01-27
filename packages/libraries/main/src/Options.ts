@@ -33,10 +33,13 @@ export class Options {
 
   levenshteinThreshold: number = 2
 
+  l33tMaxSubstitutions: number = 100
+
   constructor() {
     this.setRankedDictionaries()
   }
 
+  // eslint-disable-next-line max-statements
   setOptions(options: OptionsType = {}) {
     if (options.l33tTable) {
       this.l33tTable = options.l33tTable
@@ -62,6 +65,10 @@ export class Options {
 
     if (options.levenshteinThreshold !== undefined) {
       this.levenshteinThreshold = options.levenshteinThreshold
+    }
+
+    if (options.l33tMaxSubstitutions !== undefined) {
+      this.l33tMaxSubstitutions = options.l33tMaxSubstitutions
     }
   }
 
