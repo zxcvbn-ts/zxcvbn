@@ -27,10 +27,10 @@ class MatchL33t {
     const enumeratedSubs = this.enumerateL33tSubs(
       this.relevantL33tSubtable(password, zxcvbnOptions.l33tTable),
     )
-    const length =
-      enumeratedSubs.length <= zxcvbnOptions.l33tMaxSubstitutions
-        ? enumeratedSubs.length
-        : zxcvbnOptions.l33tMaxSubstitutions
+    const length = Math.min(
+      enumeratedSubs.length,
+      zxcvbnOptions.l33tMaxSubstitutions,
+    )
     for (let i = 0; i < length; i += 1) {
       const sub = enumeratedSubs[i]
       // corner case: password has no relevant subs.
