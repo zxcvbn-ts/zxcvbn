@@ -32,12 +32,16 @@ class MatchDictionary {
     const passwordLength = password.length
     const passwordLower = password.toLowerCase()
 
-    // eslint-disable-next-line complexity
+    // eslint-disable-next-line complexity,max-statements
     Object.keys(zxcvbnOptions.rankedDictionaries).forEach((dictionaryName) => {
       const rankedDict =
         zxcvbnOptions.rankedDictionaries[dictionaryName as DictionaryNames]
+      const longestDictionaryWordSize =
+        zxcvbnOptions.rankedDictionariesMaxWordSize[dictionaryName]
+      const searchWidth = Math.min(longestDictionaryWordSize, passwordLength)
       for (let i = 0; i < passwordLength; i += 1) {
-        for (let j = i; j < passwordLength; j += 1) {
+        const searchEnd = Math.min(i + searchWidth, passwordLength)
+        for (let j = i; j < searchEnd; j += 1) {
           const usedPassword = passwordLower.slice(i, +j + 1 || 9e9)
           const isInDictionary = usedPassword in rankedDict
           let foundLevenshteinDistance: Partial<FindLevenshteinDistanceResult> =
