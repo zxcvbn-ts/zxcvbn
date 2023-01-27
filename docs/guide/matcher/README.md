@@ -102,7 +102,10 @@ token = RandomRandom
 ```
 The found token starts at character 5 and ends at character 16.
 
-The scoring function will get the array of matches that you returned in the matching function so if you need any additional data to calculate your scoring feel free to add it to the matching object. 
+The scoring function will get the array of matches that you returned in the matching function so if you need any additional data to calculate your scoring feel free to add it to the matching object.
+The scoring function should return a guess count which seems appropriate for you. The guess count means how often an attacker would need to get the password.
+
+The feedback function is used to give the user feedback about the found token of your matcher. It can have a warning and multiple suggestions.
 
 
 ## Matcher libraries
