@@ -1,11 +1,13 @@
 import MatchL33t from '../../../../../src/matcher/dictionary/variants/matching/l33t'
 import MatchDictionary from '../../../../../src/matcher/dictionary/matching'
 import checkMatches from '../../../../helper/checkMatches'
+import * as helperApi from '../../../../../src/helper'
 import Options from '../../../../../src/Options'
 import { LooseObject } from '../../../../../src/types'
 
 Options.setOptions()
 const dictionaryMatcher = new MatchDictionary()
+const spyTranslate = jest.spyOn(helperApi, 'translate')
 
 describe('l33t matching', () => {
   let msg
@@ -31,12 +33,19 @@ describe('l33t matching', () => {
   Options.setOptions({
     dictionary: dicts,
     l33tTable: testTable,
+    l33tMaxSubstitutions: 15,
   })
   const matchL33t = new MatchL33t(dictionaryMatcher.defaultMatch)
 
   describe('main match', () => {
     it("doesn't match ''", () => {
       expect(matchL33t.match({ password: '' })).toEqual([])
+    })
+
+    it('should not go over max substitutions', () => {
+      // this password has 16 substitutions with the custom dictionary
+      matchL33t.match({ password: '4@8({[</369&#!1/|0$5' })
+      expect(spyTranslate).toHaveBeenCalledTimes(15)
     })
 
     it("doesn't match pure dictionary words", () => {

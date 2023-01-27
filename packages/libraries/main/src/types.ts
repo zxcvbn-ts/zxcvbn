@@ -160,6 +160,7 @@ export interface OptionsType {
   dictionary?: OptionsDictionary
   useLevenshteinDistance?: boolean
   levenshteinThreshold?: number
+  l33tMaxSubstitutions?: number
 }
 
 export interface RankedDictionary {
