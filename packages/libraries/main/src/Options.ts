@@ -35,7 +35,7 @@ export class Options {
 
   levenshteinThreshold: number = 2
 
-  l33tMaxSubstitutions: number = 400
+  l33tMaxSubstitutions: number = 100
 
   constructor() {
     this.setRankedDictionaries()
