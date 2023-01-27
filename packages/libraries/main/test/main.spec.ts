@@ -16,7 +16,7 @@ describe('main', () => {
   })
 
   it('should check without userInputs', () => {
-    const result = zxcvbn('4@8({[</369&#!1/|0$5')
+    const result = zxcvbn('test')
     expect(result.calcTime).toBeDefined()
     result.calcTime = 0
     expect(result).toEqual({
