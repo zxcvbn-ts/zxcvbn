@@ -30,9 +30,21 @@ export type DictionaryNames =
   | 'userInputs'
 
 export interface Match {
+  /**
+   * @description The name of the matcher
+   */
   pattern: Pattern
+  /**
+   * @description The start index of the token found in the password
+   */
   i: number
+  /**
+   @description The end index of the token found in the password
+   */
   j: number
+  /**
+   * @description The token found in the password
+   */
   token: string
   [key: string]: any
 }
@@ -154,12 +166,36 @@ export interface OptionsGraph {
 }
 
 export interface OptionsType {
+  /**
+   * @description Defines an object with a key value match to translate the feedback given by this library. The default values are plain keys so that you can use your own i18n library. Already implemented language can be found with something like @zxcvbn-ts/language-en.
+   */
   translations?: TranslationKeys
+  /**
+   * @description Defines keyboard layouts as an object which are used to find sequences. Already implemented layouts can be found in @zxcvbn-ts/language-common
+   */
   graphs?: OptionsGraph
+  /**
+   * @description Define an object with l33t substitutions. For example that an "a" can be exchanged with a "4" or a "@".
+   */
   l33tTable?: OptionsL33tTable
+  /**
+   * @description Define dictionary that should be used to check against. The matcher will search the dictionaries for similar password with l33t speak and reversed words. The recommended sets are found in @zxcvbn-ts/language-common and @zxcvbn-ts/language-en.
+   */
   dictionary?: OptionsDictionary
+  /**
+   * @description Defines if the levenshtein algorithm should be used. This will be only used on the complete password and not on parts of it. This will decrease the calcTime a bit but will significantly improve the password check. The recommended sets are found in @zxcvbn-ts/language-common and @zxcvbn-ts/language-en.
+   * @default false
+   */
   useLevenshteinDistance?: boolean
+  /**
+   * @description Defines how many characters can be different to match a dictionary word with the levenshtein algorithm.
+   * @default 2
+   */
   levenshteinThreshold?: number
+  /**
+   * @description The l33t matcher will check how many characters can be exchanged with the l33t table. If they are to many it will decrease the calcTime significantly. So we cap it at a reasonable value by default which will probably already seems like a strong password anyway.
+   * @default 100
+   */
   l33tMaxSubstitutions?: number
 }
 
@@ -182,6 +218,9 @@ export type DefaultScoringFunction = (
 
 export interface MatchOptions {
   password: string
+  /**
+   * @description This is the original Matcher so that one can use other matchers to define a baseGuess. An usage example is the repeat matcher
+   */
   omniMatch: Matching
 }
 
