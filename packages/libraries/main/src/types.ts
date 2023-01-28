@@ -161,6 +161,10 @@ export interface OptionsType {
   useLevenshteinDistance?: boolean
   levenshteinThreshold?: number
   l33tMaxSubstitutions?: number
+  /**
+   * @description Defines how many character of the password are checked. A password longer than the default are considered strong anyway, but it can be increased as pleased. Be aware that this could open some attack vectors.
+   * @default 256
+   */
   maxLength?: number
 }
 
