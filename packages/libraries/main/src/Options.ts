@@ -29,13 +29,13 @@ export class Options {
 
   graphs: OptionsGraph = {}
 
-  availableGraphs: string[] = []
-
   useLevenshteinDistance: boolean = false
 
   levenshteinThreshold: number = 2
 
   l33tMaxSubstitutions: number = 100
+
+  maxLength: number = 256
 
   constructor() {
     this.setRankedDictionaries()
@@ -71,6 +71,10 @@ export class Options {
 
     if (options.l33tMaxSubstitutions !== undefined) {
       this.l33tMaxSubstitutions = options.l33tMaxSubstitutions
+    }
+
+    if (options.maxLength !== undefined) {
+      this.maxLength = options.maxLength
     }
   }
 

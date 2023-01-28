@@ -158,9 +158,18 @@ describe('main', () => {
     })
   })
 
-  it('should not die while processing and have a appropriate calcTime', () => {
-    const result = zxcvbn('4@8({[</369&#!1/|0$5+7%2/4@8({[</369&#!1/|0$5+7%2/"')
-    expect(result.calcTime).toBeLessThan(2000)
+  describe('attack vectors', () => {
+    it('should not die while processing and have a appropriate calcTime for l33t attack', () => {
+      const result = zxcvbn(
+        '4@8({[</369&#!1/|0$5+7%2/4@8({[</369&#!1/|0$5+7%2/"',
+      )
+      expect(result.calcTime).toBeLessThan(2000)
+    })
+
+    it('should not die while processing and have a appropriate calcTime for regex attacks', () => {
+      const result = zxcvbn(`\x00\x00${'\x00'.repeat(100)}\n`)
+      expect(result.calcTime).toBeLessThan(2000)
+    })
   })
 
   describe('password tests', () => {
