@@ -56,10 +56,11 @@ export const zxcvbnAsync = async (
   password: string,
   userInputs?: (string | number)[],
 ): Promise<ZxcvbnResult> => {
+  const usedPassword = password.substring(0, zxcvbnOptions.maxLength)
   const start = time()
-  const matches = await main(password, userInputs)
+  const matches = await main(usedPassword, userInputs)
 
-  return createReturnValue(matches, password, start)
+  return createReturnValue(matches, usedPassword, start)
 }
 
 export {
