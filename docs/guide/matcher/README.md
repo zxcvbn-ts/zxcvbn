@@ -43,7 +43,7 @@ You can create matcher if you need which can be async. If you create an async ma
 ### create a custom matcher
 
 This is an example to create a custom matcher to check for the minLength. The scoring is just for showing purpose and should be adjusted to your needs.
-Be aware that we don't recommend using a minLength matcher
+Be aware that we don't recommend using a minLength matcher.
 
 ```ts
 import { zxcvbnOptions } from '@zxcvbn-ts/core'
@@ -86,6 +86,27 @@ const minLengthMatcher: Matcher = {
 
 zxcvbnOptions.addMatcher('minLength', minLengthMatcher)
 ```
+
+The Matching function needs to return an array with matched tokens. The four default properties are mandatory but the object can be extended as pleased.
+`pattern` is the name of the matcher that found the token
+`token` is the part of the password was found with the matcher
+`i` is the start index of the token inside the password
+`j` is the end index of the token inside the password
+
+For example for the repeat matcher we have this string: `suchARandomRandomPassword`.
+This would result in:
+```
+i = 5
+j = 16
+token = RandomRandom
+```
+The found token starts at character 5 and ends at character 16.
+
+The scoring function will get the array of matches that you returned in the matching function so if you need any additional data to calculate your scoring feel free to add it to the matching object.
+The scoring function should return a guess count which seems appropriate for you. The guess count means how often an attacker would need to get the password.
+
+The feedback function is used to give the user feedback about the found token of your matcher. It can have a warning and multiple suggestions.
+
 
 ## Matcher libraries
 
