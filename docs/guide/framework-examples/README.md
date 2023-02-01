@@ -3,6 +3,40 @@ Those examples are using the full feature set of zxcvbn, and are marked with `re
 
 
 ## Vue
+Use a plugin to only update the options once 
+```ts
+import { zxcvbnOptions } from '@zxcvbn-ts/core'
+import zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
+import zxcvbnEnPackage from '@zxcvbn-ts/language-en'
+import zxcvbnDePackage from '@zxcvbn-ts/language-de'
+import matcherPwnedFactory from '@zxcvbn-ts/matcher-pwned'
+
+const myPlugin = {
+  install() {
+    // optional
+    const matcherPwned = matcherPwnedFactory(fetch, zxcvbnOptions)
+    zxcvbnOptions.addMatcher('pwned', matcherPwned)
+    
+    const options = {
+      // recommended
+      dictionary: {
+        ...zxcvbnCommonPackage.dictionary,
+        ...zxcvbnEnPackage.dictionary,
+        // recommended the language of the country that the user will be in
+        ...zxcvbnDePackage.dictionary,
+      },
+      // recommended
+      graphs: zxcvbnCommonPackage.adjacencyGraphs,
+      // recommended
+      useLevenshteinDistance: true,
+      // optional
+      translations: zxcvbnEnPackage.translations,
+    }
+    zxcvbnOptions.setOptions(options)
+  }
+}
+```
+
 ```vue
 <template>
   <div class="example">
@@ -19,32 +53,7 @@ Those examples are using the full feature set of zxcvbn, and are marked with `re
 </template>
 
 <script>
-import { zxcvbn, zxcvbnOptions, debounce } from '@zxcvbn-ts/core'
-import zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
-import zxcvbnEnPackage from '@zxcvbn-ts/language-en'
-import zxcvbnDePackage from '@zxcvbn-ts/language-de'
-import matcherPwnedFactory from '@zxcvbn-ts/matcher-pwned'
-
-// optional
-const matcherPwned = matcherPwnedFactory(fetch, zxcvbnOptions)
-zxcvbnOptions.addMatcher('pwned', matcherPwned)
-
-const options = {
-  // recommended
-  dictionary: {
-    ...zxcvbnCommonPackage.dictionary,
-    ...zxcvbnEnPackage.dictionary,
-    // recommended the language of the country that the user will be in
-    ...zxcvbnDePackage.dictionary,
-  },
-  // recommended
-  graphs: zxcvbnCommonPackage.adjacencyGraphs,
-  // recommended
-  useLevenshteinDistance: true,
-  // optional
-  translations: zxcvbnEnPackage.translations,
-}
-zxcvbnOptions.setOptions(options)
+import { zxcvbn, debounce } from '@zxcvbn-ts/core'
 
 export default {
   name: 'ZxcvbnInput',
@@ -76,6 +85,89 @@ export default {
 }
 </script>
 
+```
+
+# nuxt
+Use a module to define the options. A plugin would result in multiple calls because the server executes them for each request
+
+/modules/zxcvbn.ts
+```ts
+import matcherPwnedFactory from "@zxcvbn-ts/matcher-pwned";
+import { zxcvbnOptions } from "@zxcvbn-ts/core";
+import { OptionsType } from "@zxcvbn-ts/core/dist/types";
+import zxcvbnCommonPackage from "@zxcvbn-ts/language-common";
+import zxcvbnEnPackage from "@zxcvbn-ts/language-en";
+import { ModuleOptions, Nuxt } from "@nuxt/schema";
+
+export default function zxcvbnModule(moduleOptions: ModuleOptions, nuxt: Nuxt) {
+  nuxt.hook('ready', async () => {
+    const matcherPwned = matcherPwnedFactory(fetch, zxcvbnOptions)
+    zxcvbnOptions.addMatcher('pwned', matcherPwned)
+
+    const options: OptionsType = {
+      // recommended
+      dictionary: {
+        ...zxcvbnCommonPackage.dictionary,
+        ...zxcvbnEnPackage.dictionary,
+      },
+      // recommended
+      graphs: zxcvbnCommonPackage.adjacencyGraphs,
+      // recommended
+      useLevenshteinDistance: true,
+      // optional
+      translations: zxcvbnEnPackage.translations,
+    }
+    zxcvbnOptions.setOptions(options)
+  })
+}
+```
+nuxt.config.ts
+```ts
+export default defineNuxtConfig({
+  // add module to load the options once
+  modules: ['~/modules/zxcvbn.ts'],
+  build: {
+    // add if needed for your setup
+    transpile: ['@zxcvbn-ts/matcher-pwned']
+  }
+})
+```
+
+ZxcvbnInput.vue
+```vue
+<template>
+  <div class="example">
+    <label>
+      Password
+      <input v-model="password" type="text" />
+    </label>
+    <template v-if="result">
+      <div>
+        The password score is {{result.score}}/4
+      </div>
+    </template>
+  </div>
+</template>
+
+<script lang="ts" setup>
+import { zxcvbnAsync, debounce, ZxcvbnResult } from '@zxcvbn-ts/core'
+import { Ref, watch } from "@vue/runtime-core";
+
+let password = ref()
+let result: Ref<ZxcvbnResult | null> = ref(null)
+
+const useZxcvbn = async () => {
+  if (password) {
+    result.value = await zxcvbnAsync(password.value)
+  } else {
+    result.value = null
+  }
+}
+
+const zxcvbnDebounce = debounce(useZxcvbn, 200, false)
+
+watch(password, zxcvbnDebounce)
+</script>
 ```
 
 

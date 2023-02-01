@@ -3,13 +3,15 @@
 ## setOptions
 
 | Prop                   | Type    | Default           | Description                                                           |
-| ---------------------- | ------- | ----------------- | --------------------------------------------------------------------- |
+|------------------------| ------- |-------------------|-----------------------------------------------------------------------|
 | dictionary             | Object  | {}                | Dictionaries for password comparison with common words/names etc.     |
 | graphs                 | Object  | {}                | Keyboard layout to check for patterns on different kind of keyboards  |
 | l33tTable              | Object  | L33tTable         | Table with matching alphabetical chars into numbers and special chars |
 | translations           | Object  | Translations keys | Translations for the feedback                                         |
 | useLevenshteinDistance | boolean | false             | Activate levenshtein                                                  |
 | levenshteinThreshold   | number  | 2                 | Threshold for levenshtein                                             |
+| l33tMaxSubstitutions   | number  | 100               | Indicated the max substituions for the l33t matcher to prevent DOS    |
+| maxLength              | number  | 256               | Defines how many characters of the password are checked               |
 
 ### dictionary
 
@@ -46,6 +48,14 @@ This variable is to activate the levenshtein distance check on the dictionary ma
 ### levenshteinThreshold
 
 This variable is to define the threshold of the levenshtein check
+
+### l33tMaxSubstitutions
+
+The l33t matcher will check how many characters can be exchanged with the l33t table. If they are to many it will decrease the calcTime significantly. So we cap it at a reasonable value by default which will probably already seems like a strong password anyway.
+
+### maxLength
+
+Defines how many character of the password are checked. A password longer than the default are considered strong anyway, but it can be increased as pleased. Be aware that this could open some attack vectors.
 
 ## addMatcher
 

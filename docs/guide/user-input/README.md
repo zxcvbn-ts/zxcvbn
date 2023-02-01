@@ -16,3 +16,12 @@ zxcvbnOptions.setOptions(options)
 
 zxcvbn(password)
 ```
+
+If you need to add the userInputs more dynamically your can add them as the second argument of the normal zxcvbn function like this
+```js
+import { zxcvbn } from '@zxcvbn-ts/core'
+
+const password = 'somePassword'
+
+zxcvbn(password, ['someEmail@email.de', 'someUsername'])
+```
