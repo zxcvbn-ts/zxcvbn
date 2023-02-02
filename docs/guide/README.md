@@ -42,4 +42,5 @@ Thanks to the original creators [dropbox](https://github.com/dropbox) for their 
 ## Performance
 
 **zxcvbn** operates below human perception of delay for most input: ~5-20ms for ~25 character passwords on modern browsers/CPUs, ~100ms for passwords around 100 characters.
-To curb runtime latency for really long passwords, consider sending `zxcvbn()` only the first 100 characters or so of user input.
+To curb runtime latency for really long passwords, consider sending `zxcvbn()` only the first 100 characters or so of user input. 
+For security reasons a limit was implemented for 256 characters by default but can be customized it with `maxLength`.
