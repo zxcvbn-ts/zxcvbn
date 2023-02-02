@@ -88,7 +88,8 @@ export default {
 ```
 
 # nuxt
-Use a module to define the options. A plugin would result in multiple calls because the server executes them for each request
+Use a module to define the options on the server side or/and a client only plugin for the client.
+Most of the time you don't need to add the module because the user works only on the client and doesn't type passwords for the server renderer.
 
 /modules/zxcvbn.ts
 ```ts
@@ -121,10 +122,42 @@ export default function zxcvbnModule(moduleOptions: ModuleOptions, nuxt: Nuxt) {
   })
 }
 ```
+/plugins/zxcvbn.ts
+```ts
+import matcherPwnedFactory from "@zxcvbn-ts/matcher-pwned";
+import { zxcvbnOptions } from "@zxcvbn-ts/core";
+import { OptionsType } from "@zxcvbn-ts/core/dist/types";
+import zxcvbnCommonPackage from "@zxcvbn-ts/language-common";
+import zxcvbnEnPackage from "@zxcvbn-ts/language-en";
+import { ModuleOptions, Nuxt } from "@nuxt/schema";
+
+export default defineNuxtPlugin(() => {
+  const matcherPwned = matcherPwnedFactory(fetch, zxcvbnOptions)
+  zxcvbnOptions.addMatcher('pwned', matcherPwned)
+
+  const options: OptionsType = {
+    // recommended
+    dictionary: {
+      ...zxcvbnCommonPackage.dictionary,
+      ...zxcvbnEnPackage.dictionary,
+    },
+    // recommended
+    graphs: zxcvbnCommonPackage.adjacencyGraphs,
+    // recommended
+    useLevenshteinDistance: true,
+    // optional
+    translations: zxcvbnEnPackage.translations,
+  }
+  zxcvbnOptions.setOptions(options)
+})
+```
+
 nuxt.config.ts
 ```ts
 export default defineNuxtConfig({
-  // add module to load the options once
+  // add plugin for client only to load the options on the client side
+  plugins: [{src: '~/plugins/zxcvbn.ts', mode: 'client'}],
+  // add module to load the options once for server side 
   modules: ['~/modules/zxcvbn.ts'],
   build: {
     // add if needed for your setup
