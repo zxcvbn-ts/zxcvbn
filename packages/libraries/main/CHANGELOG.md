@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.1](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/core@2.2.0...@zxcvbn-ts/core@2.2.1) (2023-02-06)
+
+### Bug Fixes
+
+- **debounce:** third parameter is not required ([6b5f90c](https://github.com/zxcvbn-ts/zxcvbn/commit/6b5f90c6070a41fe0fc0db79176a2f946c125a72))
+- **js:** resolve issue with max stack size ([ce8b745](https://github.com/zxcvbn-ts/zxcvbn/commit/ce8b745fecc80b873231a0b8e29e1c6ffb6ec2f7))
+- **main:** limit the used password string length to prevent redos attacks ([74315e9](https://github.com/zxcvbn-ts/zxcvbn/commit/74315e98e3206a94bf908a13fcd7f96b216f2173))
+
 # [2.2.0](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/core@2.1.0...@zxcvbn-ts/core@2.2.0) (2023-01-27)
 
 ### Bug Fixes
