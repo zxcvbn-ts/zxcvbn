@@ -41,7 +41,7 @@ export class Options {
     this.setRankedDictionaries()
   }
 
-  // eslint-disable-next-line max-statements
+  // eslint-disable-next-line max-statements,complexity
   setOptions(options: OptionsType = {}) {
     if (options.l33tTable) {
       this.l33tTable = options.l33tTable
@@ -122,9 +122,12 @@ export class Options {
       }
       return el.length
     })
-    const result = data.length === 0 ? 0 : Math.max(...data)
 
-    return result
+    // do not use Math.max(...data) because it can result in max stack size error because every entry will be used as an argument
+    if (data.length === 0) {
+      return 0
+    }
+    return data.reduce((a, b) => Math.max(a, b), -Infinity)
   }
 
   getRankedDictionary(name: string) {
