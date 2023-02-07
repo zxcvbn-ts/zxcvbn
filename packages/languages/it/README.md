@@ -2,7 +2,6 @@
 
 The Italian dictionary and language package for zxcvbn-ts
 
-
 ## Install
 
 #### npm:
@@ -17,8 +16,8 @@ The Italian dictionary and language package for zxcvbn-ts
 
 ```js
 import { zxcvbn, zxcvbnOptions } from '@zxcvbn-ts/core'
-import zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
-import zxcvbnItPackage from '@zxcvbn-ts/language-it'
+import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
+import * as zxcvbnItPackage from '@zxcvbn-ts/language-it'
 
 const password = 'somePassword'
 const options = {

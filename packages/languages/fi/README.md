@@ -20,8 +20,8 @@ Data sources for first and last names:
 
 ```js
 import { zxcvbn, zxcvbnOptions } from '@zxcvbn-ts/core'
-import zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
-import zxcvbnFiPackage from '@zxcvbn-ts/language-fi'
+import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
+import * as zxcvbnFiPackage from '@zxcvbn-ts/language-fi'
 
 const password = 'somePassword'
 const options = {
@@ -38,8 +38,8 @@ zxcvbnOptions.setOptions(options)
 zxcvbn(password)
 ```
 
-
 ## source:
+
 The date is fetch from:
 https://www.avoindata.fi/data/dataset/57282ad6-3ab1-48fb-983a-8aba5ff8d29a/resource/957d19a5-b87a-4c4d-8595-49c22d9d3c58
 https://www.avoindata.fi/data/dataset/57282ad6-3ab1-48fb-983a-8aba5ff8d29a/resource/08c89936-a230-42e9-a9fc-288632e234f5

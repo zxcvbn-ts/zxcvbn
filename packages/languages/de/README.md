@@ -2,7 +2,6 @@
 
 The German dictionary and language package for **zxcvbn-ts**
 
-
 ## Installation
 
 #### npm:
@@ -17,8 +16,8 @@ The German dictionary and language package for **zxcvbn-ts**
 
 ```js
 import { zxcvbn, zxcvbnOptions } from '@zxcvbn-ts/core'
-import zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
-import zxcvbnDePackage from '@zxcvbn-ts/language-de'
+import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
+import * as zxcvbnDePackage from '@zxcvbn-ts/language-de'
 
 const password = 'somePassword'
 const options = {
