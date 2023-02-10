@@ -1,4 +1,4 @@
-import zxcvbnCommonPackage from '../../../../../languages/common/src'
+import * as zxcvbnCommonPackage from '../../../../../languages/common/src'
 import spatialGuesses from '../../../src/matcher/spatial/scoring'
 import { zxcvbnOptions } from '../../../src/Options'
 

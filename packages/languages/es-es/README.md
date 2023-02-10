@@ -2,7 +2,6 @@
 
 The European Spanish dictionary and language package for zxcvbn-ts
 
-
 ## Install
 
 #### npm:
@@ -17,8 +16,8 @@ The European Spanish dictionary and language package for zxcvbn-ts
 
 ```js
 import { zxcvbn, zxcvbnOptions } from '@zxcvbn-ts/core'
-import zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
-import zxcvbnEsEsPackage from '@zxcvbn-ts/language-es-es'
+import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
+import * as zxcvbnEsEsPackage from '@zxcvbn-ts/language-es-es'
 
 const password = 'somePassword'
 const options = {

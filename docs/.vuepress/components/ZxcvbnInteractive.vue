@@ -3,7 +3,7 @@
     <label>
       <b>Options</b>
     </label>
-    <hr style="width:100%"/>
+    <hr style="width: 100%" />
     <label>
       userInputs separated by a comma like John,Smith
       <input v-model="userInputs" type="text" />
@@ -51,7 +51,7 @@
         </label>
       </li>
     </ul>
-    <hr style="width:100%"/>
+    <hr style="width: 100%" />
     <label>
       <b>Password</b>
       <input v-model="password" type="text" />
@@ -70,10 +70,10 @@ import {
   zxcvbnOptions,
   debounce,
 } from '../../../packages/libraries/main/dist/index.esm'
-import zxcvbnCommonPackage from '../../../packages/languages/common/dist/index.esm'
-import zxcvbnEnPackage from '../../../packages/languages/en/dist/index.esm'
+import * as zxcvbnCommonPackage from '../../../packages/languages/common/dist/index.esm'
+import * as zxcvbnEnPackage from '../../../packages/languages/en/dist/index.esm'
 import translationKeys from '../../../packages/libraries/main/dist/data/translationKeys.esm'
-import matcherPwnedFactory from '@zxcvbn-ts/matcher-pwned'
+import { matcherPwnedFactory } from '@zxcvbn-ts/matcher-pwned'
 
 export default {
   name: 'ZxcvbnInteractive',
@@ -104,7 +104,7 @@ export default {
         dictionary: {},
         translations: translationKeys,
         graphs: {},
-        useLevenshteinDistance: this.useLevenshteinDistance
+        useLevenshteinDistance: this.useLevenshteinDistance,
       }
       if (this.useDictionaries) {
         options.dictionary = {
@@ -127,7 +127,7 @@ export default {
       } else {
         this.result = null
       }
-      console.log(        this.result)
+      console.log(this.result)
     },
     addPwnedMatcher() {
       const matcherPwned = matcherPwnedFactory(crossFetch, zxcvbnOptions)

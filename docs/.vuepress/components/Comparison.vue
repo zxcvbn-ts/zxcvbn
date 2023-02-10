@@ -1,8 +1,6 @@
 <template>
   <div>
-    <div v-if="loading">
-      Currently comparing passwords...
-    </div>
+    <div v-if="loading">Currently comparing passwords...</div>
     <table class="result" v-else>
       <tr>
         <td></td>
@@ -39,8 +37,8 @@ import {
   zxcvbnAsync as zxcvbnTsAsync,
   zxcvbnOptions,
 } from '../../../packages/libraries/main/dist/index.esm'
-import zxcvbnCommonPackage from '../../../packages/languages/common/dist/index.esm'
-import zxcvbnEnPackage from '../../../packages/languages/en/dist/index.esm'
+import * as zxcvbnCommonPackage from '../../../packages/languages/common/dist/index.esm'
+import * as zxcvbnEnPackage from '../../../packages/languages/en/dist/index.esm'
 import zxcvbn from 'zxcvbn'
 
 export default {
@@ -76,7 +74,7 @@ export default {
         'AZERTY',
         'zxcftzuio',
         'aoeuidh',
-        'Tiger@0177'
+        'Tiger@0177',
       ],
       data: [],
       loading: true,
@@ -94,7 +92,7 @@ export default {
           ...zxcvbnEnPackage.dictionary,
         },
         graphs: zxcvbnCommonPackage.adjacencyGraphs,
-        useLevenshteinDistance: true
+        useLevenshteinDistance: true,
       }
       zxcvbnOptions.setOptions(options)
     },
