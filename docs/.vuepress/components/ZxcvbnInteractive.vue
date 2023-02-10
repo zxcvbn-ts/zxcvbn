@@ -73,7 +73,7 @@ import {
 import * as zxcvbnCommonPackage from '../../../packages/languages/common/dist/index.esm'
 import * as zxcvbnEnPackage from '../../../packages/languages/en/dist/index.esm'
 import translationKeys from '../../../packages/libraries/main/dist/data/translationKeys.esm'
-import matcherPwnedFactory from '@zxcvbn-ts/matcher-pwned'
+import { matcherPwnedFactory } from '@zxcvbn-ts/matcher-pwned'
 
 export default {
   name: 'ZxcvbnInteractive',

@@ -1,4 +1,4 @@
-import zxcvbnOptions from '../../Options'
+import { zxcvbnOptions } from '../../Options'
 import { MatchEstimated } from '../../types'
 
 export default (match: MatchEstimated) => {

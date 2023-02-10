@@ -1,8 +1,8 @@
 import translations from '../../../languages/en/src/translations'
-import Options from '../src/Options'
+import { zxcvbnOptions } from '../src/Options'
 import Feedback from '../src/Feedback'
 
-Options.setOptions({
+zxcvbnOptions.setOptions({
   translations,
 })
 

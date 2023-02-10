@@ -1,8 +1,8 @@
 import translations from '../../../languages/en/src/translations'
 import TimeEstimates from '../src/TimeEstimates'
-import Options from '../src/Options'
+import { zxcvbnOptions } from '../src/Options'
 
-Options.setOptions({
+zxcvbnOptions.setOptions({
   translations,
 })
 

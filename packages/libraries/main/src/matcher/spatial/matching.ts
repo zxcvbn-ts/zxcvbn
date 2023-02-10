@@ -1,5 +1,5 @@
 import { sorted, extend } from '../../helper'
-import zxcvbnOptions from '../../Options'
+import { zxcvbnOptions } from '../../Options'
 import { LooseObject, SpatialMatch } from '../../types'
 
 interface SpatialMatchOptions {

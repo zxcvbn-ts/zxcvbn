@@ -1,5 +1,5 @@
 import { zxcvbnAsync, zxcvbnOptions } from '../../main/src'
-import matcherPwnedFactory from '../src'
+import { matcherPwnedFactory } from '../src'
 
 describe('main', () => {
   it('should use pwned matcher', async () => {

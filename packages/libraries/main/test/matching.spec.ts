@@ -1,10 +1,10 @@
 import * as zxcvbnCommonPackage from '../../../languages/common/src'
 import * as zxcvbnEnPackage from '../../../languages/en/src'
 import MatchOmni from '../src/Matching'
-import Options from '../src/Options'
+import { zxcvbnOptions } from '../src/Options'
 import { MatchExtended } from '../src/types'
 
-Options.setOptions({
+zxcvbnOptions.setOptions({
   dictionary: {
     ...zxcvbnCommonPackage.dictionary,
     ...zxcvbnEnPackage.dictionary,

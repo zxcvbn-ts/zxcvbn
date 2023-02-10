@@ -1,8 +1,8 @@
 import * as zxcvbnCommonPackage from '../../../../../languages/common/src'
 import spatialGuesses from '../../../src/matcher/spatial/scoring'
-import Options from '../../../src/Options'
+import { zxcvbnOptions } from '../../../src/Options'
 
-Options.setOptions({
+zxcvbnOptions.setOptions({
   graphs: zxcvbnCommonPackage.adjacencyGraphs,
 })
 

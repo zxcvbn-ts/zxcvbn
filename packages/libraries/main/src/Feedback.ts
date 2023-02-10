@@ -1,4 +1,4 @@
-import zxcvbnOptions from './Options'
+import { zxcvbnOptions } from './Options'
 import { DefaultFeedbackFunction, FeedbackType, MatchEstimated } from './types'
 import bruteforceMatcher from './matcher/bruteforce/feedback'
 import dateMatcher from './matcher/date/feedback'

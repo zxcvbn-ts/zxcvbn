@@ -1,4 +1,4 @@
-import zxcvbnOptions from '../../Options'
+import { zxcvbnOptions } from '../../Options'
 
 export default () => {
   return {

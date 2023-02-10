@@ -3,9 +3,9 @@ import * as zxcvbnEnPackage from '../../../../../languages/en/src'
 import MatchDictionary from '../../../src/matcher/dictionary/matching'
 import checkMatches from '../../helper/checkMatches'
 import genpws from '../../helper/genpws'
-import Options from '../../../src/Options'
+import { zxcvbnOptions } from '../../../src/Options'
 
-Options.setOptions({
+zxcvbnOptions.setOptions({
   dictionary: {
     ...zxcvbnCommonPackage.dictionary,
     ...zxcvbnEnPackage.dictionary,
@@ -35,7 +35,7 @@ describe('dictionary matching', () => {
       d1: ['motherboard', 'mother', 'board', 'abcd', 'cdef'],
       d2: ['z', '8', '99', '$', 'asdf1234&*'],
     }
-    Options.setOptions({
+    zxcvbnOptions.setOptions({
       dictionary: testDicts,
     })
     const matchDictionary = new MatchDictionary()
@@ -114,8 +114,8 @@ describe('dictionary matching', () => {
       })
     })
 
-    Object.keys(Options.rankedDictionaries).forEach((name) => {
-      const dict = Options.rankedDictionaries[name]
+    Object.keys(zxcvbnOptions.rankedDictionaries).forEach((name) => {
+      const dict = zxcvbnOptions.rankedDictionaries[name]
       Object.keys(dict).forEach((word) => {
         const rank = dict[word as keyof typeof dict]
         if (word !== 'motherboard') {
@@ -139,7 +139,7 @@ describe('dictionary matching', () => {
   })
 
   describe('with user input', () => {
-    Options.setOptions({
+    zxcvbnOptions.setOptions({
       dictionary: {
         userInputs: ['foo', 'bar'],
       },

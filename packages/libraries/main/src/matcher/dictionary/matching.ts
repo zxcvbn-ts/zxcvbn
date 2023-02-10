@@ -2,7 +2,7 @@ import findLevenshteinDistance, {
   FindLevenshteinDistanceResult,
 } from '../../levenshtein'
 import { sorted } from '../../helper'
-import zxcvbnOptions from '../../Options'
+import { zxcvbnOptions } from '../../Options'
 import { DictionaryNames, DictionaryMatch, L33tMatch } from '../../types'
 import Reverse from './variants/matching/reverse'
 import L33t from './variants/matching/l33t'
