@@ -1,7 +1,7 @@
 import MatchSpatial from '../../../src/matcher/spatial/matching'
 import checkMatches from '../../helper/checkMatches'
 import zxcvbnCommonPackage from '../../../../../languages/common/src'
-import Options from '../../../src/Options'
+import { zxcvbnOptions } from '../../../src/Options'
 import { LooseObject } from '../../../src/types'
 
 const { adjacencyGraphs } = zxcvbnCommonPackage
@@ -17,7 +17,7 @@ describe('spatial matching', () => {
   const graphs: LooseObject = {
     qwerty: adjacencyGraphs.qwerty,
   }
-  Options.setOptions({
+  zxcvbnOptions.setOptions({
     graphs,
   })
   const matchSpatial = new MatchSpatial()
@@ -59,7 +59,7 @@ describe('spatial matching specific patterns vs keyboards', () => {
   data.forEach(([pattern, keyboard, turns, shifts]) => {
     const graphs: any = {}
     graphs[keyboard] = adjacencyGraphs[keyboard as keyof typeof adjacencyGraphs]
-    Options.setOptions({
+    zxcvbnOptions.setOptions({
       graphs,
     })
     const matchSpatial = new MatchSpatial()

@@ -175,6 +175,4 @@ export class Options {
   }
 }
 
-const zxcvbnOptions = new Options()
-
-export default zxcvbnOptions
+export const zxcvbnOptions = new Options()

@@ -6,7 +6,7 @@ import FeedbackFactory from './feedback'
 import haveIBeenPwned from './haveIBeenPwned'
 import { FetchApi } from './types'
 
-const matcherPwnedFactory = (
+export const matcherPwnedFactory = (
   universalFetch: FetchApi,
   options: Options,
   url?: string,
@@ -17,7 +17,5 @@ const matcherPwnedFactory = (
     scoring,
   }
 }
-
-export default matcherPwnedFactory
 
 export { haveIBeenPwned }

@@ -6,7 +6,7 @@ import regexMatcher from './matcher/regex/matching'
 import repeatMatcher from './matcher/repeat/matching'
 import sequenceMatcher from './matcher/sequence/matching'
 import spatialMatcher from './matcher/spatial/matching'
-import zxcvbnOptions from './Options'
+import { zxcvbnOptions } from './Options'
 
 /*
  * -------------------------------------------------------------------------------

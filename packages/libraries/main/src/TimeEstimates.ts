@@ -1,4 +1,4 @@
-import zxcvbnOptions from './Options'
+import { zxcvbnOptions } from './Options'
 import { CrackTimesDisplay, CrackTimesSeconds, Score } from './types'
 
 const SECOND = 1

@@ -1,4 +1,4 @@
-import zxcvbnOptions from '../../Options'
+import { zxcvbnOptions } from '../../Options'
 import { MatchEstimated } from '../../types'
 import { ALL_UPPER_INVERTED, START_UPPER } from '../../data/const'
 

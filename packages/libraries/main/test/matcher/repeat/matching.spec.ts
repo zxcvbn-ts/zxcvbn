@@ -2,10 +2,10 @@ import MatchRepeat from '../../../src/matcher/repeat/matching'
 import checkMatches from '../../helper/checkMatches'
 import genpws from '../../helper/genpws'
 import MatchOmni from '../../../src/Matching'
-import Options from '../../../src/Options'
+import { zxcvbnOptions } from '../../../src/Options'
 import { RepeatMatch } from '../../../src/types'
 
-Options.setOptions()
+zxcvbnOptions.setOptions()
 const omniMatch = new MatchOmni()
 describe('repeat matching', () => {
   const matchRepeat = new MatchRepeat()

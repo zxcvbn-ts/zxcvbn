@@ -1,5 +1,5 @@
 import { empty, translate } from '../../../../helper'
-import zxcvbnOptions from '../../../../Options'
+import { zxcvbnOptions } from '../../../../Options'
 import {
   DictionaryMatch,
   L33tMatch,

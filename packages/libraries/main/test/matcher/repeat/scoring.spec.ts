@@ -1,10 +1,10 @@
 import repeatGuesses from '../../../src/matcher/repeat/scoring'
 import scoring from '../../../src/scoring'
 import MatchOmni from '../../../src/Matching'
-import Options from '../../../src/Options'
+import { zxcvbnOptions } from '../../../src/Options'
 import { MatchExtended } from '../../../src/types'
 
-Options.setOptions()
+zxcvbnOptions.setOptions()
 
 const omniMatch = new MatchOmni()
 describe('scoring guesses repeated', () => {

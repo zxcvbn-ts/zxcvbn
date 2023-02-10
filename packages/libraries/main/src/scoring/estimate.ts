@@ -3,7 +3,7 @@ import {
   MIN_SUBMATCH_GUESSES_MULTI_CHAR,
 } from '../data/const'
 import utils from './utils'
-import zxcvbnOptions from '../Options'
+import { zxcvbnOptions } from '../Options'
 import {
   DefaultScoringFunction,
   LooseObject,

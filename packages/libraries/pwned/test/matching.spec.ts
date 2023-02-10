@@ -1,5 +1,5 @@
 import { zxcvbnOptions } from '@zxcvbn-ts/core/src'
-import matchPwnedFactory from '../src'
+import { matcherPwnedFactory } from '../src'
 
 const fetch = jest.fn(async () => ({
   text() {
@@ -9,7 +9,7 @@ const fetch = jest.fn(async () => ({
 
 describe('pwned matching', () => {
   // @ts-ignore
-  const matcherPwned = matchPwnedFactory(fetch, zxcvbnOptions)
+  const matcherPwned = matcherPwnedFactory(fetch, zxcvbnOptions)
   it('should return a match', async () => {
     const matchPwned = new matcherPwned.Matching()
     // @ts-ignore

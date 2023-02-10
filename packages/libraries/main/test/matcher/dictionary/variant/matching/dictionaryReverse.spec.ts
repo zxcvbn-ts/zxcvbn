@@ -1,16 +1,16 @@
 import MatchDictionaryReverse from '../../../../../src/matcher/dictionary/variants/matching/reverse'
 import MatchDictionary from '../../../../../src/matcher/dictionary/matching'
 import checkMatches from '../../../../helper/checkMatches'
-import Options from '../../../../../src/Options'
+import { zxcvbnOptions } from '../../../../../src/Options'
 
-Options.setOptions()
+zxcvbnOptions.setOptions()
 const dictionaryMatcher = new MatchDictionary()
 
 describe('dictionary reverse matching', () => {
   const testDicts = {
     d1: [123, 321, 456, 654],
   }
-  Options.setOptions({
+  zxcvbnOptions.setOptions({
     dictionary: testDicts,
   })
   const matchDictionaryReverse = new MatchDictionaryReverse(

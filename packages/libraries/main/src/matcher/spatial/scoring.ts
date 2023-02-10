@@ -1,5 +1,5 @@
 import utils from '../../scoring/utils'
-import zxcvbnOptions from '../../Options'
+import { zxcvbnOptions } from '../../Options'
 import { LooseObject, MatchEstimated, MatchExtended } from '../../types'
 
 interface EstimatePossiblePatternsOptions {

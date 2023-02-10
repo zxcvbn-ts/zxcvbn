@@ -2,10 +2,10 @@ import MatchL33t from '../../../../../src/matcher/dictionary/variants/matching/l
 import MatchDictionary from '../../../../../src/matcher/dictionary/matching'
 import checkMatches from '../../../../helper/checkMatches'
 import * as helperApi from '../../../../../src/helper'
-import Options from '../../../../../src/Options'
+import { zxcvbnOptions } from '../../../../../src/Options'
 import { LooseObject } from '../../../../../src/types'
 
-Options.setOptions()
+zxcvbnOptions.setOptions()
 const dictionaryMatcher = new MatchDictionary()
 const spyTranslate = jest.spyOn(helperApi, 'translate')
 
@@ -30,7 +30,7 @@ describe('l33t matching', () => {
     })
   })
 
-  Options.setOptions({
+  zxcvbnOptions.setOptions({
     dictionary: dicts,
     l33tTable: testTable,
     l33tMaxSubstitutions: 15,
