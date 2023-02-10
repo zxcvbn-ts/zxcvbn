@@ -9,7 +9,7 @@ import { FetchApi, MatcherPwnedFactoryConfig } from './types'
 export const matcherPwnedFactory = (
   universalFetch: FetchApi,
   options: Options,
-  config: MatcherPwnedFactoryConfig,
+  config: MatcherPwnedFactoryConfig = {},
 ): Matcher => {
   return {
     Matching: MatchPwned(universalFetch, config),
