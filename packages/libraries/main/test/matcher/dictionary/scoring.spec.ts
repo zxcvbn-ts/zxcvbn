@@ -1,12 +1,15 @@
 import dictionaryGuesses from '../../../src/matcher/dictionary/scoring'
 import l33tVariant from '../../../src/matcher/dictionary/variants/scoring/l33t'
 import uppercaseVariant from '../../../src/matcher/dictionary/variants/scoring/uppercase'
+import { DICEWARE_SCORING } from '../../../src/data/const'
 
 const baseMatch = {
+  pattern: 'dictionary',
   reversed: false,
   l33t: false,
   sub: {},
   rank: 32,
+  dictionaryName: 'someDictionary',
 }
 
 describe('scoring: guesses dictionary', () => {
@@ -92,6 +95,21 @@ describe('scoring: guesses dictionary', () => {
       baseGuesses: 32,
       calculation: result,
       l33tVariations: 41,
+      uppercaseVariations: 3,
+    })
+  })
+
+  it('special scoring for diceware findings', () => {
+    const match = {
+      ...baseMatch,
+      dictionaryName: 'diceware',
+      token: 'AaA@@@',
+    }
+    // @ts-ignore
+    expect(dictionaryGuesses(match)).toEqual({
+      baseGuesses: 32,
+      calculation: DICEWARE_SCORING,
+      l33tVariations: 1,
       uppercaseVariations: 3,
     })
   })
