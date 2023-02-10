@@ -1,6 +1,6 @@
 import MatchSpatial from '../../../src/matcher/spatial/matching'
 import checkMatches from '../../helper/checkMatches'
-import zxcvbnCommonPackage from '../../../../../languages/common/src'
+import * as zxcvbnCommonPackage from '../../../../../languages/common/src'
 import { zxcvbnOptions } from '../../../src/Options'
 import { LooseObject } from '../../../src/types'
 

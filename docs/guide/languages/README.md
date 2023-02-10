@@ -44,8 +44,8 @@ It is recommended to use at least the common and english language package.
 
 ```js
 import { zxcvbn, zxcvbnOptions } from '@zxcvbn-ts/core'
-import zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
-import zxcvbnEnPackage from '@zxcvbn-ts/language-en'
+import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
+import * as zxcvbnEnPackage from '@zxcvbn-ts/language-en'
 
 const password = 'somePassword'
 const options = {
@@ -67,7 +67,7 @@ It is recommended to use at least the common keyboard patterns.
 
 ```js
 import { zxcvbn, zxcvbnOptions } from '@zxcvbn-ts/core'
-import zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
+import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
 
 const password = 'somePassword'
 const options = {
@@ -125,9 +125,10 @@ To add a missing language package you need to do the following things:
   language, use `yarn generate:languageData nl-be` for example.
 - Create a pull request to the master branch.
 - _(Optional)_ Use the Wikipedia extractor; one of the maintainers can do this but this will increase the time until it is merged.
+
   - Get the wikipedia dump for your language from <https://dumps.wikimedia.org/XXwiki/latest/XXwiki-latest-pages-articles.xml.bz2> where `XX` is your language like `en` or `de`.
   - Install [`wikiextractor`](https://github.com/attardi/wikiextractor): `pip
-    install wikiextractor`. Currently, with v3.0.4 it only works correctly on Linux.
+install wikiextractor`. Currently, with v3.0.4 it only works correctly on Linux.
   - Run `wikiextractor`:
 
     ```sh
