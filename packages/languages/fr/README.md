@@ -16,8 +16,8 @@ The French dictionary and language package for zxcvbn-ts
 
 ```js
 import zxcvbn from '@zxcvbn-ts/core'
-import zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
-import zxcvbnFrPackage from '@zxcvbn-ts/language-fr'
+import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
+import * as zxcvbnFrPackage from '@zxcvbn-ts/language-fr'
 
 const password = 'somePassword'
 const options = {

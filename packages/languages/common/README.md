@@ -2,7 +2,6 @@
 
 The common dictionary and language package for zxcvbn-ts
 
-
 ## Install
 
 #### npm:
@@ -17,7 +16,7 @@ The common dictionary and language package for zxcvbn-ts
 
 ```js
 import { zxcvbn, zxcvbnOptions } from '@zxcvbn-ts/core'
-import zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
+import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
 
 const password = 'somePassword'
 const options = {
