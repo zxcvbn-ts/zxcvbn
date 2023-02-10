@@ -2,7 +2,6 @@
 
 Contains Dutch words specific to Belgium and common Dutch words
 
-
 ## Install
 
 #### npm:
@@ -17,8 +16,8 @@ Contains Dutch words specific to Belgium and common Dutch words
 
 ```js
 import { zxcvbn, zxcvbnOptions } from '@zxcvbn-ts/core'
-import zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
-import zxcvbnNlBePackage from '@zxcvbn-ts/language-nl-be'
+import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
+import * as zxcvbnNlBePackage from '@zxcvbn-ts/language-nl-be'
 
 const password = 'somePassword'
 const options = {

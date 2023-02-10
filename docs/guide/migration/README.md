@@ -11,7 +11,7 @@ There is a new option for levenshtein calculation which can be activated to be s
 
 - If you are using async matcher you need to move from `zxcvbn` to `zxcvnAsync`.
 - `ZxcvbnOptions` export renamed to `zxcvbnOptions`
-- `@zxcvbn-ts/matcher-pwned` needs `zxcvbnOptions` as the second parameter 
+- `@zxcvbn-ts/matcher-pwned` needs `zxcvbnOptions` as the second parameter
 
 ## `zxcvbn-ts 0.3.x` to `zxcvbn-ts 1.x.x`
 
@@ -20,8 +20,8 @@ This means that if you want to have the recommended scoring you need to add it t
 
 ```js
 import { zxcvbn, zxcvbnOptions } from '@zxcvbn-ts/core'
-import zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
-import zxcvbnEnPackage from '@zxcvbn-ts/language-en'
+import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
+import * as zxcvbnEnPackage from '@zxcvbn-ts/language-en'
 
 const password = 'somePassword'
 const options = {
@@ -29,7 +29,7 @@ const options = {
   dictionary: {
     ...zxcvbnCommonPackage.dictionary,
     ...zxcvbnEnPackage.dictionary,
-  }, 
+  },
   // The next line is now recommended to get a good scoring.
   graphs: zxcvbnCommonPackage.adjacencyGraphs,
 }
@@ -52,8 +52,8 @@ Old
 
 ```js
 import zxcvbn from '@zxcvbn-ts/core'
-import zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
-import zxcvbnEnPackage from '@zxcvbn-ts/language-en'
+import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
+import * as zxcvbnEnPackage from '@zxcvbn-ts/language-en'
 
 const password = 'somePassword'
 const options = {
@@ -71,8 +71,8 @@ New
 
 ```js
 import { zxcvbn, zxcvbnOptions } from '@zxcvbn-ts/core'
-import zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
-import zxcvbnEnPackage from '@zxcvbn-ts/language-en'
+import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
+import * as zxcvbnEnPackage from '@zxcvbn-ts/language-en'
 
 const password = 'somePassword'
 const options = {
@@ -108,8 +108,8 @@ New
 
 ```js
 import zxcvbn from '@zxcvbn-ts/core'
-import zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
-import zxcvbnEnPackage from '@zxcvbn-ts/language-en'
+import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
+import * as zxcvbnEnPackage from '@zxcvbn-ts/language-en'
 
 const password = 'somePassword'
 const options = {

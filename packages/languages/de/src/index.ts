@@ -4,12 +4,11 @@ import lastnames from './lastnames.json'
 import wikipedia from './wikipedia.json'
 import translations from './translations'
 
-export default {
-  dictionary: {
-    commonWords,
-    firstnames,
-    lastnames,
-    wikipedia,
-  },
-  translations,
+const dictionary = {
+  commonWords,
+  firstnames,
+  lastnames,
+  wikipedia,
 }
+
+export { dictionary, translations }

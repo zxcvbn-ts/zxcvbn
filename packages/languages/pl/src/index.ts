@@ -6,14 +6,13 @@ import maleLastnames from './maleLastnames.json'
 import wikipedia from './wikipedia.json'
 import translations from './translations'
 
-export default {
-  dictionary: {
-    commonWords,
-    femaleFirstnames,
-    femaleLastnames,
-    maleFirstnames,
-    maleLastnames,
-    wikipedia,
-  },
-  translations,
+const dictionary = {
+  commonWords,
+  femaleFirstnames,
+  femaleLastnames,
+  maleFirstnames,
+  maleLastnames,
+  wikipedia,
 }
+
+export { dictionary, translations }

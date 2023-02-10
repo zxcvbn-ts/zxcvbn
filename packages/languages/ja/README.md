@@ -2,7 +2,6 @@
 
 The Japanese dictionary and language package for zxcvbn-ts
 
-
 ## Install
 
 #### npm:
@@ -17,8 +16,8 @@ The Japanese dictionary and language package for zxcvbn-ts
 
 ```js
 import { zxcvbn, zxcvbnOptions } from '@zxcvbn-ts/core'
-import zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
-import zxcvbnJaPackage from '@zxcvbn-ts/language-ja'
+import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
+import * as zxcvbnJaPackage from '@zxcvbn-ts/language-ja'
 
 const password = 'somePassword'
 const options = {
