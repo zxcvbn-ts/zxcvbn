@@ -1,7 +1,6 @@
 import dictionaryGuesses from '../../../src/matcher/dictionary/scoring'
 import l33tVariant from '../../../src/matcher/dictionary/variants/scoring/l33t'
 import uppercaseVariant from '../../../src/matcher/dictionary/variants/scoring/uppercase'
-import { DICEWARE_SCORING } from '../../../src/data/const'
 
 const baseMatch = {
   pattern: 'dictionary',
@@ -108,7 +107,7 @@ describe('scoring: guesses dictionary', () => {
     // @ts-ignore
     expect(dictionaryGuesses(match)).toEqual({
       baseGuesses: 32,
-      calculation: DICEWARE_SCORING,
+      calculation: 3888,
       l33tVariations: 1,
       uppercaseVariations: 3,
     })
