@@ -60,9 +60,3 @@ Defines how many character of the password are checked. A password longer than t
 ## addMatcher
 
 With this function you can add your own matcher for more information checkout the [matcher documentation](../matcher)
-
-## networkErrorHandler
-There is a `networkErrorHandler` function on the options class which can be used to define the handling for network errors.
-This could be useful for the pwnedMatcher if the API isn't available.
-The default errorHandler will silently ignore the pwned matcher on an error. 
-If you want to prevent that you need to throw an error in your own networkErrorHandler.
