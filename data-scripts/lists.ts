@@ -233,6 +233,7 @@ export default {
         column: 2,
         row: 8,
         minOccurrences: 500,
+        splitCompoundNames: true,
       },
     },
     lastnames: {

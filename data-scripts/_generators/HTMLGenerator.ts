@@ -50,6 +50,7 @@ export default class HTMLGenerator extends SimpleListGenerator<Options> {
     }
     this.trimWhitespaces()
     this.convertToLowerCase()
+    this.splitCompoundNames()
     this.removeDuplicates()
     this.filterMinLength()
     return this.data

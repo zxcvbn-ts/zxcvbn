@@ -13,6 +13,8 @@ export interface SimpleListGeneratorOptions {
   minOccurrences: number
   minLength: number
   clearLine: (entry: string) => string
+  splitCompoundNames: boolean
+  splitCompoundNamesSeparator: string
 }
 
 export const SimpleListGeneratorDefaultOptions: SimpleListGeneratorOptions = {
@@ -23,6 +25,8 @@ export const SimpleListGeneratorDefaultOptions: SimpleListGeneratorOptions = {
   toLowerCase: true,
   occurrenceSeparator: ' ',
   hasOccurrences: false,
+  splitCompoundNames: false,
+  splitCompoundNamesSeparator: ' ',
   minOccurrences: 500,
   minLength: 2,
   clearLine: (entry: string) => entry,
@@ -125,6 +129,20 @@ export default class SimpleListGenerator<
     }
   }
 
+  protected splitCompoundNames() {
+    if (this.options.splitCompoundNames) {
+      console.info('Split compound names')
+      const result: string[] = []
+      this.data.forEach((entry) => {
+        const splitValues = entry.split(
+          this.options.splitCompoundNamesSeparator,
+        )
+        result.push(...splitValues)
+      })
+      this.data = result
+    }
+  }
+
   public async run(): Promise<string[] | null> {
     console.info('Downloading')
     try {
@@ -139,6 +157,7 @@ export default class SimpleListGenerator<
     this.commentPrefixes()
     this.trimWhitespaces()
     this.convertToLowerCase()
+    this.splitCompoundNames()
     this.removeDuplicates()
     this.filterMinLength()
 
