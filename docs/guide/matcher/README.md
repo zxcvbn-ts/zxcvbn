@@ -19,6 +19,7 @@ There are three variants of it.
 1. Plain: It will just search for the exact word in the dictionaries
 2. Reverse: It will reverse the password and search the dictionaries
 3. L33t: It will transform l33t speak to normal characters and search the dictionaries for example `P4$$w0rd` will be transformed to `Password`
+4. Diceware: If the password was found in the diceware dictionary it gets a fixed score for this finding
 
 ## regex
 
