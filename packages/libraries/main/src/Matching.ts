@@ -60,10 +60,14 @@ class Matching {
       }
     })
     if (promises.length > 0) {
-      return new Promise((resolve) => {
-        Promise.all(promises).then(() => {
-          resolve(sorted(matches))
-        })
+      return new Promise((resolve, reject) => {
+        Promise.all(promises)
+          .then(() => {
+            resolve(sorted(matches))
+          })
+          .catch((error) => {
+            reject(error)
+          })
       })
     }
     return sorted(matches)
