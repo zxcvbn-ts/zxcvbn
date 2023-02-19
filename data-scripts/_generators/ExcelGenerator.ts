@@ -122,6 +122,7 @@ export class ExcelGenerator extends SimpleListGenerator<Options> {
     this.readSheet(values.range, values.sheet)
     this.trimWhitespaces()
     this.convertToLowerCase()
+    this.splitCompoundNames()
     this.removeDuplicates()
     this.filterMinLength()
     return this.data

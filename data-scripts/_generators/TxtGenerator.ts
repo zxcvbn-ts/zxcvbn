@@ -97,6 +97,7 @@ export class TxtGenerator extends SimpleListGenerator<Options> {
 
     this.trimWhitespaces()
     this.convertToLowerCase()
+    this.splitCompoundNames()
     this.removeDuplicates()
     this.filterMinLength()
 
