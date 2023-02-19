@@ -1,4 +1,4 @@
-import { FetchApi } from './types'
+import { HaveIBeenPwnedConfig } from './types'
 
 const isNodeJs =
   typeof process !== 'undefined' &&
@@ -42,35 +42,47 @@ const digestMessage = async (message: string) => {
 
 const pwnedUrl = 'https://api.pwnedpasswords.com/range/'
 
+const defaultNetworkErrorHandler = (_error: Error | Response): false => {
+  return false
+}
+
 export default async (
   password: string,
-  universalFetch: FetchApi,
-  url: string = pwnedUrl,
-) => {
-  if (!universalFetch) {
-    return null
+  {
+    universalFetch,
+    url = pwnedUrl,
+    networkErrorHandler = defaultNetworkErrorHandler,
+  }: HaveIBeenPwnedConfig,
+) =>
+  // eslint-disable-next-line max-params
+  {
+    if (!universalFetch) {
+      return null
+    }
+    const passwordHash = (await digestMessage(password)).toUpperCase()
+    const range = passwordHash.slice(0, 5)
+    const suffix = passwordHash.slice(5)
+    const response = await universalFetch(`${url}${range}`, {
+      method: 'GET',
+      headers: {
+        'Add-Padding': 'true',
+      },
+    }).catch((error) => {
+      return networkErrorHandler(error)
+    })
+
+    if (typeof response === 'boolean') {
+      return false
+    }
+    if (response.status >= 400) {
+      return networkErrorHandler(response)
+    }
+
+    const result = await response.text()
+    const resultArray = result.split('\r\n')
+
+    return resultArray.find((entry: string) => {
+      const passwordHasPart = entry.split(':')[0]
+      return passwordHasPart === suffix
+    })
   }
-  const passwordHash = (await digestMessage(password)).toUpperCase()
-  const range = passwordHash.slice(0, 5)
-  const suffix = passwordHash.slice(5)
-  const response = await universalFetch(`${url}${range}`, {
-    method: 'GET',
-    headers: {
-      'Add-Padding': 'true',
-    },
-  }).catch(() => {
-    return false
-  })
-
-  if (typeof response === 'boolean' || response.status >= 400) {
-    return false
-  }
-
-  const result = await response.text()
-  const resultArray = result.split('\r\n')
-
-  return resultArray.find((entry: string) => {
-    const passwordHasPart = entry.split(':')[0]
-    return passwordHasPart === suffix
-  })
-}
