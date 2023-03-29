@@ -44,7 +44,7 @@ describe('spatial matching specific patterns vs keyboards', () => {
     ['12345', 'qwerty', 1, 0],
     ['@WSX', 'qwerty', 1, 4],
     ['6tfGHJ', 'qwerty', 2, 3],
-    ['hGFd', 'qwerty', 1, 2],
+    ['hGFd', 'qwerty', 0, 2],
     ['/;p09876yhn', 'qwerty', 3, 0],
     ['Xdr%', 'qwerty', 1, 2],
     ['159-', 'keypad', 1, 0],

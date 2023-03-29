@@ -25,7 +25,7 @@ describe('repeat matching', () => {
   generatedGenPws.forEach(([password, i, j]) => {
     const matches = matchRepeat.match({ password, omniMatch }) as RepeatMatch[]
     const msg = 'matches embedded repeat patterns'
-    checkMatches(msg, matches, 'sequence', [pattern], [[i, j]], {
+    checkMatches(msg, matches, 'repeat', [pattern], [[i, j]], {
       baseToken: ['&'],
     })
   })
