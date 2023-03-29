@@ -74,17 +74,15 @@ class MatchL33t {
 
   // makes a pruned copy of l33t_table that only includes password's possible substitutions
   relevantL33tSubtable(password: string, table: OptionsL33tTable) {
-    const passwordChars: LooseObject = {}
     const subTable: LooseObject = {}
-    password.split('').forEach((char: string) => {
-      passwordChars[char] = true
-    })
 
     Object.keys(table).forEach((letter) => {
       const subs = table[letter as keyof typeof table]
-      const relevantSubs = subs.filter((sub: string) => sub in passwordChars)
+      const relevantSubs = subs.filter((sub: string) => password.includes(sub))
       if (relevantSubs.length > 0) {
-        subTable[letter] = relevantSubs
+        relevantSubs.forEach(() => {
+          subTable[letter] = relevantSubs
+        })
       }
     })
     return subTable
@@ -108,18 +106,19 @@ class MatchL33t {
     if (!keys.length) {
       return subs
     }
-    const firstKey = keys[0]
+    const firstKey = keys[0] as keyof typeof table
     const restKeys = keys.slice(1)
     const nextSubs: Subs = []
-    table[firstKey as keyof typeof table].forEach((l33tChr: string) => {
+    table[firstKey].forEach((l33tChr: string) => {
       subs.forEach((sub) => {
         let dupL33tIndex = -1
         for (let i = 0; i < sub.length; i += 1) {
-          if (sub[i][0] === l33tChr) {
+          if (sub[i][0].includes(l33tChr) || l33tChr.includes(sub[i][0])) {
             dupL33tIndex = i
             break
           }
         }
+
         if (dupL33tIndex === -1) {
           const subExtension = sub.concat([[l33tChr, firstKey]])
           nextSubs.push(subExtension)
@@ -141,13 +140,16 @@ class MatchL33t {
 
   dedup(subs: Subs) {
     const deduped: Subs = []
-    const members: LooseObject = {}
+    const members = new Set<string>()
     subs.forEach((sub) => {
-      const assoc = sub.map((k, index) => [k, index])
-      assoc.sort()
-      const label = assoc.map(([k, v]) => `${k},${v}`).join('-')
-      if (!(label in members)) {
-        members[label] = true
+      const label = sub
+        .map((innerArr, index) => {
+          return [...innerArr, String(index)].join(',')
+        })
+        .sort()
+        .join('-')
+      if (!members.has(label)) {
+        members.add(label)
         deduped.push(sub)
       }
     })
