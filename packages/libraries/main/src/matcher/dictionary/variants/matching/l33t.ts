@@ -98,7 +98,25 @@ class MatchL33t {
       sub.forEach(([l33tChr, chr]) => {
         subDict[l33tChr] = chr
       })
-      return subDict
+      const ordered = Object.keys(subDict)
+        .sort((a, b) => {
+          const subA = a.length
+          const subB = b.length
+          if (subA < subB) {
+            return 1
+          }
+          if (subA > subB) {
+            return -1
+          }
+          return 0
+        })
+        .reduce((obj, key) => {
+          // @ts-ignore
+          // eslint-disable-next-line no-param-reassign
+          obj[key] = subDict[key]
+          return obj
+        }, {} as LooseObject)
+      return ordered
     })
   }
 
@@ -113,7 +131,7 @@ class MatchL33t {
       subs.forEach((sub) => {
         let dupL33tIndex = -1
         for (let i = 0; i < sub.length; i += 1) {
-          if (sub[i][0].includes(l33tChr) || l33tChr.includes(sub[i][0])) {
+          if (sub[i][0] === l33tChr) {
             dupL33tIndex = i
             break
           }
@@ -135,6 +153,7 @@ class MatchL33t {
     if (restKeys.length) {
       return this.getSubs(restKeys, newSubs, table)
     }
+
     return newSubs
   }
 
