@@ -24,7 +24,7 @@ export default (
   it(`${prefix}: matches.length == ${patterns.length}`, () => {
     expect(matches.length).toEqual(patterns.length)
   })
-  for (let k = 0; k < patterns.length - 1; k += 1) {
+  for (let k = 0; k < patterns.length; k += 1) {
     const match = matches[k]
     const patternName = usedPatternNames[k]
     const pattern = patterns[k]

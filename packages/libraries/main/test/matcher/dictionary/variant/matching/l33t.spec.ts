@@ -3,7 +3,7 @@ import MatchDictionary from '../../../../../src/matcher/dictionary/matching'
 import checkMatches from '../../../../helper/checkMatches'
 import * as helperApi from '../../../../../src/helper'
 import { zxcvbnOptions } from '../../../../../src/Options'
-import { LooseObject, OptionsL33tTable } from '../../../../../src/types'
+import { LooseObject } from '../../../../../src/types'
 
 zxcvbnOptions.setOptions()
 const dictionaryMatcher = new MatchDictionary()
@@ -20,7 +20,7 @@ describe('l33t matching', () => {
   }
 
   const dicts = {
-    words: ['aac', 'password', 'paassword', 'asdf0', 'computerc'],
+    words: ['aac', 'password', 'paassword', 'asdf0', 'computer'],
     words2: ['cgo'],
   }
 
@@ -39,75 +39,72 @@ describe('l33t matching', () => {
   const matchL33t = new MatchL33t(dictionaryMatcher.defaultMatch)
 
   describe('main match', () => {
-    // it("doesn't match ''", () => {
-    //   expect(matchL33t.match({ password: '' })).toEqual([])
-    // })
-    //
-    // it('should not go over max substitutions', () => {
-    //   // this password has 16 substitutions with the custom dictionary
-    //   matchL33t.match({ password: '4@8({[</369&#!1/|0$5' })
-    //   expect(spyTranslate).toHaveBeenCalledTimes(15)
-    // })
-    //
-    // it("doesn't match pure dictionary words", () => {
-    //   expect(matchL33t.match({ password: 'password' })).toEqual([])
-    // })
-    //
-    // it("doesn't match when multiple l33t substitutions are needed for the same letter", () => {
-    //   expect(matchL33t.match({ password: 'p4@ssword' })).toEqual([])
-    // })
-    //
-    // it("doesn't match with subsets of possible l33t substitutions", () => {
-    //   expect(matchL33t.match({ password: '4sdf0' })).toEqual([])
-    // })
+    it("doesn't match ''", () => {
+      expect(matchL33t.match({ password: '' })).toEqual([])
+    })
+
+    it('should not go over max substitutions', () => {
+      // this password has 16 substitutions with the custom dictionary
+      matchL33t.match({ password: '4@8({[</369&#!1/|0$5' })
+      expect(spyTranslate).toHaveBeenCalledTimes(15)
+    })
+
+    it("doesn't match pure dictionary words", () => {
+      expect(matchL33t.match({ password: 'password' })).toEqual([])
+    })
+
+    it("doesn't match when multiple l33t substitutions are needed for the same letter", () => {
+      expect(matchL33t.match({ password: 'p4@ssword' })).toEqual([])
+    })
+
+    it("doesn't match with subsets of possible l33t substitutions", () => {
+      expect(matchL33t.match({ password: '4sdf0' })).toEqual([])
+    })
     const data = [
-      // [
-      //   'p4ssword',
-      //   'p4ssword',
-      //   'password',
-      //   'words',
-      //   3,
-      //   [0, 7],
-      //   {
-      //     4: 'a',
-      //   },
-      // ],
-      // [
-      //   'p@ssw0rd',
-      //   'p@ssw0rd',
-      //   'password',
-      //   'words',
-      //   3,
-      //   [0, 7],
-      //   {
-      //     '@': 'a',
-      //     '0': 'o',
-      //   },
-      // ],
       [
-        '(()mp|_|ter{',
-        'p@ssw0rd',
-        'computer',
+        'p4ssword',
+        'p4ssword',
+        'password',
         'words',
-        4,
-        [0, 10],
+        2,
+        [0, 7],
+        {
+          4: 'a',
+        },
+      ],
+      [
+        'p@@ssw0rd',
+        'p@@ssw0rd',
+        'paassword',
+        'words',
+        3,
+        [0, 8],
         {
           '@': 'a',
           '0': 'o',
         },
       ],
-      // [
-      //   'aSdfO{G0asDfO',
-      //   '{G0',
-      //   'cgo',
-      //   'words2',
-      //   1,
-      //   [5, 7],
-      //   {
-      //     '{': 'c',
-      //     '0': 'o',
-      //   },
-      // ],
+      [
+        '(()mp|_|ter',
+        '(()mp|_|',
+        'computer',
+        'words',
+        5,
+        [0, 7],
+        { '|_|': 'u', '()': 'o', '(': 'c' },
+      ],
+      [
+        'aSdfO{G0asDfO',
+        '{G0',
+        'cgo',
+        'words2',
+        1,
+        [5, 7],
+        {
+          '{': 'c',
+          '0': 'o',
+        },
+      ],
     ]
 
     data.forEach(([password, pattern, word, dictionaryName, rank, ij, sub]) => {
@@ -128,38 +125,38 @@ describe('l33t matching', () => {
         },
       )
     })
-    // const matches = matchL33t.match({ password: '@a(go{G0' })
-    // msg = 'matches against overlapping l33t patterns'
-    // checkMatches(
-    //   msg,
-    //   matches,
-    //   'dictionary',
-    //   ['@a(', '(go', '{G0'],
-    //   [
-    //     [0, 2],
-    //     [2, 4],
-    //     [5, 7],
-    //   ],
-    //   {
-    //     l33t: [true, true, true],
-    //     sub: [
-    //       {
-    //         '@': 'a',
-    //         '(': 'c',
-    //       },
-    //       {
-    //         '(': 'c',
-    //       },
-    //       {
-    //         '{': 'c',
-    //         '0': 'o',
-    //       },
-    //     ],
-    //     matchedWord: ['aac', 'cgo', 'cgo'],
-    //     rank: [1, 1, 1],
-    //     dictionaryName: ['words', 'words2', 'words2'],
-    //   },
-    // )
+    const matches = matchL33t.match({ password: '@a(go{G0' })
+    msg = 'matches against overlapping l33t patterns'
+    checkMatches(
+      msg,
+      matches,
+      'dictionary',
+      ['@a(', '(go', '{G0'],
+      [
+        [0, 2],
+        [2, 4],
+        [5, 7],
+      ],
+      {
+        l33t: [true, true, true],
+        sub: [
+          {
+            '@': 'a',
+            '(': 'c',
+          },
+          {
+            '(': 'c',
+          },
+          {
+            '{': 'c',
+            '0': 'o',
+          },
+        ],
+        matchedWord: ['aac', 'cgo', 'cgo'],
+        rank: [1, 1, 1],
+        dictionaryName: ['words', 'words2', 'words2'],
+      },
+    )
   })
 
   describe('helpers', () => {
