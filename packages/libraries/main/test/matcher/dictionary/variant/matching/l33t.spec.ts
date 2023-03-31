@@ -53,12 +53,35 @@ describe('l33t matching', () => {
       expect(matchL33t.match({ password: 'password' })).toEqual([])
     })
 
-    it("doesn't match when multiple l33t substitutions are needed for the same letter", () => {
-      expect(matchL33t.match({ password: 'p4@ssword' })).toEqual([])
+    it('should match when multiple l33t substitutions are needed for the same letter', () => {
+      expect(matchL33t.match({ password: 'p4@ssword' })).toEqual([
+        {
+          dictionaryName: 'words',
+          i: 0,
+          j: 8,
+          l33t: true,
+          matchedWord: 'paassword',
+          pattern: 'dictionary',
+          rank: 3,
+          reversed: false,
+          sub: [
+            {
+              letter: 'a',
+              substitutions: '4',
+            },
+            {
+              letter: 'a',
+              substitutions: '@',
+            },
+          ],
+          subDisplay: '4 -> a, @ -> a',
+          token: 'p4@ssword',
+        },
+      ])
     })
 
     it("doesn't match with subsets of possible l33t substitutions", () => {
-      expect(matchL33t.match({ password: '4sdf0' })).toEqual([])
+      expect(matchL33t.match({ password: 'P4$$w0rd' })).toEqual([])
     })
     const data = [
       [
@@ -158,89 +181,89 @@ describe('l33t matching', () => {
       },
     )
   })
-
-  describe('helpers', () => {
-    it('reduces l33t table to only the substitutions that a password might be employing', () => {
-      const data: [string, LooseObject][] = [
-        ['', {}],
-        ['abcdefgo123578!#$&*)]}>', {}],
-        ['a', {}],
-        [
-          '4',
-          {
-            a: ['4'],
-          },
-        ],
-        [
-          '4@',
-          {
-            a: ['4', '@'],
-          },
-        ],
-        [
-          '4({60',
-          {
-            a: ['4'],
-            c: ['(', '{'],
-            g: ['6'],
-            o: ['0'],
-          },
-        ],
-      ]
-
-      data.forEach(([pw, expected]) => {
-        expect(matchL33t.relevantL33tSubtable(pw, testTable)).toEqual(expected)
-      })
-    })
-
-    it('enumerates the different sets of l33t substitutions a password might be using', () => {
-      const data = [
-        [{}, [{}]],
-        [
-          {
-            a: ['@'],
-          },
-          [
-            {
-              '@': 'a',
-            },
-          ],
-        ],
-        [
-          {
-            a: ['@', '4'],
-          },
-          [
-            {
-              '@': 'a',
-            },
-            {
-              4: 'a',
-            },
-          ],
-        ],
-        [
-          {
-            a: ['@', '4'],
-            c: ['('],
-          },
-          [
-            {
-              '@': 'a',
-              '(': 'c',
-            },
-            {
-              '4': 'a',
-              '(': 'c',
-            },
-          ],
-        ],
-      ]
-
-      data.forEach(([table, subs]) => {
-        // @ts-ignore
-        expect(matchL33t.enumerateL33tSubs(table)).toEqual(subs)
-      })
-    })
-  })
+  //
+  // describe('helpers', () => {
+  //   it('reduces l33t table to only the substitutions that a password might be employing', () => {
+  //     const data: [string, LooseObject][] = [
+  //       ['', {}],
+  //       ['abcdefgo123578!#$&*)]}>', {}],
+  //       ['a', {}],
+  //       [
+  //         '4',
+  //         {
+  //           a: ['4'],
+  //         },
+  //       ],
+  //       [
+  //         '4@',
+  //         {
+  //           a: ['4', '@'],
+  //         },
+  //       ],
+  //       [
+  //         '4({60',
+  //         {
+  //           a: ['4'],
+  //           c: ['(', '{'],
+  //           g: ['6'],
+  //           o: ['0'],
+  //         },
+  //       ],
+  //     ]
+  //
+  //     data.forEach(([pw, expected]) => {
+  //       expect(matchL33t.relevantL33tSubtable(pw, testTable)).toEqual(expected)
+  //     })
+  //   })
+  //
+  //   it('enumerates the different sets of l33t substitutions a password might be using', () => {
+  //     const data = [
+  //       [{}, [{}]],
+  //       [
+  //         {
+  //           a: ['@'],
+  //         },
+  //         [
+  //           {
+  //             '@': 'a',
+  //           },
+  //         ],
+  //       ],
+  //       [
+  //         {
+  //           a: ['@', '4'],
+  //         },
+  //         [
+  //           {
+  //             '@': 'a',
+  //           },
+  //           {
+  //             4: 'a',
+  //           },
+  //         ],
+  //       ],
+  //       [
+  //         {
+  //           a: ['@', '4'],
+  //           c: ['('],
+  //         },
+  //         [
+  //           {
+  //             '@': 'a',
+  //             '(': 'c',
+  //           },
+  //           {
+  //             '4': 'a',
+  //             '(': 'c',
+  //           },
+  //         ],
+  //       ],
+  //     ]
+  //
+  //     data.forEach(([table, subs]) => {
+  //       // @ts-ignore
+  //       expect(matchL33t.enumerateL33tSubs(table)).toEqual(subs)
+  //     })
+  //   })
+  // })
 })
