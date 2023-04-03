@@ -45,11 +45,18 @@ class MatchL33t {
       zxcvbnOptions.l33tMaxSubstitutions,
       zxcvbnOptions.trieNodeRoot,
     )
-    subbedPasswords.forEach((subbedPassword) => {
+    let hasFullMatch = false
+    subbedPasswords.reverse().forEach((subbedPassword) => {
+      if (hasFullMatch) {
+        return
+      }
       const matchedDictionary = this.defaultMatch({
         password: subbedPassword.password,
       })
       matchedDictionary.forEach((match: DictionaryMatch) => {
+        if (!hasFullMatch) {
+          hasFullMatch = match.i === 0 && match.j === password.length - 1
+        }
         const token = password.slice(match.i, +match.j + 1 || 9e9)
         const extras = getExtras(subbedPassword, token)
         const newMatch: L33tMatch = {
