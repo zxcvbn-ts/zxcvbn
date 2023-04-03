@@ -37,7 +37,7 @@ export class Options {
 
   levenshteinThreshold: number = 2
 
-  l33tMaxSubstitutions: number = 100
+  l33tMaxSubstitutions: number = 512
 
   maxLength: number = 256
 

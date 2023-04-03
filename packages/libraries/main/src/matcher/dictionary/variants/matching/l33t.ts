@@ -9,14 +9,12 @@ const getExtras = (passwordWithSubs: PasswordWithSubs) => {
   const subDisplay: string[] = []
   const filtered = passwordWithSubs.changes.filter((value, index, self) => {
     const existingIndex = self.findIndex((t) => {
-      return (
-        t.letter === value.letter && t.substitutions === value.substitutions
-      )
+      return t.letter === value.letter && t.substitution === value.substitution
     })
     return index === existingIndex
   })
   filtered.forEach((value) => {
-    subDisplay.push(`${value.substitutions} -> ${value.letter}`)
+    subDisplay.push(`${value.substitution} -> ${value.letter}`)
   })
   return {
     subs: filtered,

@@ -3,7 +3,6 @@ import MatchDictionary from '../../../../../src/matcher/dictionary/matching'
 import checkMatches from '../../../../helper/checkMatches'
 import * as helperApi from '../../../../../src/helper'
 import { zxcvbnOptions } from '../../../../../src/Options'
-import { LooseObject } from '../../../../../src/types'
 
 zxcvbnOptions.setOptions()
 const dictionaryMatcher = new MatchDictionary()
@@ -43,8 +42,8 @@ describe('l33t matching', () => {
       expect(matchL33t.match({ password: '' })).toEqual([])
     })
 
-    it('should not go over max substitutions', () => {
-      // this password has 16 substitutions with the custom dictionary
+    it('should not go over max substitution', () => {
+      // this password has 16 substitution with the custom dictionary
       matchL33t.match({ password: '4@8({[</369&#!1/|0$5' })
       expect(spyTranslate).toHaveBeenCalledTimes(15)
     })
@@ -53,7 +52,7 @@ describe('l33t matching', () => {
       expect(matchL33t.match({ password: 'password' })).toEqual([])
     })
 
-    it('should match when multiple l33t substitutions are needed for the same letter', () => {
+    it('should match when multiple l33t substitution are needed for the same letter', () => {
       expect(matchL33t.match({ password: 'p4@ssword' })).toEqual([
         {
           dictionaryName: 'words',
@@ -64,14 +63,14 @@ describe('l33t matching', () => {
           pattern: 'dictionary',
           rank: 3,
           reversed: false,
-          sub: [
+          subs: [
             {
               letter: 'a',
-              substitutions: '4',
+              substitution: '4',
             },
             {
               letter: 'a',
-              substitutions: '@',
+              substitution: '@',
             },
           ],
           subDisplay: '4 -> a, @ -> a',
@@ -80,7 +79,7 @@ describe('l33t matching', () => {
       ])
     })
 
-    it("doesn't match with subsets of possible l33t substitutions", () => {
+    it("doesn't match with subsets of possible l33t substitution", () => {
       expect(matchL33t.match({ password: 'P4$$w0rd' })).toEqual([])
     })
     const data = [
@@ -91,9 +90,12 @@ describe('l33t matching', () => {
         'words',
         2,
         [0, 7],
-        {
-          4: 'a',
-        },
+        [
+          {
+            letter: 'a',
+            substitution: '4',
+          },
+        ],
       ],
       [
         'p@@ssw0rd',
@@ -102,10 +104,16 @@ describe('l33t matching', () => {
         'words',
         3,
         [0, 8],
-        {
-          '@': 'a',
-          '0': 'o',
-        },
+        [
+          {
+            letter: 'a',
+            substitution: '@',
+          },
+          {
+            letter: 'o',
+            substitution: '0',
+          },
+        ],
       ],
       [
         '(()mp|_|ter',
@@ -114,7 +122,21 @@ describe('l33t matching', () => {
         'words',
         5,
         [0, 7],
-        { '|_|': 'u', '()': 'o', '(': 'c' },
+
+        [
+          {
+            letter: 'c',
+            substitution: '(',
+          },
+          {
+            letter: 'o',
+            substitution: '()',
+          },
+          {
+            letter: 'u',
+            substitution: '|_|',
+          },
+        ],
       ],
       [
         'aSdfO{G0asDfO',
@@ -123,31 +145,39 @@ describe('l33t matching', () => {
         'words2',
         1,
         [5, 7],
-        {
-          '{': 'c',
-          '0': 'o',
-        },
+        [
+          {
+            letter: 'c',
+            substitution: '{',
+          },
+          {
+            letter: 'o',
+            substitution: '0',
+          },
+        ],
       ],
     ]
 
-    data.forEach(([password, pattern, word, dictionaryName, rank, ij, sub]) => {
-      msg = 'matches against common l33t substitutions'
-      checkMatches(
-        msg,
-        // @ts-ignore
-        matchL33t.match({ password }),
-        'dictionary',
-        [pattern as string],
-        [ij as number[]],
-        {
-          l33t: [true],
-          sub: [sub],
-          matchedWord: [word],
-          rank: [rank],
-          dictionaryName: [dictionaryName],
-        },
-      )
-    })
+    data.forEach(
+      ([password, pattern, word, dictionaryName, rank, ij, subs]) => {
+        msg = 'matches against common l33t substitution'
+        checkMatches(
+          msg,
+          // @ts-ignore
+          matchL33t.match({ password }),
+          'dictionary',
+          [pattern as string],
+          [ij as number[]],
+          {
+            l33t: [true],
+            subs: [subs],
+            matchedWord: [word],
+            rank: [rank],
+            dictionaryName: [dictionaryName],
+          },
+        )
+      },
+    )
     const matches = matchL33t.match({ password: '@a(go{G0' })
     msg = 'matches against overlapping l33t patterns'
     checkMatches(
@@ -163,17 +193,32 @@ describe('l33t matching', () => {
       {
         l33t: [true, true, true],
         sub: [
-          {
-            '@': 'a',
-            '(': 'c',
-          },
-          {
-            '(': 'c',
-          },
-          {
-            '{': 'c',
-            '0': 'o',
-          },
+          [
+            {
+              letter: 'a',
+              substitution: '@',
+            },
+            {
+              letter: 'c',
+              substitution: '(',
+            },
+          ],
+          [
+            {
+              letter: 'c',
+              substitution: '(',
+            },
+          ],
+          [
+            {
+              letter: 'c',
+              substitution: '{',
+            },
+            {
+              letter: 'o',
+              substitution: 'c',
+            },
+          ],
         ],
         matchedWord: ['aac', 'cgo', 'cgo'],
         rank: [1, 1, 1],
@@ -183,7 +228,7 @@ describe('l33t matching', () => {
   })
   //
   // describe('helpers', () => {
-  //   it('reduces l33t table to only the substitutions that a password might be employing', () => {
+  //   it('reduces l33t table to only the substitution that a password might be employing', () => {
   //     const data: [string, LooseObject][] = [
   //       ['', {}],
   //       ['abcdefgo123578!#$&*)]}>', {}],
@@ -216,7 +261,7 @@ describe('l33t matching', () => {
   //     })
   //   })
   //
-  //   it('enumerates the different sets of l33t substitutions a password might be using', () => {
+  //   it('enumerates the different sets of l33t substitution a password might be using', () => {
   //     const data = [
   //       [{}, [{}]],
   //       [

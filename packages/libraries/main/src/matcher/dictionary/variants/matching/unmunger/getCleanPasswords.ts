@@ -84,7 +84,7 @@ interface GetAllSubCombosHelperOptions {
 
 export interface PasswordChanges {
   letter: string
-  substitutions: string
+  substitution: string
 }
 
 export interface PasswordWithSubs {
@@ -100,6 +100,7 @@ const getAllSubCombosHelper = ({
 }: GetAllSubCombosHelperOptions): PasswordWithSubs[] => {
   const finalPasswords: PasswordWithSubs[] = []
 
+  // eslint-disable-next-line max-statements
   const helper = (index: number, changes: PasswordChanges[]): void => {
     if (finalPasswords.length >= limit) {
       return
@@ -133,14 +134,9 @@ const getAllSubCombosHelper = ({
           buffer.push(sub)
           const newSubs = changes.concat({
             letter: sub,
-            substitutions: cur.parents.join(''),
+            substitution: cur.parents.join(''),
           })
 
-          // sub: {
-          //   0: 'o',
-          //     4: 'a',
-          //     $: 's',
-          // },
           // recursively build the rest of the string
           helper(i + 1, newSubs)
           // backtrack by ignoring the added postfix

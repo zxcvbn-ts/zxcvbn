@@ -28,7 +28,6 @@ describe('omnimatch matching', () => {
     ['repeat', [24, 27]],
   ]
 
-  console.dir(matches, { depth: 99 })
   data.forEach(([patternName, [i, j]]) => {
     let included = false
     matches.forEach((match) => {
