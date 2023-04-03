@@ -31,13 +31,13 @@ export default class TrieNode {
     return !!this.subs
   }
 
-  private addChild(child: string): void {
+  addChild(child: string): void {
     if (!this.hasChild(child)) {
       this.children.set(child, new TrieNode([...this.parents, child]))
     }
   }
 
-  private hasChild(child: string): boolean {
+  hasChild(child: string): boolean {
     return this.children.has(child)
   }
 }
