@@ -150,3 +150,5 @@ If you want to use it and want to include your own polyfills, you need to transp
 - [haveibeenpwned](https://haveibeenpwned.com/Passwords) matcher
 - included debounce helper
 - levenshtein check for the dictionaries
+- diceware dictionary
+- extended l33t matcher for substitutions like `|_| => u`
