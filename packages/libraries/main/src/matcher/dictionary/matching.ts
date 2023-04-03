@@ -20,14 +20,16 @@ class MatchDictionary {
 
   match({ password }: DictionaryMatchOptions) {
     const matches = [
-      ...(this.defaultMatch({ password }) as DictionaryMatch[]),
+      ...(this.defaultMatch({
+        password,
+      }) as DictionaryMatch[]),
       ...(this.reverse.match({ password }) as DictionaryMatch[]),
       ...(this.l33t.match({ password }) as L33tMatch[]),
     ]
     return sorted(matches)
   }
 
-  defaultMatch({ password }: DictionaryMatchOptions) {
+  defaultMatch({ password, useLevenshtein = true }: DictionaryMatchOptions) {
     const matches: DictionaryMatch[] = []
     const passwordLength = password.length
     const passwordLower = password.toLowerCase()
@@ -52,7 +54,8 @@ class MatchDictionary {
           if (
             zxcvbnOptions.useLevenshteinDistance &&
             isFullPassword &&
-            !isInDictionary
+            !isInDictionary &&
+            useLevenshtein
           ) {
             foundLevenshteinDistance = findLevenshteinDistance(
               usedPassword,

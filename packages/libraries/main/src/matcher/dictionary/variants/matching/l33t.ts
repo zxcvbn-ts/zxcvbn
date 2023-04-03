@@ -46,13 +46,17 @@ class MatchL33t {
       zxcvbnOptions.trieNodeRoot,
     )
     let hasFullMatch = false
+    let isFullSubstitution = true
     subbedPasswords.reverse().forEach((subbedPassword) => {
       if (hasFullMatch) {
         return
       }
       const matchedDictionary = this.defaultMatch({
         password: subbedPassword.password,
+        useLevenshtein: isFullSubstitution,
       })
+      // only the first entry has a full substitution
+      isFullSubstitution = false
       matchedDictionary.forEach((match: DictionaryMatch) => {
         if (!hasFullMatch) {
           hasFullMatch = match.i === 0 && match.j === password.length - 1
