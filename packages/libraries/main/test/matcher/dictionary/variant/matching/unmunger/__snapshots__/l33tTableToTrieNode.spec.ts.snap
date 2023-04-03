@@ -1,0 +1,163 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`l33t table to trie node should convert correctly 1`] = `
+TrieNode {
+  "children": Map {
+    "@" => TrieNode {
+      "children": Map {},
+      "parents": [
+        "@",
+      ],
+      "subs": [
+        "a",
+      ],
+    },
+    "4" => TrieNode {
+      "children": Map {},
+      "parents": [
+        "4",
+      ],
+      "subs": [
+        "a",
+      ],
+    },
+    "|" => TrieNode {
+      "children": Map {
+        "_" => TrieNode {
+          "children": Map {
+            "|" => TrieNode {
+              "children": Map {},
+              "parents": [
+                "|",
+                "_",
+                "|",
+              ],
+              "subs": [
+                "u",
+              ],
+            },
+          },
+          "parents": [
+            "|",
+            "_",
+          ],
+        },
+      },
+      "parents": [
+        "|",
+      ],
+    },
+    "^" => TrieNode {
+      "children": Map {
+        "^" => TrieNode {
+          "children": Map {},
+          "parents": [
+            "^",
+            "^",
+          ],
+          "subs": [
+            "m",
+          ],
+        },
+      },
+      "parents": [
+        "^",
+      ],
+    },
+    "n" => TrieNode {
+      "children": Map {
+        "n" => TrieNode {
+          "children": Map {},
+          "parents": [
+            "n",
+            "n",
+          ],
+          "subs": [
+            "m",
+          ],
+        },
+      },
+      "parents": [
+        "n",
+      ],
+    },
+    "2" => TrieNode {
+      "children": Map {
+        "n" => TrieNode {
+          "children": Map {},
+          "parents": [
+            "2",
+            "n",
+          ],
+          "subs": [
+            "m",
+          ],
+        },
+      },
+      "parents": [
+        "2",
+      ],
+    },
+    "/" => TrieNode {
+      "children": Map {
+        "\\" => TrieNode {
+          "children": Map {
+            "\\" => TrieNode {
+              "children": Map {
+                "/" => TrieNode {
+                  "children": Map {
+                    "\\" => TrieNode {
+                      "children": Map {
+                        "\\" => TrieNode {
+                          "children": Map {},
+                          "parents": [
+                            "/",
+                            "\\",
+                            "\\",
+                            "/",
+                            "\\",
+                            "\\",
+                          ],
+                          "subs": [
+                            "m",
+                          ],
+                        },
+                      },
+                      "parents": [
+                        "/",
+                        "\\",
+                        "\\",
+                        "/",
+                        "\\",
+                      ],
+                    },
+                  },
+                  "parents": [
+                    "/",
+                    "\\",
+                    "\\",
+                    "/",
+                  ],
+                },
+              },
+              "parents": [
+                "/",
+                "\\",
+                "\\",
+              ],
+            },
+          },
+          "parents": [
+            "/",
+            "\\",
+          ],
+        },
+      },
+      "parents": [
+        "/",
+      ],
+    },
+  },
+  "parents": [],
+}
+`;

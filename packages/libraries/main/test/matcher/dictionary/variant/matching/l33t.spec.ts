@@ -1,12 +1,11 @@
 import MatchL33t from '../../../../../src/matcher/dictionary/variants/matching/l33t'
 import MatchDictionary from '../../../../../src/matcher/dictionary/matching'
 import checkMatches from '../../../../helper/checkMatches'
-import * as helperApi from '../../../../../src/helper'
 import { zxcvbnOptions } from '../../../../../src/Options'
+import { sorted } from '../../../../../src/helper'
 
 zxcvbnOptions.setOptions()
 const dictionaryMatcher = new MatchDictionary()
-const spyTranslate = jest.spyOn(helperApi, 'translate')
 
 describe('l33t matching', () => {
   let msg
@@ -40,12 +39,6 @@ describe('l33t matching', () => {
   describe('main match', () => {
     it("doesn't match ''", () => {
       expect(matchL33t.match({ password: '' })).toEqual([])
-    })
-
-    it('should not go over max substitution', () => {
-      // this password has 16 substitution with the custom dictionary
-      matchL33t.match({ password: '4@8({[</369&#!1/|0$5' })
-      expect(spyTranslate).toHaveBeenCalledTimes(15)
     })
 
     it("doesn't match pure dictionary words", () => {
@@ -182,7 +175,7 @@ describe('l33t matching', () => {
     msg = 'matches against overlapping l33t patterns'
     checkMatches(
       msg,
-      matches,
+      sorted(matches),
       'dictionary',
       ['@a(', '(go', '{G0'],
       [
@@ -192,7 +185,7 @@ describe('l33t matching', () => {
       ],
       {
         l33t: [true, true, true],
-        sub: [
+        subs: [
           [
             {
               letter: 'a',
@@ -216,7 +209,7 @@ describe('l33t matching', () => {
             },
             {
               letter: 'o',
-              substitution: 'c',
+              substitution: '0',
             },
           ],
         ],
@@ -226,89 +219,4 @@ describe('l33t matching', () => {
       },
     )
   })
-  //
-  // describe('helpers', () => {
-  //   it('reduces l33t table to only the substitution that a password might be employing', () => {
-  //     const data: [string, LooseObject][] = [
-  //       ['', {}],
-  //       ['abcdefgo123578!#$&*)]}>', {}],
-  //       ['a', {}],
-  //       [
-  //         '4',
-  //         {
-  //           a: ['4'],
-  //         },
-  //       ],
-  //       [
-  //         '4@',
-  //         {
-  //           a: ['4', '@'],
-  //         },
-  //       ],
-  //       [
-  //         '4({60',
-  //         {
-  //           a: ['4'],
-  //           c: ['(', '{'],
-  //           g: ['6'],
-  //           o: ['0'],
-  //         },
-  //       ],
-  //     ]
-  //
-  //     data.forEach(([pw, expected]) => {
-  //       expect(matchL33t.relevantL33tSubtable(pw, testTable)).toEqual(expected)
-  //     })
-  //   })
-  //
-  //   it('enumerates the different sets of l33t substitution a password might be using', () => {
-  //     const data = [
-  //       [{}, [{}]],
-  //       [
-  //         {
-  //           a: ['@'],
-  //         },
-  //         [
-  //           {
-  //             '@': 'a',
-  //           },
-  //         ],
-  //       ],
-  //       [
-  //         {
-  //           a: ['@', '4'],
-  //         },
-  //         [
-  //           {
-  //             '@': 'a',
-  //           },
-  //           {
-  //             4: 'a',
-  //           },
-  //         ],
-  //       ],
-  //       [
-  //         {
-  //           a: ['@', '4'],
-  //           c: ['('],
-  //         },
-  //         [
-  //           {
-  //             '@': 'a',
-  //             '(': 'c',
-  //           },
-  //           {
-  //             '4': 'a',
-  //             '(': 'c',
-  //           },
-  //         ],
-  //       ],
-  //     ]
-  //
-  //     data.forEach(([table, subs]) => {
-  //       // @ts-ignore
-  //       expect(matchL33t.enumerateL33tSubs(table)).toEqual(subs)
-  //     })
-  //   })
-  // })
 })

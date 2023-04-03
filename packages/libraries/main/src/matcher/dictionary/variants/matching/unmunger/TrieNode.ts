@@ -9,7 +9,7 @@ export default class TrieNode {
   addSub(key: string, ...subs: string[]): TrieNode {
     const firstChar = key.charAt(0)
     if (!this.children.has(firstChar)) {
-      this.children.set(firstChar, new TrieNode([...this.parents, key]))
+      this.children.set(firstChar, new TrieNode([...this.parents, firstChar]))
     }
     let cur = this.children.get(firstChar)!
     for (let i = 1; i < key.length; i += 1) {

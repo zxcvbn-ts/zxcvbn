@@ -5,9 +5,13 @@ import getCleanPasswords, {
   PasswordWithSubs,
 } from './unmunger/getCleanPasswords'
 
-const getExtras = (passwordWithSubs: PasswordWithSubs) => {
+const getExtras = (passwordWithSubs: PasswordWithSubs, token: string) => {
+  const usedChanges = passwordWithSubs.changes.filter((changes) => {
+    const sub = changes.substitution
+    return token.indexOf(sub) !== -1
+  })
   const subDisplay: string[] = []
-  const filtered = passwordWithSubs.changes.filter((value, index, self) => {
+  const filtered = usedChanges.filter((value, index, self) => {
     const existingIndex = self.findIndex((t) => {
       return t.letter === value.letter && t.substitution === value.substitution
     })
@@ -47,15 +51,22 @@ class MatchL33t {
       })
       matchedDictionary.forEach((match: DictionaryMatch) => {
         const token = password.slice(match.i, +match.j + 1 || 9e9)
-        // only return the matches that contain an actual substitution
-        if (token.toLowerCase() !== match.matchedWord) {
-          const extras = getExtras(subbedPassword)
-          matches.push({
-            ...match,
-            l33t: true,
-            token,
-            ...extras,
+        const extras = getExtras(subbedPassword, token)
+        const newMatch: L33tMatch = {
+          ...match,
+          l33t: true,
+          token,
+          ...extras,
+        }
+        const alreadyIncluded = matches.some((l33tMatch) => {
+          return Object.entries(l33tMatch).every(([key, value]) => {
+            return key === 'subs' || value === newMatch[key]
           })
+        })
+
+        // only return the matches that contain an actual substitution
+        if (token.toLowerCase() !== match.matchedWord && !alreadyIncluded) {
+          matches.push(newMatch)
         }
       })
     })
