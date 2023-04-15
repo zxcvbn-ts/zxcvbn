@@ -688,7 +688,7 @@ export default [
     },
     score: 1,
     feedback: {
-      warning: '',
+      warning: null,
       suggestions: ['Add more words that are less common.'],
     },
   },
@@ -771,7 +771,7 @@ export default [
       offlineFastHashing1e10PerSecond: 'centuries',
     },
     score: 4,
-    feedback: { warning: '', suggestions: [] },
+    feedback: { warning: null, suggestions: [] },
   },
   {
     calcTime: 0,
@@ -887,7 +887,7 @@ export default [
     },
     score: 0,
     feedback: {
-      warning: '',
+      warning: null,
       suggestions: [
         'Use multiple words, but avoid common phrases.',
         'You can create strong passwords without using symbols, numbers, or uppercase letters.',

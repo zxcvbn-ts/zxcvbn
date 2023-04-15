@@ -12,7 +12,7 @@ export default (match: MatchEstimated) => {
     }
   }
   return {
-    warning: '',
+    warning: null,
     suggestions: [],
   }
 }

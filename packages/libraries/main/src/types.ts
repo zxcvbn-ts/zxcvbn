@@ -143,7 +143,7 @@ export interface CrackTimesDisplay {
 }
 
 export interface FeedbackType {
-  warning: string
+  warning: string | null
   suggestions: string[]
 }
 
