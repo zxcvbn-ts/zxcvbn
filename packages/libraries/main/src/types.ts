@@ -3,6 +3,7 @@ import l33tTableDefault from './data/l33tTable'
 import { REGEXEN } from './data/const'
 import { DictionaryReturn } from './matcher/dictionary/scoring'
 import Matching from './Matching'
+import { PasswordChanges } from './matcher/dictionary/variants/matching/unmunger/getCleanPasswords'
 
 export type TranslationKeys = typeof translationKeys
 export type L33tTableDefault = typeof l33tTableDefault
@@ -59,7 +60,7 @@ export interface DictionaryMatch extends Match {
 }
 
 export interface L33tMatch extends DictionaryMatch {
-  sub: LooseObject
+  subs: PasswordChanges[]
   subDisplay: string
 }
 

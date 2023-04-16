@@ -1,40 +1,38 @@
 import utils from '../../../../scoring/utils'
-import { LooseObject } from '../../../../types'
+import { PasswordChanges } from '../matching/unmunger/getCleanPasswords'
 
 export interface L33tOptions {
   l33t: string
-  sub: LooseObject
+  subs: PasswordChanges[]
   token: string
 }
 
 export interface GetCountsOptions {
   token: string
-  subs: LooseObject
-  subbed: string
+  sub: PasswordChanges
 }
 
-const getCounts = ({ subs, subbed, token }: GetCountsOptions) => {
-  const unsubbed = subs[subbed as keyof typeof subs]
+const getCounts = ({ sub, token }: GetCountsOptions) => {
   // lower-case match.token before calculating: capitalization shouldn't affect l33t calc.
   const chrs = token.toLowerCase().split('')
   // num of subbed chars
-  const subbedCount = chrs.filter((char) => char === subbed).length
+  const subbedCount = chrs.filter((char) => char === sub.substitution).length
+
   // num of unsubbed chars
-  const unsubbedCount = chrs.filter((char) => char === unsubbed).length
+  const unsubbedCount = chrs.filter((char) => char === sub.letter).length
   return {
     subbedCount,
     unsubbedCount,
   }
 }
 
-export default ({ l33t, sub, token }: L33tOptions) => {
+export default ({ l33t, subs, token }: L33tOptions) => {
   if (!l33t) {
     return 1
   }
   let variations = 1
-  const subs = sub
-  Object.keys(subs).forEach((subbed) => {
-    const { subbedCount, unsubbedCount } = getCounts({ subs, subbed, token })
+  subs.forEach((sub) => {
+    const { subbedCount, unsubbedCount } = getCounts({ sub, token })
 
     if (subbedCount === 0 || unsubbedCount === 0) {
       // for this sub, password is either fully subbed (444) or fully unsubbed (aaa)

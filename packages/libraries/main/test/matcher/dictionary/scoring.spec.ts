@@ -6,7 +6,7 @@ const baseMatch = {
   pattern: 'dictionary',
   reversed: false,
   l33t: false,
-  sub: {},
+  subs: [],
   rank: 32,
   dictionaryName: 'someDictionary',
 }
@@ -63,9 +63,12 @@ describe('scoring: guesses dictionary', () => {
       ...baseMatch,
       token: 'aaa@@@',
       l33t: true,
-      sub: {
-        '@': 'a',
-      },
+      subs: [
+        {
+          letter: 'a',
+          substitution: '@',
+        },
+      ],
     }
     // @ts-ignore
     const result = 32 * l33tVariant(match)
@@ -83,9 +86,12 @@ describe('scoring: guesses dictionary', () => {
       ...baseMatch,
       token: 'AaA@@@',
       l33t: true,
-      sub: {
-        '@': 'a',
-      },
+      subs: [
+        {
+          letter: 'a',
+          substitution: '@',
+        },
+      ],
     }
     // @ts-ignore
     const result = 32 * l33tVariant(match) * uppercaseVariant(match.token)

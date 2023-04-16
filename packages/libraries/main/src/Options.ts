@@ -11,11 +11,15 @@ import {
 } from './types'
 import l33tTable from './data/l33tTable'
 import translationKeys from './data/translationKeys'
+import TrieNode from './matcher/dictionary/variants/matching/unmunger/TrieNode'
+import l33tTableToTrieNode from './matcher/dictionary/variants/matching/unmunger/l33tTableToTrieNode'
 
 export class Options {
   matchers: Matchers = {}
 
   l33tTable: OptionsL33tTable = l33tTable
+
+  trieNodeRoot: TrieNode = l33tTableToTrieNode(l33tTable, new TrieNode())
 
   dictionary: OptionsDictionary = {
     userInputs: [],
@@ -33,7 +37,7 @@ export class Options {
 
   levenshteinThreshold: number = 2
 
-  l33tMaxSubstitutions: number = 100
+  l33tMaxSubstitutions: number = 512
 
   maxLength: number = 256
 
@@ -45,6 +49,7 @@ export class Options {
   setOptions(options: OptionsType = {}) {
     if (options.l33tTable) {
       this.l33tTable = options.l33tTable
+      this.trieNodeRoot = l33tTableToTrieNode(options.l33tTable, new TrieNode())
     }
 
     if (options.dictionary) {

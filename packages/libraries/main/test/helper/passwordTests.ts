@@ -624,12 +624,12 @@ export default [
         dictionaryName: 'passwords',
         reversed: false,
         l33t: true,
-        sub: {
-          0: 'o',
-          4: 'a',
-          $: 's',
-        },
-        subDisplay: '0 -> o, 4 -> a, $ -> s',
+        subs: [
+          { letter: 'a', substitution: '4' },
+          { letter: 's', substitution: '$' },
+          { letter: 'o', substitution: '0' },
+        ],
+        subDisplay: '4 -> a, $ -> s, 0 -> o',
         baseGuesses: 2,
         uppercaseVariations: 2,
         l33tVariations: 8,

@@ -22,11 +22,10 @@ describe('dictionary matching', () => {
       .filter((match) => match.reversed === false)
     const patterns = ['we']
     const msg = 'default dictionaries'
-    const ijs: number[][] = [[0, 2]]
-
+    const ijs: number[][] = [[0, 1]]
     checkMatches(msg, matches, 'dictionary', patterns, ijs, {
       matchedWord: patterns,
-      rank: [322],
+      rank: [13],
       dictionaryName: ['commonWords'],
     })
   })

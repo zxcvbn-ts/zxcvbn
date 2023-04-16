@@ -12,77 +12,110 @@ describe('scoring: variant l33t', () => {
     [
       '4',
       2,
-      {
-        4: 'a',
-      },
+      [
+        {
+          letter: 'a',
+          substitution: '4',
+        },
+      ],
     ],
     [
       '4pple',
       2,
-      {
-        4: 'a',
-      },
+      [
+        {
+          letter: 'a',
+          substitution: '4',
+        },
+      ],
     ],
     ['abcet', 1, {}],
     [
       '4bcet',
       2,
-      {
-        4: 'a',
-      },
+      [
+        {
+          letter: 'a',
+          substitution: '4',
+        },
+      ],
     ],
     [
       'a8cet',
       2,
-      {
-        8: 'b',
-      },
+      [
+        {
+          letter: 'b',
+          substitution: '8',
+        },
+      ],
     ],
     [
       'abce+',
       2,
-      {
-        '+': 't',
-      },
+      [
+        {
+          letter: 't',
+          substitution: '+',
+        },
+      ],
     ],
     [
       '48cet',
       4,
-      {
-        4: 'a',
-        8: 'b',
-      },
+      [
+        {
+          letter: 'a',
+          substitution: '4',
+        },
+        {
+          letter: 'b',
+          substitution: '8',
+        },
+      ],
     ],
     [
       'a4a4aa',
       nCk(6, 2) + nCk(6, 1),
-      {
-        4: 'a',
-      },
+      [
+        {
+          letter: 'a',
+          substitution: '4',
+        },
+      ],
     ],
     [
       '4a4a44',
       nCk(6, 2) + nCk(6, 1),
-      {
-        4: 'a',
-      },
+      [
+        {
+          letter: 'a',
+          substitution: '4',
+        },
+      ],
     ],
     [
       'a44att+',
       (nCk(4, 2) + nCk(4, 1)) * nCk(3, 1),
-      {
-        '4': 'a',
-        '+': 't',
-      },
+      [
+        {
+          letter: 'a',
+          substitution: '4',
+        },
+        {
+          letter: 't',
+          substitution: '+',
+        },
+      ],
     ],
   ]
 
-  data.forEach(([word, variants, sub]) => {
+  data.forEach(([word, variants, subs]) => {
     it(`extra l33t guesses of ${word} is ${variants}`, () => {
       const match = {
         token: word,
-        sub,
-        l33t: !empty(sub as LooseObject),
+        subs,
+        l33t: !empty(subs as LooseObject),
       }
       // @ts-ignore
       expect(l33t(match)).toEqual(variants)
@@ -93,9 +126,12 @@ describe('scoring: variant l33t', () => {
     const match = {
       token: 'Aa44aA',
       l33t: true,
-      sub: {
-        4: 'a',
-      },
+      subs: [
+        {
+          letter: 'a',
+          substitution: '4',
+        },
+      ],
     }
     const variants = nCk(6, 2) + nCk(6, 1)
     // @ts-ignore

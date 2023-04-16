@@ -13,13 +13,13 @@ export default ({
   rank,
   reversed,
   l33t,
-  sub,
+  subs,
   token,
   dictionaryName,
 }: MatchExtended | MatchEstimated): DictionaryReturn => {
   const baseGuesses = rank // keep these as properties for display purposes
   const uppercaseVariations = uppercaseVariant(token)
-  const l33tVariations = l33tVariant({ l33t, sub, token })
+  const l33tVariations = l33tVariant({ l33t, subs, token })
   const reversedVariations = (reversed && 2) || 1
   let calculation
   if (dictionaryName === 'diceware') {
