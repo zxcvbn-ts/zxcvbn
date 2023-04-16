@@ -89,7 +89,7 @@ describe('main', () => {
       score: 2,
       feedback: {
         suggestions: ['anotherWord'],
-        warning: '',
+        warning: null,
       },
     })
   })

@@ -14,7 +14,7 @@ describe('feedback', () => {
       // @ts-ignore
       const data = feedbackClass.getFeedback(3, [{}])
       expect(data).toEqual({
-        warning: '',
+        warning: null,
         suggestions: [],
       })
     })
@@ -22,7 +22,7 @@ describe('feedback', () => {
     it('should return default feedback for no sequence', () => {
       const data = feedbackClass.getFeedback(3, [])
       expect(data).toEqual({
-        warning: '',
+        warning: null,
         suggestions: [
           translations.suggestions.useWords,
           translations.suggestions.noNeed,
@@ -34,7 +34,7 @@ describe('feedback', () => {
       // @ts-ignore
       const data = feedbackClass.getFeedback(1, [{}])
       expect(data).toEqual({
-        warning: '',
+        warning: null,
         suggestions: [translations.suggestions.anotherWord],
       })
     })
@@ -120,7 +120,7 @@ describe('feedback', () => {
         },
       ])
       expect(data).toEqual({
-        warning: '',
+        warning: null,
         suggestions: [
           translations.suggestions.anotherWord,
           translations.suggestions.capitalization,
@@ -138,7 +138,7 @@ describe('feedback', () => {
         },
       ])
       expect(data).toEqual({
-        warning: '',
+        warning: null,
         suggestions: [
           translations.suggestions.anotherWord,
           translations.suggestions.allUppercase,
@@ -171,7 +171,7 @@ describe('feedback', () => {
         },
       ])
       expect(data).toEqual({
-        warning: '',
+        warning: null,
         suggestions: [translations.suggestions.anotherWord],
       })
 
@@ -183,7 +183,7 @@ describe('feedback', () => {
         },
       ])
       expect(data).toEqual({
-        warning: '',
+        warning: null,
         suggestions: [translations.suggestions.anotherWord],
       })
 

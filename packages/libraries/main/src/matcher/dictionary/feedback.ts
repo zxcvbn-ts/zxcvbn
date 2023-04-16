@@ -6,7 +6,7 @@ const getDictionaryWarningPassword = (
   match: MatchEstimated,
   isSoleMatch?: boolean,
 ) => {
-  let warning = ''
+  let warning: string | null = null
   if (isSoleMatch && !match.l33t && !match.reversed) {
     if (match.rank <= 10) {
       warning = zxcvbnOptions.translations.warnings.topTen
@@ -25,7 +25,7 @@ const getDictionaryWarningWikipedia = (
   match: MatchEstimated,
   isSoleMatch?: boolean,
 ) => {
-  let warning = ''
+  let warning: string | null = null
   if (isSoleMatch) {
     warning = zxcvbnOptions.translations.warnings.wordByItself
   }
@@ -43,7 +43,7 @@ const getDictionaryWarningNames = (
 }
 
 const getDictionaryWarning = (match: MatchEstimated, isSoleMatch?: boolean) => {
-  let warning = ''
+  let warning: string | null = null
   const dictName = match.dictionaryName
   const isAName =
     dictName === 'lastnames' || dictName.toLowerCase().includes('firstnames')

@@ -9,7 +9,7 @@ import sequenceMatcher from './matcher/sequence/feedback'
 import spatialMatcher from './matcher/spatial/feedback'
 
 const defaultFeedback = {
-  warning: '',
+  warning: null,
   suggestions: [],
 }
 
@@ -33,7 +33,7 @@ class Feedback {
   }
 
   defaultFeedback: FeedbackType = {
-    warning: '',
+    warning: null,
     suggestions: [],
   }
 
@@ -60,12 +60,9 @@ class Feedback {
     let feedback = this.getMatchFeedback(longestMatch, sequence.length === 1)
     if (feedback !== null && feedback !== undefined) {
       feedback.suggestions.unshift(extraFeedback)
-      if (feedback.warning == null) {
-        feedback.warning = ''
-      }
     } else {
       feedback = {
-        warning: '',
+        warning: null,
         suggestions: [extraFeedback],
       }
     }
