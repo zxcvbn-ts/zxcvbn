@@ -84,13 +84,11 @@ const getCleanPasswords = (
   limit: number,
   trieRoot: TrieNode,
 ): PasswordWithSubs[] => {
-  // const combos: string[] = []
   return getAllSubCombosHelper({
     substr: string,
     buffer: [],
     limit,
     trieRoot,
   })
-  // return combos
 }
 export default getCleanPasswords
