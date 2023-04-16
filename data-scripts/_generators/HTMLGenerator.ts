@@ -8,6 +8,7 @@ import { LooseObject } from '../_helpers/runtime'
 interface Options extends SimpleListGeneratorOptions {
   requestConfig?: LooseObject
   extractorFunction: (entry: any) => string[]
+  pagination?: number
 }
 
 const defaultOptions: Options = {
@@ -21,7 +22,7 @@ interface ConstructorOptions {
 }
 
 export default class HTMLGenerator extends SimpleListGenerator<Options> {
-  public data: any[] = []
+  public data: string[] = []
 
   constructor({ url, options }: ConstructorOptions) {
     super({ url, options })
@@ -30,13 +31,33 @@ export default class HTMLGenerator extends SimpleListGenerator<Options> {
   }
 
   protected async getData() {
+    if (this.options.pagination) {
+      const resultData = []
+      for (let i = 0; i < this.options.pagination; i += 1) {
+        // eslint-disable-next-line no-await-in-loop
+        const result = await axios.get(
+          this.url.replace('__PAGINATION__', String(i)),
+          {
+            ...this.options.requestConfig,
+          },
+        )
+        resultData.push(result.data)
+      }
+      return resultData
+    }
     const result = await axios.get(this.url, { ...this.options.requestConfig })
-    return result.data
+    return [result.data]
   }
 
-  protected extractData(data: Buffer) {
+  protected extractData(data: Buffer[]) {
     console.info('Extracting data')
-    return this.options.extractorFunction(data)
+    const extractedData: string[][] = []
+    data.forEach((entry) => {
+      const result = this.options.extractorFunction(entry)
+      extractedData.push(result)
+    })
+
+    return extractedData.flat()
   }
 
   public async run(): Promise<string[] | null> {
@@ -51,6 +72,7 @@ export default class HTMLGenerator extends SimpleListGenerator<Options> {
     this.trimWhitespaces()
     this.convertToLowerCase()
     this.splitCompoundNames()
+    this.normalizeDiacritics()
     this.removeDuplicates()
     this.filterMinLength()
     return this.data

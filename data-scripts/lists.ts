@@ -5,6 +5,7 @@ import { TxtGenerator } from './_generators/TxtGenerator'
 import ApiGenerator from './_generators/ApiGenerator'
 import HTMLGenerator from './_generators/HTMLGenerator'
 import SimpleJapaneseListGenerator from './_generators/SimpleJapaneseListGenerator'
+import latin2Decoder from './latin2Decoder'
 
 export interface LanguageListEntry {
   source?: string
@@ -318,6 +319,59 @@ export default {
     lastnames: {
       source:
         'https://raw.githubusercontent.com/tomoyukikashiro/zxcvbn-japanese-data/main/data/last-names.txt.txt',
+    },
+  },
+  'cs': {
+    commonWords: {
+      source:
+        'https://raw.githubusercontent.com/hermitdave/FrequencyWords/master/content/2018/cs/cs_full.txt',
+      options: { hasOccurrences: true, normalizeDiacritics: true },
+    },
+
+    firstnames: {
+      generator: HTMLGenerator,
+      source:
+        'https://krestnijmeno.prijmeni.cz/oblast/3000-ceska_republika/muzska_jmena&page=__PAGINATION__',
+      options: {
+        pagination: 15,
+        normalizeDiacritics: true,
+        requestConfig: {
+          responseType: 'arraybuffer',
+        },
+        extractorFunction: (HTMLData: Buffer) => {
+          const REGEX =
+            /<tr class="itemjmeno"><td>\d{1,4}\.<\/td><td><a href='.*'>(.+)<\/a><\/td><td>\d*<\/td><\/tr>/g
+
+          const firstnamesArray = Array.from(
+            latin2Decoder(HTMLData).matchAll(REGEX),
+            (m: Array<string>) => {
+              return m[1]
+            },
+          )
+          return firstnamesArray
+        },
+      },
+    },
+    lastnames: {
+      generator: HTMLGenerator,
+      source:
+        'https://www.prijmeni.cz/oblast/3000-ceska_republika&page=__PAGINATION__',
+      options: {
+        pagination: 50,
+        normalizeDiacritics: true,
+        requestConfig: {
+          responseType: 'arraybuffer',
+        },
+        extractorFunction: (HTMLData: Buffer) => {
+          const REGEX =
+            /<tr class="itemprijmeni"><td>\d{1,2}\.<\/td><td><a href='.*'>(.+)<\/a><\/td><td>\d*<\/td><\/tr>/g
+          const lastnamesArray = Array.from(
+            latin2Decoder(HTMLData).matchAll(REGEX),
+            (m: Array<string>) => m[1],
+          )
+          return lastnamesArray
+        },
+      },
     },
   },
   'common': {
