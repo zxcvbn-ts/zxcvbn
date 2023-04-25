@@ -61,4 +61,79 @@ describe('levenshtein', () => {
       ],
     })
   })
+
+  it('should recognize a mistyped common English word', () => {
+    const result = zxcvbn('alaphant')
+    expect(result.calcTime).toBeDefined()
+    result.calcTime = 0
+    expect(
+      result.sequence.find(
+        (sequenceItem) => sequenceItem.levenshteinDistance !== undefined,
+      ),
+    ).toBeDefined()
+    expect(result).toEqual({
+      calcTime: 0,
+      crackTimesDisplay: {
+        offlineFastHashing1e10PerSecond: 'less than a second',
+        offlineSlowHashing1e4PerSecond: 'less than a second',
+        onlineNoThrottling10PerSecond: '35 seconds',
+        onlineThrottling100PerHour: '3 hours',
+      },
+      crackTimesSeconds: {
+        offlineFastHashing1e10PerSecond: 3.45e-8,
+        offlineSlowHashing1e4PerSecond: 0.0345,
+        onlineNoThrottling10PerSecond: 34.5,
+        onlineThrottling100PerHour: 12420,
+      },
+      feedback: {
+        suggestions: ['Add more words that are less common.'],
+        warning: 'This is a commonly used password.',
+      },
+      guesses: 345,
+      guessesLog10: 2.537819095073274,
+      password: 'alaphant',
+      score: 0,
+      sequence: [
+        {
+          baseGuesses: 344,
+          dictionaryName: 'passwords',
+          guesses: 344,
+          guessesLog10: 2.53655844257153,
+          i: 0,
+          j: 7,
+          l33t: false,
+          l33tVariations: 1,
+          levenshteinDistance: 2,
+          levenshteinDistanceEntry: 'elephant',
+          matchedWord: 'alaphant',
+          pattern: 'dictionary',
+          rank: 344,
+          reversed: false,
+          token: 'alaphant',
+          uppercaseVariations: 1,
+        },
+      ],
+    })
+  })
+
+  it('should respect threshold which is lower than the default 2', () => {
+    zxcvbnOptions.setOptions({
+      levenshteinThreshold: 1,
+    })
+    const result = zxcvbn('eeleephaant')
+    expect(
+      result.sequence.find(
+        (sequenceItem) => sequenceItem.levenshteinDistance !== undefined,
+      ),
+    ).toBeUndefined()
+  })
+
+  it('should respect threshold which is higher than the default 2', () => {
+    zxcvbnOptions.setOptions({
+      levenshteinThreshold: 3,
+    })
+    const result = zxcvbn('eeleephaant')
+    expect(result.sequence.length).toStrictEqual(1)
+    expect(result.sequence[0].levenshteinDistance).toBeDefined()
+  })
 })
