@@ -28,6 +28,9 @@ const findLevenshteinDistance = (
   let foundDistance = 0
   const found = Object.keys(rankedDictionary).find((entry) => {
     const usedThreshold = getUsedThreshold(password, entry, threshold)
+    if (Math.abs(password.length - entry.length) > usedThreshold) {
+      return false
+    }
     const foundEntryDistance = distance(password, entry)
     const isInThreshold = foundEntryDistance <= usedThreshold
 
