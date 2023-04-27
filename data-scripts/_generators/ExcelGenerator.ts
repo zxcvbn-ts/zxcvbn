@@ -123,6 +123,7 @@ export class ExcelGenerator extends SimpleListGenerator<Options> {
     this.trimWhitespaces()
     this.convertToLowerCase()
     this.splitCompoundNames()
+    this.normalizeDiacritics()
     this.removeDuplicates()
     this.filterMinLength()
     return this.data

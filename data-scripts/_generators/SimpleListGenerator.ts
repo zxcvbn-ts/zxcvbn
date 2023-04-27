@@ -15,6 +15,7 @@ export interface SimpleListGeneratorOptions {
   clearLine: (entry: string) => string
   splitCompoundNames: boolean
   splitCompoundNamesSeparator: string
+  normalizeDiacritics: boolean
 }
 
 export const SimpleListGeneratorDefaultOptions: SimpleListGeneratorOptions = {
@@ -29,6 +30,7 @@ export const SimpleListGeneratorDefaultOptions: SimpleListGeneratorOptions = {
   splitCompoundNamesSeparator: ' ',
   minOccurrences: 500,
   minLength: 2,
+  normalizeDiacritics: false,
   clearLine: (entry: string) => entry,
 }
 
@@ -143,6 +145,25 @@ export default class SimpleListGenerator<
     }
   }
 
+  protected normalizeDiacritics() {
+    if (this.options.normalizeDiacritics) {
+      console.info('Normalize diacritics')
+      const result: string[] = []
+      this.data.forEach((entry) => {
+        const cleanedEntry = entry
+          .replace('\x9A', 'š')
+          .replace('\x8A', 'Š')
+          .replace('\x9E', 'ž')
+        const normalizedValue = cleanedEntry
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+        const newData = new Set([cleanedEntry, normalizedValue])
+        result.push(...[...newData])
+      })
+      this.data = result
+    }
+  }
+
   public async run(): Promise<string[] | null> {
     console.info('Downloading')
     try {
@@ -158,6 +179,7 @@ export default class SimpleListGenerator<
     this.trimWhitespaces()
     this.convertToLowerCase()
     this.splitCompoundNames()
+    this.normalizeDiacritics()
     this.removeDuplicates()
     this.filterMinLength()
 
