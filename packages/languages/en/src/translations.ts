@@ -17,7 +17,6 @@ export default {
     commonNames: 'Common names and surnames are easy to guess.',
     userInputs: 'There should not be any personal or page related data.',
     pwned: 'Your password was exposed by a data breach on the Internet.',
-    separators: 'Common separators are easy to guess.',
   },
   suggestions: {
     l33t: "Avoid predictable letter substitutions like '@' for 'a'.",
@@ -36,7 +35,6 @@ export default {
     noNeed:
       'You can create strong passwords without using symbols, numbers, or uppercase letters.',
     pwned: 'If you use this password elsewhere, you should change it.',
-    separators: 'Avoid common separators.',
   },
   timeEstimation: {
     ltSecond: 'less than a second',
