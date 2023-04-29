@@ -1,8 +1,13 @@
-import { VALID_SEPARATORS } from '../../../src/data/const'
 import separatorGuesses from '../../../src/matcher/separator/scoring'
 
 describe('scoring: guesses separator', () => {
-  const data = VALID_SEPARATORS.map((s) => [s, VALID_SEPARATORS.length])
+  const data = [
+    [' ', 1],
+    ['%', 1],
+    ['-', 1],
+    ['.', 1],
+    ['_', 1],
+  ]
 
   data.forEach(([token, guesses]) => {
     const match = {

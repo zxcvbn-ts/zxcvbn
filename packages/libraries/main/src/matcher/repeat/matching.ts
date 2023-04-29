@@ -1,7 +1,6 @@
 import { RepeatMatch } from '../../types'
 import scoring from '../../scoring'
 import Matching from '../../Matching'
-import { BASE_REPEAT_PATTERN } from '../../data/const'
 
 function createRegex({
   isLazy = false,
@@ -9,7 +8,7 @@ function createRegex({
   flags = '',
 }): RegExp {
   return new RegExp(
-    `${isAnchored ? '^' : ''}(${BASE_REPEAT_PATTERN}${isLazy ? '?' : ''})\\1+${
+    `${isAnchored ? '^' : ''}(.+${isLazy ? '?' : ''})\\1+${
       isAnchored ? '$' : ''
     }`,
     flags,

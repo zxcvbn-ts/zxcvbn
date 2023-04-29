@@ -1,20 +1,19 @@
 import utils from './utils'
 import estimateGuesses from './estimate'
-import {
-  HAS_SEPARATOR,
-  MIN_GUESSES_BEFORE_GROWING_SEQUENCE,
-} from '../data/const'
+import { MIN_GUESSES_BEFORE_GROWING_SEQUENCE } from '../data/const'
 import {
   MatchExtended,
   BruteForceMatch,
   MatchEstimated,
   LooseObject,
 } from '../types'
+import MatchSeparator from '../matcher/separator/matching'
 
 const scoringHelper = {
   password: '',
   optimal: {} as any,
   excludeAdditive: false,
+  separatorRegex: undefined as RegExp | null | undefined,
   fillArray(size: number, valueType: 'object' | 'array') {
     const result: typeof valueType extends 'array' ? string[] : LooseObject[] =
       []
@@ -35,6 +34,31 @@ const scoringHelper = {
       i,
       j,
     }
+  },
+  getLastSeparatorIdx(
+    startIndex: number,
+    endIndex: number,
+  ): number | undefined {
+    if (this.separatorRegex === undefined) {
+      const mostUsedSpecial = MatchSeparator.getMostUsedSpecialChar(
+        this.password,
+      )
+      if (mostUsedSpecial === undefined) {
+        this.separatorRegex = null
+      } else {
+        this.separatorRegex = MatchSeparator.getSeparatorRegex(mostUsedSpecial)
+      }
+    }
+    if (this.separatorRegex === null) return undefined
+
+    const separators = [
+      ...this.password
+        .slice(startIndex, endIndex + 1)
+        .matchAll(this.separatorRegex),
+    ]
+    if (!separators.length) return undefined
+
+    return separators[separators.length - 1].index ?? 0
   },
   // helper: considers whether a length-sequenceLength
   // sequence ending at match m is better (fewer guesses)
@@ -80,11 +104,10 @@ const scoringHelper = {
   bruteforceUpdate(passwordCharIndex: number) {
     // see if a single bruteforce match spanning the passwordCharIndex-prefix is optimal.
     let match = this.makeBruteforceMatch(0, passwordCharIndex)
-    const separatorMatches = [...match.token.matchAll(HAS_SEPARATOR)]
+    const lastSeparatorIdx = this.getLastSeparatorIdx(0, passwordCharIndex)
     let i = 1
-    if (separatorMatches.length) {
-      let match = separatorMatches[separatorMatches.length - 1].index ?? 1
-      i = match + 1
+    if (lastSeparatorIdx !== undefined) {
+      i = lastSeparatorIdx + 1
     } else {
       this.update(match, 1)
     }

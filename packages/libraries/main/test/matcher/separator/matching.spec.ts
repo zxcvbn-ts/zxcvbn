@@ -26,17 +26,16 @@ describe('separator matching', () => {
     {},
   )
 
-  matches = matchSeparator.match({ password: 'first-second.third,&' })
-  msg = 'matches different separators'
+  matches = matchSeparator.match({ password: 'first-second-third,&' })
+  msg = 'matches with different potential separators'
   checkMatches(
     msg,
     matches,
     'separator',
-    ['-', '.', ','],
+    ['-', '-'],
     [
       [5, 5],
       [12, 12],
-      [18, 18],
     ],
     {},
   )
