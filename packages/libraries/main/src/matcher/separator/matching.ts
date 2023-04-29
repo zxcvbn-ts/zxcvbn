@@ -27,7 +27,10 @@ class MatchSeparator {
         .entries(),
     ].sort(([_a, a], [_b, b]) => b - a)
     if (!mostUsedSpecials.length) return undefined
-    return mostUsedSpecials[0][0]
+    const match = mostUsedSpecials[0]
+    // If the special character is only used once, don't treat it like a separator
+    if (match[1] < 2) return undefined
+    return match[0]
   }
 
   static getSeparatorRegex(separator: string): RegExp {
