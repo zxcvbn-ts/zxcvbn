@@ -1,3 +1,5 @@
+import { SPECIAL_CHAR_COUNT } from '../../data/const'
+
 export default () => {
-  return 1
+  return SPECIAL_CHAR_COUNT
 }

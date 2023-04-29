@@ -1,12 +1,13 @@
+import { SPECIAL_CHAR_COUNT } from '../../../src/data/const'
 import separatorGuesses from '../../../src/matcher/separator/scoring'
 
 describe('scoring: guesses separator', () => {
   const data = [
-    [' ', 1],
-    ['%', 1],
-    ['-', 1],
-    ['.', 1],
-    ['_', 1],
+    [' ', SPECIAL_CHAR_COUNT],
+    ['%', SPECIAL_CHAR_COUNT],
+    ['-', SPECIAL_CHAR_COUNT],
+    ['.', SPECIAL_CHAR_COUNT],
+    ['_', SPECIAL_CHAR_COUNT],
   ]
 
   data.forEach(([token, guesses]) => {
