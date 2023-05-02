@@ -1,50 +1,53 @@
 # Matcher
 
-There are multiple build in matchers to identify the strength of a password. All build in matchers are sync but custom matcher have the possibility to be async.
-Therefor if you are using an async custom matcher you need to use the `zxcvbnAsync` function.
+The @zxcvbn-ts/core library provides built-in matchers to evaluate the strength of a password. 
+Custom matchers can also be created, including asynchronous matchers such as the pwned-matcher which can be found in the [@zxcvbn-ts/matcher-pwned](https://www.npmjs.com/package/@zxcvbn-ts/matcher-pwned) library. 
+When using an asynchronous custom matcher, the zxcvbnAsync function should be used.
 
-## bruteforce
+## Built-in Matchers
+There are several built-in matchers available:
 
-The bruteforce is the matcher that needs to be used last, in order to check if the password can be guessed by brute force
+### Bruteforce
 
-## date
+The bruteforce matcher is used to determine if a password can be guessed by brute force. This will be the last matcher used when evaluating password strength.
 
-The date matcher tries to find dates inside a password for example 2020-05-05 or dates without separators.
+### Date
 
-## dictionary
+The date matcher searches for dates in the format YYYY-MM-DD or dates without separators.
 
-The dictionary matcher tries to find a word inside one of the dictionaries that you provided from the language packages or by yourself.
-There are three variants of it.
+### Dictionary
 
-1. Plain: It will just search for the exact word in the dictionaries
-2. Reverse: It will reverse the password and search the dictionaries
-3. L33t: It will transform l33t speak to normal characters and search the dictionaries for example `P4$$w0rd` will be transformed to `Password`. Additionaly it wil transform the extended l33t speak like `|_| => u` too.
-4. Diceware: If the password was found in the diceware dictionary it gets a fixed score for this finding
+The dictionary matcher attempts to find a word inside one of the provided dictionaries. 
+There are multiple variants of this matcher:
 
-## regex
+1. Plain: searches for the exact word in the dictionaries
+2. Reverse: reverses the password and searches the dictionaries
+3. L33t: transforms l33t speak to normal characters and searches the dictionaries. This includes transforming extended l33t speak like |_| => u.
+4. Diceware: If the password is found in the diceware dictionary, a fixed score is assigned to this finding.
 
-The regex matcher tries to find a string by a regex. Currently, it is only one regex with the recent years
+### Regex
 
-## repeat
+The regex matcher searches for a string using a regex pattern. Currently, it only searches for recent years.
 
-The repeat matcher tries to find repeated patterns like `aaaaaaa` or `byebyebye`
+### Repeat
 
-## sequence
+The repeat matcher searches for repeated patterns like aaaaaaa or byebyebye.
 
-The sequence matcher tries to identify sequences by looking for repeated differences in unicode codepoint for example `abcdef` or `1234567`
+### Sequence
 
-## spatial
+The sequence matcher identifies sequences by looking for repeated differences in Unicode codepoints, for example, abcdef or 1234567.
 
-The spatial matcher tries to find patterns from keyboard layout for example `qwertz`
+### Spatial
 
-## custom
+The spatial matcher searches for patterns based on keyboard layout, for example, qwertz.
 
-You can create matcher if you need which can be async. If you create an async matcher you should debounce the function. For this you can use the included debounce function
+## Custom Matcher
 
-### create a custom matcher
+Custom matchers can be created if needed, including asynchronous matchers. If creating an asynchronous matcher, the function should be debounced using the included debounce function.
 
-This is an example to create a custom matcher to check for the minLength. The scoring is just for showing purpose and should be adjusted to your needs.
-Be aware that we don't recommend using a minLength matcher.
+### Creating a Custom Matcher
+
+Here is an example of how to create a custom matcher to check for minimum password length. Please note that we do not recommend using a minimum length matcher.
 
 ```ts
 import { zxcvbnOptions } from '@zxcvbn-ts/core'
@@ -74,13 +77,12 @@ const minLengthMatcher: Matcher = {
   },
   feedback(match: MatchEstimated, isSoleMatch: boolean) {
     return {
-      warning: 'You password is not long enough',
+      warning: 'Your password is not long enough',
       suggestions: [],
     }
   },
   scoring(match: ExtendedMatch) {
-    // this will take the length of the password and multiple it by 10
-    // to create a higher scoring the more characters are added
+    // The length of the password is multiplied by 10 to create a higher score the more characters are added.
     return match.token.length * 10
   },
 }
@@ -88,14 +90,13 @@ const minLengthMatcher: Matcher = {
 zxcvbnOptions.addMatcher('minLength', minLengthMatcher)
 ```
 
-The Matching function needs to return an array with matched tokens. The four default properties are mandatory but the object can be extended as pleased.
+The Matching function needs to return an array of matched tokens. The four default properties (pattern, token, i, and j) are mandatory but the object can be extended as needed.
 `pattern` is the name of the matcher that found the token
 `token` is the part of the password was found with the matcher
 `i` is the start index of the token inside the password
 `j` is the end index of the token inside the password
 
-For example for the repeat matcher we have this string: `suchARandomRandomPassword`.
-This would result in:
+For example, if the repeat matcher found the following string: suchARandomRandomPassword, the result would be:
 ```
 i = 5
 j = 16
@@ -103,16 +104,17 @@ token = RandomRandom
 ```
 The found token starts at character 5 and ends at character 16.
 
-The scoring function will get the array of matches that you returned in the matching function so if you need any additional data to calculate your scoring feel free to add it to the matching object.
-The scoring function should return a guess count which seems appropriate for you. The guess count means how often an attacker would need to get the password.
+The scoring function takes the array of matches that you returned in the matching function as input and should return a guess count, which represents how many guesses an attacker would need to make to correctly guess the password. The guess count should be based on the strength of the password and the matches found.
+If you need any additional data to calculate your scoring, feel free to add it to the Match object in the matching function.
 
-The feedback function is used to give the user feedback about the found token of your matcher. It can have a warning and multiple suggestions.
+The feedback function takes a single Match object as input and should return a Feedback object that provides feedback to the user about the match. The Feedback object can have a warning and multiple suggestions.
 
 
 ## Matcher libraries
 
-There are different matcher libraries that can extend the core matchers
+There are different matcher libraries that can extend the core matchers. One such library is:
 
-### @zxcvbn-ts/matcher-pwned 
-The pwned matcher is an async matcher that will make a k-anonymity password request to the [have i been pwned](https://haveibeenpwned.com/) api. 
-If you bind zxcvbn-ts to your input field and execute the function on every new character typed, be sure to use the provided debounce function.
+### @zxcvbn-ts/matcher-pwned
+The pwned matcher is an async matcher that makes a k-anonymity password request to the [have i been pwned](https://haveibeenpwned.com/) API to check if the password has been exposed in a data breach.
+
+If you bind zxcvbn-ts to your input field and execute the function on every new character typed, be sure to use the provided debounce function to avoid making too many API requests.
