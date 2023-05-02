@@ -63,5 +63,3 @@ If you want to know how much the scoring changed compared to the original checko
 ## Contribution
 
 Please feel free to [open up an issue](https://github.com/zxcvbn-ts/zxcvbn/issues/new) or provide a pull request.
-
-// |-|or5e5+ableB4++ery
