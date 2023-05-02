@@ -694,7 +694,7 @@ export default [
   },
   {
     calcTime: 0,
-    password: 'dgo9dsghasdoghi8/!&IT/§(ihsdhf8o7o',
+    password: 'dgo9dsghasdoghi8/!&IT%§(ihsdhf8o7o',
     guesses: 2.34e33,
     guessesLog10: 33.36921585741014,
     sequence: [
@@ -751,7 +751,7 @@ export default [
       },
       {
         pattern: 'bruteforce',
-        token: '8/!&IT/§(ihsdhf8o7o',
+        token: '8/!&IT%§(ihsdhf8o7o',
         i: 15,
         j: 33,
         guesses: 10000000000000000000,

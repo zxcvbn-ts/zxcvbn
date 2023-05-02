@@ -2,6 +2,19 @@ import { RepeatMatch } from '../../types'
 import scoring from '../../scoring'
 import Matching from '../../Matching'
 
+function createRegex({
+  isLazy = false,
+  isAnchored = false,
+  flags = '',
+}): RegExp {
+  return new RegExp(
+    `${isAnchored ? '^' : ''}(.+${isLazy ? '?' : ''})\\1+${
+      isAnchored ? '$' : ''
+    }`,
+    flags,
+  )
+}
+
 interface RepeatMatchOptions {
   password: string
   omniMatch: Matching
@@ -73,13 +86,13 @@ class MatchRepeat {
   }
 
   getGreedyMatch(password: string, lastIndex: number) {
-    const greedy = /(.+)\1+/g
+    const greedy = createRegex({ isLazy: false, flags: 'g' })
     greedy.lastIndex = lastIndex
     return greedy.exec(password)
   }
 
   getLazyMatch(password: string, lastIndex: number) {
-    const lazy = /(.+?)\1+/g
+    const lazy = createRegex({ isLazy: true, flags: 'g' })
     lazy.lastIndex = lastIndex
     return lazy.exec(password)
   }
@@ -88,7 +101,7 @@ class MatchRepeat {
     greedyMatch: RegExpExecArray,
     lazyMatch: RegExpExecArray | null,
   ) {
-    const lazyAnchored = /^(.+?)\1+$/
+    const lazyAnchored = createRegex({ isLazy: true, isAnchored: true })
     let match
     let baseToken = ''
     if (lazyMatch && greedyMatch[0].length > lazyMatch[0].length) {

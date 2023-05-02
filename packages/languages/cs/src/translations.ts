@@ -15,14 +15,16 @@ export default {
     wordByItself: 'Jednotlivá slova lze snadno uhodnout.',
     namesByThemselves: 'Jednotlivá jména nebo příjmení lze snadno uhodnout.',
     commonNames: 'Běžná jména a příjmení lze snadno uhodnout.',
-    userInputs: 'Neměly by zde být žádné osobní údaje ani údaje související se stránkou.',
+    userInputs:
+      'Neměly by zde být žádné osobní údaje ani údaje související se stránkou.',
     pwned: 'Vaše heslo bylo odhaleno porušením zabezpečení dat na internetu.',
   },
   suggestions: {
     l33t: 'Vyhněte se předvídatelným záměnám písmen, jako je "@" za "a".',
     reverseWords: 'Vyhněte se obrácenému hláskování běžných slov.',
     allUppercase: 'Některá písmena velká, ale ne všechna.',
-    capitalization: 'Pište více než první písmeno velkým písmenem(Upraveno)Obnovit originál.',
+    capitalization:
+      'Pište více než první písmeno velkým písmenem(Upraveno)Obnovit originál.',
     dates: 'Vyhněte se datům a rokům, které jsou s vámi spojeny.',
     recentYears: 'Vyhněte se posledním letům.',
     associatedYears: 'Vyhněte se rokům, které jsou s vámi spojeny.',
