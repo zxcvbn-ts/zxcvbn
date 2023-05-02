@@ -44,6 +44,8 @@ The reason of this project is to modernize zxcvbn and make it maintainable with 
 - custom matcher
 - [haveibeenpwned](https://haveibeenpwned.com/Passwords) matcher
 
+<img alt="password check example" height="600" src="passwordCheck.gif"/>
+
 ## Documentation
 
 Checkout the [Documentation](https://zxcvbn-ts.github.io/zxcvbn/).
