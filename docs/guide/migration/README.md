@@ -1,5 +1,33 @@
 # Migration
 
+## `zxcvbn-ts 2.x.x` to `zxcvbn-ts 3.x.x`
+
+### language packages no longer have a default export
+
+Instead of importing language packages with
+
+`import package from '@zxcvbn-ts/language-en'`
+
+You will now have to import it either like this
+
+`import { dictionary, translation } from '@zxcvbn-ts/language-en'`
+
+or like this
+
+`import * as package from '@zxcvbn-ts/language-en'`
+
+
+### pwned matcher doesn't have a default export anymore
+
+Instead of importing  the pwned matcher with
+
+`import matcherPwnedFactory from '@zxcvbn-ts/matcher-pwned'`
+
+You will now have to import it like this
+
+`import { matcherPwnedFactory } from '@zxcvbn-ts/matcher-pwned'`
+
+
 ## `zxcvbn-ts 1.2.x` to `zxcvbn-ts 2.x.x`
 
 To fix the typing for async and non async matcher we separated the matcher into two functions.

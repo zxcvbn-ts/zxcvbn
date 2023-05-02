@@ -102,7 +102,7 @@
   "resolutions": {
     "minimist": "^1.2.8",
     "http-cache-semantics": "^4.1.1",
-    "tsconfig-paths": "^4.0.0"
+    "json5": "2.2.2"
   },
   "overrides": {},
   "dependencies": {}

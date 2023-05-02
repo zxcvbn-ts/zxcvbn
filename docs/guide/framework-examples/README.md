@@ -11,7 +11,7 @@ import { zxcvbnOptions } from '@zxcvbn-ts/core'
 import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
 import * as zxcvbnEnPackage from '@zxcvbn-ts/language-en'
 import * as zxcvbnDePackage from '@zxcvbn-ts/language-de'
-import matcherPwnedFactory from '@zxcvbn-ts/matcher-pwned'
+import { matcherPwnedFactory } from '@zxcvbn-ts/matcher-pwned'
 
 const myPlugin = {
   install() {
@@ -94,7 +94,7 @@ Most of the time you don't need to add the module because the user works only on
 /modules/zxcvbn.ts
 
 ```ts
-import matcherPwnedFactory from '@zxcvbn-ts/matcher-pwned'
+import { matcherPwnedFactory } from '@zxcvbn-ts/matcher-pwned'
 import { zxcvbnOptions } from '@zxcvbn-ts/core'
 import { OptionsType } from '@zxcvbn-ts/core/dist/types'
 import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
@@ -127,7 +127,7 @@ export default function zxcvbnModule(moduleOptions: ModuleOptions, nuxt: Nuxt) {
 /plugins/zxcvbn.ts
 
 ```ts
-import matcherPwnedFactory from '@zxcvbn-ts/matcher-pwned'
+import { matcherPwnedFactory } from '@zxcvbn-ts/matcher-pwned'
 import { zxcvbnOptions } from '@zxcvbn-ts/core'
 import { OptionsType } from '@zxcvbn-ts/core/dist/types'
 import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
@@ -214,7 +214,7 @@ import { zxcvbnOptions, zxcvbnAsync, ZxcvbnResult } from '@zxcvbn-ts/core'
 import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
 import * as zxcvbnEnPackage from '@zxcvbn-ts/language-en'
 import * as zxcvbnDePackage from '@zxcvbn-ts/language-de'
-import matcherPwnedFactory from '@zxcvbn-ts/matcher-pwned'
+import { matcherPwnedFactory } from '@zxcvbn-ts/matcher-pwned'
 
 // optional
 const matcherPwned = matcherPwnedFactory(fetch, zxcvbnOptions)

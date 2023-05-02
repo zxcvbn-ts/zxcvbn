@@ -17,7 +17,7 @@ The pwned matcher is an async matcher that will make a k-anonymity password requ
 
 ```js
 import { zxcvbn, zxcvbnOptions } from '@zxcvbn-ts/core'
-import matcherPwnedFactory from '@zxcvbn-ts/matcher-pwned'
+import { matcherPwnedFactory } from '@zxcvbn-ts/matcher-pwned'
 
 const password = 'somePassword'
 
