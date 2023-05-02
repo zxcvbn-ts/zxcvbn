@@ -38,6 +38,14 @@ class MatchL33t {
     this.defaultMatch = defaultMatch
   }
 
+  isAlreadyIncluded(matches: L33tMatch[], newMatch: L33tMatch) {
+    return matches.some((l33tMatch) => {
+      return Object.entries(l33tMatch).every(([key, value]) => {
+        return key === 'subs' || value === newMatch[key]
+      })
+    })
+  }
+
   match({ password }: { password: string }) {
     const matches: L33tMatch[] = []
     const subbedPasswords = getCleanPasswords(
@@ -69,11 +77,7 @@ class MatchL33t {
           token,
           ...extras,
         }
-        const alreadyIncluded = matches.some((l33tMatch) => {
-          return Object.entries(l33tMatch).every(([key, value]) => {
-            return key === 'subs' || value === newMatch[key]
-          })
-        })
+        const alreadyIncluded = this.isAlreadyIncluded(matches, newMatch)
 
         // only return the matches that contain an actual substitution
         if (token.toLowerCase() !== match.matchedWord && !alreadyIncluded) {

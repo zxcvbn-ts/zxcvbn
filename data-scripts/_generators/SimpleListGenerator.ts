@@ -164,6 +164,7 @@ export default class SimpleListGenerator<
     }
   }
 
+  // eslint-disable-next-line max-statements
   public async run(): Promise<string[] | null> {
     console.info('Downloading')
     try {

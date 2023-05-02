@@ -45,6 +45,7 @@ export default class ApiGenerator extends SimpleListGenerator<Options> {
     }
   }
 
+  // eslint-disable-next-line max-statements
   public async run(): Promise<string[] | null> {
     console.info('Downloading')
     let data = []

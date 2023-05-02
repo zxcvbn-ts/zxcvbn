@@ -1,7 +1,7 @@
 [![@zxcvbn-ts/core](https://badgen.net/bundlephobia/min/@zxcvbn-ts/core)](https://bundlephobia.com/result?p=@zxcvbn-ts/core)
 [![@zxcvbn-ts/core](https://badgen.net/npm/v/@zxcvbn-ts/core)](https://www.npmjs.com/package/@zxcvbn-ts/core)
 [![@zxcvbn-ts/core](https://img.shields.io/github/license/zxcvbn-ts/zxcvbn)](LICENSE.txt)
-[![@zxcvbn-ts/core](https://img.shields.io/github/workflow/status/zxcvbn-ts/zxcvbn/Build)](https://github.com/zxcvbn-ts/zxcvbn/actions/workflows/build.js.yml)
+[![@zxcvbn-ts/core](https://img.shields.io/github/actions/workflow/status/zxcvbn-ts/zxcvbn/build.js.yml?branch=master)](https://github.com/zxcvbn-ts/zxcvbn/actions/workflows/build.js.yml)
 
 
 # zxcvbn-ts
@@ -43,6 +43,8 @@ The reason of this project is to modernize zxcvbn and make it maintainable with 
 - types
 - custom matcher
 - [haveibeenpwned](https://haveibeenpwned.com/Passwords) matcher
+
+<img alt="password check example" height="600" src="passwordCheck.gif"/>
 
 ## Documentation
 

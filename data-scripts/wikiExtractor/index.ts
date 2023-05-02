@@ -156,7 +156,7 @@ const getTokens = async (inputDir: string, counter: TopTokenCounter) => {
       terminal: false,
     })
     await readLinePromise(readInterface, async (line: string) => {
-      const tokens = tokenizer.tokenize(line)
+      const tokens = tokenizer.tokenize(line) ?? []
       counter.addTokens(tokens)
       lines += 1
       if (lines % SENTENCES_PER_BATCH === 0) {

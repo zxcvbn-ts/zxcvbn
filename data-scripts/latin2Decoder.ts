@@ -146,6 +146,7 @@ const decodingError = (mode: string) => {
 }
 
 // https://encoding.spec.whatwg.org/#single-byte-decoder
+// eslint-disable-next-line max-statements
 export default (
   input: string | Buffer,
   mode: 'replacement' | 'fatal' = 'replacement',
