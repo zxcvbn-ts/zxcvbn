@@ -1,7 +1,7 @@
 [![@zxcvbn-ts/core](https://badgen.net/bundlephobia/min/@zxcvbn-ts/core)](https://bundlephobia.com/result?p=@zxcvbn-ts/core)
 [![@zxcvbn-ts/core](https://badgen.net/npm/v/@zxcvbn-ts/core)](https://www.npmjs.com/package/@zxcvbn-ts/core)
 [![@zxcvbn-ts/core](https://img.shields.io/github/license/zxcvbn-ts/zxcvbn)](LICENSE.txt)
-[![@zxcvbn-ts/core](https://img.shields.io/github/workflow/status/zxcvbn-ts/zxcvbn/Build)](https://github.com/zxcvbn-ts/zxcvbn/actions/workflows/build.js.yml)
+[![@zxcvbn-ts/core](https://img.shields.io/github/actions/workflow/status/zxcvbn-ts/zxcvbn/build.js.yml?branch=master)](https://github.com/zxcvbn-ts/zxcvbn/actions/workflows/build.js.yml)
 
 
 # zxcvbn-ts
@@ -61,3 +61,5 @@ If you want to know how much the scoring changed compared to the original checko
 ## Contribution
 
 Please feel free to [open up an issue](https://github.com/zxcvbn-ts/zxcvbn/issues/new) or provide a pull request.
+
+// |-|or5e5+ableB4++ery
