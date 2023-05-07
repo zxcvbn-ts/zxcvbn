@@ -1,8 +1,11 @@
+import { SEPERATOR_CHARS } from '../../data/const'
 import { SeparatorMatch } from '../../types'
 
 interface SeparatorMatchOptions {
   password: string
 }
+
+const separatorRegex = new RegExp(`[${SEPERATOR_CHARS.join('')}]`)
 
 /*
  *-------------------------------------------------------------------------------
@@ -10,11 +13,11 @@ interface SeparatorMatchOptions {
  *-------------------------------------------------------------------------------
  */
 class MatchSeparator {
-  static getMostUsedSpecialChar(password: string): string | undefined {
-    const mostUsedSpecials = [
+  static getMostUsedSeparatorChar(password: string): string | undefined {
+    const mostUsedSeperators = [
       ...password
         .split('')
-        .filter((c) => /[^\w]/.test(c))
+        .filter((c) => separatorRegex.test(c))
         .reduce((memo, c) => {
           const m = memo.get(c)
           if (m) {
@@ -26,8 +29,8 @@ class MatchSeparator {
         }, new Map())
         .entries(),
     ].sort(([_a, a], [_b, b]) => b - a)
-    if (!mostUsedSpecials.length) return undefined
-    const match = mostUsedSpecials[0]
+    if (!mostUsedSeperators.length) return undefined
+    const match = mostUsedSeperators[0]
     // If the special character is only used once, don't treat it like a separator
     if (match[1] < 2) return undefined
     return match[0]
@@ -43,7 +46,7 @@ class MatchSeparator {
 
     if (password.length === 0) return result
 
-    const mostUsedSpecial = MatchSeparator.getMostUsedSpecialChar(password)
+    const mostUsedSpecial = MatchSeparator.getMostUsedSeparatorChar(password)
     if (mostUsedSpecial === undefined) return result
 
     const isSeparator = MatchSeparator.getSeparatorRegex(mostUsedSpecial)

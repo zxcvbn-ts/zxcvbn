@@ -10,7 +10,7 @@ import {
 import MatchSeparator from '../matcher/separator/matching'
 
 const scoringHelper = {
-  password: '',
+  _password: '',
   optimal: {} as any,
   excludeAdditive: false,
   separatorRegex: undefined as RegExp | null | undefined,
@@ -26,6 +26,15 @@ const scoringHelper = {
     }
     return result
   },
+  set password(pass: string) {
+    // eslint-disable-next-line no-underscore-dangle
+    this._password = pass
+    this.separatorRegex = undefined
+  },
+  get password() {
+    // eslint-disable-next-line no-underscore-dangle
+    return this._password
+  },
   // helper: make bruteforce match objects spanning i to j, inclusive.
   makeBruteforceMatch(i: number, j: number): BruteForceMatch {
     return {
@@ -40,7 +49,7 @@ const scoringHelper = {
     endIndex: number,
   ): number | undefined {
     if (this.separatorRegex === undefined) {
-      const mostUsedSpecial = MatchSeparator.getMostUsedSpecialChar(
+      const mostUsedSpecial = MatchSeparator.getMostUsedSeparatorChar(
         this.password,
       )
       if (mostUsedSpecial === undefined) {
