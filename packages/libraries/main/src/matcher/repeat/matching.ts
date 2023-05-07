@@ -1,7 +1,6 @@
 import { RepeatMatch } from '../../types'
 import scoring from '../../scoring'
 import Matching from '../../Matching'
-import { SEPERATOR_CHARS } from '../../data/const'
 
 function createRegex({
   isLazy = false,
@@ -9,9 +8,9 @@ function createRegex({
   flags = '',
 }): RegExp {
   return new RegExp(
-    `${isAnchored ? '^' : ''}([^${SEPERATOR_CHARS.join('')}]+${
-      isLazy ? '?' : ''
-    })\\1+${isAnchored ? '$' : ''}`,
+    `${isAnchored ? '^' : ''}(.+${isLazy ? '?' : ''})\\1+${
+      isAnchored ? '$' : ''
+    }`,
     flags,
   )
 }
