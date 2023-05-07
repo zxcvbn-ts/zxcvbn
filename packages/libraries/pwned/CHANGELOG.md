@@ -5,7 +5,9 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # [3.0.0](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/matcher-pwned@2.0.9...@zxcvbn-ts/matcher-pwned@3.0.0) (2023-05-07)
 
-**Note:** Version bump only for package @zxcvbn-ts/matcher-pwned
+### BREAKING CHANGES
+
+- pwned matcher packages no longer has a default export.
 
 ## [2.0.9](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/matcher-pwned@2.0.8...@zxcvbn-ts/matcher-pwned@2.0.9) (2023-02-06)
 
