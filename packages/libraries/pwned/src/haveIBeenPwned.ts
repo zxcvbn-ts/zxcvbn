@@ -59,6 +59,10 @@ export default async (
     if (!universalFetch) {
       return null
     }
+    // we don't need to check passwords with a length smaller 2 which can happen for repeat matcher
+    if (password.length < 2) {
+      return null
+    }
     const passwordHash = (await digestMessage(password)).toUpperCase()
     const range = passwordHash.slice(0, 5)
     const suffix = passwordHash.slice(5)
