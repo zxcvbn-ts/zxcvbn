@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.1](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/core@3.0.0...@zxcvbn-ts/core@3.0.1) (2023-05-10)
+
+### Bug Fixes
+
+- **separator:** remove separator estimate special ([50f13e2](https://github.com/zxcvbn-ts/zxcvbn/commit/50f13e205f2c2141408fe6629ebaa75207b8a6cd))
+
 # [3.0.0](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/core@2.2.1...@zxcvbn-ts/core@3.0.0) (2023-05-07)
 
 ### Bug Fixes

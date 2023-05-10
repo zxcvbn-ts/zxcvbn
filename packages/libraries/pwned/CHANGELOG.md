@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.1](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/matcher-pwned@3.0.0...@zxcvbn-ts/matcher-pwned@3.0.1) (2023-05-10)
+
+### Bug Fixes
+
+- **pwned:** ignore passwords with a length < 2 ([346afff](https://github.com/zxcvbn-ts/zxcvbn/commit/346afff3bdcb1531e6ed7ff2b3f26b21e07e7855))
+
 # [3.0.0](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/matcher-pwned@2.0.9...@zxcvbn-ts/matcher-pwned@3.0.0) (2023-05-07)
 
 ### BREAKING CHANGES
