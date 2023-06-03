@@ -65,7 +65,7 @@ const getAllSubCombosHelper = ({
           // recursively build the rest of the string
           helper(i + 1, newSubs)
           // backtrack by ignoring the added postfix
-          buffer.splice(-sub.length)
+          buffer.pop()
           if (finalPasswords.length >= limit) {
             return
           }
