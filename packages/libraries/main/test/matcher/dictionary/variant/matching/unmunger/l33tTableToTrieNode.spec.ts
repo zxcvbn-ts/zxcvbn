@@ -7,8 +7,10 @@ describe('l33t table to trie node', () => {
       l33tTableToTrieNode(
         {
           a: ['@', '4'],
-          u: ['|_|'],
+          f: ['v'],
           m: ['^^', 'nn', '2n', '/\\\\/\\\\'],
+          u: ['|_|', 'v'],
+          w: ['vv'],
         },
         new TrieNode(),
       ),

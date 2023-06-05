@@ -36,23 +36,18 @@ const getAllSubCombosHelper = ({
       return
     }
 
-    const firstChar = substr.charAt(index)
-
-    // first, generate all combos without doing a substitution at this index
-    buffer.push(firstChar)
-    helper(index + 1, changes)
-    buffer.pop()
-
-    // next, exhaust all possible substitutions at this index
+    // first, exhaust all possible substitutions at this index
     let cur = trieRoot
+    let hasSubs = false
     for (let i = index; i < substr.length; i += 1) {
       const character = substr.charAt(i)
       cur = cur.getChild(character)!
       if (!cur) {
-        return
+        break
       }
 
       if (cur.isTerminal()) {
+        hasSubs = true
         const subs = cur.subs!
         // eslint-disable-next-line no-restricted-syntax
         for (const sub of subs) {
@@ -71,6 +66,13 @@ const getAllSubCombosHelper = ({
           }
         }
       }
+    }
+    const firstChar = substr.charAt(index)
+    if (!hasSubs || /\p{L}/u.test(firstChar)) {
+      // there were no substitutions or the first char is a letter
+      buffer.push(firstChar)
+      helper(index + 1, changes)
+      buffer.pop()
     }
   }
 

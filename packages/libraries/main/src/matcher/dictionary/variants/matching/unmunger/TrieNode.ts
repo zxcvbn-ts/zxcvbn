@@ -19,7 +19,7 @@ export default class TrieNode {
       }
       cur = cur.getChild(c)!
     }
-    cur.subs = subs
+    cur.subs = (cur.subs || []).concat(subs)
     return this
   }
 

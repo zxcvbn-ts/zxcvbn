@@ -5,8 +5,10 @@ import getCleanPasswords from '../../../../../../src/matcher/dictionary/variants
 const trieNode = l33tTableToTrieNode(
   {
     a: ['@', '4'],
-    u: ['|_|'],
+    f: ['v'],
     m: ['^^', 'nn', '2n', '/\\\\/\\\\'],
+    u: ['|_|', 'v'],
+    w: ['vv'],
   },
   new TrieNode(),
 )
@@ -15,7 +17,11 @@ describe('getCleanPasswords', () => {
     expect(getCleanPasswords('P4|_|$nn4rd', 100, trieNode)).toMatchSnapshot()
   })
 
+  it('should substitute to multiple variants correctly', () => {
+    expect(getCleanPasswords('vv', 100, trieNode)).toMatchSnapshot()
+  })
+
   it('should limit the substitutions correctly', () => {
-    expect(getCleanPasswords('P4|_|$nn4rd', 2, trieNode)).toMatchSnapshot()
+    expect(getCleanPasswords('vv', 3, trieNode)).toMatchSnapshot()
   })
 })
