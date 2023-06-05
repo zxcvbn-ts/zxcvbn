@@ -131,6 +131,24 @@ describe('l33t matching', () => {
           },
         ],
       ],
+      [
+        'aSdfO{G0asDfO',
+        '{G0',
+        'cgo',
+        'words2',
+        1,
+        [5, 7],
+        [
+          {
+            letter: 'c',
+            substitution: '{',
+          },
+          {
+            letter: 'o',
+            substitution: '0',
+          },
+        ],
+      ],
     ]
 
     data.forEach(
