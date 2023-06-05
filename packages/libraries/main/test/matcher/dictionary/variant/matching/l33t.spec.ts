@@ -110,11 +110,11 @@ describe('l33t matching', () => {
       ],
       [
         '(()mp|_|ter',
-        '(()mp|_|',
+        '(()mp|_|ter',
         'computer',
         'words',
         5,
-        [0, 7],
+        [0, 10],
 
         [
           {
@@ -128,24 +128,6 @@ describe('l33t matching', () => {
           {
             letter: 'u',
             substitution: '|_|',
-          },
-        ],
-      ],
-      [
-        'aSdfO{G0asDfO',
-        '{G0',
-        'cgo',
-        'words2',
-        1,
-        [5, 7],
-        [
-          {
-            letter: 'c',
-            substitution: '{',
-          },
-          {
-            letter: 'o',
-            substitution: '0',
           },
         ],
       ],

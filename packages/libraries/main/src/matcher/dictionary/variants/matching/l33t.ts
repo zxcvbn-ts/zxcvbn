@@ -66,6 +66,10 @@ class MatchL33t {
       // only the first entry has a full substitution
       isFullSubstitution = false
       matchedDictionary.forEach((match: DictionaryMatch) => {
+        if (subbedPassword.password === match.matchedWord) {
+          // eslint-disable-next-line no-param-reassign
+          match.j = subbedPassword.substr.length - 1
+        }
         if (!hasFullMatch) {
           hasFullMatch = match.i === 0 && match.j === password.length - 1
         }

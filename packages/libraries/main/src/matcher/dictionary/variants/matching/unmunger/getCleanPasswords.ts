@@ -15,6 +15,7 @@ export interface PasswordChanges {
 export interface PasswordWithSubs {
   password: string
   changes: PasswordChanges[]
+  substr: string
 }
 
 const getAllSubCombosHelper = ({
@@ -32,7 +33,7 @@ const getAllSubCombosHelper = ({
     }
 
     if (index === substr.length) {
-      finalPasswords.push({ password: buffer.join(''), changes })
+      finalPasswords.push({ password: buffer.join(''), changes, substr })
       return
     }
 
