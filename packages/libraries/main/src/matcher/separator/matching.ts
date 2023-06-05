@@ -37,7 +37,10 @@ class MatchSeparator {
   }
 
   static getSeparatorRegex(separator: string): RegExp {
-    return new RegExp(`(?<!${separator})(${separator})(?!${separator})`, 'g')
+    return new RegExp(`([^${separator}\n])(${separator})(?!${separator})`, 'g')
+    // negative lookbehind can be added again in a few years when it is more supported by the browsers (currently 2023)
+    // https://github.com/zxcvbn-ts/zxcvbn/issues/202
+    // return new RegExp(`(?<!${separator})(${separator})(?!${separator})`, 'g')
   }
 
   // eslint-disable-next-line max-statements
@@ -55,7 +58,11 @@ class MatchSeparator {
     for (const match of password.matchAll(isSeparator)) {
       // eslint-disable-next-line no-continue
       if (match.index === undefined) continue
-      const i = match.index
+
+      // add one to the index because we changed the regex from negative lookbehind to something simple.
+      // this simple approach uses the first character before the separater too but we only need the index of the separater
+      // https://github.com/zxcvbn-ts/zxcvbn/issues/202
+      const i = match.index + 1
       result.push({
         pattern: 'separator',
         token: mostUsedSpecial,
