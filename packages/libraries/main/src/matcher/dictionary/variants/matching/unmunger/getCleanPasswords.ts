@@ -38,7 +38,6 @@ const getAllSubCombosHelper = ({
 
     // first, exhaust all possible substitutions at this index
     let cur = trieRoot
-    let hasSubs = false
     for (let i = index; i < substr.length; i += 1) {
       const character = substr.charAt(i)
       cur = cur.getChild(character)!
@@ -47,7 +46,6 @@ const getAllSubCombosHelper = ({
       }
 
       if (cur.isTerminal()) {
-        hasSubs = true
         const subs = cur.subs!
         // eslint-disable-next-line no-restricted-syntax
         for (const sub of subs) {
