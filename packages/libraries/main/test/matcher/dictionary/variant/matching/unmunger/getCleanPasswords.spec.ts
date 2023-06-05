@@ -9,6 +9,7 @@ const trieNode = l33tTableToTrieNode(
     m: ['^^', 'nn', '2n', '/\\\\/\\\\'],
     u: ['|_|', 'v'],
     w: ['vv'],
+    fi: ['ﬁ'],
   },
   new TrieNode(),
 )
@@ -23,5 +24,9 @@ describe('getCleanPasswords', () => {
 
   it('should limit the substitutions correctly', () => {
     expect(getCleanPasswords('vv', 3, trieNode)).toMatchSnapshot()
+  })
+
+  it('should substitute to multiple symbols correctly', () => {
+    expect(getCleanPasswords('p@ciﬁc', 100, trieNode)).toMatchSnapshot()
   })
 })
