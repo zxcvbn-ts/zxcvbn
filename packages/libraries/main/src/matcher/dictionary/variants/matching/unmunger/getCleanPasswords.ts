@@ -67,13 +67,11 @@ const getAllSubCombosHelper = ({
         }
       }
     }
+    // next, generate all combos without doing a substitution at this index
     const firstChar = substr.charAt(index)
-    if (!hasSubs || /\p{L}/u.test(firstChar)) {
-      // there were no substitutions or the first char is a letter
-      buffer.push(firstChar)
-      helper(index + 1, changes)
-      buffer.pop()
-    }
+    buffer.push(firstChar)
+    helper(index + 1, changes)
+    buffer.pop()
   }
 
   helper(0, [])
