@@ -9,6 +9,6 @@
 
 ## Reporting a Vulnerability
 
-Checkout the documentation of github to [report vulnerabilities]([https://github.com/dropbox/zxcvbn](https://docs.github.com/en/code-security/security-advisories/guidance-on-reporting-and-writing/privately-reporting-a-security-vulnerability#privately-reporting-a-security-vulnerability))
+Checkout the documentation of github to [report vulnarbilities](https://docs.github.com/en/code-security/security-advisories/guidance-on-reporting-and-writing/privately-reporting-a-security-vulnerability#privately-reporting-a-security-vulnerability).
 
 Basically click on the `Security tab` and on the next page `Report a vulnerability`.
