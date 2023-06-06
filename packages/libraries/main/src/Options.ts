@@ -112,16 +112,16 @@ export class Options {
     const rankedDictionaries: RankedDictionaries = {}
     const rankedDictionariesMaxWorkSize: Record<string, number> = {}
     Object.keys(this.dictionary).forEach((name) => {
-      rankedDictionaries[name] = this.getRankedDictionary(name)
+      rankedDictionaries[name] = buildRankedDictionary(this.dictionary[name])
       rankedDictionariesMaxWorkSize[name] =
-        this.getRankedDictionariesMaxWordSize(name)
+        this.getRankedDictionariesMaxWordSize(this.dictionary[name])
     })
     this.rankedDictionaries = rankedDictionaries
     this.rankedDictionariesMaxWordSize = rankedDictionariesMaxWorkSize
   }
 
-  getRankedDictionariesMaxWordSize(name: string) {
-    const data = this.dictionary[name].map((el) => {
+  getRankedDictionariesMaxWordSize(list: (string | number)[]) {
+    const data = list.map((el) => {
       if (typeof el !== 'string') {
         return el.toString().length
       }
@@ -135,40 +135,33 @@ export class Options {
     return data.reduce((a, b) => Math.max(a, b), -Infinity)
   }
 
-  getRankedDictionary(name: string) {
-    const list = this.dictionary[name]
-    if (name === 'userInputs') {
-      const sanitizedInputs: string[] = []
+  buildSanitizedRankedDictionary(list: (string | number)[]) {
+    const sanitizedInputs: string[] = []
 
-      list.forEach((input: string | number | boolean) => {
-        const inputType = typeof input
-        if (
-          inputType === 'string' ||
-          inputType === 'number' ||
-          inputType === 'boolean'
-        ) {
-          sanitizedInputs.push(input.toString().toLowerCase())
-        }
-      })
+    list.forEach((input: string | number | boolean) => {
+      const inputType = typeof input
+      if (
+        inputType === 'string' ||
+        inputType === 'number' ||
+        inputType === 'boolean'
+      ) {
+        sanitizedInputs.push(input.toString().toLowerCase())
+      }
+    })
 
-      return buildRankedDictionary(sanitizedInputs)
-    }
-    return buildRankedDictionary(list)
+    return buildRankedDictionary(sanitizedInputs)
   }
 
   extendUserInputsDictionary(dictionary: (string | number)[]) {
-    if (this.dictionary.userInputs) {
-      this.dictionary.userInputs = [
-        ...this.dictionary.userInputs,
-        ...dictionary,
-      ]
-    } else {
-      this.dictionary.userInputs = dictionary
+    if (!this.dictionary.userInputs) {
+      this.dictionary.userInputs = []
     }
 
-    this.rankedDictionaries.userInputs = this.getRankedDictionary('userInputs')
+    const newList = [...this.dictionary.userInputs, ...dictionary]
+    this.rankedDictionaries.userInputs =
+      this.buildSanitizedRankedDictionary(newList)
     this.rankedDictionariesMaxWordSize.userInputs =
-      this.getRankedDictionariesMaxWordSize('userInputs')
+      this.getRankedDictionariesMaxWordSize(newList)
   }
 
   public addMatcher(name: string, matcher: Matcher) {
