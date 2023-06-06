@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.2](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/matcher-pwned@3.0.1...@zxcvbn-ts/matcher-pwned@3.0.2) (2023-06-06)
+
+**Note:** Version bump only for package @zxcvbn-ts/matcher-pwned
+
 ## [3.0.1](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/matcher-pwned@3.0.0...@zxcvbn-ts/matcher-pwned@3.0.1) (2023-05-10)
 
 ### Bug Fixes

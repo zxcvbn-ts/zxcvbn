@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.2](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/core@3.0.1...@zxcvbn-ts/core@3.0.2) (2023-06-06)
+
+### Bug Fixes
+
+- **separater:** stop using lookbehind as the browser support is lacking ([fe0a0aa](https://github.com/zxcvbn-ts/zxcvbn/commit/fe0a0aa6a87e8beb364319b857dd16a881c146ea))
+- **unmunger:** Allow multiple variants for substitution, get substituted passwords first ([#206](https://github.com/zxcvbn-ts/zxcvbn/issues/206)) ([d3a12a1](https://github.com/zxcvbn-ts/zxcvbn/commit/d3a12a11f2b25976ba2180664ff3e86718cbb0b7)), closes [#204](https://github.com/zxcvbn-ts/zxcvbn/issues/204)
+- **user-inputs:** resolve memory leak with user inputs on the fly ([3f9bed2](https://github.com/zxcvbn-ts/zxcvbn/commit/3f9bed21b5d01f6f6863476822ca857355fba22f))
+
 ## [3.0.1](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/core@3.0.0...@zxcvbn-ts/core@3.0.1) (2023-05-10)
 
 ### Bug Fixes
