@@ -15,10 +15,11 @@ describe('l33t matching', () => {
     g: ['6', '9'],
     o: ['0', '()'],
     u: ['|_|'],
+    fi: ['ﬁ'],
   }
 
   const dicts = {
-    words: ['aac', 'password', 'paassword', 'asdf0', 'computer'],
+    words: ['aac', 'password', 'paassword', 'asdf0', 'computer', 'pacific'],
     words2: ['cgo'],
   }
 
@@ -110,11 +111,11 @@ describe('l33t matching', () => {
       ],
       [
         '(()mp|_|ter',
-        '(()mp|_|',
+        '(()mp|_|ter',
         'computer',
         'words',
         5,
-        [0, 7],
+        [0, 10],
 
         [
           {
@@ -128,6 +129,25 @@ describe('l33t matching', () => {
           {
             letter: 'u',
             substitution: '|_|',
+          },
+        ],
+      ],
+      [
+        'p@ciﬁc',
+        'p@ciﬁc',
+        'pacific',
+        'words',
+        6,
+        [0, 5],
+
+        [
+          {
+            letter: 'a',
+            substitution: '@',
+          },
+          {
+            letter: 'fi',
+            substitution: 'ﬁ',
           },
         ],
       ],

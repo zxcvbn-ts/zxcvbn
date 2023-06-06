@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.2](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/language-common@3.0.1...@zxcvbn-ts/language-common@3.0.2) (2023-05-12)
+
+### Bug Fixes
+
+- **common:** resolve issue with wrong type generation ([852a906](https://github.com/zxcvbn-ts/zxcvbn/commit/852a9065cf18b488c9128a92aad0226f7ec0a5b5))
+
 ## [3.0.1](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/language-common@3.0.0...@zxcvbn-ts/language-common@3.0.1) (2023-05-10)
 
 ### Bug Fixes

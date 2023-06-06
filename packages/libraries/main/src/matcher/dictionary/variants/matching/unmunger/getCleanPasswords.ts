@@ -12,9 +12,11 @@ export interface PasswordChanges {
   substitution: string
 }
 
+export type IndexedPasswordChanges = PasswordChanges & {i: number}
+
 export interface PasswordWithSubs {
   password: string
-  changes: PasswordChanges[]
+  changes: IndexedPasswordChanges[]
 }
 
 const getAllSubCombosHelper = ({
@@ -26,7 +28,7 @@ const getAllSubCombosHelper = ({
   const finalPasswords: PasswordWithSubs[] = []
 
   // eslint-disable-next-line max-statements
-  const helper = (index: number, changes: PasswordChanges[]): void => {
+  const helper = (index: number, subIndex: number, changes: IndexedPasswordChanges[]): void => {
     if (finalPasswords.length >= limit) {
       return
     }
@@ -51,12 +53,13 @@ const getAllSubCombosHelper = ({
         for (const sub of subs) {
           buffer.push(sub)
           const newSubs = changes.concat({
+            i: subIndex,
             letter: sub,
             substitution: cur.parents.join(''),
           })
 
           // recursively build the rest of the string
-          helper(i + 1, newSubs)
+          helper(i + 1, subIndex + sub.length, newSubs)
           // backtrack by ignoring the added postfix
           buffer.pop()
           if (finalPasswords.length >= limit) {
@@ -68,11 +71,11 @@ const getAllSubCombosHelper = ({
     // next, generate all combos without doing a substitution at this index
     const firstChar = substr.charAt(index)
     buffer.push(firstChar)
-    helper(index + 1, changes)
+    helper(index + 1, subIndex + 1, changes)
     buffer.pop()
   }
 
-  helper(0, [])
+  helper(0, 0, [])
 
   return finalPasswords
 }
