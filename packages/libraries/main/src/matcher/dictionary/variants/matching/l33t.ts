@@ -63,7 +63,7 @@ class MatchL33t {
     )
     let hasFullMatch = false
     let isFullSubstitution = true
-    subbedPasswords.reverse().forEach((subbedPassword) => {
+    subbedPasswords.forEach((subbedPassword) => {
       if (hasFullMatch) {
         return
       }

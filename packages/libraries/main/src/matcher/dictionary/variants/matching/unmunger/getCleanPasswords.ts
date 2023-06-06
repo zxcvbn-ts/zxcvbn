@@ -28,33 +28,41 @@ const getAllSubCombosHelper = ({
   const finalPasswords: PasswordWithSubs[] = []
 
   // eslint-disable-next-line max-statements
-  const helper = (index: number, subIndex: number, changes: IndexedPasswordChanges[]): void => {
+  const helper = (
+    onlyFullSub: boolean,
+    isFullSub: boolean,
+    index: number,
+    subIndex: number,
+    changes: IndexedPasswordChanges[],
+  ): void => {
     if (finalPasswords.length >= limit) {
       return
     }
 
     if (index === substr.length) {
-      finalPasswords.push({ password: buffer.join(''), changes })
+      if (onlyFullSub === isFullSub) {
+        finalPasswords.push({ password: buffer.join(''), changes })
+      }
       return
     }
 
-    const firstChar = substr.charAt(index)
-
-    // first, generate all combos without doing a substitution at this index
-    buffer.push(firstChar)
-    helper(index + 1, subIndex + 1, changes)
-    buffer.pop()
-
-    // next, exhaust all possible substitutions at this index
+    // first, exhaust all possible substitutions at this index
+    const nodes: TrieNode[] = []
     let cur = trieRoot
     for (let i = index; i < substr.length; i += 1) {
       const character = substr.charAt(i)
       cur = cur.getChild(character)!
       if (!cur) {
-        return
+        break
       }
-
+      nodes.push(cur)
+    }
+    let hasSubs = false
+    // iterate backward to get wider substitutions first
+    for (let i = index + nodes.length - 1; i >= index; i -= 1) {
+      cur = nodes[i - index]
       if (cur.isTerminal()) {
+        hasSubs = true
         const subs = cur.subs!
         // eslint-disable-next-line no-restricted-syntax
         for (const sub of subs) {
@@ -66,7 +74,7 @@ const getAllSubCombosHelper = ({
           })
 
           // recursively build the rest of the string
-          helper(i + 1, subIndex + sub.length, newSubs)
+          helper(onlyFullSub, isFullSub, i + 1, subIndex + sub.length, newSubs)
           // backtrack by ignoring the added postfix
           buffer.pop()
           if (finalPasswords.length >= limit) {
@@ -75,9 +83,20 @@ const getAllSubCombosHelper = ({
         }
       }
     }
+    // next, generate all combos without doing a substitution at this index
+    // if a partial substitution is requested or there are no substitutions at this index
+    if (!onlyFullSub || !hasSubs) {
+      const firstChar = substr.charAt(index)
+      buffer.push(firstChar)
+      helper(onlyFullSub, isFullSub && !hasSubs, index + 1, subIndex + 1, changes)
+      buffer.pop()
+    }
   }
 
-  helper(0, 0, [])
+  // only full substitution
+  helper(true, true, 0, 0, [])
+  // only partial substitution
+  helper(false, true, 0, 0, [])
 
   return finalPasswords
 }

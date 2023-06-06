@@ -21,30 +21,25 @@ TrieNode {
         "a",
       ],
     },
-    "|" => TrieNode {
+    "v" => TrieNode {
       "children": Map {
-        "_" => TrieNode {
-          "children": Map {
-            "|" => TrieNode {
-              "children": Map {},
-              "parents": [
-                "|",
-                "_",
-                "|",
-              ],
-              "subs": [
-                "u",
-              ],
-            },
-          },
+        "v" => TrieNode {
+          "children": Map {},
           "parents": [
-            "|",
-            "_",
+            "v",
+            "v",
+          ],
+          "subs": [
+            "w",
           ],
         },
       },
       "parents": [
-        "|",
+        "v",
+      ],
+      "subs": [
+        "f",
+        "u",
       ],
     },
     "^" => TrieNode {
@@ -155,6 +150,32 @@ TrieNode {
       },
       "parents": [
         "/",
+      ],
+    },
+    "|" => TrieNode {
+      "children": Map {
+        "_" => TrieNode {
+          "children": Map {
+            "|" => TrieNode {
+              "children": Map {},
+              "parents": [
+                "|",
+                "_",
+                "|",
+              ],
+              "subs": [
+                "u",
+              ],
+            },
+          },
+          "parents": [
+            "|",
+            "_",
+          ],
+        },
+      },
+      "parents": [
+        "|",
       ],
     },
   },
