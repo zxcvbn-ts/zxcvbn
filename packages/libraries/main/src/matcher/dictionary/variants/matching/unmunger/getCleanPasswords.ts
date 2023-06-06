@@ -40,7 +40,7 @@ const getAllSubCombosHelper = ({
     }
 
     if (index === substr.length) {
-      if (onlyFullSub == isFullSub) {
+      if (onlyFullSub === isFullSub) {
         finalPasswords.push({ password: buffer.join(''), changes })
       }
       return
