@@ -14,12 +14,12 @@ export interface GetCountsOptions {
 
 const getCounts = ({ sub, token }: GetCountsOptions) => {
   // lower-case match.token before calculating: capitalization shouldn't affect l33t calc.
-  const chrs = token.toLowerCase().split('')
+  const tokenLower = token.toLowerCase()
   // num of subbed chars
-  const subbedCount = chrs.filter((char) => char === sub.substitution).length
+  const subbedCount = tokenLower.split(sub.substitution).length - 1
 
   // num of unsubbed chars
-  const unsubbedCount = chrs.filter((char) => char === sub.letter).length
+  const unsubbedCount = tokenLower.split(sub.letter).length - 1
   return {
     subbedCount,
     unsubbedCount,
