@@ -108,6 +108,16 @@ describe('scoring: variant l33t', () => {
         },
       ],
     ],
+    [
+      'wwwpassvvord',
+      nCk(4, 1),
+      [
+        {
+          letter: 'w',
+          substitution: 'vv',
+        },
+      ],
+    ],
   ]
 
   data.forEach(([word, variants, subs]) => {

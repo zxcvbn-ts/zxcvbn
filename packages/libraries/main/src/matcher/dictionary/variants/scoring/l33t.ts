@@ -12,14 +12,24 @@ export interface GetCountsOptions {
   sub: PasswordChanges
 }
 
+const countSubstring = (string: string, substring: string) => {
+  let count = 0
+  let pos = string.indexOf(substring)
+  while (pos >= 0) {
+    count++
+    pos = string.indexOf(substring, pos + substring.length)
+  }
+  return count
+}
+
 const getCounts = ({ sub, token }: GetCountsOptions) => {
   // lower-case match.token before calculating: capitalization shouldn't affect l33t calc.
   const tokenLower = token.toLowerCase()
   // num of subbed chars
-  const subbedCount = tokenLower.split(sub.substitution).length - 1
+  const subbedCount = countSubstring(tokenLower, sub.substitution)
 
   // num of unsubbed chars
-  const unsubbedCount = tokenLower.split(sub.letter).length - 1
+  const unsubbedCount = countSubstring(tokenLower, sub.letter)
   return {
     subbedCount,
     unsubbedCount,
