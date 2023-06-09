@@ -16,7 +16,7 @@ const countSubstring = (string: string, substring: string) => {
   let count = 0
   let pos = string.indexOf(substring)
   while (pos >= 0) {
-    count++
+    count += 1
     pos = string.indexOf(substring, pos + substring.length)
   }
   return count
