@@ -19,20 +19,21 @@ describe('dictionary reverse matching', () => {
   const password = '0123456789'
   const matches = matchDictionaryReverse.match({ password })
   const msg = 'matches against reversed words'
-  checkMatches(
-    msg,
+
+  checkMatches({
+    messagePrefix: msg,
     matches,
-    'dictionary',
-    ['456', '123'],
-    [
+    patternNames: 'dictionary',
+    patterns: ['456', '123'],
+    ijs: [
       [4, 6],
       [1, 3],
     ],
-    {
+    propsToCheck: {
       matchedWord: ['654', '321'],
       reversed: [true, true],
       dictionaryName: ['d1', 'd1'],
       rank: [4, 2],
     },
-  )
+  })
 })

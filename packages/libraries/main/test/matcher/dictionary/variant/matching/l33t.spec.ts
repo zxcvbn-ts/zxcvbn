@@ -174,36 +174,37 @@ describe('l33t matching', () => {
     data.forEach(
       ([password, pattern, word, dictionaryName, rank, ij, subs]) => {
         msg = 'matches against common l33t substitution'
-        checkMatches(
-          msg,
-          // @ts-ignore
-          matchL33t.match({ password }),
-          'dictionary',
-          [pattern as string],
-          [ij as number[]],
-          {
+        const dataMatches = matchL33t.match({ password: password as string })
+
+        checkMatches({
+          messagePrefix: msg,
+          matches: dataMatches,
+          patternNames: 'dictionary',
+          patterns: [pattern as string],
+          ijs: [ij as number[]],
+          propsToCheck: {
             l33t: [true],
             subs: [subs],
             matchedWord: [word],
             rank: [rank],
             dictionaryName: [dictionaryName],
           },
-        )
+        })
       },
     )
     const matches = matchL33t.match({ password: '@a(go{G0' })
     msg = 'matches against overlapping l33t patterns'
-    checkMatches(
-      msg,
-      sorted(matches),
-      'dictionary',
-      ['@a(', '(go', '{G0'],
-      [
+    checkMatches({
+      messagePrefix: msg,
+      matches: sorted(matches),
+      patternNames: 'dictionary',
+      patterns: ['@a(', '(go', '{G0'],
+      ijs: [
         [0, 2],
         [2, 4],
         [5, 7],
       ],
-      {
+      propsToCheck: {
         l33t: [true, true, true],
         subs: [
           [
@@ -237,6 +238,6 @@ describe('l33t matching', () => {
         rank: [1, 1, 1],
         dictionaryName: ['words', 'words2', 'words2'],
       },
-    )
+    })
   })
 })

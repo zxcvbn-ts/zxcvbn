@@ -15,20 +15,21 @@ describe('sequence matching', () => {
 
   let matches = matchSequence.match({ password: 'abcbabc' })
   let msg = 'matches overlapping patterns'
-  checkMatches(
-    msg,
+
+  checkMatches({
+    messagePrefix: msg,
     matches,
-    'sequence',
-    ['abc', 'cba', 'abc'],
-    [
+    patternNames: 'sequence',
+    patterns: ['abc', 'cba', 'abc'],
+    ijs: [
       [0, 2],
       [2, 4],
       [4, 6],
     ],
-    {
+    propsToCheck: {
       ascending: [true, false, true],
     },
-  )
+  })
 
   const prefixes = ['!', '22']
   const suffixes = ['!', '22']
@@ -38,9 +39,16 @@ describe('sequence matching', () => {
   generatedGenPws.forEach(([password, i, j]) => {
     matches = matchSequence.match({ password })
     msg = `matches embedded sequence patterns ${password}`
-    checkMatches(msg, matches, 'sequence', [pattern], [[i, j]], {
-      sequenceName: ['lower'],
-      ascending: [false],
+    checkMatches({
+      messagePrefix: msg,
+      matches,
+      patternNames: 'sequence',
+      patterns: [pattern],
+      ijs: [[i, j]],
+      propsToCheck: {
+        sequenceName: ['lower'],
+        ascending: [false],
+      },
     })
   })
 
@@ -63,16 +71,16 @@ describe('sequence matching', () => {
   data.forEach(([dataPattern, name, isAscending]) => {
     matches = matchSequence.match({ password: dataPattern })
     msg = `matches '${dataPattern}' as a '${name}' sequence`
-    checkMatches(
-      msg,
+    checkMatches({
+      messagePrefix: msg,
       matches,
-      'sequence',
-      [dataPattern],
-      [[0, dataPattern.length - 1]],
-      {
+      patternNames: 'sequence',
+      patterns: [dataPattern],
+      ijs: [[0, dataPattern.length - 1]],
+      propsToCheck: {
         sequenceName: [name],
         ascending: [isAscending],
       },
-    )
+    })
   })
 })

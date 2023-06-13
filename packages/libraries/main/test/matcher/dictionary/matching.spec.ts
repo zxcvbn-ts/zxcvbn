@@ -23,10 +23,17 @@ describe('dictionary matching', () => {
     const patterns = ['we']
     const msg = 'default dictionaries'
     const ijs: number[][] = [[0, 1]]
-    checkMatches(msg, matches, 'dictionary', patterns, ijs, {
-      matchedWord: patterns,
-      rank: [13],
-      dictionaryName: ['commonWords'],
+    checkMatches({
+      messagePrefix: msg,
+      matches,
+      patternNames: 'dictionary',
+      patterns,
+      ijs,
+      propsToCheck: {
+        matchedWord: patterns,
+        rank: [13],
+        dictionaryName: ['commonWords'],
+      },
     })
   })
   describe('without user input', () => {
@@ -46,58 +53,61 @@ describe('dictionary matching', () => {
     let matches = dm('motherboard')
     let patterns = ['mother', 'motherboard', 'board']
     let msg = 'matches words that contain other words'
-    checkMatches(
-      msg,
+
+    checkMatches({
+      messagePrefix: msg,
       matches,
-      'dictionary',
+      patternNames: 'dictionary',
       patterns,
-      [
+      ijs: [
         [0, 5],
         [0, 10],
         [6, 10],
       ],
-      {
+      propsToCheck: {
         matchedWord: ['mother', 'motherboard', 'board'],
         rank: [2, 1, 3],
         dictionaryName: ['d1', 'd1', 'd1'],
       },
-    )
+    })
     matches = dm('abcdef')
     patterns = ['abcd', 'cdef']
     msg = 'matches multiple words when they overlap'
-    checkMatches(
-      msg,
+
+    checkMatches({
+      messagePrefix: msg,
       matches,
-      'dictionary',
+      patternNames: 'dictionary',
       patterns,
-      [
+      ijs: [
         [0, 3],
         [2, 5],
       ],
-      {
+      propsToCheck: {
         matchedWord: ['abcd', 'cdef'],
         rank: [4, 5],
         dictionaryName: ['d1', 'd1'],
       },
-    )
+    })
     matches = dm('BoaRdZ')
     patterns = ['BoaRd', 'Z']
     msg = 'ignores uppercasing'
-    checkMatches(
-      msg,
+
+    checkMatches({
+      messagePrefix: msg,
       matches,
-      'dictionary',
+      patternNames: 'dictionary',
       patterns,
-      [
+      ijs: [
         [0, 4],
         [5, 5],
       ],
-      {
+      propsToCheck: {
         matchedWord: ['board', 'z'],
         rank: [3, 1],
         dictionaryName: ['d1', 'd2'],
       },
-    )
+    })
 
     const prefixes = ['q', '%%']
     const suffixes = ['%', 'qq']
@@ -106,10 +116,17 @@ describe('dictionary matching', () => {
     generatedGenPws.forEach(([password, i, j]) => {
       matches = dm(password)
       msg = 'identifies words surrounded by non-words'
-      checkMatches(msg, matches, 'dictionary', [testWord], [[i, j]], {
-        matchedWord: [testWord],
-        rank: [5],
-        dictionaryName: ['d2'],
+      checkMatches({
+        messagePrefix: msg,
+        matches,
+        patternNames: 'dictionary',
+        patterns: [testWord],
+        ijs: [[i, j]],
+        propsToCheck: {
+          matchedWord: [testWord],
+          rank: [5],
+          dictionaryName: ['d2'],
+        },
       })
     })
 
@@ -120,18 +137,18 @@ describe('dictionary matching', () => {
         if (word !== 'motherboard') {
           matches = dm(word)
           msg = 'matches against all words in provided dictionaries'
-          checkMatches(
-            msg,
+          checkMatches({
+            messagePrefix: msg,
             matches,
-            'dictionary',
-            [word],
-            [[0, word.length - 1]],
-            {
+            patternNames: 'dictionary',
+            patterns: [word],
+            ijs: [[0, word.length - 1]],
+            propsToCheck: {
               matchedWord: [word],
               rank: [rank],
               dictionaryName: [name],
             },
-          )
+          })
         }
       })
     })
@@ -150,19 +167,19 @@ describe('dictionary matching', () => {
       .filter((match) => match.dictionaryName === 'userInputs')
 
     const msg = 'matches with provided user input dictionary'
-    checkMatches(
-      msg,
+    checkMatches({
+      messagePrefix: msg,
       matches,
-      'dictionary',
-      ['foo', 'bar'],
-      [
+      patternNames: 'dictionary',
+      patterns: ['foo', 'bar'],
+      ijs: [
         [0, 2],
         [3, 5],
       ],
-      {
+      propsToCheck: {
         matchedWord: ['foo', 'bar'],
         rank: [1, 2],
       },
-    )
+    })
   })
 })

@@ -25,18 +25,19 @@ describe('spatial matching', () => {
   const matches = matchSpatial.match({ password: `rz!${pattern}%z` })
   const msg =
     'matches against spatial patterns surrounded by non-spatial patterns'
-  checkMatches(
-    msg,
+
+  checkMatches({
+    messagePrefix: msg,
     matches,
-    'spatial',
-    [pattern],
-    [[3, 3 + pattern.length - 1]],
-    {
+    patternNames: 'spatial',
+    patterns: [pattern],
+    ijs: [[3, 3 + pattern.length - 1]],
+    propsToCheck: {
       graph: ['qwerty'],
       turns: [2],
       shiftedCount: [3],
     },
-  )
+  })
 })
 
 describe('spatial matching specific patterns vs keyboards', () => {
@@ -65,17 +66,18 @@ describe('spatial matching specific patterns vs keyboards', () => {
     const matchSpatial = new MatchSpatial()
     const matches = matchSpatial.match({ password: pattern })
     const msg = `matches '${pattern}' as a ${keyboard} pattern`
-    checkMatches(
-      msg,
+
+    checkMatches({
+      messagePrefix: msg,
       matches,
-      'spatial',
-      [pattern],
-      [[0, pattern.length - 1]],
-      {
+      patternNames: 'spatial',
+      patterns: [pattern],
+      ijs: [[0, pattern.length - 1]],
+      propsToCheck: {
         graph: [keyboard],
         turns: [turns],
         shiftedCount: [shifts],
       },
-    )
+    })
   })
 })

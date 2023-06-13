@@ -14,29 +14,30 @@ describe('separator matching', () => {
 
   let matches = matchSeparator.match({ password: 'first second third' })
   let msg = 'matches same separators'
-  checkMatches(
-    msg,
+
+  checkMatches({
+    messagePrefix: msg,
     matches,
-    'separator',
-    [' ', ' '],
-    [
+    patternNames: 'separator',
+    patterns: [' ', ' '],
+    ijs: [
       [5, 5],
       [12, 12],
     ],
-    {},
-  )
+    propsToCheck: {},
+  })
 
   matches = matchSeparator.match({ password: 'first-second-third,&' })
   msg = 'matches with different potential separators'
-  checkMatches(
-    msg,
+  checkMatches({
+    messagePrefix: msg,
     matches,
-    'separator',
-    ['-', '-'],
-    [
+    patternNames: 'separator',
+    patterns: ['-', '-'],
+    ijs: [
       [5, 5],
       [12, 12],
     ],
-    {},
-  )
+    propsToCheck: {},
+  })
 })
