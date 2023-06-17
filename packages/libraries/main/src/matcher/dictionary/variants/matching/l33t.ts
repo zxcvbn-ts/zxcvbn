@@ -7,12 +7,18 @@ import getCleanPasswords, {
 } from './unmunger/getCleanPasswords'
 
 const getExtras = (passwordWithSubs: PasswordWithSubs, i: number, j: number) => {
+  const previousChanges = passwordWithSubs.changes.filter((changes) => {
+    return changes.i < i
+  })
+  const iUnsubbed = previousChanges.reduce((value, change) => {
+    return value - change.letter.length + change.substitution.length
+  }, i)
   const usedChanges = passwordWithSubs.changes.filter((changes) => {
     return changes.i >= i && changes.i <= j
   })
   const jUnsubbed = usedChanges.reduce((value, change) => {
     return value - change.letter.length + change.substitution.length
-  }, j)
+  }, j - i + iUnsubbed)
   const filtered: PasswordChanges[] = []
   const subDisplay: string[] = []
   usedChanges.forEach((value) => {
@@ -28,6 +34,7 @@ const getExtras = (passwordWithSubs: PasswordWithSubs, i: number, j: number) => 
     }
   })
   return {
+    i: iUnsubbed,
     j: jUnsubbed,
     subs: filtered,
     subDisplay: subDisplay.join(', '),
@@ -78,7 +85,7 @@ class MatchL33t {
           hasFullMatch = match.i === 0 && match.j === password.length - 1
         }
         const extras = getExtras(subbedPassword, match.i, match.j)
-        const token = password.slice(match.i, +extras.j + 1 || 9e9)
+        const token = password.slice(extras.i, +extras.j + 1 || 9e9)
         const newMatch: L33tMatch = {
           ...match,
           l33t: true,

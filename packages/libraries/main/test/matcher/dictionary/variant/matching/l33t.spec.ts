@@ -110,12 +110,12 @@ describe('l33t matching', () => {
         ],
       ],
       [
-        '(()mp|_|ter',
+        '|_|(()mp|_|ter',
         '(()mp|_|ter',
         'computer',
         'words',
         5,
-        [0, 10],
+        [3, 13],
 
         [
           {
@@ -133,12 +133,12 @@ describe('l33t matching', () => {
         ],
       ],
       [
-        'p@ciﬁc',
+        'ﬁp@ciﬁc',
         'p@ciﬁc',
         'pacific',
         'words',
         6,
-        [0, 5],
+        [1, 6],
 
         [
           {
