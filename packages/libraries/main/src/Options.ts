@@ -8,11 +8,42 @@ import {
   RankedDictionaries,
   Matchers,
   Matcher,
+  TimeEstimationValues,
 } from './types'
 import l33tTable from './data/l33tTable'
 import translationKeys from './data/translationKeys'
 import TrieNode from './matcher/dictionary/variants/matching/unmunger/TrieNode'
 import l33tTableToTrieNode from './matcher/dictionary/variants/matching/unmunger/l33tTableToTrieNode'
+
+export const timeEstimationValuesDefaults: TimeEstimationValues = {
+  scoring: {
+    0: 1e3,
+    1: 1e6,
+    2: 1e8,
+    3: 1e10,
+  },
+  attackTime: {
+    onlinePerHour: 100,
+    onlinePerSecond: 10,
+    slowHashing: 1e4,
+    fastHashing: 1e10,
+  },
+}
+
+const checkTimeEstimationValues = (
+  timeEstimationValues: TimeEstimationValues,
+) => {
+  Object.entries(timeEstimationValues).forEach(([key, data]) => {
+    Object.entries(data).forEach(([subKey, value]) => {
+      // @ts-ignore
+      if (value < timeEstimationValuesDefaults[key][subKey]) {
+        throw new Error(
+          'Time estimation values are not to be allowed to be less than default',
+        )
+      }
+    })
+  })
+}
 
 export class Options {
   matchers: Matchers = {}
@@ -40,6 +71,15 @@ export class Options {
   l33tMaxSubstitutions: number = 512
 
   maxLength: number = 256
+
+  timeEstimationValues: TimeEstimationValues = {
+    scoring: {
+      ...timeEstimationValuesDefaults.scoring,
+    },
+    attackTime: {
+      ...timeEstimationValuesDefaults.attackTime,
+    },
+  }
 
   constructor() {
     this.setRankedDictionaries()
@@ -80,6 +120,18 @@ export class Options {
 
     if (options.maxLength !== undefined) {
       this.maxLength = options.maxLength
+    }
+
+    if (options.timeEstimationValues !== undefined) {
+      checkTimeEstimationValues(options.timeEstimationValues)
+      this.timeEstimationValues = {
+        scoring: {
+          ...options.timeEstimationValues.scoring,
+        },
+        attackTime: {
+          ...options.timeEstimationValues.attackTime,
+        },
+      }
     }
   }
 

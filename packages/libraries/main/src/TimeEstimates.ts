@@ -38,17 +38,19 @@ class TimeEstimates {
   }
 
   estimateAttackTimes(guesses: number) {
+    const attackTimesOptions = zxcvbnOptions.timeEstimationValues.attackTime
     const crackTimesSeconds: CrackTimesSeconds = {
-      onlineThrottling100PerHour: guesses / (100 / 3600),
-      onlineNoThrottling10PerSecond: guesses / 10,
-      offlineSlowHashing1e4PerSecond: guesses / 1e4,
-      offlineFastHashing1e10PerSecond: guesses / 1e10,
+      onlineThrottlingPerHour:
+        guesses / (attackTimesOptions.onlinePerHour / 3600),
+      onlineNoThrottlingPerSecond: guesses / attackTimesOptions.onlinePerSecond,
+      [`offlineSlowHashingPerSecond`]: guesses / attackTimesOptions.slowHashing,
+      [`offlineFastHashingPerSecond`]: guesses / attackTimesOptions.fastHashing,
     }
     const crackTimesDisplay: CrackTimesDisplay = {
-      onlineThrottling100PerHour: '',
-      onlineNoThrottling10PerSecond: '',
-      offlineSlowHashing1e4PerSecond: '',
-      offlineFastHashing1e10PerSecond: '',
+      onlineThrottlingPerHour: '',
+      onlineNoThrottlingPerSecond: '',
+      offlineSlowHashingPerSecond: '',
+      offlineFastHashingPerSecond: '',
     }
     Object.keys(crackTimesSeconds).forEach((scenario) => {
       const seconds = crackTimesSeconds[scenario as keyof CrackTimesSeconds]
@@ -63,20 +65,21 @@ class TimeEstimates {
   }
 
   guessesToScore(guesses: number): Score {
+    const scoringOptions = zxcvbnOptions.timeEstimationValues.scoring
     const DELTA = 5
-    if (guesses < 1e3 + DELTA) {
+    if (guesses < scoringOptions[0] + DELTA) {
       // risky password: "too guessable"
       return 0
     }
-    if (guesses < 1e6 + DELTA) {
+    if (guesses < scoringOptions[1] + DELTA) {
       // modest protection from throttled online attacks: "very guessable"
       return 1
     }
-    if (guesses < 1e8 + DELTA) {
+    if (guesses < scoringOptions[2] + DELTA) {
       // modest protection from unthrottled online attacks: "somewhat guessable"
       return 2
     }
-    if (guesses < 1e10 + DELTA) {
+    if (guesses < scoringOptions[3] + DELTA) {
       // modest protection from offline attacks: "safely unguessable"
       // assuming a salted, slow hash function like bcrypt, scrypt, PBKDF2, argon, etc
       return 3
