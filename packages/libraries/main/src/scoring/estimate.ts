@@ -17,6 +17,7 @@ import regexMatcher from '../matcher/regex/scoring'
 import repeatMatcher from '../matcher/repeat/scoring'
 import sequenceMatcher from '../matcher/sequence/scoring'
 import spatialMatcher from '../matcher/spatial/scoring'
+import separatorMatcher from '../matcher/separator/scoring'
 
 const getMinGuesses = (
   match: MatchExtended | MatchEstimated,
@@ -45,6 +46,7 @@ const matchers: Matchers = {
   repeat: repeatMatcher,
   sequence: sequenceMatcher,
   spatial: spatialMatcher,
+  separator: separatorMatcher,
 }
 
 const getScoring = (name: string, match: MatchExtended | MatchEstimated) => {
