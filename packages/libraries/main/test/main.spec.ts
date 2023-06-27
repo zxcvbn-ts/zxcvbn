@@ -43,16 +43,16 @@ describe('main', () => {
         },
       ],
       crackTimesSeconds: {
-        onlineThrottling100PerHour: 4176,
-        onlineNoThrottling10PerSecond: 11.6,
-        offlineSlowHashing1e4PerSecond: 0.0116,
-        offlineFastHashing1e10PerSecond: 1.16e-8,
+        onlineThrottlingXPerHour: 4176,
+        onlineNoThrottlingXPerSecond: 11.6,
+        offlineSlowHashingXPerSecond: 0.0116,
+        offlineFastHashingXPerSecond: 1.16e-8,
       },
       crackTimesDisplay: {
-        onlineThrottling100PerHour: '1 hour',
-        onlineNoThrottling10PerSecond: '12 seconds',
-        offlineSlowHashing1e4PerSecond: 'less than a second',
-        offlineFastHashing1e10PerSecond: 'less than a second',
+        onlineThrottlingXPerHour: '1 hour',
+        onlineNoThrottlingXPerSecond: '12 seconds',
+        offlineSlowHashingXPerSecond: 'less than a second',
+        offlineFastHashingXPerSecond: 'less than a second',
       },
       score: 0,
       feedback: {
@@ -71,16 +71,16 @@ describe('main', () => {
     result.calcTime = 0
     expect(result).toEqual({
       crackTimesDisplay: {
-        offlineFastHashing1e10PerSecond: 'less than a second',
-        offlineSlowHashing1e4PerSecond: 'less than a second',
-        onlineNoThrottling10PerSecond: 'less than a second',
-        onlineThrottling100PerHour: '1 minute',
+        offlineFastHashingXPerSecond: 'less than a second',
+        offlineSlowHashingXPerSecond: 'less than a second',
+        onlineNoThrottlingXPerSecond: 'less than a second',
+        onlineThrottlingXPerHour: '1 minute',
       },
       crackTimesSeconds: {
-        offlineFastHashing1e10PerSecond: 2e-10,
-        offlineSlowHashing1e4PerSecond: 0.0002,
-        onlineNoThrottling10PerSecond: 0.2,
-        onlineThrottling100PerHour: 72,
+        offlineFastHashingXPerSecond: 2e-10,
+        offlineSlowHashingXPerSecond: 0.0002,
+        onlineNoThrottlingXPerSecond: 0.2,
+        onlineThrottlingXPerHour: 72,
       },
       feedback: {
         suggestions: [zxcvbnEnPackage.translations.suggestions.anotherWord],
@@ -118,16 +118,16 @@ describe('main', () => {
     expect(result).toEqual({
       calcTime: 0,
       crackTimesDisplay: {
-        offlineFastHashing1e10PerSecond: 'less than a second',
-        offlineSlowHashing1e4PerSecond: 'less than a second',
-        onlineNoThrottling10PerSecond: '4 seconds',
-        onlineThrottling100PerHour: '22 minutes',
+        offlineFastHashingXPerSecond: 'less than a second',
+        offlineSlowHashingXPerSecond: 'less than a second',
+        onlineNoThrottlingXPerSecond: '4 seconds',
+        onlineThrottlingXPerHour: '22 minutes',
       },
       crackTimesSeconds: {
-        offlineFastHashing1e10PerSecond: 3.7e-9,
-        offlineSlowHashing1e4PerSecond: 0.0037,
-        onlineNoThrottling10PerSecond: 3.7,
-        onlineThrottling100PerHour: 1332,
+        offlineFastHashingXPerSecond: 3.7e-9,
+        offlineSlowHashingXPerSecond: 0.0037,
+        onlineNoThrottlingXPerSecond: 3.7,
+        onlineThrottlingXPerHour: 1332,
       },
       feedback: {
         suggestions: ['Add more words that are less common.'],

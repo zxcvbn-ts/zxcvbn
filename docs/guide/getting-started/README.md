@@ -75,30 +75,30 @@ result.crackTimesSeconds # dictionary of back-of-the-envelope crack time
                           # estimations, in seconds, based on a few scenarios:
 {
   # online attack on a service that ratelimits password auth attempts.
-  onlineThrottling100PerHour
+  onlineThrottlingXPerHour
 
   # online attack on a service that doesn't ratelimit,
   # or where an attacker has outsmarted ratelimiting.
-  onlineNoThrottling10PerSecond
+  onlineNoThrottlingXPerSecond
 
   # offline attack. assumes multiple attackers,
   # proper user-unique salting, and a slow hash function
   # w/ moderate work factor, such as bcrypt, scrypt, PBKDF2.
-  offlineSlowHashing1e4PerSecond
+  offlineSlowHashingXPerSecond
 
   # offline attack with user-unique salting but a fast hash
   # function like SHA-1, SHA-256 or MD5. A wide range of
   # reasonable numbers anywhere from one billion - one trillion
   # guesses per second, depending on number of cores and machines.
   # ballparking at 10B/sec.
-  offlineFastHashing1e10PerSecond
+  offlineFastHashingXPerSecond
 }
 
 result.crackTimesDisplay # same keys as result.crackTimesSeconds,
                            # with friendlier display string values:
                            # "less than a second", "3 hours", "centuries", etc.
 
-result.score      # Integer from 0-4 (useful for implementing a strength bar)
+result.score      # Integer from 0-4 (useful for implementing a strength bar). The scoring is based on the default configuration.
 
   0 # too guessable: risky password. (guesses < 10^3)
 

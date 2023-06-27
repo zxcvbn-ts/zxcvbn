@@ -23,10 +23,10 @@ export const timeEstimationValuesDefaults: TimeEstimationValues = {
     3: 1e10,
   },
   attackTime: {
-    onlinePerHour: 100,
-    onlinePerSecond: 10,
-    slowHashing: 1e4,
-    fastHashing: 1e10,
+    onlineThrottlingXPerHour: 100,
+    onlineNoThrottlingXPerSecond: 10,
+    offlineSlowHashingXPerSecond: 1e4,
+    offlineFastHashingXPerSecond: 1e10,
   },
 }
 

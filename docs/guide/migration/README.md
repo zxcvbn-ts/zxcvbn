@@ -1,5 +1,42 @@
 # Migration
 
+## `zxcvbn-ts 3.x.x` to `zxcvbn-ts 4.x.x`
+The property naming of the crackTimes in the output changed as the calculation behind it can now be customized.
+From
+```
+{
+  crackTimesSeconds: {
+    onlineThrottling100PerHour: number,
+    onlineNoThrottling10PerSecond: number
+    offlineSlowHashing1e4PerSecond: number
+    offlineFastHashing1e10PerSecond: number
+  },
+  crackTimesDisplay: {
+    onlineThrottling100PerHour: string
+    onlineNoThrottling10PerSecond: string
+    offlineSlowHashing1e4PerSecond: string
+    offlineFastHashing1e10PerSecond: string
+  },
+}
+```
+To
+```
+{
+  crackTimesSeconds: {
+    onlineThrottlingXPerHour: number
+    onlineNoThrottlingXPerSecond: number
+    offlineSlowHashingXPerSecond: number
+    offlineFastHashingXPerSecond: number
+  },
+  crackTimesDisplay: {
+    onlineThrottlingXPerHour: '1 hour',
+    onlineNoThrottlingXPerSecond: string
+    offlineSlowHashingXPerSecond: string
+    offlineFastHashingXPerSecond: string
+  },
+}
+```
+
 ## `zxcvbn-ts 2.x.x` to `zxcvbn-ts 3.x.x`
 
 ### language packages no longer have a default export

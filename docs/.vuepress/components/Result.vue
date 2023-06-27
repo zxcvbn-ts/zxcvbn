@@ -24,23 +24,23 @@
     </tr>
     <tr>
       <td>100 / hour:</td>
-      <td>{{ result.crackTimesDisplay.onlineThrottling100PerHour }}</td>
+      <td>{{ result.crackTimesDisplay.onlineThrottlingXPerHour }}</td>
       <td>(throttled online attack)</td>
     </tr>
     <tr>
       <td>10&nbsp; / second:</td>
-      <td>{{ result.crackTimesDisplay.onlineNoThrottling10PerSecond }}</td>
+      <td>{{ result.crackTimesDisplay.onlineNoThrottlingXPerSecond }}</td>
       <td>(unthrottled online attack)</td>
     </tr>
     <tr>
       <td>10k / second:</td>
-      <td>{{ result.crackTimesDisplay.offlineSlowHashing1e4PerSecond }}</td>
+      <td>{{ result.crackTimesDisplay.offlineSlowHashingXPerSecond }}</td>
       <td>(offline attack, slow hash, many cores)</td>
     </tr>
 
     <tr>
       <td>10B / second:</td>
-      <td>{{ result.crackTimesDisplay.offlineFastHashing1e10PerSecond }}</td>
+      <td>{{ result.crackTimesDisplay.offlineFastHashingXPerSecond }}</td>
       <td>(offline attack, fast hash, many cores)</td>
     </tr>
     <tr v-if="result.feedback.warning">

@@ -40,17 +40,20 @@ class TimeEstimates {
   estimateAttackTimes(guesses: number) {
     const attackTimesOptions = zxcvbnOptions.timeEstimationValues.attackTime
     const crackTimesSeconds: CrackTimesSeconds = {
-      onlineThrottlingPerHour:
-        guesses / (attackTimesOptions.onlinePerHour / 3600),
-      onlineNoThrottlingPerSecond: guesses / attackTimesOptions.onlinePerSecond,
-      [`offlineSlowHashingPerSecond`]: guesses / attackTimesOptions.slowHashing,
-      [`offlineFastHashingPerSecond`]: guesses / attackTimesOptions.fastHashing,
+      onlineThrottlingXPerHour:
+        guesses / (attackTimesOptions.onlineThrottlingXPerHour / 3600),
+      onlineNoThrottlingXPerSecond:
+        guesses / attackTimesOptions.onlineNoThrottlingXPerSecond,
+      offlineSlowHashingXPerSecond:
+        guesses / attackTimesOptions.offlineSlowHashingXPerSecond,
+      offlineFastHashingXPerSecond:
+        guesses / attackTimesOptions.offlineFastHashingXPerSecond,
     }
     const crackTimesDisplay: CrackTimesDisplay = {
-      onlineThrottlingPerHour: '',
-      onlineNoThrottlingPerSecond: '',
-      offlineSlowHashingPerSecond: '',
-      offlineFastHashingPerSecond: '',
+      onlineThrottlingXPerHour: '',
+      onlineNoThrottlingXPerSecond: '',
+      offlineSlowHashingXPerSecond: '',
+      offlineFastHashingXPerSecond: '',
     }
     Object.keys(crackTimesSeconds).forEach((scenario) => {
       const seconds = crackTimesSeconds[scenario as keyof CrackTimesSeconds]
