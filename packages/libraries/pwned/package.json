@@ -16,6 +16,9 @@
     "dist",
     "src"
   ],
+  "browser": {
+    "crypto": false
+  },
   "publishConfig": {
     "access": "public"
   },
