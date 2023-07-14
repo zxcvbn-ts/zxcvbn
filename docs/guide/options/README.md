@@ -11,8 +11,8 @@
 | useLevenshteinDistance | boolean | false             | Activate levenshtein                                                 |
 | levenshteinThreshold   | number  | 2                 | Threshold for levenshtein                                            |
 | l33tMaxSubstitutions   | number  | 100               | Indicated the max substituions for the l33t matcher to prevent DOS   |
-| maxLength              | Object  | 256               | Defines how many characters of the password are checked              |
-| timeEstimationValues   | number  | {}                | Define the values to calculate the scoring and attack times          |
+| maxLength              | number  | 256               | Defines how many characters of the password are checked              |
+| timeEstimationValues   | Object  | {}                | Define the values to calculate the scoring and attack times          |
 
 ### dictionary
 

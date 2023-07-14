@@ -98,7 +98,7 @@ result.crackTimesDisplay # same keys as result.crackTimesSeconds,
                            # with friendlier display string values:
                            # "less than a second", "3 hours", "centuries", etc.
 
-result.score      # Integer from 0-4 (useful for implementing a strength bar). The scoring is based on the default configuration.
+result.score      # Integer from 0-4 (useful for implementing a strength bar). Is configurable in the options with timeEstimationValues other wise a default value is used.
 
   0 # too guessable: risky password. (guesses < 10^3)
 
