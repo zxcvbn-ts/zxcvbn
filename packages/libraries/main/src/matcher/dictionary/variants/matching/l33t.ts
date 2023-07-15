@@ -6,7 +6,11 @@ import getCleanPasswords, {
   PasswordWithSubs,
 } from './unmunger/getCleanPasswords'
 
-const getExtras = (passwordWithSubs: PasswordWithSubs, i: number, j: number) => {
+const getExtras = (
+  passwordWithSubs: PasswordWithSubs,
+  i: number,
+  j: number,
+) => {
   const previousChanges = passwordWithSubs.changes.filter((changes) => {
     return changes.i < i
   })
@@ -16,9 +20,12 @@ const getExtras = (passwordWithSubs: PasswordWithSubs, i: number, j: number) => 
   const usedChanges = passwordWithSubs.changes.filter((changes) => {
     return changes.i >= i && changes.i <= j
   })
-  const jUnsubbed = usedChanges.reduce((value, change) => {
-    return value - change.letter.length + change.substitution.length
-  }, j - i + iUnsubbed)
+  const jUnsubbed = usedChanges.reduce(
+    (value, change) => {
+      return value - change.letter.length + change.substitution.length
+    },
+    j - i + iUnsubbed,
+  )
   const filtered: PasswordChanges[] = []
   const subDisplay: string[] = []
   usedChanges.forEach((value) => {

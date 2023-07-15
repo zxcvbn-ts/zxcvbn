@@ -169,6 +169,7 @@ export default (
     const byteValue = input[index]
     // “If `byte` is an ASCII byte, return a code point whose value is
     // `byte`.”
+    // @ts-ignore
     if (byteValue >= 0x00 && byteValue <= 0x7f) {
       // @ts-ignore
       buffer.push(stringFromCharCode(byteValue))

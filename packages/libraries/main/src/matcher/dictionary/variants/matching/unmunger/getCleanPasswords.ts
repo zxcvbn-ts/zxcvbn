@@ -12,7 +12,7 @@ export interface PasswordChanges {
   substitution: string
 }
 
-export type IndexedPasswordChanges = PasswordChanges & {i: number}
+export type IndexedPasswordChanges = PasswordChanges & { i: number }
 
 export interface PasswordWithSubs {
   password: string
@@ -88,7 +88,13 @@ const getAllSubCombosHelper = ({
     if (!onlyFullSub || !hasSubs) {
       const firstChar = substr.charAt(index)
       buffer.push(firstChar)
-      helper(onlyFullSub, isFullSub && !hasSubs, index + 1, subIndex + 1, changes)
+      helper(
+        onlyFullSub,
+        isFullSub && !hasSubs,
+        index + 1,
+        subIndex + 1,
+        changes,
+      )
       buffer.pop()
     }
   }
