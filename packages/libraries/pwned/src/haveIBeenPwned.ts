@@ -53,40 +53,35 @@ export default async (
     url = pwnedUrl,
     networkErrorHandler = defaultNetworkErrorHandler,
   }: HaveIBeenPwnedConfig,
-) =>
-  // eslint-disable-next-line max-params
-  {
-    if (!universalFetch) {
-      return null
-    }
-    // we don't need to check passwords with a length smaller 2 which can happen for repeat matcher
-    if (password.length < 2) {
-      return null
-    }
-    const passwordHash = (await digestMessage(password)).toUpperCase()
-    const range = passwordHash.slice(0, 5)
-    const suffix = passwordHash.slice(5)
-    const response = await universalFetch(`${url}${range}`, {
-      method: 'GET',
-      headers: {
-        'Add-Padding': 'true',
-      },
-    }).catch((error) => {
-      return networkErrorHandler(error)
-    })
-
-    if (typeof response === 'boolean') {
-      return false
-    }
-    if (response.status >= 400) {
-      return networkErrorHandler(response)
-    }
-
-    const result = await response.text()
-    const resultArray = result.split('\r\n')
-
-    return resultArray.find((entry: string) => {
-      const passwordHasPart = entry.split(':')[0]
-      return passwordHasPart === suffix
-    })
+) => {
+  // we don't need to check passwords with a length smaller 2 which can happen for repeat matcher or if we don't have a fetch function
+  if (!universalFetch || password.length < 2) {
+    return null
   }
+  const passwordHash = (await digestMessage(password)).toUpperCase()
+  const range = passwordHash.slice(0, 5)
+  const suffix = passwordHash.slice(5)
+  const response = await universalFetch(`${url}${range}`, {
+    method: 'GET',
+    headers: {
+      'Add-Padding': 'true',
+    },
+  }).catch((error) => {
+    return networkErrorHandler(error)
+  })
+
+  if (typeof response === 'boolean') {
+    return false
+  }
+  if (response.status >= 400) {
+    return networkErrorHandler(response)
+  }
+
+  const result = await response.text()
+  const resultArray = result.split('\r\n')
+
+  return resultArray.find((entry: string) => {
+    const passwordHasPart = entry.split(':')[0]
+    return passwordHasPart === suffix
+  })
+}
