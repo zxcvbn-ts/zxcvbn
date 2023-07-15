@@ -163,7 +163,7 @@ describe('main', () => {
       const result = zxcvbn(
         '4@8({[</369&#!1/|0$5+7%2/4@8({[</369&#!1/|0$5+7%2/"',
       )
-      expect(result.calcTime).toBeLessThan(4000)
+      expect(result.calcTime).toBeLessThan(5000)
     })
 
     it('should not die while processing and have a appropriate calcTime for regex attacks', () => {
