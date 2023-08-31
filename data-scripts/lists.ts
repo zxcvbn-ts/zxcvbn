@@ -376,19 +376,17 @@ export default {
   },
   'ar': {
     commonWords: {
-      commonWords: {
-        source:
-          'https://raw.githubusercontent.com/hermitdave/FrequencyWords/master/content/2018/ar/ar_full.txt',
-        options: { hasOccurrences: true, normalizeDiacritics: true },
-      },
-      firstnames: {
-        source:
-          'https://raw.githubusercontent.com/AKhateeb/arabic-names/master/Most-Popular-Arabic-FirstNames.txt',
-      },
-      lastnames: {
-        source:
-          'https://raw.githubusercontent.com/AKhateeb/arabic-names/master/Most-Popular-Arabic-LastNames.txt',
-      },
+      source:
+        'https://raw.githubusercontent.com/hermitdave/FrequencyWords/master/content/2018/ar/ar_full.txt',
+      options: { hasOccurrences: true, normalizeDiacritics: true },
+    },
+    firstnames: {
+      source:
+        'https://raw.githubusercontent.com/AKhateeb/arabic-names/master/Most-Popular-Arabic-FirstNames.txt',
+    },
+    lastnames: {
+      source:
+        'https://raw.githubusercontent.com/AKhateeb/arabic-names/master/Most-Popular-Arabic-LastNames.txt',
     },
   },
   'common': {
