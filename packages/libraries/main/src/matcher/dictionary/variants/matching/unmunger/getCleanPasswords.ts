@@ -2,7 +2,6 @@ import TrieNode from './TrieNode'
 
 interface GetAllSubCombosHelperOptions {
   substr: string
-  buffer: string[]
   limit: number
   trieRoot: TrieNode
 }
@@ -25,12 +24,14 @@ interface HelperOptions {
   index: number
   subIndex: number
   changes: IndexedPasswordChanges[]
+  lastSubLetter?: string
+  consecutiveSubCount: number
 }
 
 class CleanPasswords {
   private substr: string
 
-  private buffer: string[]
+  private buffer: string[] = []
 
   private limit: number
 
@@ -38,14 +39,8 @@ class CleanPasswords {
 
   private finalPasswords: PasswordWithSubs[] = []
 
-  constructor({
-    substr,
-    buffer,
-    limit,
-    trieRoot,
-  }: GetAllSubCombosHelperOptions) {
+  constructor({ substr, limit, trieRoot }: GetAllSubCombosHelperOptions) {
     this.substr = substr
-    this.buffer = buffer
     this.limit = limit
     this.trieRoot = trieRoot
   }
@@ -71,6 +66,8 @@ class CleanPasswords {
     index,
     subIndex,
     changes,
+    lastSubLetter,
+    consecutiveSubCount,
   }: HelperOptions): void {
     if (this.finalPasswords.length >= this.limit) {
       return
@@ -91,6 +88,16 @@ class CleanPasswords {
     for (let i = index + nodes.length - 1; i >= index; i -= 1) {
       const cur = nodes[i - index]
       if (cur.isTerminal()) {
+        // Skip if this would be a 4th or more consecutive substitution of the same letter
+        // this should work in all language as there shouldn't be the same letter more than four times in a row
+        // So we can ignore the rest to save calculation time
+        if (
+          lastSubLetter === cur.parents.join('') &&
+          consecutiveSubCount >= 3
+        ) {
+          // eslint-disable-next-line no-continue
+          continue
+        }
         hasSubs = true
         const subs = cur.subs!
         // eslint-disable-next-line no-restricted-syntax
@@ -109,6 +116,11 @@ class CleanPasswords {
             index: i + 1,
             subIndex: subIndex + sub.length,
             changes: newSubs,
+            lastSubLetter: cur.parents.join(''),
+            consecutiveSubCount:
+              lastSubLetter === cur.parents.join('')
+                ? consecutiveSubCount + 1
+                : 1,
           })
           // backtrack by ignoring the added postfix
           this.buffer.pop()
@@ -129,6 +141,8 @@ class CleanPasswords {
         index: index + 1,
         subIndex: subIndex + 1,
         changes,
+        lastSubLetter,
+        consecutiveSubCount,
       })
       this.buffer.pop()
     }
@@ -142,6 +156,8 @@ class CleanPasswords {
       index: 0,
       subIndex: 0,
       changes: [],
+      lastSubLetter: undefined,
+      consecutiveSubCount: 0,
     })
     // only partial substitution
     this.helper({
@@ -150,6 +166,8 @@ class CleanPasswords {
       index: 0,
       subIndex: 0,
       changes: [],
+      lastSubLetter: undefined,
+      consecutiveSubCount: 0,
     })
 
     return this.finalPasswords
@@ -157,13 +175,12 @@ class CleanPasswords {
 }
 
 const getCleanPasswords = (
-  string: string,
+  password: string,
   limit: number,
   trieRoot: TrieNode,
 ): PasswordWithSubs[] => {
   const helper = new CleanPasswords({
-    substr: string,
-    buffer: [],
+    substr: password,
     limit,
     trieRoot,
   })
