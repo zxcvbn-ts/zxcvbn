@@ -41,7 +41,7 @@ class MatchSpatial {
     const passwordLength = password.length
     while (i < passwordLength - 1) {
       let j = i + 1
-      let lastDirection = null
+      let lastDirection: number | null = null
       let turns = 0
       shiftedCount = this.checkIfShifted(graphName, password, i)
       // eslint-disable-next-line no-constant-condition
