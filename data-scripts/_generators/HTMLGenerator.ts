@@ -32,10 +32,10 @@ export default class HTMLGenerator extends SimpleListGenerator<Options> {
 
   protected async getData() {
     if (this.options.pagination) {
-      const resultData = []
+      const resultData: Buffer[] = []
       for (let i = 0; i < this.options.pagination; i += 1) {
         // eslint-disable-next-line no-await-in-loop
-        const result = await axios.get(
+        const result = await axios.get<Buffer>(
           this.url.replace('__PAGINATION__', String(i)),
           {
             ...this.options.requestConfig,
@@ -45,7 +45,9 @@ export default class HTMLGenerator extends SimpleListGenerator<Options> {
       }
       return resultData
     }
-    const result = await axios.get(this.url, { ...this.options.requestConfig })
+    const result = await axios.get<Buffer>(this.url, {
+      ...this.options.requestConfig,
+    })
     return [result.data]
   }
 

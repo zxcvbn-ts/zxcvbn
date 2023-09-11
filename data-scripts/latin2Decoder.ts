@@ -164,7 +164,7 @@ export default (
     input = bytes
   }
 
-  const buffer = []
+  const buffer: string[] = []
   for (let index = 0; index < length; index += 1) {
     const byteValue = input[index]
     // “If `byte` is an ASCII byte, return a code point whose value is
@@ -182,7 +182,7 @@ export default (
     const pointer = byteValue - 0x80
     if (INDEX_BY_POINTER.has(pointer)) {
       // “Return a code point whose value is `code point`.”
-      buffer.push(INDEX_BY_POINTER.get(pointer))
+      buffer.push(INDEX_BY_POINTER.get(pointer)!)
     } else {
       // “If `code point` is `null`, return `error`.”
       buffer.push(decodingError(mode))
