@@ -4,13 +4,14 @@ import commonjs from '@rollup/plugin-commonjs'
 import typescript from '@rollup/plugin-typescript'
 import del from 'rollup-plugin-delete'
 import nodeResolve from '@rollup/plugin-node-resolve'
-import json from './jsonPlugin.mjs'
+import terser from '@rollup/plugin-terser'
 import fs from 'fs'
+import json from './jsonPlugin.mjs'
 
 const packagePath = process.cwd()
 
 let generateCounter = 0
-const generateConfig = async (type) => {
+const generateConfig = async (type, minify = false) => {
   const pkgString = fs.readFileSync(
     path.join(packagePath, 'package.json'),
     'utf-8',
@@ -47,8 +48,14 @@ const generateConfig = async (type) => {
 
   if (type === 'iife') {
     output.name = pkg.name.replace('@', '').replace('-', '').replace('/', '.')
-    output.entryFileNames = 'zxcvbn-ts.js'
-    output.assetFileNames = 'zxcvbn-ts.js'
+
+    if (minify) {
+      output.entryFileNames = 'zxcvbn-ts.min.js'
+      output.assetFileNames = 'zxcvbn-ts.min.js'
+    } else {
+      output.entryFileNames = 'zxcvbn-ts.js'
+      output.assetFileNames = 'zxcvbn-ts.js'
+    }
   }
 
   const pluginsOnlyOnce = []
@@ -81,6 +88,7 @@ const generateConfig = async (type) => {
         babelHelpers: 'bundled',
         babelrc,
       }),
+      minify ? terser() : null,
     ],
     external,
   }
@@ -90,4 +98,5 @@ export default Promise.all([
   generateConfig('esm'),
   generateConfig('cjs'),
   generateConfig('iife'),
+  generateConfig('iife', true), // cdn build
 ])
