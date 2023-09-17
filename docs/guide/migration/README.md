@@ -10,7 +10,7 @@ Instead of importing language packages with
 
 You will now have to import it either like this
 
-`import { dictionary, translation } from '@zxcvbn-ts/language-en'`
+`import { dictionary, translations } from '@zxcvbn-ts/language-en'`
 
 or like this
 
