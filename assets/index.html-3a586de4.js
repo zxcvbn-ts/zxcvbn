@@ -1,0 +1,1 @@
+import{_ as a,r as n,o,c,a as r,b as e,d as s}from"./app-482771be.js";const d={},_=e("h1",{id:"demo",tabindex:"-1"},[e("a",{class:"header-anchor",href:"#demo","aria-hidden":"true"},"#"),s(" Demo")],-1);function i(l,m){const t=n("ZxcvbnInteractive");return o(),c("div",null,[_,r(t)])}const x=a(d,[["render",i],["__file","index.html.vue"]]);export{x as default};

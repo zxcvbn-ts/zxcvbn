@@ -1,0 +1,1 @@
+const e=JSON.parse('{"key":"v-b33c5e4c","path":"/guide/comparison/","title":"Comparison","lang":"en-US","frontmatter":{},"headers":[],"git":{"updatedTime":1652774844000,"contributors":[{"name":"MrWook","email":"mr.wook@web.de","commits":3}]},"filePathRelative":"guide/comparison/README.md"}');export{e as data};
