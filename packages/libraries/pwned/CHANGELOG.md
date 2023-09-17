@@ -3,16 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [3.0.3](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/matcher-pwned@3.0.2...@zxcvbn-ts/matcher-pwned@3.0.3) (2023-07-17)
+## [3.0.4](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/matcher-pwned@3.0.3...@zxcvbn-ts/matcher-pwned@3.0.4) (2023-09-17)
 
+**Note:** Version bump only for package @zxcvbn-ts/matcher-pwned
+
+## [3.0.3](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/matcher-pwned@3.0.2...@zxcvbn-ts/matcher-pwned@3.0.3) (2023-07-17)
 
 ### Bug Fixes
 
-* **bundler:** resolve bundler issues where crypto is blocking ([a88df6f](https://github.com/zxcvbn-ts/zxcvbn/commit/a88df6fa12d8ec02ce32e5d01b4b3e62170c924d))
-
-
-
-
+- **bundler:** resolve bundler issues where crypto is blocking ([a88df6f](https://github.com/zxcvbn-ts/zxcvbn/commit/a88df6fa12d8ec02ce32e5d01b4b3e62170c924d))
 
 ## [3.0.2](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/matcher-pwned@3.0.1...@zxcvbn-ts/matcher-pwned@3.0.2) (2023-06-06)
 

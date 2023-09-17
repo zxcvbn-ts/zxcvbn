@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.2](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/language-nl-be@3.0.1...@zxcvbn-ts/language-nl-be@3.0.2) (2023-09-17)
+
+### Bug Fixes
+
+- **docs:** resolve typo ([3785f0a](https://github.com/zxcvbn-ts/zxcvbn/commit/3785f0a0ef5400dbcbd666512370a67cb651c46d))
+
 ## [3.0.1](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/language-nl-be@3.0.0...@zxcvbn-ts/language-nl-be@3.0.1) (2023-05-10)
 
 ### Bug Fixes

@@ -3,19 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [3.0.3](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/core@3.0.2...@zxcvbn-ts/core@3.0.3) (2023-07-17)
-
+## [3.0.4](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/core@3.0.3...@zxcvbn-ts/core@3.0.4) (2023-09-17)
 
 ### Bug Fixes
 
-* **regex-matcher:** process all entries found by regex matcher ([8033567](https://github.com/zxcvbn-ts/zxcvbn/commit/80335670516ac14634c9557ffca5e5c03bdcfcdf))
-* **separator:** use missing separator scoring in estimation ([da2a834](https://github.com/zxcvbn-ts/zxcvbn/commit/da2a834ba6a7ff489a8b713147a8f5e638d1ed00))
-* **spatial:** set correct default value for spatial turns ([0fa987d](https://github.com/zxcvbn-ts/zxcvbn/commit/0fa987d51c6b2a43ca05617c2cfe6676692a922c))
-* **unmungger:** fix l33t match boundaries with uneven substitutions before the match ([#215](https://github.com/zxcvbn-ts/zxcvbn/issues/215)) ([0ebc6ff](https://github.com/zxcvbn-ts/zxcvbn/commit/0ebc6ff1fb909e50678d07868cba61531da9f25f))
+- **core:** resolve performance issue with l33t matcher ([3c02020](https://github.com/zxcvbn-ts/zxcvbn/commit/3c02020d002659d7d092b82a2bab6fda1bcc763a))
+- **project:** resolve type issues ([5797375](https://github.com/zxcvbn-ts/zxcvbn/commit/57973751c169b6797caac78065807cf0b24e3480))
 
+## [3.0.3](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/core@3.0.2...@zxcvbn-ts/core@3.0.3) (2023-07-17)
 
+### Bug Fixes
 
-
+- **regex-matcher:** process all entries found by regex matcher ([8033567](https://github.com/zxcvbn-ts/zxcvbn/commit/80335670516ac14634c9557ffca5e5c03bdcfcdf))
+- **separator:** use missing separator scoring in estimation ([da2a834](https://github.com/zxcvbn-ts/zxcvbn/commit/da2a834ba6a7ff489a8b713147a8f5e638d1ed00))
+- **spatial:** set correct default value for spatial turns ([0fa987d](https://github.com/zxcvbn-ts/zxcvbn/commit/0fa987d51c6b2a43ca05617c2cfe6676692a922c))
+- **unmungger:** fix l33t match boundaries with uneven substitutions before the match ([#215](https://github.com/zxcvbn-ts/zxcvbn/issues/215)) ([0ebc6ff](https://github.com/zxcvbn-ts/zxcvbn/commit/0ebc6ff1fb909e50678d07868cba61531da9f25f))
 
 ## [3.0.2](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/core@3.0.1...@zxcvbn-ts/core@3.0.2) (2023-06-06)
 
