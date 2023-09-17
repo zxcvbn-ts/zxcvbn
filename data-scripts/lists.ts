@@ -375,11 +375,16 @@ export default {
     },
   },
   'ar': {
-    commonWords: {
-      source:
-        'https://raw.githubusercontent.com/hermitdave/FrequencyWords/master/content/2018/ar/ar_full.txt',
-      options: { hasOccurrences: true, normalizeDiacritics: true },
-    },
+    /**
+     * Exclusion of Common Words in Arabic Language for Passwords
+     * 1. **Arabic Letter Usage**: In practice, speakers of the Arabic language often do not use standard Arabic letters in their passwords. When they do, the passwords are generally more secure.
+     * 2. **Lack of Standardized Romanization**: Unlike languages such as Japanese, there is no widely-accepted method for converting Arabic letters into Roman letters. This makes it challenging to apply a common conversion algorithm for password security.
+     */
+    // commonWords: {
+    //   source:
+    //     'https://raw.githubusercontent.com/hermitdave/FrequencyWords/master/content/2018/ar/ar_full.txt',
+    //   options: { hasOccurrences: true, normalizeDiacritics: true },
+    // },
     firstnames: {
       source:
         'https://raw.githubusercontent.com/AKhateeb/arabic-names/master/Most-Popular-Arabic-FirstNames.txt',
