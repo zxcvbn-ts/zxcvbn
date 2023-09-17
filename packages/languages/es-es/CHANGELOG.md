@@ -25,7 +25,7 @@ Instead of importing language packages with
 `import package from '@zxcvbn-ts/language-en'`
 
 You will now have to import it either like this
-`import { dictionary, translation } from '@zxcvbn-ts/language-en'`
+`import { dictionary, translations } from '@zxcvbn-ts/language-en'`
 
 or like this
 `import * as package from '@zxcvbn-ts/language-en'`
