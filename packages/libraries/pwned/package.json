@@ -23,7 +23,8 @@
     "access": "public"
   },
   "dependencies": {
-    "@zxcvbn-ts/core": "^3.0.4"
+    "@zxcvbn-ts/core": "^3.0.4",
+    "pathe": "^1.1.1"
   },
   "keywords": [
     "pwned",

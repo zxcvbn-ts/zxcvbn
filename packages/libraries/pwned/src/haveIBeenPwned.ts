@@ -1,3 +1,4 @@
+import pathe from 'pathe'
 import { HaveIBeenPwnedConfig } from './types'
 
 const isNodeJs =
@@ -61,7 +62,7 @@ export default async (
   const passwordHash = (await digestMessage(password)).toUpperCase()
   const range = passwordHash.slice(0, 5)
   const suffix = passwordHash.slice(5)
-  const response = await universalFetch(`${url}${range}`, {
+  const response = await universalFetch(pathe.join(url, range), {
     method: 'GET',
     headers: {
       'Add-Padding': 'true',
