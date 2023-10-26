@@ -14,12 +14,12 @@ export default {
     topHundred: 'Dies ist ein häufig verwendetes Passwort.',
     common: 'Dies ist ein oft verwendetes Passwort.',
     similarToCommon:
-      'Dies weist Ähnlichkeit zu anderen oft verwendeten Passwörtern auf.',
+      'Dieses Passwort weist Ähnlichkeit zu anderen, oft verwendeten Passwörtern auf.',
     wordByItself: 'Einzelne Wörter sind leicht zu erraten.',
     namesByThemselves: 'Einzelne Namen oder Nachnamen sind leicht zu erraten.',
     commonNames: 'Vornamen und Nachnamen sind leicht zu erraten.',
     userInputs:
-      'Es sollten keine persönlichen oder Seiten relevanten Daten vorkommen.',
+      'Das Passwort enthält personliche Daten oder nimmt Bezug auf diese Webseite.',
     pwned: 'Ihr Kennwort wurde durch eine Datenpanne im Internet offengelegt.',
   },
   suggestions: {
