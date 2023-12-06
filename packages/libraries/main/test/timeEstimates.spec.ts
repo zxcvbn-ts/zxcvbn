@@ -1,14 +1,14 @@
 import translations from '../../../languages/en/src/translations'
 import TimeEstimates from '../src/TimeEstimates'
-import { zxcvbnOptions } from '../src/Options'
+import { Options } from '../src/Options'
 
-zxcvbnOptions.setOptions({
+const zxcvbnOptions = new Options({
   translations,
 })
 
 // TODO add tests
 describe('timeEstimates', () => {
-  const timeEstimates = new TimeEstimates()
+  const timeEstimates = new TimeEstimates(zxcvbnOptions)
 
   it('should be very weak', () => {
     const attackTimes = timeEstimates.estimateAttackTimes(10)

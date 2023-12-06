@@ -1,4 +1,4 @@
-import { zxcvbnOptions } from '../../../../Options'
+import { Options } from '../../../../Options'
 import { DictionaryMatch, L33tMatch } from '../../../../types'
 import { DefaultMatch } from '../../types'
 import getCleanPasswords, {
@@ -54,11 +54,10 @@ const getExtras = (
  * -------------------------------------------------------------------------------
  */
 class MatchL33t {
-  defaultMatch: DefaultMatch
-
-  constructor(defaultMatch: DefaultMatch) {
-    this.defaultMatch = defaultMatch
-  }
+  constructor(
+    private options: Options,
+    private defaultMatch: DefaultMatch,
+  ) {}
 
   isAlreadyIncluded(matches: L33tMatch[], newMatch: L33tMatch) {
     return matches.some((l33tMatch) => {
@@ -72,8 +71,8 @@ class MatchL33t {
     const matches: L33tMatch[] = []
     const subbedPasswords = getCleanPasswords(
       password,
-      zxcvbnOptions.l33tMaxSubstitutions,
-      zxcvbnOptions.trieNodeRoot,
+      this.options.l33tMaxSubstitutions,
+      this.options.trieNodeRoot,
     )
     let hasFullMatch = false
     let isFullSubstitution = true

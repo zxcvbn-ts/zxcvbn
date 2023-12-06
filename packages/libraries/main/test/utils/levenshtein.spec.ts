@@ -1,9 +1,9 @@
-import * as zxcvbnCommonPackage from '../../../languages/common/src'
-import * as zxcvbnEnPackage from '../../../languages/en/src'
-import { zxcvbn, zxcvbnOptions } from '../src'
+import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common/src'
+import * as zxcvbnEnPackage from '@zxcvbn-ts/language-en/src'
+import { ZxcvbnFactory } from '../../src'
 
 describe('levenshtein', () => {
-  zxcvbnOptions.setOptions({
+  const zxcvbn = new ZxcvbnFactory({
     dictionary: {
       ...zxcvbnCommonPackage.dictionary,
       ...zxcvbnEnPackage.dictionary,
@@ -14,7 +14,9 @@ describe('levenshtein', () => {
   })
 
   it('should find levensteindistance', () => {
-    const result = zxcvbn('ishduehlduod83h4mfs8', ['ishduehgldueod83h4mfis8'])
+    const result = zxcvbn.check('ishduehlduod83h4mfs8', [
+      'ishduehgldueod83h4mfis8',
+    ])
     expect(result.calcTime).toBeDefined()
     result.calcTime = 0
     expect(result).toEqual({
@@ -63,7 +65,7 @@ describe('levenshtein', () => {
   })
 
   it('should recognize a mistyped common English word', () => {
-    const result = zxcvbn('alaphant')
+    const result = zxcvbn.check('alaphant')
     expect(result.calcTime).toBeDefined()
     result.calcTime = 0
     expect(
@@ -117,10 +119,17 @@ describe('levenshtein', () => {
   })
 
   it('should respect threshold which is lower than the default 2', () => {
-    zxcvbnOptions.setOptions({
+    const customZxcvbn = new ZxcvbnFactory({
+      dictionary: {
+        ...zxcvbnCommonPackage.dictionary,
+        ...zxcvbnEnPackage.dictionary,
+      },
+      graphs: zxcvbnCommonPackage.adjacencyGraphs,
+      translations: zxcvbnEnPackage.translations,
+      useLevenshteinDistance: true,
       levenshteinThreshold: 1,
     })
-    const result = zxcvbn('eeleephaant')
+    const result = customZxcvbn.check('eeleephaant')
     expect(
       result.sequence.find(
         (sequenceItem) => sequenceItem.levenshteinDistance !== undefined,
@@ -129,10 +138,17 @@ describe('levenshtein', () => {
   })
 
   it('should respect threshold which is higher than the default 2', () => {
-    zxcvbnOptions.setOptions({
+    const customZxcvbn = new ZxcvbnFactory({
+      dictionary: {
+        ...zxcvbnCommonPackage.dictionary,
+        ...zxcvbnEnPackage.dictionary,
+      },
+      graphs: zxcvbnCommonPackage.adjacencyGraphs,
+      translations: zxcvbnEnPackage.translations,
+      useLevenshteinDistance: true,
       levenshteinThreshold: 3,
     })
-    const result = zxcvbn('eeleephaant')
+    const result = customZxcvbn.check('eeleephaant')
     expect(result.sequence.length).toStrictEqual(1)
     expect(result.sequence[0].levenshteinDistance).toBeDefined()
   })

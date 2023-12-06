@@ -1,5 +1,6 @@
 import { DictionaryMatch } from '../../../../types'
 import { DefaultMatch } from '../../types'
+import { Options } from '../../../../Options'
 
 /*
  * -------------------------------------------------------------------------------
@@ -7,11 +8,10 @@ import { DefaultMatch } from '../../types'
  * -------------------------------------------------------------------------------
  */
 class MatchReverse {
-  defaultMatch: DefaultMatch
-
-  constructor(defaultMatch: DefaultMatch) {
-    this.defaultMatch = defaultMatch
-  }
+  constructor(
+    private options: Options,
+    private defaultMatch: DefaultMatch,
+  ) {}
 
   match({ password }: { password: string }) {
     const passwordReversed = password.split('').reverse().join('')

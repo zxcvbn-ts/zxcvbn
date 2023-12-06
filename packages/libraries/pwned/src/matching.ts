@@ -1,5 +1,5 @@
 // @ts-ignore
-import { MatchExtended, MatchOptions } from '@zxcvbn-ts/core'
+import { MatchExtended, MatchOptions, Options } from '@zxcvbn-ts/core'
 import haveIBeenPwned from './haveIBeenPwned'
 import { FetchApi, MatcherPwnedFactoryConfig } from './types'
 

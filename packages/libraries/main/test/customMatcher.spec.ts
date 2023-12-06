@@ -1,20 +1,13 @@
 import * as zxcvbnCommonPackage from '../../../languages/common/src'
 import * as zxcvbnEnPackage from '../../../languages/en/src'
-import { zxcvbn, zxcvbnOptions } from '../src'
+import { Options, ZxcvbnFactory } from '../src'
 import { Match, Matcher } from '../src/types'
-import { sorted } from '../src/helper'
-
-zxcvbnOptions.setOptions({
-  dictionary: {
-    ...zxcvbnCommonPackage.dictionary,
-    ...zxcvbnEnPackage.dictionary,
-  },
-  graphs: zxcvbnCommonPackage.adjacencyGraphs,
-  translations: zxcvbnEnPackage.translations,
-})
+import { sorted } from '../src/utils/helper'
 
 const minLengthMatcher: Matcher = {
   Matching: class MatchMinLength {
+    constructor(private options: Options) {}
+
     minLength = 10
 
     match({ password }: { password: string }) {
@@ -40,12 +33,22 @@ const minLengthMatcher: Matcher = {
     return match.token.length * 10
   },
 }
-
-zxcvbnOptions.addMatcher('minLength', minLengthMatcher)
-
 describe('customMatcher', () => {
+  const zxcvbn = new ZxcvbnFactory(
+    {
+      dictionary: {
+        ...zxcvbnCommonPackage.dictionary,
+        ...zxcvbnEnPackage.dictionary,
+      },
+      graphs: zxcvbnCommonPackage.adjacencyGraphs,
+      translations: zxcvbnEnPackage.translations,
+    },
+    {
+      minLength: minLengthMatcher,
+    },
+  )
   it('should use minLength custom matcher', () => {
-    const result = zxcvbn('ep8fkw8ds')
+    const result = zxcvbn.check('ep8fkw8ds')
     expect(result.calcTime).toBeDefined()
     result.calcTime = 0
     expect(result).toEqual({

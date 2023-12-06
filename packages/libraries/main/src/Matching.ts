@@ -1,4 +1,4 @@
-import { extend, sorted } from './helper'
+import { extend, sorted } from './utils/helper'
 import { MatchExtended, MatchingType } from './types'
 import dateMatcher from './matcher/date/matching'
 import dictionaryMatcher from './matcher/dictionary/matching'
@@ -7,7 +7,7 @@ import repeatMatcher from './matcher/repeat/matching'
 import sequenceMatcher from './matcher/sequence/matching'
 import spatialMatcher from './matcher/spatial/matching'
 import separatorMatcher from './matcher/separator/matching'
-import { zxcvbnOptions } from './Options'
+import { Options } from './Options'
 
 /*
  * -------------------------------------------------------------------------------
@@ -20,7 +20,7 @@ type Matchers = {
 }
 
 class Matching {
-  readonly matchers: Matchers = {
+  private readonly matchers: Matchers = {
     date: dateMatcher,
     dictionary: dictionaryMatcher,
     regex: regexMatcher,
@@ -31,22 +31,24 @@ class Matching {
     separator: separatorMatcher,
   }
 
+  constructor(private options: Options) {}
+
   match(password: string): MatchExtended[] | Promise<MatchExtended[]> {
     const matches: MatchExtended[] = []
 
     const promises: Promise<MatchExtended[]>[] = []
     const matchers = [
       ...Object.keys(this.matchers),
-      ...Object.keys(zxcvbnOptions.matchers),
+      ...Object.keys(this.options.matchers),
     ]
     matchers.forEach((key) => {
-      if (!this.matchers[key] && !zxcvbnOptions.matchers[key]) {
+      if (!this.matchers[key] && !this.options.matchers[key]) {
         return
       }
       const Matcher = this.matchers[key]
         ? this.matchers[key]
-        : zxcvbnOptions.matchers[key].Matching
-      const usedMatcher = new Matcher()
+        : this.options.matchers[key].Matching
+      const usedMatcher = new Matcher(this.options)
       const result = usedMatcher.match({
         password,
         omniMatch: this,

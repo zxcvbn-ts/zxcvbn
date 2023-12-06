@@ -1,6 +1,7 @@
 import { REGEXEN } from '../../data/const'
-import { sorted } from '../../helper'
+import { sorted } from '../../utils/helper'
 import { RegexMatch } from '../../types'
+import { Options } from '../../Options'
 
 interface RegexMatchOptions {
   password: string
@@ -14,6 +15,8 @@ type RegexesKeys = keyof typeof REGEXEN
  * -------------------------------------------------------------------------------
  */
 class MatchRegex {
+  constructor(private options: Options) {}
+
   match({ password, regexes = REGEXEN }: RegexMatchOptions) {
     const matches: RegexMatch[] = []
     Object.keys(regexes).forEach((name) => {

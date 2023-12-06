@@ -1,6 +1,6 @@
 import l33t from '../../../../../src/matcher/dictionary/variants/scoring/l33t'
 import utils from '../../../../../src/scoring/utils'
-import { empty } from '../../../../../src/helper'
+import { empty } from '../../../../../src/utils/helper'
 import { LooseObject } from '../../../../../src/types'
 
 const { nCk } = utils

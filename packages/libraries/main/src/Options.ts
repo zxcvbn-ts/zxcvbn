@@ -1,4 +1,4 @@
-import { buildRankedDictionary } from './helper'
+import { buildRankedDictionary } from './utils/helper'
 import {
   TranslationKeys,
   OptionsType,
@@ -41,12 +41,18 @@ export class Options {
 
   maxLength: number = 256
 
-  constructor() {
-    this.setRankedDictionaries()
+  constructor(
+    options: OptionsType = {},
+    customMatchers: Record<string, Matcher> = {},
+  ) {
+    this.setOptions(options)
+    Object.entries(customMatchers).forEach(([name, matcher]) => {
+      this.addMatcher(name, matcher)
+    })
   }
 
   // eslint-disable-next-line max-statements,complexity
-  setOptions(options: OptionsType = {}) {
+  private setOptions(options: OptionsType = {}) {
     if (options.l33tTable) {
       this.l33tTable = options.l33tTable
       this.trieNodeRoot = l33tTableToTrieNode(options.l33tTable, new TrieNode())
@@ -83,7 +89,7 @@ export class Options {
     }
   }
 
-  setTranslations(translations: TranslationKeys) {
+  private setTranslations(translations: TranslationKeys) {
     if (this.checkCustomTranslations(translations)) {
       this.translations = translations
     } else {
@@ -91,7 +97,7 @@ export class Options {
     }
   }
 
-  checkCustomTranslations(translations: TranslationKeys) {
+  private checkCustomTranslations(translations: TranslationKeys) {
     let valid = true
     Object.keys(translationKeys).forEach((type) => {
       if (type in translations) {
@@ -108,7 +114,7 @@ export class Options {
     return valid
   }
 
-  setRankedDictionaries() {
+  private setRankedDictionaries() {
     const rankedDictionaries: RankedDictionaries = {}
     const rankedDictionariesMaxWorkSize: Record<string, number> = {}
     Object.keys(this.dictionary).forEach((name) => {
@@ -120,7 +126,7 @@ export class Options {
     this.rankedDictionariesMaxWordSize = rankedDictionariesMaxWorkSize
   }
 
-  getRankedDictionariesMaxWordSize(list: (string | number)[]) {
+  private getRankedDictionariesMaxWordSize(list: (string | number)[]) {
     const data = list.map((el) => {
       if (typeof el !== 'string') {
         return el.toString().length
@@ -135,7 +141,7 @@ export class Options {
     return data.reduce((a, b) => Math.max(a, b), -Infinity)
   }
 
-  buildSanitizedRankedDictionary(list: (string | number)[]) {
+  private buildSanitizedRankedDictionary(list: (string | number)[]) {
     const sanitizedInputs: string[] = []
 
     list.forEach((input: string | number | boolean) => {
@@ -152,7 +158,7 @@ export class Options {
     return buildRankedDictionary(sanitizedInputs)
   }
 
-  extendUserInputsDictionary(dictionary: (string | number)[]) {
+  public extendUserInputsDictionary(dictionary: (string | number)[]) {
     if (!this.dictionary.userInputs) {
       this.dictionary.userInputs = []
     }
@@ -164,7 +170,7 @@ export class Options {
       this.getRankedDictionariesMaxWordSize(newList)
   }
 
-  public addMatcher(name: string, matcher: Matcher) {
+  private addMatcher(name: string, matcher: Matcher) {
     if (this.matchers[name]) {
       console.info(`Matcher ${name} already exists`)
     } else {

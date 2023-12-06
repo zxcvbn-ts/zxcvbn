@@ -1,8 +1,8 @@
 import findLevenshteinDistance, {
   FindLevenshteinDistanceResult,
-} from '../../levenshtein'
-import { sorted } from '../../helper'
-import { zxcvbnOptions } from '../../Options'
+} from '../../utils/levenshtein'
+import { sorted } from '../../utils/helper'
+import { Options } from '../../Options'
 import { DictionaryNames, DictionaryMatch, L33tMatch } from '../../types'
 import Reverse from './variants/matching/reverse'
 import L33t from './variants/matching/l33t'
@@ -13,9 +13,9 @@ class MatchDictionary {
 
   reverse: Reverse
 
-  constructor() {
-    this.l33t = new L33t(this.defaultMatch)
-    this.reverse = new Reverse(this.defaultMatch)
+  constructor(private options: Options) {
+    this.l33t = new L33t(options, this.defaultMatch)
+    this.reverse = new Reverse(options, this.defaultMatch)
   }
 
   match({ password }: DictionaryMatchOptions) {
@@ -35,11 +35,11 @@ class MatchDictionary {
     const passwordLower = password.toLowerCase()
 
     // eslint-disable-next-line complexity,max-statements
-    Object.keys(zxcvbnOptions.rankedDictionaries).forEach((dictionaryName) => {
+    Object.keys(this.options.rankedDictionaries).forEach((dictionaryName) => {
       const rankedDict =
-        zxcvbnOptions.rankedDictionaries[dictionaryName as DictionaryNames]
+        this.options.rankedDictionaries[dictionaryName as DictionaryNames]
       const longestDictionaryWordSize =
-        zxcvbnOptions.rankedDictionariesMaxWordSize[dictionaryName]
+        this.options.rankedDictionariesMaxWordSize[dictionaryName]
       const searchWidth = Math.min(longestDictionaryWordSize, passwordLength)
       for (let i = 0; i < passwordLength; i += 1) {
         const searchEnd = Math.min(i + searchWidth, passwordLength)
@@ -52,7 +52,7 @@ class MatchDictionary {
           // and because otherwise there would be to many false positives
           const isFullPassword = i === 0 && j === passwordLength - 1
           if (
-            zxcvbnOptions.useLevenshteinDistance &&
+            this.options.useLevenshteinDistance &&
             isFullPassword &&
             !isInDictionary &&
             useLevenshtein
@@ -60,7 +60,7 @@ class MatchDictionary {
             foundLevenshteinDistance = findLevenshteinDistance(
               usedPassword,
               rankedDict,
-              zxcvbnOptions.levenshteinThreshold,
+              this.options.levenshteinThreshold,
             )
           }
           const isLevenshteinMatch =
