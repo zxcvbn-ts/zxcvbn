@@ -18,11 +18,10 @@ and recognizes common patterns like dates, repetitions (e.g. 'aaa'), sequences (
 ## Setup
 
 ```js
-import { zxcvbn, zxcvbnOptions } from '@zxcvbn-ts/core'
+import { ZxcvbnFactory } from '@zxcvbn-ts/core'
 import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
 import * as zxcvbnEnPackage from '@zxcvbn-ts/language-en'
 
-const password = 'somePassword'
 const options = {
   dictionary: {
     ...zxcvbnCommonPackage.dictionary,
@@ -31,7 +30,8 @@ const options = {
   graphs: zxcvbnCommonPackage.adjacencyGraphs,
   translations: zxcvbnEnPackage.translations,
 }
-zxcvbnOptions.setOptions(options)
+const zxcvbn = new ZxcvbnFactory(options)
 
+const password = 'somePassword'
 zxcvbn(password)
 ```
