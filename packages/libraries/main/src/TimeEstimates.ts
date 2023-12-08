@@ -27,18 +27,6 @@ const times = {
 class TimeEstimates {
   constructor(private options: Options) {}
 
-  private translate(displayStr: string, value: number | undefined) {
-    let key = displayStr
-    if (value !== undefined && value !== 1) {
-      key += 's'
-    }
-    const { timeEstimation } = this.options.translations
-    return timeEstimation[key as keyof typeof timeEstimation].replace(
-      '{base}',
-      `${value}`,
-    )
-  }
-
   public estimateAttackTimes(guesses: number) {
     const crackTimesSeconds: CrackTimesSeconds = {
       onlineThrottling100PerHour: guesses / (100 / 3600),
@@ -103,6 +91,18 @@ class TimeEstimates {
       }
     }
     return this.translate(displayStr, base)
+  }
+
+  private translate(displayStr: string, value: number | undefined) {
+    let key = displayStr
+    if (value !== undefined && value !== 1) {
+      key += 's'
+    }
+    const { timeEstimation } = this.options.translations
+    return timeEstimation[key as keyof typeof timeEstimation].replace(
+      '{base}',
+      `${value}`,
+    )
   }
 }
 

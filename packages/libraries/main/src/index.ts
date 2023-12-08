@@ -54,24 +54,24 @@ class ZxcvbnFactory {
   }
 
   public check(password: string, userInputs?: (string | number)[]) {
-    const usedPassword = password.substring(0, this.options.maxLength)
+    const reducedPassword = password.substring(0, this.options.maxLength)
     const start = time()
-    const matches = this.main(usedPassword, userInputs)
+    const matches = this.main(reducedPassword, userInputs)
 
     if (matches instanceof Promise) {
       throw new Error(
         'You are using a Promised matcher, please use `zxcvbnAsync` for it.',
       )
     }
-    return this.createReturnValue(matches, usedPassword, start)
+    return this.createReturnValue(matches, reducedPassword, start)
   }
 
   public async checkAsync(password: string, userInputs?: (string | number)[]) {
-    const usedPassword = password.substring(0, this.options.maxLength)
+    const reducedPassword = password.substring(0, this.options.maxLength)
     const start = time()
-    const matches = await this.main(usedPassword, userInputs)
+    const matches = await this.main(reducedPassword, userInputs)
 
-    return this.createReturnValue(matches, usedPassword, start)
+    return this.createReturnValue(matches, reducedPassword, start)
   }
 }
 

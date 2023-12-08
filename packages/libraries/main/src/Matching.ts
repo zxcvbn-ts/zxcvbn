@@ -33,6 +33,17 @@ class Matching {
 
   constructor(private options: Options) {}
 
+  private matcherFactory(name: string) {
+    if (!this.matchers[name] && !this.options.matchers[name]) {
+      return null
+    }
+    const Matcher = this.matchers[name]
+      ? this.matchers[name]
+      : this.options.matchers[name].Matching
+
+    return new Matcher(this.options)
+  }
+
   match(password: string): MatchExtended[] | Promise<MatchExtended[]> {
     const matches: MatchExtended[] = []
 
@@ -42,14 +53,11 @@ class Matching {
       ...Object.keys(this.options.matchers),
     ]
     matchers.forEach((key) => {
-      if (!this.matchers[key] && !this.options.matchers[key]) {
+      const matcher = this.matcherFactory(key)
+      if (!matcher) {
         return
       }
-      const Matcher = this.matchers[key]
-        ? this.matchers[key]
-        : this.options.matchers[key].Matching
-      const usedMatcher = new Matcher(this.options)
-      const result = usedMatcher.match({
+      const result = matcher.match({
         password,
         omniMatch: this,
       })

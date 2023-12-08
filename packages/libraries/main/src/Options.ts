@@ -15,31 +15,31 @@ import TrieNode from './matcher/dictionary/variants/matching/unmunger/TrieNode'
 import l33tTableToTrieNode from './matcher/dictionary/variants/matching/unmunger/l33tTableToTrieNode'
 
 export class Options {
-  matchers: Matchers = {}
+  public matchers: Matchers = {}
 
-  l33tTable: OptionsL33tTable = l33tTable
+  public l33tTable: OptionsL33tTable = l33tTable
 
-  trieNodeRoot: TrieNode = l33tTableToTrieNode(l33tTable, new TrieNode())
+  public trieNodeRoot: TrieNode = l33tTableToTrieNode(l33tTable, new TrieNode())
 
-  dictionary: OptionsDictionary = {
+  public dictionary: OptionsDictionary = {
     userInputs: [],
   }
 
-  rankedDictionaries: RankedDictionaries = {}
+  public rankedDictionaries: RankedDictionaries = {}
 
-  rankedDictionariesMaxWordSize: Record<string, number> = {}
+  public rankedDictionariesMaxWordSize: Record<string, number> = {}
 
-  translations: TranslationKeys = translationKeys
+  public translations: TranslationKeys = translationKeys
 
-  graphs: OptionsGraph = {}
+  public graphs: OptionsGraph = {}
 
-  useLevenshteinDistance: boolean = false
+  public useLevenshteinDistance: boolean = false
 
-  levenshteinThreshold: number = 2
+  public levenshteinThreshold: number = 2
 
-  l33tMaxSubstitutions: number = 100
+  public l33tMaxSubstitutions: number = 100
 
-  maxLength: number = 256
+  public maxLength: number = 256
 
   constructor(
     options: OptionsType = {},
