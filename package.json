@@ -81,6 +81,7 @@
     "ts-jest": "29.1.1",
     "typescript": "5.3.3",
     "vuepress": "2.0.0-rc.0",
+    "yarn-audit-fix": "10.0.7",
     "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.1/xlsx-0.20.1.tgz",
     "zxcvbn": "4.4.2"
   },
