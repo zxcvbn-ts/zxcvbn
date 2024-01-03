@@ -15,7 +15,7 @@ The French dictionary and language package for zxcvbn-ts
 ## Setup
 
 ```js
-import zxcvbn from '@zxcvbn-ts/core'
+import { ZxcvbnFactory } from '@zxcvbn-ts/core'
 import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
 import * as zxcvbnFrPackage from '@zxcvbn-ts/language-fr'
 
@@ -28,5 +28,6 @@ const options = {
   },
 }
 
-zxcvbn(password, options)
+const zxcvbn = new ZxcvbnFactory(options)
+zxcvbn.check(password)
 ```

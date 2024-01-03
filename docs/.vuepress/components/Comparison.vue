@@ -33,10 +33,7 @@
 </template>
 
 <script>
-import {
-  zxcvbnAsync as zxcvbnTsAsync,
-  zxcvbnOptions,
-} from '../../../packages/libraries/main/dist/index.esm'
+import { ZxcvbnFactory } from '../../../packages/libraries/main/dist/index.esm'
 import * as zxcvbnCommonPackage from '../../../packages/languages/common/dist/index.esm'
 import * as zxcvbnEnPackage from '../../../packages/languages/en/dist/index.esm'
 import zxcvbn from 'zxcvbn'
@@ -78,6 +75,7 @@ export default {
       ],
       data: [],
       loading: true,
+      zxcvbn: null,
     }
   },
   async mounted() {
@@ -94,14 +92,15 @@ export default {
         graphs: zxcvbnCommonPackage.adjacencyGraphs,
         useLevenshteinDistance: true,
       }
-      zxcvbnOptions.setOptions(options)
+      this.zxcvbn = new ZxcvbnFactory(options)
     },
 
     async setData() {
       this.loading = true
+      await this.$nextTick()
       for (const password of this.passwords) {
         const zxcvbnResult = zxcvbn(password)
-        const zxcvbnTsResult = await zxcvbnTsAsync(password)
+        const zxcvbnTsResult = await this.zxcvbn.checkAsync(password)
         console.log(zxcvbnResult, zxcvbnTsResult)
         this.data.push({
           password: password,

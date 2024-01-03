@@ -66,8 +66,7 @@
 <script>
 import crossFetch from 'cross-fetch'
 import {
-  zxcvbnAsync,
-  zxcvbnOptions,
+  ZxcvbnFactory,
   debounce,
 } from '../../../packages/libraries/main/dist/index.esm'
 import * as zxcvbnCommonPackage from '../../../packages/languages/common/dist/index.esm'
@@ -75,6 +74,7 @@ import * as zxcvbnEnPackage from '../../../packages/languages/en/dist/index.esm'
 import translationKeys from '../../../packages/libraries/main/dist/data/translationKeys.esm'
 import { matcherPwnedFactory } from '@zxcvbn-ts/matcher-pwned'
 
+const matcherPwned = matcherPwnedFactory(crossFetch)
 export default {
   name: 'ZxcvbnInteractive',
   data() {
@@ -89,17 +89,17 @@ export default {
       useLevenshteinDistance: true,
       debounce: debounce(this.useZxcvbn, 200),
       userInputs: '',
+      zxcvbn: null,
     }
   },
   mounted() {
-    this.setOptions()
-    this.addPwnedMatcher()
+    this.setOptions(true)
   },
   methods: {
     setResult(result) {
       this.result = result
     },
-    setOptions() {
+    setOptions(hasPwnedMatcher = false) {
       const options = {
         dictionary: {},
         translations: translationKeys,
@@ -118,20 +118,21 @@ export default {
       if (this.useGraphs) {
         options.graphs = zxcvbnCommonPackage.adjacencyGraphs
       }
-      zxcvbnOptions.setOptions(options)
+      const customMatcher = {}
+      if (hasPwnedMatcher) {
+        customMatcher.pwned = matcherPwned
+      }
+
+      this.zxcvbn = new ZxcvbnFactory(options, customMatcher)
     },
     async useZxcvbn() {
       if (this.password) {
         const userInputs = this.userInputs.split(',')
-        this.result = await zxcvbnAsync(this.password, userInputs)
+        this.result = await this.zxcvbn.checkAsync(this.password, userInputs)
       } else {
         this.result = null
       }
       console.log(this.result)
-    },
-    addPwnedMatcher() {
-      const matcherPwned = matcherPwnedFactory(crossFetch, zxcvbnOptions)
-      zxcvbnOptions.addMatcher('pwned', matcherPwned)
     },
   },
   watch: {
@@ -161,9 +162,9 @@ export default {
     usePwned(newValue) {
       this.password = ''
       if (newValue) {
-        this.addPwnedMatcher()
+        this.setOptions(true)
       } else {
-        delete zxcvbnOptions.matchers.pwned
+        this.setOptions()
       }
     },
   },

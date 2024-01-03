@@ -1,5 +1,58 @@
 # Migration
 
+## `zxcvbn-ts 3.x.x` to `zxcvbn-ts 4.x.x`
+
+### Move from singleton options to class based approach
+
+Old:
+```
+zxcvbnOptions.setOptions(options)
+
+zxcvbn(password)
+```
+
+New:
+
+```
+const zxcvbn = new ZxcvbnFactory(options, customMatcher)
+
+zxcvbn.check(password)
+```
+
+
+### Custom matcher setup changed
+
+This is an example for the pwned custom matcher changes. Generally the options doesn't need to be transferred anymore.
+
+Old:
+```
+zxcvbnOptions.setOptions(options)
+
+const pwnedOptions = {
+  url: string,
+  networkErrorHandler: Function
+}
+const matcherPwned = matcherPwnedFactory(crossFetch, zxcvbnOptions, pwnedOptions)
+zxcvbnOptions.addMatcher('pwned', matcherPwned)
+
+zxcvbn(password)
+```
+
+New:
+
+```
+const pwnedOptions = {
+  url: string,
+  networkErrorHandler: Function
+}
+const customMatcher = {
+  pwned: matcherPwnedFactory(fetch, pwnedOptions),
+}
+
+const zxcvbn = new ZxcvbnFactory(options, customMatcher)
+zxcvbn.check(password)
+```
+
 ## `zxcvbn-ts 2.x.x` to `zxcvbn-ts 3.x.x`
 
 ### language packages no longer have a default export
