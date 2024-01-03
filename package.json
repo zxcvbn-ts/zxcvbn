@@ -106,8 +106,5 @@
     "semver": "7.5.4"
   },
   "overrides": {},
-  "dependencies": {},
-  "engines": {
-    "node": ">=16.0.0"
-  }
+  "dependencies": {}
 }
