@@ -1,4 +1,4 @@
-import { DictionaryMatch, MatchOptions } from '../../../../types'
+import { DictionaryMatch } from '../../../../types'
 import { DefaultMatch, DictionaryMatchOptions } from '../../types'
 import { Options } from '../../../../Options'
 
