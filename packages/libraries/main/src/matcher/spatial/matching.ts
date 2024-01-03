@@ -1,10 +1,8 @@
 import { sorted, extend } from '../../utils/helper'
 import { Options } from '../../Options'
-import { LooseObject, SpatialMatch } from '../../types'
+import { LooseObject, MatchOptions, SpatialMatch } from '../../types'
 
-interface SpatialMatchOptions {
-  password: string
-}
+type SpatialMatchOptions = Pick<MatchOptions, 'password'>
 /*
  * ------------------------------------------------------------------------------
  * spatial match (qwerty/dvorak/keypad and so on) -----------------------------------------

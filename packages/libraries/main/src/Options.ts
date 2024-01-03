@@ -8,6 +8,8 @@ import {
   RankedDictionaries,
   Matchers,
   Matcher,
+  UserInputsOptions,
+  RankedDictionary,
 } from './types'
 import l33tTable from './data/l33tTable'
 import translationKeys from './data/translationKeys'
@@ -158,16 +160,21 @@ export class Options {
     return buildRankedDictionary(sanitizedInputs)
   }
 
-  public extendUserInputsDictionary(dictionary: (string | number)[]) {
-    if (!this.dictionary.userInputs) {
-      this.dictionary.userInputs = []
+  public getUserInputsOptions(
+    dictionary?: (string | number)[],
+  ): UserInputsOptions {
+    let rankedDictionary: RankedDictionary = {}
+    let rankedDictionaryMaxWordSize: number = 0
+    if (dictionary) {
+      rankedDictionary = this.buildSanitizedRankedDictionary(dictionary)
+      rankedDictionaryMaxWordSize =
+        this.getRankedDictionariesMaxWordSize(dictionary)
     }
 
-    const newList = [...this.dictionary.userInputs, ...dictionary]
-    this.rankedDictionaries.userInputs =
-      this.buildSanitizedRankedDictionary(newList)
-    this.rankedDictionariesMaxWordSize.userInputs =
-      this.getRankedDictionariesMaxWordSize(newList)
+    return {
+      rankedDictionary,
+      rankedDictionaryMaxWordSize,
+    }
   }
 
   private addMatcher(name: string, matcher: Matcher) {

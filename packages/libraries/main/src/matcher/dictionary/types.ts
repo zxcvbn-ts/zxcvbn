@@ -1,9 +1,13 @@
-import { DictionaryMatch } from '../../types'
+import { DictionaryMatch, MatchOptions } from '../../types'
 
-export interface DictionaryMatchOptions {
-  password: string
+export interface DictionaryMatchOptionsLevenshtein extends MatchOptions {
   useLevenshtein?: boolean
 }
+
+export type DictionaryMatchOptions = Pick<
+  DictionaryMatchOptionsLevenshtein,
+  'password' | 'userInputsOptions' | 'useLevenshtein'
+>
 
 export type DefaultMatch = (
   options: DictionaryMatchOptions,

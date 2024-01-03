@@ -1,6 +1,6 @@
 import { Options } from '../../../../Options'
 import { DictionaryMatch, L33tMatch } from '../../../../types'
-import { DefaultMatch } from '../../types'
+import { DefaultMatch, DictionaryMatchOptions } from '../../types'
 import getCleanPasswords, {
   PasswordChanges,
   PasswordWithSubs,
@@ -67,10 +67,10 @@ class MatchL33t {
     })
   }
 
-  match({ password }: { password: string }) {
+  match(matchOptions: DictionaryMatchOptions) {
     const matches: L33tMatch[] = []
     const subbedPasswords = getCleanPasswords(
-      password,
+      matchOptions.password,
       this.options.l33tMaxSubstitutions,
       this.options.trieNodeRoot,
     )
@@ -81,6 +81,7 @@ class MatchL33t {
         return
       }
       const matchedDictionary = this.defaultMatch({
+        ...matchOptions,
         password: subbedPassword.password,
         useLevenshtein: isFullSubstitution,
       })
@@ -88,10 +89,14 @@ class MatchL33t {
       isFullSubstitution = false
       matchedDictionary.forEach((match: DictionaryMatch) => {
         if (!hasFullMatch) {
-          hasFullMatch = match.i === 0 && match.j === password.length - 1
+          hasFullMatch =
+            match.i === 0 && match.j === matchOptions.password.length - 1
         }
         const extras = getExtras(subbedPassword, match.i, match.j)
-        const token = password.slice(extras.i, +extras.j + 1 || 9e9)
+        const token = matchOptions.password.slice(
+          extras.i,
+          +extras.j + 1 || 9e9,
+        )
         const newMatch: L33tMatch = {
           ...match,
           l33t: true,

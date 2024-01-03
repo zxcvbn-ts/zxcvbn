@@ -1,12 +1,8 @@
-import { RepeatMatch } from '../../types'
+import { MatchOptions, RepeatMatch } from '../../types'
 import Scoring from '../../scoring'
 import Matching from '../../Matching'
 import { Options } from '../../Options'
 
-interface RepeatMatchOptions {
-  password: string
-  omniMatch: Matching
-}
 /*
  *-------------------------------------------------------------------------------
  * repeats (aaa, abcabcabc) ------------------------------
@@ -20,7 +16,7 @@ class MatchRepeat {
   }
 
   // eslint-disable-next-line max-statements
-  match({ password, omniMatch }: RepeatMatchOptions) {
+  match({ password, omniMatch }: MatchOptions) {
     const matches: (RepeatMatch | Promise<RepeatMatch>)[] = []
     let lastIndex = 0
     while (lastIndex < password.length) {

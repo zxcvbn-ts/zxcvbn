@@ -231,18 +231,24 @@ export type DefaultScoringFunction = (
   options: Options,
 ) => number | DictionaryReturn
 
+export interface UserInputsOptions {
+  rankedDictionary: RankedDictionary
+  rankedDictionaryMaxWordSize: number
+}
 export interface MatchOptions {
   password: string
   /**
    * @description This is the original Matcher so that one can use other matchers to define a baseGuess. An usage example is the repeat matcher
    */
   omniMatch: Matching
+  userInputsOptions?: UserInputsOptions
 }
 
 export type MatchingType = new (options: Options) => {
   match({
     password,
     omniMatch,
+    userInputsOptions,
   }: MatchOptions): MatchExtended[] | Promise<MatchExtended[]>
 }
 

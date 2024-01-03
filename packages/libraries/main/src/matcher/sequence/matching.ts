@@ -1,5 +1,5 @@
 import { ALL_UPPER, ALL_LOWER, ALL_DIGIT } from '../../data/const'
-import { SequenceMatch } from '../../types'
+import { MatchOptions, SequenceMatch } from '../../types'
 import { Options } from '../../Options'
 
 type UpdateParams = {
@@ -10,9 +10,7 @@ type UpdateParams = {
   result: any[]
 }
 
-interface SequenceMatchOptions {
-  password: string
-}
+type SequenceMatchOptions = Pick<MatchOptions, 'password'>
 /*
  *-------------------------------------------------------------------------------
  * sequences (abcdef) ------------------------------

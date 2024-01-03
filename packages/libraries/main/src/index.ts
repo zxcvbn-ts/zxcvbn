@@ -44,13 +44,11 @@ class ZxcvbnFactory {
   }
 
   private main(password: string, userInputs?: (string | number)[]) {
-    if (userInputs) {
-      this.options.extendUserInputsDictionary(userInputs)
-    }
+    const userInputsOptions = this.options.getUserInputsOptions(userInputs)
 
     const matching = new Matching(this.options)
 
-    return matching.match(password)
+    return matching.match(password, userInputsOptions)
   }
 
   public check(password: string, userInputs?: (string | number)[]) {

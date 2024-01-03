@@ -1,5 +1,5 @@
-import { DictionaryMatch } from '../../../../types'
-import { DefaultMatch } from '../../types'
+import { DictionaryMatch, MatchOptions } from '../../../../types'
+import { DefaultMatch, DictionaryMatchOptions } from '../../types'
 import { Options } from '../../../../Options'
 
 /*
@@ -13,17 +13,18 @@ class MatchReverse {
     private defaultMatch: DefaultMatch,
   ) {}
 
-  match({ password }: { password: string }) {
-    const passwordReversed = password.split('').reverse().join('')
+  match(matchOptions: DictionaryMatchOptions) {
+    const passwordReversed = matchOptions.password.split('').reverse().join('')
     return this.defaultMatch({
+      ...matchOptions,
       password: passwordReversed,
     }).map((match: DictionaryMatch) => ({
       ...match,
       token: match.token.split('').reverse().join(''), // reverse back
       reversed: true,
       // map coordinates back to original string
-      i: password.length - 1 - match.j,
-      j: password.length - 1 - match.i,
+      i: matchOptions.password.length - 1 - match.j,
+      j: matchOptions.password.length - 1 - match.i,
     }))
   }
 }

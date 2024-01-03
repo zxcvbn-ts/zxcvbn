@@ -1,5 +1,5 @@
 import { extend, sorted } from './utils/helper'
-import { MatchExtended, MatchingType } from './types'
+import { MatchExtended, MatchingType, UserInputsOptions } from './types'
 import dateMatcher from './matcher/date/matching'
 import dictionaryMatcher from './matcher/dictionary/matching'
 import regexMatcher from './matcher/regex/matching'
@@ -44,7 +44,10 @@ class Matching {
     return new Matcher(this.options)
   }
 
-  match(password: string): MatchExtended[] | Promise<MatchExtended[]> {
+  match(
+    password: string,
+    userInputsOptions?: UserInputsOptions,
+  ): MatchExtended[] | Promise<MatchExtended[]> {
     const matches: MatchExtended[] = []
 
     const promises: Promise<MatchExtended[]>[] = []
@@ -60,6 +63,7 @@ class Matching {
       const result = matcher.match({
         password,
         omniMatch: this,
+        userInputsOptions,
       })
 
       if (result instanceof Promise) {

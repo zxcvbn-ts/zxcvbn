@@ -5,12 +5,10 @@ import {
   REFERENCE_YEAR,
 } from '../../data/const'
 import { sorted } from '../../utils/helper'
-import { DateMatch } from '../../types'
+import { DateMatch, MatchOptions } from '../../types'
 import { Options } from '../../Options'
 
-interface DateMatchOptions {
-  password: string
-}
+type DateMatchOptions = Pick<MatchOptions, 'password'>
 
 /*
  * -------------------------------------------------------------------------------
