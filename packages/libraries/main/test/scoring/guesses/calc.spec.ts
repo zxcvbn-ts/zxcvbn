@@ -29,7 +29,7 @@ describe('scoring', () => {
       day: 14,
       // @ts-ignore
       guesses: dateGuesses(match),
-      guessesLog10: 4.225050696138048,
+      guessesLog10: 4.234390722392192,
     })
   })
 })
