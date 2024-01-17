@@ -1,4 +1,4 @@
-import { Options } from '../../Options'
+import Options from '../../Options'
 import { MatchEstimated } from '../../types'
 
 export default (options: Options, match: MatchEstimated) => {

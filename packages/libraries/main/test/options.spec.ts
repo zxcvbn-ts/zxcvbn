@@ -1,4 +1,4 @@
-import { Options } from '../src/Options'
+import Options from '../src/Options'
 import translationKeys from '../src/data/translationKeys'
 
 describe('Options', () => {

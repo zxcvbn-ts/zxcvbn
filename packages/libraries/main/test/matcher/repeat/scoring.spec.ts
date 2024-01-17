@@ -1,7 +1,7 @@
 import repeatGuesses from '../../../src/matcher/repeat/scoring'
 import Scoring from '../../../src/scoring'
 import MatchOmni from '../../../src/Matching'
-import { Options } from '../../../src/Options'
+import Options from '../../../src/Options'
 import { MatchExtended } from '../../../src/types'
 
 const zxcvbnOptions = new Options()

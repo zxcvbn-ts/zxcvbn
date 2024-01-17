@@ -1,7 +1,7 @@
 import MatchSequence from '../../../src/matcher/sequence/matching'
 import checkMatches from '../../helper/checkMatches'
 import genpws from '../../helper/genpws'
-import { Options } from '../../../src'
+import Options from '../../../src/Options'
 
 describe('sequence matching', () => {
   const zxcvbnOptions = new Options()

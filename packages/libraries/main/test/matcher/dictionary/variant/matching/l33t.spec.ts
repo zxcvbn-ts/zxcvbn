@@ -1,7 +1,7 @@
 import MatchL33t from '../../../../../src/matcher/dictionary/variants/matching/l33t'
 import MatchDictionary from '../../../../../src/matcher/dictionary/matching'
 import checkMatches from '../../../../helper/checkMatches'
-import { Options } from '../../../../../src/Options'
+import Options from '../../../../../src/Options'
 import { sorted } from '../../../../../src/utils/helper'
 
 describe('l33t matching', () => {

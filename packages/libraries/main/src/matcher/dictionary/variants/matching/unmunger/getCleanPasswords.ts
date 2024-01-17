@@ -76,7 +76,11 @@ class CleanPasswords {
 
     if (index === this.substr.length) {
       if (onlyFullSub === isFullSub) {
-        this.finalPasswords.push({ password: this.buffer.join(''), changes, isFullSubstitution: onlyFullSub })
+        this.finalPasswords.push({
+          password: this.buffer.join(''),
+          changes,
+          isFullSubstitution: onlyFullSub,
+        })
       }
       return
     }
@@ -93,10 +97,7 @@ class CleanPasswords {
         // Skip if this would be a 4th or more consecutive substitution of the same letter
         // this should work in all language as there shouldn't be the same letter more than four times in a row
         // So we can ignore the rest to save calculation time
-        if (
-          lastSubLetter === sub &&
-          consecutiveSubCount >= 3
-        ) {
+        if (lastSubLetter === sub && consecutiveSubCount >= 3) {
           // eslint-disable-next-line no-continue
           continue
         }
@@ -120,9 +121,7 @@ class CleanPasswords {
             changes: newSubs,
             lastSubLetter: sub,
             consecutiveSubCount:
-              lastSubLetter === sub
-                ? consecutiveSubCount + 1
-                : 1,
+              lastSubLetter === sub ? consecutiveSubCount + 1 : 1,
           })
           // backtrack by ignoring the added postfix
           this.buffer.pop()

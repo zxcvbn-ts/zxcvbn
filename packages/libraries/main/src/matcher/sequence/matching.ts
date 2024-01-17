@@ -1,6 +1,6 @@
 import { ALL_UPPER, ALL_LOWER, ALL_DIGIT } from '../../data/const'
 import { MatchOptions, SequenceMatch } from '../../types'
-import { Options } from '../../Options'
+import Options from '../../Options'
 
 type UpdateParams = {
   i: number

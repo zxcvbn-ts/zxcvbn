@@ -1,7 +1,7 @@
 import { MatchOptions, RepeatMatch } from '../../types'
 import Scoring from '../../scoring'
 import Matching from '../../Matching'
-import { Options } from '../../Options'
+import Options from '../../Options'
 
 /*
  *-------------------------------------------------------------------------------

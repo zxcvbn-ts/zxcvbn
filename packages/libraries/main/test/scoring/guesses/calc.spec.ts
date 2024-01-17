@@ -1,6 +1,6 @@
 import estimate from '../../../src/scoring/estimate'
 import dateGuesses from '../../../src/matcher/date/scoring'
-import { Options } from '../../../src'
+import Options from '../../../src/Options'
 
 describe('scoring', () => {
   const zxcvbnOptions = new Options()

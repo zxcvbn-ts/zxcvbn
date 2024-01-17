@@ -1,5 +1,5 @@
 import { sorted, extend } from '../../utils/helper'
-import { Options } from '../../Options'
+import Options from '../../Options'
 import { LooseObject, MatchOptions, SpatialMatch } from '../../types'
 
 type SpatialMatchOptions = Pick<MatchOptions, 'password'>

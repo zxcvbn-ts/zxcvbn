@@ -4,7 +4,7 @@ import sprintfClass from 'sprintf-js'
 import { MatchExtended } from '@zxcvbn-ts/core/src/types'
 import Matching from '../../packages/libraries/main/src/Matching'
 import estimateGuesses from '../../packages/libraries/main/src/scoring/estimate'
-import { Options } from '../../packages/libraries/main/src/Options'
+import Options from '../../packages/libraries/main/src/Options'
 
 const CUTOFF = 10
 const BATCH_SIZE = 1000000

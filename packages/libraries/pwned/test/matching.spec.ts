@@ -1,5 +1,5 @@
 import { matcherPwnedFactory } from '../src'
-import { Options } from '../../main/src'
+import Options from '../../main/src/Options'
 
 const fetch = jest.fn(async () => ({
   text() {

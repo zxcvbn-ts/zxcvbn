@@ -1,4 +1,4 @@
-import { Options } from '../../../../Options'
+import Options from '../../../../Options'
 import { DictionaryMatch, L33tMatch } from '../../../../types'
 import { DefaultMatch, DictionaryMatchOptions } from '../../types'
 import getCleanPasswords, {

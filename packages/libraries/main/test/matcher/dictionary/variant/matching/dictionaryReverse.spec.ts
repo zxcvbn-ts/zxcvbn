@@ -1,7 +1,7 @@
 import MatchDictionaryReverse from '../../../../../src/matcher/dictionary/variants/matching/reverse'
 import MatchDictionary from '../../../../../src/matcher/dictionary/matching'
 import checkMatches from '../../../../helper/checkMatches'
-import { Options } from '../../../../../src/Options'
+import Options from '../../../../../src/Options'
 
 describe('dictionary reverse matching', () => {
   const testDicts = {

@@ -1,4 +1,4 @@
-import { Options } from './Options'
+import Options from './Options'
 import { CrackTimesDisplay, CrackTimesSeconds, Score } from './types'
 
 const SECOND = 1

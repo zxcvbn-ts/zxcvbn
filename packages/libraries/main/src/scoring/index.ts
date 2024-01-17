@@ -7,7 +7,7 @@ import {
   MatchEstimated,
   LooseObject,
 } from '../types'
-import { Options } from '../Options'
+import Options from '../Options'
 
 const scoringHelper = {
   password: '',

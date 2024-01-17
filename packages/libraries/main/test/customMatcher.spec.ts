@@ -1,8 +1,9 @@
 import * as zxcvbnCommonPackage from '../../../languages/common/src'
 import * as zxcvbnEnPackage from '../../../languages/en/src'
-import { Options, ZxcvbnFactory } from '../src'
+import { ZxcvbnFactory } from '../src'
 import { Match, Matcher } from '../src/types'
 import { sorted } from '../src/utils/helper'
+import Options from '../src/Options'
 
 const minLengthMatcher: Matcher = {
   Matching: class MatchMinLength {

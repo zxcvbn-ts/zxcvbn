@@ -7,7 +7,7 @@ import repeatMatcher from './matcher/repeat/matching'
 import sequenceMatcher from './matcher/sequence/matching'
 import spatialMatcher from './matcher/spatial/matching'
 import separatorMatcher from './matcher/separator/matching'
-import { Options } from './Options'
+import Options from './Options'
 
 /*
  * -------------------------------------------------------------------------------

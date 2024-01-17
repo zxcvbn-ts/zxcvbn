@@ -1,7 +1,7 @@
 import MatchSpatial from '../../../src/matcher/spatial/matching'
 import checkMatches from '../../helper/checkMatches'
 import * as zxcvbnCommonPackage from '../../../../../languages/common/src'
-import { Options } from '../../../src/Options'
+import Options from '../../../src/Options'
 import { LooseObject } from '../../../src/types'
 
 const { adjacencyGraphs } = zxcvbnCommonPackage

@@ -1,5 +1,5 @@
 import utils from '../../scoring/utils'
-import { Options } from '../../Options'
+import Options from '../../Options'
 import {
   LooseObject,
   MatchEstimated,

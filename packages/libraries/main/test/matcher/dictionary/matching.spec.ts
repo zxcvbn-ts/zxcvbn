@@ -3,7 +3,7 @@ import * as zxcvbnEnPackage from '../../../../../languages/en/src'
 import MatchDictionary from '../../../src/matcher/dictionary/matching'
 import checkMatches from '../../helper/checkMatches'
 import genpws from '../../helper/genpws'
-import { Options } from '../../../src/Options'
+import Options from '../../../src/Options'
 
 describe('dictionary matching', () => {
   describe('Default dictionary', () => {

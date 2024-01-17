@@ -1,7 +1,7 @@
 import Matching from './Matching'
 import TimeEstimates from './TimeEstimates'
 import Feedback from './Feedback'
-import { Options } from './Options'
+import Options from './Options'
 import debounce from './utils/debounce'
 import {
   Matcher,
@@ -88,4 +88,4 @@ class ZxcvbnFactory {
 }
 
 export * from './types'
-export { ZxcvbnFactory, Options, debounce }
+export { ZxcvbnFactory, debounce }

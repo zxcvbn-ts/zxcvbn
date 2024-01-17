@@ -1,7 +1,7 @@
 import { REGEXEN } from '../../data/const'
 import { sorted } from '../../utils/helper'
 import { MatchOptions, RegexMatch } from '../../types'
-import { Options } from '../../Options'
+import Options from '../../Options'
 
 type RegexMatchOptions = Pick<MatchOptions, 'password'>
 

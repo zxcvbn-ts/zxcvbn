@@ -16,7 +16,7 @@ import translationKeys from './data/translationKeys'
 import TrieNode from './matcher/dictionary/variants/matching/unmunger/TrieNode'
 import l33tTableToTrieNode from './matcher/dictionary/variants/matching/unmunger/l33tTableToTrieNode'
 
-export class Options {
+export default class Options {
   public matchers: Matchers = {}
 
   public l33tTable: OptionsL33tTable = l33tTable

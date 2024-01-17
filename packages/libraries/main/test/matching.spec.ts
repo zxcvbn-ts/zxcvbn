@@ -1,7 +1,7 @@
 import * as zxcvbnCommonPackage from '../../../languages/common/src'
 import * as zxcvbnEnPackage from '../../../languages/en/src'
 import MatchOmni from '../src/Matching'
-import { Options } from '../src/Options'
+import Options from '../src/Options'
 import { MatchExtended } from '../src/types'
 
 const zxcvbnOptions = new Options({

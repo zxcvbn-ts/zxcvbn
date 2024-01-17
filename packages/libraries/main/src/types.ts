@@ -4,7 +4,7 @@ import { REGEXEN } from './data/const'
 import { DictionaryReturn } from './matcher/dictionary/scoring'
 import Matching from './Matching'
 import { PasswordChanges } from './matcher/dictionary/variants/matching/unmunger/getCleanPasswords'
-import { Options } from './Options'
+import Options from './Options'
 
 export type TranslationKeys = typeof translationKeys
 export type L33tTableDefault = typeof l33tTableDefault

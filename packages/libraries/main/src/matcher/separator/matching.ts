@@ -1,6 +1,6 @@
 import { SEPERATOR_CHARS } from '../../data/const'
 import { MatchOptions, SeparatorMatch } from '../../types'
-import { Options } from '../../Options'
+import Options from '../../Options'
 
 type SeparatorMatchOptions = Pick<MatchOptions, 'password'>
 

@@ -1,4 +1,4 @@
-import { Options } from '../../Options'
+import Options from '../../Options'
 
 export default (options: Options) => {
   return {

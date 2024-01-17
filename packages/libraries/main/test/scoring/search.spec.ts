@@ -1,5 +1,5 @@
 import Scoring from '../../src/scoring'
-import { Options } from '../../src/Options'
+import Options from '../../src/Options'
 
 describe('scoring search', () => {
   const zxcvbnOptions = new Options()

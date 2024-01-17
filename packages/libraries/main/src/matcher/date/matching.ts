@@ -6,7 +6,7 @@ import {
 } from '../../data/const'
 import { sorted } from '../../utils/helper'
 import { DateMatch, MatchOptions } from '../../types'
-import { Options } from '../../Options'
+import Options from '../../Options'
 
 type DateMatchOptions = Pick<MatchOptions, 'password'>
 

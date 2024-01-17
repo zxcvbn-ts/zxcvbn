@@ -2,7 +2,7 @@ import MatchRepeat from '../../../src/matcher/repeat/matching'
 import checkMatches from '../../helper/checkMatches'
 import genpws from '../../helper/genpws'
 import MatchOmni from '../../../src/Matching'
-import { Options } from '../../../src/Options'
+import Options from '../../../src/Options'
 import { RepeatMatch } from '../../../src/types'
 
 const zxcvbnOptions = new Options()
