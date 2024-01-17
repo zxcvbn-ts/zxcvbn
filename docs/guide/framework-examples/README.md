@@ -36,10 +36,9 @@ const myPlugin = {
       // optional
       translations: zxcvbnEnPackage.translations,
     }
-    zxcvbnOptions.setOptions(options)
+
+    Vue.prototype.$zxcvbn = new ZxcvbnFactory(options, customMatcher)
   },
-  
-  Vue.prototype.$zxcvbn = new ZxcvbnFactory(options, customMatcher)
 }
 ```
 

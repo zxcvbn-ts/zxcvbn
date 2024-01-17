@@ -185,5 +185,3 @@ export class Options {
     }
   }
 }
-
-export const zxcvbnOptions = new Options()
