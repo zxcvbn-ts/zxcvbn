@@ -75,7 +75,6 @@ class MatchL33t {
       this.options.trieNodeRoot,
     )
     let hasFullMatch = false
-    let isFullSubstitution = true
     subbedPasswords.forEach((subbedPassword) => {
       if (hasFullMatch) {
         return
@@ -83,10 +82,8 @@ class MatchL33t {
       const matchedDictionary = this.defaultMatch({
         ...matchOptions,
         password: subbedPassword.password,
-        useLevenshtein: isFullSubstitution,
+        useLevenshtein: subbedPassword.isFullSubstitution,
       })
-      // only the first entry has a full substitution
-      isFullSubstitution = false
       matchedDictionary.forEach((match: DictionaryMatch) => {
         if (!hasFullMatch) {
           hasFullMatch =

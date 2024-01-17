@@ -16,6 +16,7 @@ export type IndexedPasswordChanges = PasswordChanges & { i: number }
 export interface PasswordWithSubs {
   password: string
   changes: IndexedPasswordChanges[]
+  isFullSubstitution: boolean
 }
 
 interface HelperOptions {
@@ -75,7 +76,7 @@ class CleanPasswords {
 
     if (index === this.substr.length) {
       if (onlyFullSub === isFullSub) {
-        this.finalPasswords.push({ password: this.buffer.join(''), changes })
+        this.finalPasswords.push({ password: this.buffer.join(''), changes, isFullSubstitution: onlyFullSub })
       }
       return
     }
@@ -87,38 +88,39 @@ class CleanPasswords {
     // iterate backward to get wider substitutions first
     for (let i = index + nodes.length - 1; i >= index; i -= 1) {
       const cur = nodes[i - index]
+      const sub = cur.parents.join('')
       if (cur.isTerminal()) {
         // Skip if this would be a 4th or more consecutive substitution of the same letter
         // this should work in all language as there shouldn't be the same letter more than four times in a row
         // So we can ignore the rest to save calculation time
         if (
-          lastSubLetter === cur.parents.join('') &&
+          lastSubLetter === sub &&
           consecutiveSubCount >= 3
         ) {
           // eslint-disable-next-line no-continue
           continue
         }
         hasSubs = true
-        const subs = cur.subs!
+        const letters = cur.subs!
         // eslint-disable-next-line no-restricted-syntax
-        for (const sub of subs) {
-          this.buffer.push(sub)
+        for (const letter of letters) {
+          this.buffer.push(letter)
           const newSubs = changes.concat({
             i: subIndex,
-            letter: sub,
-            substitution: cur.parents.join(''),
+            letter,
+            substitution: sub,
           })
 
           // recursively build the rest of the string
           this.helper({
             onlyFullSub,
             isFullSub,
-            index: i + 1,
-            subIndex: subIndex + sub.length,
+            index: index + sub.length,
+            subIndex: subIndex + letter.length,
             changes: newSubs,
-            lastSubLetter: cur.parents.join(''),
+            lastSubLetter: sub,
             consecutiveSubCount:
-              lastSubLetter === cur.parents.join('')
+              lastSubLetter === sub
                 ? consecutiveSubCount + 1
                 : 1,
           })
