@@ -18,24 +18,15 @@ export default (
     }
   }
 
-  if (rankedDictionaries.userInputs) {
-    const isWordSizeBigger =
-      rankedDictionariesMaxWordSize.userInputs <
-      userInputsOptions.rankedDictionaryMaxWordSize
-
-    rankedDictionaries.userInputs = {
-      ...rankedDictionaries.userInputs,
-      ...userInputsOptions.rankedDictionary,
-    }
-
-    rankedDictionariesMaxWordSize.userInputs = isWordSizeBigger
-      ? userInputsOptions.rankedDictionaryMaxWordSize
-      : rankedDictionariesMaxWordSize.userInputs
-  } else {
-    rankedDictionaries.userInputs = userInputsOptions.rankedDictionary
-    rankedDictionariesMaxWordSize.userInputs =
-      userInputsOptions.rankedDictionaryMaxWordSize
+  rankedDictionaries.userInputs = {
+    ...(rankedDictionaries.userInputs || {}),
+    ...userInputsOptions.rankedDictionary,
   }
+
+  rankedDictionariesMaxWordSize.userInputs = Math.max(
+    userInputsOptions.rankedDictionaryMaxWordSize,
+    rankedDictionariesMaxWordSize.userInputs || 0,
+  )
 
   return {
     rankedDictionaries,

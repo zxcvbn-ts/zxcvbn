@@ -3,7 +3,13 @@ import TimeEstimates from './TimeEstimates'
 import Feedback from './Feedback'
 import { Options } from './Options'
 import debounce from './utils/debounce'
-import { Matcher, MatchExtended, OptionsType, ZxcvbnResult } from './types'
+import {
+  Matcher,
+  MatchEstimated,
+  MatchExtended,
+  OptionsType,
+  ZxcvbnResult,
+} from './types'
 import Scoring from './scoring'
 
 const time = () => new Date().getTime()
@@ -21,25 +27,33 @@ class ZxcvbnFactory {
     this.scoring = new Scoring(this.options)
   }
 
+  private estimateAttackTimes(guesses: number) {
+    const timeEstimates = new TimeEstimates(this.options)
+    return timeEstimates.estimateAttackTimes(guesses)
+  }
+
+  private getFeedback(score: number, sequence: MatchEstimated[]) {
+    const feedback = new Feedback(this.options)
+    return feedback.getFeedback(score, sequence)
+  }
+
   private createReturnValue(
     resolvedMatches: MatchExtended[],
     password: string,
     start: number,
   ): ZxcvbnResult {
-    const feedback = new Feedback(this.options)
-    const timeEstimates = new TimeEstimates(this.options)
     const matchSequence = this.scoring.mostGuessableMatchSequence(
       password,
       resolvedMatches,
     )
     const calcTime = time() - start
-    const attackTimes = timeEstimates.estimateAttackTimes(matchSequence.guesses)
+    const attackTimes = this.estimateAttackTimes(matchSequence.guesses)
 
     return {
       calcTime,
       ...matchSequence,
       ...attackTimes,
-      feedback: feedback.getFeedback(attackTimes.score, matchSequence.sequence),
+      feedback: this.getFeedback(attackTimes.score, matchSequence.sequence),
     }
   }
 

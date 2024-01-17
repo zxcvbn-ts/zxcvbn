@@ -44,6 +44,39 @@ class Matching {
     return new Matcher(this.options)
   }
 
+  private processResult(
+    matches: MatchExtended[],
+    promises: Promise<MatchExtended[]>[],
+    result: MatchExtended[] | Promise<MatchExtended[]>,
+  ) {
+    if (result instanceof Promise) {
+      result.then((response) => {
+        extend(matches, response)
+      })
+      promises.push(result)
+    } else {
+      extend(matches, result)
+    }
+  }
+
+  private handlePromises(
+    matches: MatchExtended[],
+    promises: Promise<MatchExtended[]>[],
+  ) {
+    if (promises.length > 0) {
+      return new Promise<MatchExtended[]>((resolve, reject) => {
+        Promise.all(promises)
+          .then(() => {
+            resolve(sorted(matches))
+          })
+          .catch((error) => {
+            reject(error)
+          })
+      })
+    }
+    return sorted(matches)
+  }
+
   match(
     password: string,
     userInputsOptions?: UserInputsOptions,
@@ -66,27 +99,11 @@ class Matching {
         userInputsOptions,
       })
 
-      if (result instanceof Promise) {
-        result.then((response) => {
-          extend(matches, response)
-        })
-        promises.push(result)
-      } else {
-        extend(matches, result)
-      }
+      // extends matches and promises by references
+      this.processResult(matches, promises, result)
     })
-    if (promises.length > 0) {
-      return new Promise((resolve, reject) => {
-        Promise.all(promises)
-          .then(() => {
-            resolve(sorted(matches))
-          })
-          .catch((error) => {
-            reject(error)
-          })
-      })
-    }
-    return sorted(matches)
+
+    return this.handlePromises(matches, promises)
   }
 }
 
