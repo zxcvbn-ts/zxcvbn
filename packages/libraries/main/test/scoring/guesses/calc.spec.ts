@@ -13,18 +13,19 @@ describe('scoring', () => {
   })
 
   it('estimate_guesses delegates based on pattern', () => {
+    const usedYear = new Date().getFullYear() - 46
     const match = {
       pattern: 'date',
-      token: '1977',
-      year: 1977,
+      token: usedYear.toString(),
+      year: usedYear,
       month: 7,
       day: 14,
     }
     // @ts-ignore
     expect(estimate(match, '1977')).toEqual({
       pattern: 'date',
-      token: '1977',
-      year: 1977,
+      token: usedYear.toString(),
+      year: usedYear,
       month: 7,
       day: 14,
       // @ts-ignore

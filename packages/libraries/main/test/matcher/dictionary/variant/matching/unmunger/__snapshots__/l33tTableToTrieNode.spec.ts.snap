@@ -58,6 +58,7 @@ TrieNode {
       "parents": [
         "^",
       ],
+      "subs": undefined,
     },
     "n" => TrieNode {
       "children": Map {
@@ -75,6 +76,7 @@ TrieNode {
       "parents": [
         "n",
       ],
+      "subs": undefined,
     },
     "2" => TrieNode {
       "children": Map {
@@ -92,6 +94,7 @@ TrieNode {
       "parents": [
         "2",
       ],
+      "subs": undefined,
     },
     "/" => TrieNode {
       "children": Map {
@@ -125,6 +128,7 @@ TrieNode {
                         "/",
                         "\\",
                       ],
+                      "subs": undefined,
                     },
                   },
                   "parents": [
@@ -133,6 +137,7 @@ TrieNode {
                     "\\",
                     "/",
                   ],
+                  "subs": undefined,
                 },
               },
               "parents": [
@@ -140,17 +145,20 @@ TrieNode {
                 "\\",
                 "\\",
               ],
+              "subs": undefined,
             },
           },
           "parents": [
             "/",
             "\\",
           ],
+          "subs": undefined,
         },
       },
       "parents": [
         "/",
       ],
+      "subs": undefined,
     },
     "|" => TrieNode {
       "children": Map {
@@ -172,13 +180,16 @@ TrieNode {
             "|",
             "_",
           ],
+          "subs": undefined,
         },
       },
       "parents": [
         "|",
       ],
+      "subs": undefined,
     },
   },
   "parents": [],
+  "subs": undefined,
 }
 `;
