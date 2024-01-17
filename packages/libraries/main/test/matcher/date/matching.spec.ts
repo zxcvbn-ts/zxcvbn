@@ -1,9 +1,11 @@
 import MatchDate from '../../../src/matcher/date/matching'
 import checkMatches from '../../helper/checkMatches'
 import genpws from '../../helper/genpws'
+import Options from '../../../src/Options'
 
 describe('date matching', () => {
-  const matchDate = new MatchDate()
+  const zxcvbnOptions = new Options()
+  const matchDate = new MatchDate(zxcvbnOptions)
   let password
   let matches
   let msg

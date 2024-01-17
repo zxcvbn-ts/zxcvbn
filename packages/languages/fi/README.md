@@ -19,7 +19,7 @@ Data sources for first and last names:
 ## Setup
 
 ```js
-import { zxcvbn, zxcvbnOptions } from '@zxcvbn-ts/core'
+import { ZxcvbnFactory } from '@zxcvbn-ts/core'
 import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
 import * as zxcvbnFiPackage from '@zxcvbn-ts/language-fi'
 
@@ -33,9 +33,8 @@ const options = {
   },
 }
 
-zxcvbnOptions.setOptions(options)
-
-zxcvbn(password)
+const zxcvbn = new ZxcvbnFactory(options)
+zxcvbn.check(password)
 ```
 
 ## source:

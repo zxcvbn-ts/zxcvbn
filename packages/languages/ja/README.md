@@ -15,7 +15,7 @@ The Japanese dictionary and language package for zxcvbn-ts
 ## Setup
 
 ```js
-import { zxcvbn, zxcvbnOptions } from '@zxcvbn-ts/core'
+import { ZxcvbnFactory } from '@zxcvbn-ts/core'
 import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
 import * as zxcvbnJaPackage from '@zxcvbn-ts/language-ja'
 
@@ -29,7 +29,6 @@ const options = {
   },
 }
 
-zxcvbnOptions.setOptions(options)
-
-zxcvbn(password)
+const zxcvbn = new ZxcvbnFactory(options)
+zxcvbn.check(password)
 ```

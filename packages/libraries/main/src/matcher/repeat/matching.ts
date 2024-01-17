@@ -1,19 +1,22 @@
-import { RepeatMatch } from '../../types'
-import scoring from '../../scoring'
+import { MatchOptions, RepeatMatch } from '../../types'
+import Scoring from '../../scoring'
 import Matching from '../../Matching'
+import Options from '../../Options'
 
-interface RepeatMatchOptions {
-  password: string
-  omniMatch: Matching
-}
 /*
  *-------------------------------------------------------------------------------
  * repeats (aaa, abcabcabc) ------------------------------
  *-------------------------------------------------------------------------------
  */
 class MatchRepeat {
+  private scoring: Scoring
+
+  constructor(private options: Options) {
+    this.scoring = new Scoring(options)
+  }
+
   // eslint-disable-next-line max-statements
-  match({ password, omniMatch }: RepeatMatchOptions) {
+  match({ password, omniMatch }: MatchOptions) {
     const matches: (RepeatMatch | Promise<RepeatMatch>)[] = []
     let lastIndex = 0
     while (lastIndex < password.length) {
@@ -123,14 +126,17 @@ class MatchRepeat {
     const matches = omniMatch.match(baseToken)
     if (matches instanceof Promise) {
       return matches.then((resolvedMatches) => {
-        const baseAnalysis = scoring.mostGuessableMatchSequence(
+        const baseAnalysis = this.scoring.mostGuessableMatchSequence(
           baseToken,
           resolvedMatches,
         )
         return baseAnalysis.guesses
       })
     }
-    const baseAnalysis = scoring.mostGuessableMatchSequence(baseToken, matches)
+    const baseAnalysis = this.scoring.mostGuessableMatchSequence(
+      baseToken,
+      matches,
+    )
     return baseAnalysis.guesses
   }
 }

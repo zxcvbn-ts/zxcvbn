@@ -15,7 +15,7 @@ Contains Dutch words specific to Belgium and common Dutch words
 ## Setup
 
 ```js
-import { zxcvbn, zxcvbnOptions } from '@zxcvbn-ts/core'
+import { ZxcvbnFactory } from '@zxcvbn-ts/core'
 import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
 import * as zxcvbnNlBePackage from '@zxcvbn-ts/language-nl-be'
 
@@ -28,9 +28,8 @@ const options = {
     ...zxcvbnNlBePackage.dictionary,
   },
 }
-zxcvbnOptions.setOptions(options)
-
-zxcvbn(password)
+const zxcvbn = new ZxcvbnFactory(options)
+zxcvbn.check(password)
 ```
 
 ## Sources

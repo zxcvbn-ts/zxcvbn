@@ -1,10 +1,8 @@
-import { sorted, extend } from '../../helper'
-import { zxcvbnOptions } from '../../Options'
-import { LooseObject, SpatialMatch } from '../../types'
+import { sorted, extend } from '../../utils/helper'
+import Options from '../../Options'
+import { LooseObject, MatchOptions, SpatialMatch } from '../../types'
 
-interface SpatialMatchOptions {
-  password: string
-}
+type SpatialMatchOptions = Pick<MatchOptions, 'password'>
 /*
  * ------------------------------------------------------------------------------
  * spatial match (qwerty/dvorak/keypad and so on) -----------------------------------------
@@ -13,10 +11,12 @@ interface SpatialMatchOptions {
 class MatchSpatial {
   SHIFTED_RX = /[~!@#$%^&*()_+QWERTYUIOP{}|ASDFGHJKL:"ZXCVBNM<>?]/
 
+  constructor(private options: Options) {}
+
   match({ password }: SpatialMatchOptions) {
     const matches: SpatialMatch[] = []
-    Object.keys(zxcvbnOptions.graphs).forEach((graphName) => {
-      const graph = zxcvbnOptions.graphs[graphName]
+    Object.keys(this.options.graphs).forEach((graphName) => {
+      const graph = this.options.graphs[graphName]
       extend(matches, this.helper(password, graph, graphName))
     })
     return sorted(matches)

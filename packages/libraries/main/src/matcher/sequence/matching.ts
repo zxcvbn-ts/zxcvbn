@@ -1,5 +1,6 @@
 import { ALL_UPPER, ALL_LOWER, ALL_DIGIT } from '../../data/const'
-import { SequenceMatch } from '../../types'
+import { MatchOptions, SequenceMatch } from '../../types'
+import Options from '../../Options'
 
 type UpdateParams = {
   i: number
@@ -9,9 +10,7 @@ type UpdateParams = {
   result: any[]
 }
 
-interface SequenceMatchOptions {
-  password: string
-}
+type SequenceMatchOptions = Pick<MatchOptions, 'password'>
 /*
  *-------------------------------------------------------------------------------
  * sequences (abcdef) ------------------------------
@@ -19,6 +18,8 @@ interface SequenceMatchOptions {
  */
 class MatchSequence {
   MAX_DELTA = 5
+
+  constructor(private options: Options) {}
 
   // eslint-disable-next-line max-statements
   match({ password }: SequenceMatchOptions) {

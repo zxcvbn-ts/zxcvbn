@@ -15,7 +15,7 @@
 ### Bundler like webpack
 
 ```js
-import { zxcvbn, zxcvbnOptions } from '@zxcvbn-ts/core'
+import { ZxcvbnFactory } from '@zxcvbn-ts/core'
 import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
 import * as zxcvbnEnPackage from '@zxcvbn-ts/language-en'
 
@@ -29,9 +29,8 @@ const options = {
   },
 }
 
-zxcvbnOptions.setOptions(options)
-
-zxcvbn(password)
+const zxcvbn = new ZxcvbnFactory(options)
+zxcvbn.check(password)
 ```
 
 ### As script tag
@@ -57,8 +56,10 @@ Example using jsdelivr (a CDN)
             ...zxcvbnts['language-en'].dictionary,
           },
         }
-        zxcvbnts.core.zxcvbnOptions.setOptions(options)
-        console.log(zxcvbnts.core.zxcvbn('somePassword'))
+        
+        const zxcvbn = new zxcvbnts.core.ZxcvbnFactory(options)
+        const results = zxcvbn.check('somePassword')
+        console.log(results)
       })()
     </script>
   </body>

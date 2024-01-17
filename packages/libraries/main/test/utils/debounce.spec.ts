@@ -1,4 +1,4 @@
-import debounce from '../src/debounce'
+import debounce from '../../src/utils/debounce'
 
 describe('debounce', () => {
   it('should call handler immediately', async () => {

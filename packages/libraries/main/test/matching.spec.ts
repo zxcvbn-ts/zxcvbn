@@ -1,10 +1,10 @@
 import * as zxcvbnCommonPackage from '../../../languages/common/src'
 import * as zxcvbnEnPackage from '../../../languages/en/src'
 import MatchOmni from '../src/Matching'
-import { zxcvbnOptions } from '../src/Options'
+import Options from '../src/Options'
 import { MatchExtended } from '../src/types'
 
-zxcvbnOptions.setOptions({
+const zxcvbnOptions = new Options({
   dictionary: {
     ...zxcvbnCommonPackage.dictionary,
     ...zxcvbnEnPackage.dictionary,
@@ -13,7 +13,7 @@ zxcvbnOptions.setOptions({
 })
 
 describe('omnimatch matching', () => {
-  const omniMatch = new MatchOmni()
+  const omniMatch = new MatchOmni(zxcvbnOptions)
 
   it("doesn't match ''", () => {
     expect(omniMatch.match('')).toEqual([])

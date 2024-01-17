@@ -15,7 +15,7 @@ The Arabic dictionary and language package for **zxcvbn-ts**
 ## Setup
 
 ```js
-import { zxcvbn, zxcvbnOptions } from '@zxcvbn-ts/core'
+import { ZxcvbnFactory } from '@zxcvbn-ts/core'
 import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
 import * as zxcvbnArPackage from '@zxcvbn-ts/language-ar'
 
@@ -28,7 +28,6 @@ const options = {
     ...zxcvbnArPackage.dictionary,
   },
 }
-zxcvbnOptions.setOptions(options)
-
-zxcvbn(password)
+const zxcvbn = new ZxcvbnFactory(options)
+zxcvbn.check(password)
 ```

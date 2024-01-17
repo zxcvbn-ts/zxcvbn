@@ -1,8 +1,10 @@
 import MatchSeparator from '../../../src/matcher/separator/matching'
 import checkMatches from '../../helper/checkMatches'
+import Options from '../../../src/Options'
 
 describe('separator matching', () => {
-  const matchSeparator = new MatchSeparator()
+  const zxcvbnOptions = new Options()
+  const matchSeparator = new MatchSeparator(zxcvbnOptions)
 
   it("doesn't match length separators", () => {
     const data = ['']

@@ -5,8 +5,8 @@ import {
   translate,
   mod,
   buildRankedDictionary,
-} from '../src/helper'
-import { LooseObject } from '../src/types'
+} from '../../src/utils/helper'
+import { LooseObject } from '../../src/types'
 
 describe('utils matching', () => {
   describe('empty', () => {

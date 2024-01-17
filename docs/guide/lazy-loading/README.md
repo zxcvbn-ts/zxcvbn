@@ -9,7 +9,7 @@ Webpack supports lazy-loading with some configuration; check out the [documentat
 Here's how you import it:
 
 ```js
-import { zxcvbn } from '@zxcvbn-ts/core'
+import { ZxcvbnFactory } from '@zxcvbn-ts/core'
 ```
 
 This is how you lazy load dictionaries:
@@ -43,8 +43,9 @@ Somewhere in your application you can call the "loadOptions" function, then the 
 const run = async () => {
   const password = 'asdnlja978o'
   const options = await loadOptions()
-  zxcvbnOptions.setOptions(options)
-  const results = zxcvbn(password)
+
+  const zxcvbn = new ZxcvbnFactory(options)
+  const results = zxcvbn.check(password)
   console.log(results)
 }
 ```

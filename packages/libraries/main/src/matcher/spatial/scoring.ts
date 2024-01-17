@@ -1,10 +1,14 @@
 import utils from '../../scoring/utils'
-import { zxcvbnOptions } from '../../Options'
-import { LooseObject, MatchEstimated, MatchExtended } from '../../types'
+import Options from '../../Options'
+import {
+  LooseObject,
+  MatchEstimated,
+  MatchExtended,
+  OptionsGraphEntry,
+} from '../../types'
 
 interface EstimatePossiblePatternsOptions {
   token: string
-  graph: string
   turns: number
 }
 
@@ -18,13 +22,12 @@ const calcAverageDegree = (graph: LooseObject) => {
   return average
 }
 
-const estimatePossiblePatterns = ({
-  token,
-  graph,
-  turns,
-}: EstimatePossiblePatternsOptions) => {
-  const startingPosition = Object.keys(zxcvbnOptions.graphs[graph]).length
-  const averageDegree = calcAverageDegree(zxcvbnOptions.graphs[graph])
+const estimatePossiblePatterns = (
+  graphEntry: OptionsGraphEntry,
+  { token, turns }: EstimatePossiblePatternsOptions,
+) => {
+  const startingPosition = Object.keys(graphEntry).length
+  const averageDegree = calcAverageDegree(graphEntry)
 
   let guesses = 0
   const tokenLength = token.length
@@ -38,13 +41,14 @@ const estimatePossiblePatterns = ({
   return guesses
 }
 
-export default ({
-  graph,
-  token,
-  shiftedCount,
-  turns,
-}: MatchExtended | MatchEstimated) => {
-  let guesses = estimatePossiblePatterns({ token, graph, turns })
+export default (
+  { graph, token, shiftedCount, turns }: MatchExtended | MatchEstimated,
+  options: Options,
+) => {
+  let guesses = estimatePossiblePatterns(options.graphs[graph], {
+    token,
+    turns,
+  })
 
   // add extra guesses for shifted keys. (% instead of 5, A instead of a.)
   // math is similar to extra guesses of l33t substitutions in dictionary matches.

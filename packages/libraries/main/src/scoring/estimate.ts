@@ -3,7 +3,7 @@ import {
   MIN_SUBMATCH_GUESSES_MULTI_CHAR,
 } from '../data/const'
 import utils from './utils'
-import { zxcvbnOptions } from '../Options'
+import Options from '../Options'
 import {
   DefaultScoringFunction,
   LooseObject,
@@ -49,15 +49,16 @@ const matchers: Matchers = {
   separator: separatorMatcher,
 }
 
-const getScoring = (name: string, match: MatchExtended | MatchEstimated) => {
+const getScoring = (
+  options: Options,
+  name: string,
+  match: MatchExtended | MatchEstimated,
+) => {
   if (matchers[name]) {
-    return matchers[name](match)
+    return matchers[name](match, options)
   }
-  if (
-    zxcvbnOptions.matchers[name] &&
-    'scoring' in zxcvbnOptions.matchers[name]
-  ) {
-    return zxcvbnOptions.matchers[name].scoring(match)
+  if (options.matchers[name] && 'scoring' in options.matchers[name]) {
+    return options.matchers[name].scoring(match, options)
   }
   return 0
 }
@@ -66,7 +67,11 @@ const getScoring = (name: string, match: MatchExtended | MatchEstimated) => {
 // guess estimation -- one function per match pattern ---------------------------
 // ------------------------------------------------------------------------------
 // eslint-disable-next-line complexity, max-statements
-export default (match: MatchExtended | MatchEstimated, password: string) => {
+export default (
+  options: Options,
+  match: MatchExtended | MatchEstimated,
+  password: string,
+) => {
   const extraData: LooseObject = {}
   // a match's guess estimate doesn't change. cache it.
   if ('guesses' in match && match.guesses != null) {
@@ -75,7 +80,7 @@ export default (match: MatchExtended | MatchEstimated, password: string) => {
 
   const minGuesses = getMinGuesses(match, password)
 
-  const estimationResult = getScoring(match.pattern, match)
+  const estimationResult = getScoring(options, match.pattern, match)
   let guesses = 0
   if (typeof estimationResult === 'number') {
     guesses = estimationResult

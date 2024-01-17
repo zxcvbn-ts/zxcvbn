@@ -1,14 +1,14 @@
-import { zxcvbnOptions } from '../../Options'
+import Options from '../../Options'
 import { MatchEstimated } from '../../types'
 
-export default (match: MatchEstimated) => {
-  let warning = zxcvbnOptions.translations.warnings.extendedRepeat
+export default (options: Options, match: MatchEstimated) => {
+  let warning = options.translations.warnings.extendedRepeat
   if (match.baseToken.length === 1) {
-    warning = zxcvbnOptions.translations.warnings.simpleRepeat
+    warning = options.translations.warnings.simpleRepeat
   }
 
   return {
     warning,
-    suggestions: [zxcvbnOptions.translations.suggestions.repeated],
+    suggestions: [options.translations.suggestions.repeated],
   }
 }

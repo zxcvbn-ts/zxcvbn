@@ -1,45 +1,53 @@
 import findLevenshteinDistance, {
   FindLevenshteinDistanceResult,
-} from '../../levenshtein'
-import { sorted } from '../../helper'
-import { zxcvbnOptions } from '../../Options'
+} from '../../utils/levenshtein'
+import { sorted } from '../../utils/helper'
+import Options from '../../Options'
 import { DictionaryNames, DictionaryMatch, L33tMatch } from '../../types'
 import Reverse from './variants/matching/reverse'
 import L33t from './variants/matching/l33t'
 import { DictionaryMatchOptions } from './types'
+import mergeUserInputDictionary from '../../utils/mergeUserInputDictionary'
 
 class MatchDictionary {
   l33t: L33t
 
   reverse: Reverse
 
-  constructor() {
-    this.l33t = new L33t(this.defaultMatch)
-    this.reverse = new Reverse(this.defaultMatch)
+  constructor(private options: Options) {
+    this.l33t = new L33t(options, this.defaultMatch)
+    this.reverse = new Reverse(options, this.defaultMatch)
   }
 
-  match({ password }: DictionaryMatchOptions) {
+  match(matchOptions: DictionaryMatchOptions) {
     const matches = [
-      ...(this.defaultMatch({
-        password,
-      }) as DictionaryMatch[]),
-      ...(this.reverse.match({ password }) as DictionaryMatch[]),
-      ...(this.l33t.match({ password }) as L33tMatch[]),
+      ...(this.defaultMatch(matchOptions) as DictionaryMatch[]),
+      ...(this.reverse.match(matchOptions) as DictionaryMatch[]),
+      ...(this.l33t.match(matchOptions) as L33tMatch[]),
     ]
     return sorted(matches)
   }
 
-  defaultMatch({ password, useLevenshtein = true }: DictionaryMatchOptions) {
+  defaultMatch({
+    password,
+    userInputsOptions,
+    useLevenshtein = true,
+  }: DictionaryMatchOptions) {
     const matches: DictionaryMatch[] = []
     const passwordLength = password.length
     const passwordLower = password.toLowerCase()
 
+    const { rankedDictionaries, rankedDictionariesMaxWordSize } =
+      mergeUserInputDictionary(
+        this.options.rankedDictionaries,
+        this.options.rankedDictionariesMaxWordSize,
+        userInputsOptions,
+      )
     // eslint-disable-next-line complexity,max-statements
-    Object.keys(zxcvbnOptions.rankedDictionaries).forEach((dictionaryName) => {
-      const rankedDict =
-        zxcvbnOptions.rankedDictionaries[dictionaryName as DictionaryNames]
+    Object.keys(rankedDictionaries).forEach((dictionaryName) => {
+      const rankedDict = rankedDictionaries[dictionaryName as DictionaryNames]
       const longestDictionaryWordSize =
-        zxcvbnOptions.rankedDictionariesMaxWordSize[dictionaryName]
+        rankedDictionariesMaxWordSize[dictionaryName]
       const searchWidth = Math.min(longestDictionaryWordSize, passwordLength)
       for (let i = 0; i < passwordLength; i += 1) {
         const searchEnd = Math.min(i + searchWidth, passwordLength)
@@ -52,7 +60,7 @@ class MatchDictionary {
           // and because otherwise there would be to many false positives
           const isFullPassword = i === 0 && j === passwordLength - 1
           if (
-            zxcvbnOptions.useLevenshteinDistance &&
+            this.options.useLevenshteinDistance &&
             isFullPassword &&
             !isInDictionary &&
             useLevenshtein
@@ -60,7 +68,7 @@ class MatchDictionary {
             foundLevenshteinDistance = findLevenshteinDistance(
               usedPassword,
               rankedDict,
-              zxcvbnOptions.levenshteinThreshold,
+              this.options.levenshteinThreshold,
             )
           }
           const isLevenshteinMatch =

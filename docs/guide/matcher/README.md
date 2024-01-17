@@ -50,7 +50,7 @@ Custom matchers can be created if needed, including asynchronous matchers. If cr
 Here is an example of how to create a custom matcher to check for minimum password length. Please note that we do not recommend using a minimum length matcher.
 
 ```ts
-import { zxcvbnOptions } from '@zxcvbn-ts/core'
+import { ZxcvbnFactory } from '@zxcvbn-ts/core'
 import {
   MatchEstimated,
   ExtendedMatch,
@@ -87,7 +87,9 @@ const minLengthMatcher: Matcher = {
   },
 }
 
-zxcvbnOptions.addMatcher('minLength', minLengthMatcher)
+new ZxcvbnFactory(options, {
+  'minLength': minLengthMatcher
+})
 ```
 
 The Matching function needs to return an array of matched tokens. The four default properties (pattern, token, i, and j) are mandatory but the object can be extended as needed.

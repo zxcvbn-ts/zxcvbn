@@ -1,5 +1,5 @@
-import { zxcvbnOptions } from '@zxcvbn-ts/core/src'
 import { matcherPwnedFactory } from '../src'
+import Options from '../../main/src/Options'
 
 const fetch = jest.fn(async () => ({
   text() {
@@ -8,10 +8,12 @@ const fetch = jest.fn(async () => ({
 }))
 
 describe('pwned matching', () => {
+  const options = new Options()
   // @ts-ignore
-  const matcherPwned = matcherPwnedFactory(fetch, zxcvbnOptions)
+  const matcherPwned = matcherPwnedFactory(fetch)
   it('should return a match', async () => {
-    const matchPwned = new matcherPwned.Matching()
+    // @ts-ignore
+    const matchPwned = new matcherPwned.Matching(options)
     // @ts-ignore
     const match = await matchPwned.match({ password: 'P4$$w0rd' })
     expect(match).toEqual([

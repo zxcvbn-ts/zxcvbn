@@ -1,4 +1,4 @@
-import { zxcvbnOptions } from './Options'
+import Options from './Options'
 import { DefaultFeedbackFunction, FeedbackType, MatchEstimated } from './types'
 import bruteforceMatcher from './matcher/bruteforce/feedback'
 import dateMatcher from './matcher/date/feedback'
@@ -23,7 +23,7 @@ type Matchers = {
  * -------------------------------------------------------------------------------
  */
 class Feedback {
-  readonly matchers: Matchers = {
+  private readonly matchers: Matchers = {
     bruteforce: bruteforceMatcher,
     date: dateMatcher,
     dictionary: dictionaryMatcher,
@@ -34,30 +34,30 @@ class Feedback {
     separator: separatorMatcher,
   }
 
-  defaultFeedback: FeedbackType = {
+  private defaultFeedback: FeedbackType = {
     warning: null,
     suggestions: [],
   }
 
-  constructor() {
+  constructor(private options: Options) {
     this.setDefaultSuggestions()
   }
 
-  setDefaultSuggestions() {
+  private setDefaultSuggestions() {
     this.defaultFeedback.suggestions.push(
-      zxcvbnOptions.translations.suggestions.useWords,
-      zxcvbnOptions.translations.suggestions.noNeed,
+      this.options.translations.suggestions.useWords,
+      this.options.translations.suggestions.noNeed,
     )
   }
 
-  getFeedback(score: number, sequence: MatchEstimated[]) {
+  public getFeedback(score: number, sequence: MatchEstimated[]) {
     if (sequence.length === 0) {
       return this.defaultFeedback
     }
     if (score > 2) {
       return defaultFeedback
     }
-    const extraFeedback = zxcvbnOptions.translations.suggestions.anotherWord
+    const extraFeedback = this.options.translations.suggestions.anotherWord
     const longestMatch = this.getLongestMatch(sequence)
     let feedback = this.getMatchFeedback(longestMatch, sequence.length === 1)
     if (feedback !== null && feedback !== undefined) {
@@ -71,7 +71,7 @@ class Feedback {
     return feedback
   }
 
-  getLongestMatch(sequence: MatchEstimated[]) {
+  private getLongestMatch(sequence: MatchEstimated[]) {
     let longestMatch = sequence[0]
     const slicedSequence = sequence.slice(1)
     slicedSequence.forEach((match: MatchEstimated) => {
@@ -82,15 +82,19 @@ class Feedback {
     return longestMatch
   }
 
-  getMatchFeedback(match: MatchEstimated, isSoleMatch: boolean) {
+  private getMatchFeedback(match: MatchEstimated, isSoleMatch: boolean) {
     if (this.matchers[match.pattern]) {
-      return this.matchers[match.pattern](match, isSoleMatch)
+      return this.matchers[match.pattern](this.options, match, isSoleMatch)
     }
     if (
-      zxcvbnOptions.matchers[match.pattern] &&
-      'feedback' in zxcvbnOptions.matchers[match.pattern]
+      this.options.matchers[match.pattern] &&
+      'feedback' in this.options.matchers[match.pattern]
     ) {
-      return zxcvbnOptions.matchers[match.pattern].feedback(match, isSoleMatch)
+      return this.options.matchers[match.pattern].feedback(
+        this.options,
+        match,
+        isSoleMatch,
+      )
     }
     return defaultFeedback
   }

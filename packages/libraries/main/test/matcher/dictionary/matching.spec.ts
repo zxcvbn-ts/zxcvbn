@@ -3,19 +3,18 @@ import * as zxcvbnEnPackage from '../../../../../languages/en/src'
 import MatchDictionary from '../../../src/matcher/dictionary/matching'
 import checkMatches from '../../helper/checkMatches'
 import genpws from '../../helper/genpws'
-import { zxcvbnOptions } from '../../../src/Options'
-
-zxcvbnOptions.setOptions({
-  dictionary: {
-    ...zxcvbnCommonPackage.dictionary,
-    ...zxcvbnEnPackage.dictionary,
-  },
-  translations: zxcvbnEnPackage.translations,
-})
+import Options from '../../../src/Options'
 
 describe('dictionary matching', () => {
   describe('Default dictionary', () => {
-    const matchDictionary = new MatchDictionary()
+    const zxcvbnOptions = new Options({
+      dictionary: {
+        ...zxcvbnCommonPackage.dictionary,
+        ...zxcvbnEnPackage.dictionary,
+      },
+      translations: zxcvbnEnPackage.translations,
+    })
+    const matchDictionary = new MatchDictionary(zxcvbnOptions)
     const matches = matchDictionary
       .match({ password: 'we' })
       // @ts-ignore
@@ -41,10 +40,11 @@ describe('dictionary matching', () => {
       d1: ['motherboard', 'mother', 'board', 'abcd', 'cdef'],
       d2: ['z', '8', '99', '$', 'asdf1234&*'],
     }
-    zxcvbnOptions.setOptions({
+    const zxcvbnOptions = new Options({
       dictionary: testDicts,
+      translations: zxcvbnEnPackage.translations,
     })
-    const matchDictionary = new MatchDictionary()
+    const matchDictionary = new MatchDictionary(zxcvbnOptions)
     const dm = (pw: string) =>
       matchDictionary
         .match({ password: pw })
@@ -155,12 +155,13 @@ describe('dictionary matching', () => {
   })
 
   describe('with user input', () => {
-    zxcvbnOptions.setOptions({
+    const zxcvbnOptions = new Options({
       dictionary: {
         userInputs: ['foo', 'bar'],
       },
+      translations: zxcvbnEnPackage.translations,
     })
-    const matchDictionary = new MatchDictionary()
+    const matchDictionary = new MatchDictionary(zxcvbnOptions)
     const matches = matchDictionary
       .match({ password: 'foobar' })
       // @ts-ignore

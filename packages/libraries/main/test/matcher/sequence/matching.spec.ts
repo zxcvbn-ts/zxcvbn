@@ -1,9 +1,11 @@
 import MatchSequence from '../../../src/matcher/sequence/matching'
 import checkMatches from '../../helper/checkMatches'
 import genpws from '../../helper/genpws'
+import Options from '../../../src/Options'
 
 describe('sequence matching', () => {
-  const matchSequence = new MatchSequence()
+  const zxcvbnOptions = new Options()
+  const matchSequence = new MatchSequence(zxcvbnOptions)
 
   it("doesn't match length sequences", () => {
     const data = ['', 'a', '1']

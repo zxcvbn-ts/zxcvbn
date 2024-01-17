@@ -4,12 +4,11 @@ import {
   DATE_SPLITS,
   REFERENCE_YEAR,
 } from '../../data/const'
-import { sorted } from '../../helper'
-import { DateMatch } from '../../types'
+import { sorted } from '../../utils/helper'
+import { DateMatch, MatchOptions } from '../../types'
+import Options from '../../Options'
 
-interface DateMatchOptions {
-  password: string
-}
+type DateMatchOptions = Pick<MatchOptions, 'password'>
 
 /*
  * -------------------------------------------------------------------------------
@@ -17,6 +16,8 @@ interface DateMatchOptions {
  * -------------------------------------------------------------------------------
  */
 class MatchDate {
+  constructor(private options: Options) {}
+
   /*
    * a "date" is recognized as:
    *   any 3-tuple that starts or ends with a 2- or 4-digit year,

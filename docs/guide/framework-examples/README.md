@@ -7,17 +7,19 @@ Those examples are using the full feature set of zxcvbn, and are marked with `re
 Use a plugin to only update the options once
 
 ```ts
-import { zxcvbnOptions } from '@zxcvbn-ts/core'
+import { ZxcvbnFactory } from '@zxcvbn-ts/core'
 import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
 import * as zxcvbnEnPackage from '@zxcvbn-ts/language-en'
 import * as zxcvbnDePackage from '@zxcvbn-ts/language-de'
 import { matcherPwnedFactory } from '@zxcvbn-ts/matcher-pwned'
 
 const myPlugin = {
-  install() {
+  install(Vue) {
     // optional
-    const matcherPwned = matcherPwnedFactory(fetch, zxcvbnOptions)
-    zxcvbnOptions.addMatcher('pwned', matcherPwned)
+    const matcherPwned = matcherPwnedFactory(fetch)
+    const customMatcher = {
+      pwned: matcherPwned
+    }
 
     const options = {
       // recommended
@@ -34,7 +36,8 @@ const myPlugin = {
       // optional
       translations: zxcvbnEnPackage.translations,
     }
-    zxcvbnOptions.setOptions(options)
+
+    Vue.prototype.$zxcvbn = new ZxcvbnFactory(options, customMatcher)
   },
 }
 ```
@@ -53,7 +56,7 @@ const myPlugin = {
 </template>
 
 <script>
-import { zxcvbn, debounce } from '@zxcvbn-ts/core'
+import { debounce } from '@zxcvbn-ts/core'
 
 export default {
   name: 'ZxcvbnInput',
@@ -71,7 +74,7 @@ export default {
     },
     async useZxcvbn() {
       if (this.password) {
-        this.result = await zxcvbn(this.password)
+        this.result = await this.$zxcvbn.checkAsync(this.password)
       } else {
         this.result = null
       }
@@ -91,52 +94,21 @@ export default {
 Use a module to define the options on the server side or/and a client only plugin for the client.
 Most of the time you don't need to add the module because the user works only on the client and doesn't type passwords for the server renderer.
 
-/modules/zxcvbn.ts
-
-```ts
-import { matcherPwnedFactory } from '@zxcvbn-ts/matcher-pwned'
-import { zxcvbnOptions } from '@zxcvbn-ts/core'
-import { OptionsType } from '@zxcvbn-ts/core/dist/types'
-import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
-import * as zxcvbnEnPackage from '@zxcvbn-ts/language-en'
-import { ModuleOptions, Nuxt } from '@nuxt/schema'
-
-export default function zxcvbnModule(moduleOptions: ModuleOptions, nuxt: Nuxt) {
-  nuxt.hook('ready', async () => {
-    const matcherPwned = matcherPwnedFactory(fetch, zxcvbnOptions)
-    zxcvbnOptions.addMatcher('pwned', matcherPwned)
-
-    const options: OptionsType = {
-      // recommended
-      dictionary: {
-        ...zxcvbnCommonPackage.dictionary,
-        ...zxcvbnEnPackage.dictionary,
-      },
-      // recommended
-      graphs: zxcvbnCommonPackage.adjacencyGraphs,
-      // recommended
-      useLevenshteinDistance: true,
-      // optional
-      translations: zxcvbnEnPackage.translations,
-    }
-    zxcvbnOptions.setOptions(options)
-  })
-}
-```
-
 /plugins/zxcvbn.ts
 
 ```ts
 import { matcherPwnedFactory } from '@zxcvbn-ts/matcher-pwned'
-import { zxcvbnOptions } from '@zxcvbn-ts/core'
+import { ZxcvbnFactory } from '@zxcvbn-ts/core'
 import { OptionsType } from '@zxcvbn-ts/core/dist/types'
 import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
 import * as zxcvbnEnPackage from '@zxcvbn-ts/language-en'
 import { ModuleOptions, Nuxt } from '@nuxt/schema'
 
-export default defineNuxtPlugin(() => {
-  const matcherPwned = matcherPwnedFactory(fetch, zxcvbnOptions)
-  zxcvbnOptions.addMatcher('pwned', matcherPwned)
+export default defineNuxtPlugin(({app}, inject) => {
+  const matcherPwned = matcherPwnedFactory(fetch)
+  const customMatcher = {
+    pwned: matcherPwned
+  }
 
   const options: OptionsType = {
     // recommended
@@ -151,7 +123,8 @@ export default defineNuxtPlugin(() => {
     // optional
     translations: zxcvbnEnPackage.translations,
   }
-  zxcvbnOptions.setOptions(options)
+
+  inject('zxcvbn', new ZxcvbnFactory(options, customMatcher))
 })
 ```
 
@@ -161,8 +134,6 @@ nuxt.config.ts
 export default defineNuxtConfig({
   // add plugin for client only to load the options on the client side
   plugins: [{ src: '~/plugins/zxcvbn.ts', mode: 'client' }],
-  // add module to load the options once for server side
-  modules: ['~/modules/zxcvbn.ts'],
   build: {
     // add if needed for your setup
     transpile: ['@zxcvbn-ts/matcher-pwned'],
@@ -186,7 +157,7 @@ ZxcvbnInput.vue
 </template>
 
 <script lang="ts" setup>
-import { zxcvbnAsync, debounce, ZxcvbnResult } from '@zxcvbn-ts/core'
+import { debounce, ZxcvbnResult } from '@zxcvbn-ts/core'
 import { Ref, watch } from '@vue/runtime-core'
 
 let password = ref()
@@ -194,7 +165,7 @@ let result: Ref<ZxcvbnResult | null> = ref(null)
 
 const useZxcvbn = async () => {
   if (password) {
-    result.value = await zxcvbnAsync(password.value)
+    result.value = await this.$zxcvbn.checkAsync(password.value)
   } else {
     result.value = null
   }
@@ -210,15 +181,11 @@ watch(password, zxcvbnDebounce)
 
 ```jsx
 import { useState, useEffect, useDeferredValue } from 'react'
-import { zxcvbnOptions, zxcvbnAsync, ZxcvbnResult } from '@zxcvbn-ts/core'
+import { ZxcvbnFactory, ZxcvbnResult } from '@zxcvbn-ts/core'
 import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
 import * as zxcvbnEnPackage from '@zxcvbn-ts/language-en'
 import * as zxcvbnDePackage from '@zxcvbn-ts/language-de'
 import { matcherPwnedFactory } from '@zxcvbn-ts/matcher-pwned'
-
-// optional
-const matcherPwned = matcherPwnedFactory(fetch, zxcvbnOptions)
-zxcvbnOptions.addMatcher('pwned', matcherPwned)
 
 const options = {
   // recommended
@@ -235,7 +202,13 @@ const options = {
   // optional
   translations: zxcvbnEnPackage.translations,
 }
-zxcvbnOptions.setOptions(options)
+
+// optional
+const matcherPwned = matcherPwnedFactory(fetch)
+const customMatcher = {
+  pwned: matcherPwned
+}
+const zxcvbn = new ZxcvbnFactory(options, customMatcher)
 
 const usePasswordStrength = (password: string) => {
   const [result, setResult] = (useState < ZxcvbnResult) | (null > null)
@@ -243,7 +216,7 @@ const usePasswordStrength = (password: string) => {
   const deferredPassword = useDeferredValue(password)
 
   useEffect(() => {
-    zxcvbnAsync(deferredPassword).then((response) => setResult(response))
+    zxcvbn.checkAsync(deferredPassword).then((response) => setResult(response))
   }, [deferredPassword])
 
   return result

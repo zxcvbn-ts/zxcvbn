@@ -4,6 +4,7 @@ import { REGEXEN } from './data/const'
 import { DictionaryReturn } from './matcher/dictionary/scoring'
 import Matching from './Matching'
 import { PasswordChanges } from './matcher/dictionary/variants/matching/unmunger/getCleanPasswords'
+import Options from './Options'
 
 export type TranslationKeys = typeof translationKeys
 export type L33tTableDefault = typeof l33tTableDefault
@@ -220,26 +221,34 @@ export interface RankedDictionaries {
 }
 
 export type DefaultFeedbackFunction = (
+  options: Options,
   match: MatchEstimated,
   isSoleMatch?: boolean,
 ) => FeedbackType | null
 
 export type DefaultScoringFunction = (
   match: MatchExtended | MatchEstimated,
+  options: Options,
 ) => number | DictionaryReturn
 
+export interface UserInputsOptions {
+  rankedDictionary: RankedDictionary
+  rankedDictionaryMaxWordSize: number
+}
 export interface MatchOptions {
   password: string
   /**
    * @description This is the original Matcher so that one can use other matchers to define a baseGuess. An usage example is the repeat matcher
    */
   omniMatch: Matching
+  userInputsOptions?: UserInputsOptions
 }
 
-export type MatchingType = new () => {
+export type MatchingType = new (options: Options) => {
   match({
     password,
     omniMatch,
+    userInputsOptions,
   }: MatchOptions): MatchExtended[] | Promise<MatchExtended[]>
 }
 

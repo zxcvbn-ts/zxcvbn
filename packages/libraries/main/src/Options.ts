@@ -1,4 +1,4 @@
-import { buildRankedDictionary } from './helper'
+import { buildRankedDictionary } from './utils/helper'
 import {
   TranslationKeys,
   OptionsType,
@@ -8,45 +8,53 @@ import {
   RankedDictionaries,
   Matchers,
   Matcher,
+  UserInputsOptions,
+  RankedDictionary,
 } from './types'
 import l33tTable from './data/l33tTable'
 import translationKeys from './data/translationKeys'
 import TrieNode from './matcher/dictionary/variants/matching/unmunger/TrieNode'
 import l33tTableToTrieNode from './matcher/dictionary/variants/matching/unmunger/l33tTableToTrieNode'
 
-export class Options {
-  matchers: Matchers = {}
+export default class Options {
+  public matchers: Matchers = {}
 
-  l33tTable: OptionsL33tTable = l33tTable
+  public l33tTable: OptionsL33tTable = l33tTable
 
-  trieNodeRoot: TrieNode = l33tTableToTrieNode(l33tTable, new TrieNode())
+  public trieNodeRoot: TrieNode = l33tTableToTrieNode(l33tTable, new TrieNode())
 
-  dictionary: OptionsDictionary = {
+  public dictionary: OptionsDictionary = {
     userInputs: [],
   }
 
-  rankedDictionaries: RankedDictionaries = {}
+  public rankedDictionaries: RankedDictionaries = {}
 
-  rankedDictionariesMaxWordSize: Record<string, number> = {}
+  public rankedDictionariesMaxWordSize: Record<string, number> = {}
 
-  translations: TranslationKeys = translationKeys
+  public translations: TranslationKeys = translationKeys
 
-  graphs: OptionsGraph = {}
+  public graphs: OptionsGraph = {}
 
-  useLevenshteinDistance: boolean = false
+  public useLevenshteinDistance: boolean = false
 
-  levenshteinThreshold: number = 2
+  public levenshteinThreshold: number = 2
 
-  l33tMaxSubstitutions: number = 100
+  public l33tMaxSubstitutions: number = 100
 
-  maxLength: number = 256
+  public maxLength: number = 256
 
-  constructor() {
-    this.setRankedDictionaries()
+  constructor(
+    options: OptionsType = {},
+    customMatchers: Record<string, Matcher> = {},
+  ) {
+    this.setOptions(options)
+    Object.entries(customMatchers).forEach(([name, matcher]) => {
+      this.addMatcher(name, matcher)
+    })
   }
 
   // eslint-disable-next-line max-statements,complexity
-  setOptions(options: OptionsType = {}) {
+  private setOptions(options: OptionsType = {}) {
     if (options.l33tTable) {
       this.l33tTable = options.l33tTable
       this.trieNodeRoot = l33tTableToTrieNode(options.l33tTable, new TrieNode())
@@ -83,7 +91,7 @@ export class Options {
     }
   }
 
-  setTranslations(translations: TranslationKeys) {
+  private setTranslations(translations: TranslationKeys) {
     if (this.checkCustomTranslations(translations)) {
       this.translations = translations
     } else {
@@ -91,7 +99,7 @@ export class Options {
     }
   }
 
-  checkCustomTranslations(translations: TranslationKeys) {
+  private checkCustomTranslations(translations: TranslationKeys) {
     let valid = true
     Object.keys(translationKeys).forEach((type) => {
       if (type in translations) {
@@ -108,7 +116,7 @@ export class Options {
     return valid
   }
 
-  setRankedDictionaries() {
+  private setRankedDictionaries() {
     const rankedDictionaries: RankedDictionaries = {}
     const rankedDictionariesMaxWorkSize: Record<string, number> = {}
     Object.keys(this.dictionary).forEach((name) => {
@@ -120,7 +128,7 @@ export class Options {
     this.rankedDictionariesMaxWordSize = rankedDictionariesMaxWorkSize
   }
 
-  getRankedDictionariesMaxWordSize(list: (string | number)[]) {
+  private getRankedDictionariesMaxWordSize(list: (string | number)[]) {
     const data = list.map((el) => {
       if (typeof el !== 'string') {
         return el.toString().length
@@ -135,7 +143,7 @@ export class Options {
     return data.reduce((a, b) => Math.max(a, b), -Infinity)
   }
 
-  buildSanitizedRankedDictionary(list: (string | number)[]) {
+  private buildSanitizedRankedDictionary(list: (string | number)[]) {
     const sanitizedInputs: string[] = []
 
     list.forEach((input: string | number | boolean) => {
@@ -152,19 +160,24 @@ export class Options {
     return buildRankedDictionary(sanitizedInputs)
   }
 
-  extendUserInputsDictionary(dictionary: (string | number)[]) {
-    if (!this.dictionary.userInputs) {
-      this.dictionary.userInputs = []
+  public getUserInputsOptions(
+    dictionary?: (string | number)[],
+  ): UserInputsOptions {
+    let rankedDictionary: RankedDictionary = {}
+    let rankedDictionaryMaxWordSize: number = 0
+    if (dictionary) {
+      rankedDictionary = this.buildSanitizedRankedDictionary(dictionary)
+      rankedDictionaryMaxWordSize =
+        this.getRankedDictionariesMaxWordSize(dictionary)
     }
 
-    const newList = [...this.dictionary.userInputs, ...dictionary]
-    this.rankedDictionaries.userInputs =
-      this.buildSanitizedRankedDictionary(newList)
-    this.rankedDictionariesMaxWordSize.userInputs =
-      this.getRankedDictionariesMaxWordSize(newList)
+    return {
+      rankedDictionary,
+      rankedDictionaryMaxWordSize,
+    }
   }
 
-  public addMatcher(name: string, matcher: Matcher) {
+  private addMatcher(name: string, matcher: Matcher) {
     if (this.matchers[name]) {
       console.info(`Matcher ${name} already exists`)
     } else {
@@ -172,5 +185,3 @@ export class Options {
     }
   }
 }
-
-export const zxcvbnOptions = new Options()

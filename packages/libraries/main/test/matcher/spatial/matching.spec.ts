@@ -1,14 +1,15 @@
 import MatchSpatial from '../../../src/matcher/spatial/matching'
 import checkMatches from '../../helper/checkMatches'
 import * as zxcvbnCommonPackage from '../../../../../languages/common/src'
-import { zxcvbnOptions } from '../../../src/Options'
+import Options from '../../../src/Options'
 import { LooseObject } from '../../../src/types'
 
 const { adjacencyGraphs } = zxcvbnCommonPackage
 
 describe('spatial matching', () => {
   it("doesn't match 1- and 2-character spatial patterns", () => {
-    const matchSpatial = new MatchSpatial()
+    const zxcvbnOptions = new Options()
+    const matchSpatial = new MatchSpatial(zxcvbnOptions)
     const data = ['', '/', 'qw', '*/']
     data.forEach((password) => {
       expect(matchSpatial.match({ password })).toEqual([])
@@ -17,10 +18,8 @@ describe('spatial matching', () => {
   const graphs: LooseObject = {
     qwerty: adjacencyGraphs.qwerty,
   }
-  zxcvbnOptions.setOptions({
-    graphs,
-  })
-  const matchSpatial = new MatchSpatial()
+  const zxcvbnOptions = new Options({ graphs })
+  const matchSpatial = new MatchSpatial(zxcvbnOptions)
   const pattern = '6tfGHJ'
   const matches = matchSpatial.match({ password: `rz!${pattern}%z` })
   const msg =
@@ -60,10 +59,8 @@ describe('spatial matching specific patterns vs keyboards', () => {
   data.forEach(([pattern, keyboard, turns, shifts]) => {
     const graphs: any = {}
     graphs[keyboard] = adjacencyGraphs[keyboard as keyof typeof adjacencyGraphs]
-    zxcvbnOptions.setOptions({
-      graphs,
-    })
-    const matchSpatial = new MatchSpatial()
+    const zxcvbnOptions = new Options({ graphs })
+    const matchSpatial = new MatchSpatial(zxcvbnOptions)
     const matches = matchSpatial.match({ password: pattern })
     const msg = `matches '${pattern}' as a ${keyboard} pattern`
 

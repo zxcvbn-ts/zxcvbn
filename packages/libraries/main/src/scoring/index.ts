@@ -7,6 +7,7 @@ import {
   MatchEstimated,
   LooseObject,
 } from '../types'
+import Options from '../Options'
 
 const scoringHelper = {
   password: '',
@@ -37,9 +38,9 @@ const scoringHelper = {
   // helper: considers whether a length-sequenceLength
   // sequence ending at match m is better (fewer guesses)
   // than previously encountered sequences, updating state if so.
-  update(match: MatchExtended, sequenceLength: number) {
+  update(options: Options, match: MatchExtended, sequenceLength: number) {
     const k = match.j
-    const estimatedMatch = estimateGuesses(match, this.password)
+    const estimatedMatch = estimateGuesses(options, match, this.password)
     let pi = estimatedMatch.guesses as number
     if (sequenceLength > 1) {
       // we're considering a length-sequenceLength sequence ending with match m:
@@ -75,10 +76,10 @@ const scoringHelper = {
   },
 
   // helper: evaluate bruteforce matches ending at passwordCharIndex.
-  bruteforceUpdate(passwordCharIndex: number) {
+  bruteforceUpdate(options: Options, passwordCharIndex: number) {
     // see if a single bruteforce match spanning the passwordCharIndex-prefix is optimal.
     let match = this.makeBruteforceMatch(0, passwordCharIndex)
-    this.update(match, 1)
+    this.update(options, match, 1)
 
     for (let i = 1; i <= passwordCharIndex; i += 1) {
       // generate passwordCharIndex bruteforce matches, spanning from (i=1, j=passwordCharIndex) up to (i=passwordCharIndex, j=passwordCharIndex).
@@ -95,7 +96,7 @@ const scoringHelper = {
         // --> safe to skip those cases.
         if (lastMatch.pattern !== 'bruteforce') {
           // try adding m to this length-sequenceLength sequence.
-          this.update(match, parseInt(sequenceLength, 10) + 1)
+          this.update(options, match, parseInt(sequenceLength, 10) + 1)
         }
       })
     }
@@ -131,7 +132,9 @@ const scoringHelper = {
   },
 }
 
-export default {
+export default class Scoring {
+  constructor(private options: Options) {}
+
   // ------------------------------------------------------------------------------
   // search --- most guessable match sequence -------------------------------------
   // ------------------------------------------------------------------------------
@@ -206,14 +209,18 @@ export default {
         if (match.i > 0) {
           Object.keys(scoringHelper.optimal.m[match.i - 1]).forEach(
             (sequenceLength) => {
-              scoringHelper.update(match, parseInt(sequenceLength, 10) + 1)
+              scoringHelper.update(
+                this.options,
+                match,
+                parseInt(sequenceLength, 10) + 1,
+              )
             },
           )
         } else {
-          scoringHelper.update(match, 1)
+          scoringHelper.update(this.options, match, 1)
         }
       })
-      scoringHelper.bruteforceUpdate(k)
+      scoringHelper.bruteforceUpdate(this.options, k)
     }
     const optimalMatchSequence = scoringHelper.unwind(passwordLength)
     const optimalSequenceLength = optimalMatchSequence.length
@@ -224,7 +231,7 @@ export default {
       guessesLog10: utils.log10(guesses),
       sequence: optimalMatchSequence,
     }
-  },
+  }
 
   getGuesses(password: string, optimalSequenceLength: number) {
     const passwordLength = password.length
@@ -236,5 +243,5 @@ export default {
         scoringHelper.optimal.g[passwordLength - 1][optimalSequenceLength]
     }
     return guesses
-  },
+  }
 }

@@ -1,5 +1,5 @@
 import { distance } from 'fastest-levenshtein'
-import { LooseObject } from './types'
+import { LooseObject } from '../types'
 
 const getUsedThreshold = (
   password: string,

@@ -4,7 +4,7 @@ import sprintfClass from 'sprintf-js'
 import { MatchExtended } from '@zxcvbn-ts/core/src/types'
 import Matching from '../../packages/libraries/main/src/Matching'
 import estimateGuesses from '../../packages/libraries/main/src/scoring/estimate'
-import { zxcvbnOptions } from '../../packages/libraries/main/src/Options'
+import Options from '../../packages/libraries/main/src/Options'
 
 const CUTOFF = 10
 const BATCH_SIZE = 1000000
@@ -12,8 +12,8 @@ const BATCH_SIZE = 1000000
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const { sprintf } = sprintfClass
 
-zxcvbnOptions.setOptions()
-const matching = new Matching()
+const zxcvbnOptions = new Options()
+const matching = new Matching(zxcvbnOptions)
 
 interface Counts {
   [key: string]: number
@@ -49,7 +49,7 @@ export default class PasswordGenerator {
 
     // eslint-disable-next-line no-restricted-syntax
     for (const match of matches) {
-      if (estimateGuesses(match, password).guesses < xatoRank) {
+      if (estimateGuesses(zxcvbnOptions, match, password).guesses < xatoRank) {
         return false
       }
     }

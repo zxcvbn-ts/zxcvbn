@@ -1,5 +1,6 @@
 import MatchRegex from '../../../src/matcher/regex/matching'
 import checkMatches from '../../helper/checkMatches'
+import Options from '../../../src/Options'
 
 describe('regex matching', () => {
   const data = [
@@ -15,7 +16,8 @@ describe('regex matching', () => {
     },
   ]
 
-  const matchRegex = new MatchRegex()
+  const zxcvbnOptions = new Options()
+  const matchRegex = new MatchRegex(zxcvbnOptions)
   data.forEach(({ pattern, regexNames, ijs }) => {
     const matches = matchRegex.match({ password: pattern })
     const msg = `matches ${pattern} as a ${regexNames[0]} pattern`

@@ -1,11 +1,9 @@
 import { REGEXEN } from '../../data/const'
-import { sorted } from '../../helper'
-import { RegexMatch } from '../../types'
+import { sorted } from '../../utils/helper'
+import { MatchOptions, RegexMatch } from '../../types'
+import Options from '../../Options'
 
-interface RegexMatchOptions {
-  password: string
-  regexes?: typeof REGEXEN
-}
+type RegexMatchOptions = Pick<MatchOptions, 'password'>
 
 type RegexesKeys = keyof typeof REGEXEN
 /*
@@ -14,10 +12,12 @@ type RegexesKeys = keyof typeof REGEXEN
  * -------------------------------------------------------------------------------
  */
 class MatchRegex {
-  match({ password, regexes = REGEXEN }: RegexMatchOptions) {
+  constructor(private options: Options) {}
+
+  match({ password }: RegexMatchOptions) {
     const matches: RegexMatch[] = []
-    Object.keys(regexes).forEach((name) => {
-      const regex = regexes[name as RegexesKeys]
+    Object.keys(REGEXEN).forEach((name) => {
+      const regex = REGEXEN[name as RegexesKeys]
       regex.lastIndex = 0 // keeps regexMatch stateless
 
       let regexMatch: RegExpExecArray | null

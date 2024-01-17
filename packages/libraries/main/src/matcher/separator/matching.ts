@@ -1,9 +1,8 @@
 import { SEPERATOR_CHARS } from '../../data/const'
-import { SeparatorMatch } from '../../types'
+import { MatchOptions, SeparatorMatch } from '../../types'
+import Options from '../../Options'
 
-interface SeparatorMatchOptions {
-  password: string
-}
+type SeparatorMatchOptions = Pick<MatchOptions, 'password'>
 
 const separatorRegex = new RegExp(`[${SEPERATOR_CHARS.join('')}]`)
 
@@ -13,6 +12,8 @@ const separatorRegex = new RegExp(`[${SEPERATOR_CHARS.join('')}]`)
  *-------------------------------------------------------------------------------
  */
 class MatchSeparator {
+  constructor(private options: Options) {}
+
   static getMostUsedSeparatorChar(password: string): string | undefined {
     const mostUsedSeperators = [
       ...password

@@ -1,67 +1,91 @@
 import Matching from './Matching'
-import scoring from './scoring'
 import TimeEstimates from './TimeEstimates'
 import Feedback from './Feedback'
-import { zxcvbnOptions, Options } from './Options'
-import debounce from './debounce'
-import { MatchExtended, ZxcvbnResult } from './types'
+import Options from './Options'
+import debounce from './utils/debounce'
+import {
+  Matcher,
+  MatchEstimated,
+  MatchExtended,
+  OptionsType,
+  ZxcvbnResult,
+} from './types'
+import Scoring from './scoring'
 
 const time = () => new Date().getTime()
 
-const createReturnValue = (
-  resolvedMatches: MatchExtended[],
-  password: string,
-  start: number,
-): ZxcvbnResult => {
-  const feedback = new Feedback()
-  const timeEstimates = new TimeEstimates()
-  const matchSequence = scoring.mostGuessableMatchSequence(
-    password,
-    resolvedMatches,
-  )
-  const calcTime = time() - start
-  const attackTimes = timeEstimates.estimateAttackTimes(matchSequence.guesses)
+class ZxcvbnFactory {
+  private options: Options
 
-  return {
-    calcTime,
-    ...matchSequence,
-    ...attackTimes,
-    feedback: feedback.getFeedback(attackTimes.score, matchSequence.sequence),
-  }
-}
+  private scoring: Scoring
 
-const main = (password: string, userInputs?: (string | number)[]) => {
-  if (userInputs) {
-    zxcvbnOptions.extendUserInputsDictionary(userInputs)
+  constructor(
+    options: OptionsType = {},
+    customMatchers: Record<string, Matcher> = {},
+  ) {
+    this.options = new Options(options, customMatchers)
+    this.scoring = new Scoring(this.options)
   }
 
-  const matching = new Matching()
+  private estimateAttackTimes(guesses: number) {
+    const timeEstimates = new TimeEstimates(this.options)
+    return timeEstimates.estimateAttackTimes(guesses)
+  }
 
-  return matching.match(password)
-}
+  private getFeedback(score: number, sequence: MatchEstimated[]) {
+    const feedback = new Feedback(this.options)
+    return feedback.getFeedback(score, sequence)
+  }
 
-export const zxcvbn = (password: string, userInputs?: (string | number)[]) => {
-  const start = time()
-  const matches = main(password, userInputs)
-
-  if (matches instanceof Promise) {
-    throw new Error(
-      'You are using a Promised matcher, please use `zxcvbnAsync` for it.',
+  private createReturnValue(
+    resolvedMatches: MatchExtended[],
+    password: string,
+    start: number,
+  ): ZxcvbnResult {
+    const matchSequence = this.scoring.mostGuessableMatchSequence(
+      password,
+      resolvedMatches,
     )
+    const calcTime = time() - start
+    const attackTimes = this.estimateAttackTimes(matchSequence.guesses)
+
+    return {
+      calcTime,
+      ...matchSequence,
+      ...attackTimes,
+      feedback: this.getFeedback(attackTimes.score, matchSequence.sequence),
+    }
   }
-  return createReturnValue(matches, password, start)
-}
 
-export const zxcvbnAsync = async (
-  password: string,
-  userInputs?: (string | number)[],
-): Promise<ZxcvbnResult> => {
-  const usedPassword = password.substring(0, zxcvbnOptions.maxLength)
-  const start = time()
-  const matches = await main(usedPassword, userInputs)
+  private main(password: string, userInputs?: (string | number)[]) {
+    const userInputsOptions = this.options.getUserInputsOptions(userInputs)
 
-  return createReturnValue(matches, usedPassword, start)
+    const matching = new Matching(this.options)
+
+    return matching.match(password, userInputsOptions)
+  }
+
+  public check(password: string, userInputs?: (string | number)[]) {
+    const reducedPassword = password.substring(0, this.options.maxLength)
+    const start = time()
+    const matches = this.main(reducedPassword, userInputs)
+
+    if (matches instanceof Promise) {
+      throw new Error(
+        'You are using a Promised matcher, please use `zxcvbnAsync` for it.',
+      )
+    }
+    return this.createReturnValue(matches, reducedPassword, start)
+  }
+
+  public async checkAsync(password: string, userInputs?: (string | number)[]) {
+    const reducedPassword = password.substring(0, this.options.maxLength)
+    const start = time()
+    const matches = await this.main(reducedPassword, userInputs)
+
+    return this.createReturnValue(matches, reducedPassword, start)
+  }
 }
 
 export * from './types'
-export { zxcvbnOptions, Options, debounce }
+export { ZxcvbnFactory, debounce }

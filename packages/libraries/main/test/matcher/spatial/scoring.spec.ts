@@ -1,12 +1,11 @@
 import * as zxcvbnCommonPackage from '../../../../../languages/common/src'
 import spatialGuesses from '../../../src/matcher/spatial/scoring'
-import { zxcvbnOptions } from '../../../src/Options'
-
-zxcvbnOptions.setOptions({
-  graphs: zxcvbnCommonPackage.adjacencyGraphs,
-})
+import Options from '../../../src/Options'
 
 describe('scoring: guesses spatial', () => {
+  const zxcvbnOptions = new Options({
+    graphs: zxcvbnCommonPackage.adjacencyGraphs,
+  })
   it('with no turns or shifts, guesses is starts * degree * (len-1)', () => {
     const match = {
       token: 'zxcvbn',
@@ -16,7 +15,7 @@ describe('scoring: guesses spatial', () => {
     }
 
     // @ts-ignore
-    expect(spatialGuesses(match)).toEqual(2160)
+    expect(spatialGuesses(match, zxcvbnOptions)).toEqual(2160)
   })
 
   it('guesses is added for shifted keys, similar to capitals in dictionary matching', () => {
@@ -29,7 +28,7 @@ describe('scoring: guesses spatial', () => {
     }
 
     // @ts-ignore
-    expect(spatialGuesses(match)).toEqual(45360)
+    expect(spatialGuesses(match, zxcvbnOptions)).toEqual(45360)
   })
 
   it('when everything is shifted, guesses are doubled', () => {
@@ -41,7 +40,7 @@ describe('scoring: guesses spatial', () => {
       guesses: null,
     }
     // @ts-ignore
-    expect(spatialGuesses(match)).toEqual(4320)
+    expect(spatialGuesses(match, zxcvbnOptions)).toEqual(4320)
   })
 
   it('spatial guesses accounts for turn positions, directions and starting keys', () => {
@@ -53,6 +52,6 @@ describe('scoring: guesses spatial', () => {
     }
 
     // @ts-ignore
-    expect(spatialGuesses(match)).toEqual(558461)
+    expect(spatialGuesses(match, zxcvbnOptions)).toEqual(558461)
   })
 })

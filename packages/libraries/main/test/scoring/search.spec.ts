@@ -1,9 +1,9 @@
-import scoring from '../../src/scoring'
-import { zxcvbnOptions } from '../../src/Options'
-
-zxcvbnOptions.setOptions()
+import Scoring from '../../src/scoring'
+import Options from '../../src/Options'
 
 describe('scoring search', () => {
+  const zxcvbnOptions = new Options()
+  const scoring = new Scoring(zxcvbnOptions)
   const getMatch = (i: number, j: number, guesses: number) => ({
     i,
     j,
