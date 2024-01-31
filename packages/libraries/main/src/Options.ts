@@ -10,11 +10,16 @@ import {
   Matcher,
   UserInputsOptions,
   RankedDictionary,
+  TimeEstimationValues,
 } from './types'
 import l33tTable from './data/l33tTable'
 import translationKeys from './data/translationKeys'
 import TrieNode from './matcher/dictionary/variants/matching/unmunger/TrieNode'
 import l33tTableToTrieNode from './matcher/dictionary/variants/matching/unmunger/l33tTableToTrieNode'
+import {
+  checkTimeEstimationValues,
+  timeEstimationValuesDefaults,
+} from './TimeEstimates'
 
 export default class Options {
   public matchers: Matchers = {}
@@ -42,6 +47,15 @@ export default class Options {
   public l33tMaxSubstitutions: number = 100
 
   public maxLength: number = 256
+
+  timeEstimationValues: TimeEstimationValues = {
+    scoring: {
+      ...timeEstimationValuesDefaults.scoring,
+    },
+    attackTime: {
+      ...timeEstimationValuesDefaults.attackTime,
+    },
+  }
 
   constructor(
     options: OptionsType = {},
@@ -88,6 +102,18 @@ export default class Options {
 
     if (options.maxLength !== undefined) {
       this.maxLength = options.maxLength
+    }
+
+    if (options.timeEstimationValues !== undefined) {
+      checkTimeEstimationValues(options.timeEstimationValues)
+      this.timeEstimationValues = {
+        scoring: {
+          ...options.timeEstimationValues.scoring,
+        },
+        attackTime: {
+          ...options.timeEstimationValues.attackTime,
+        },
+      }
     }
   }
 

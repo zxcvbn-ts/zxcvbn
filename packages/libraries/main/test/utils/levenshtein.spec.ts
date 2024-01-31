@@ -22,16 +22,16 @@ describe('levenshtein', () => {
     expect(result).toEqual({
       calcTime: 0,
       crackTimesDisplay: {
-        offlineFastHashing1e10PerSecond: 'less than a second',
-        offlineSlowHashing1e4PerSecond: 'less than a second',
-        onlineNoThrottling10PerSecond: 'less than a second',
-        onlineThrottling100PerHour: '1 minute',
+        offlineFastHashingXPerSecond: 'less than a second',
+        offlineSlowHashingXPerSecond: 'less than a second',
+        onlineNoThrottlingXPerSecond: 'less than a second',
+        onlineThrottlingXPerHour: '1 minute',
       },
       crackTimesSeconds: {
-        offlineFastHashing1e10PerSecond: 2e-10,
-        offlineSlowHashing1e4PerSecond: 0.0002,
-        onlineNoThrottling10PerSecond: 0.2,
-        onlineThrottling100PerHour: 72,
+        offlineFastHashingXPerSecond: 2e-10,
+        offlineSlowHashingXPerSecond: 0.0002,
+        onlineNoThrottlingXPerSecond: 0.2,
+        onlineThrottlingXPerHour: 72,
       },
       feedback: {
         suggestions: ['Add more words that are less common.'],
@@ -76,16 +76,16 @@ describe('levenshtein', () => {
     expect(result).toEqual({
       calcTime: 0,
       crackTimesDisplay: {
-        offlineFastHashing1e10PerSecond: 'less than a second',
-        offlineSlowHashing1e4PerSecond: 'less than a second',
-        onlineNoThrottling10PerSecond: '35 seconds',
-        onlineThrottling100PerHour: '3 hours',
+        offlineFastHashingXPerSecond: 'less than a second',
+        offlineSlowHashingXPerSecond: 'less than a second',
+        onlineNoThrottlingXPerSecond: '35 seconds',
+        onlineThrottlingXPerHour: '3 hours',
       },
       crackTimesSeconds: {
-        offlineFastHashing1e10PerSecond: 3.45e-8,
-        offlineSlowHashing1e4PerSecond: 0.0345,
-        onlineNoThrottling10PerSecond: 34.5,
-        onlineThrottling100PerHour: 12420,
+        offlineFastHashingXPerSecond: 3.45e-8,
+        offlineSlowHashingXPerSecond: 0.0345,
+        onlineNoThrottlingXPerSecond: 34.5,
+        onlineThrottlingXPerHour: 12420,
       },
       feedback: {
         suggestions: ['Add more words that are less common.'],
