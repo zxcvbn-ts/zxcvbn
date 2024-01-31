@@ -4,6 +4,10 @@ import lastnames from './lastnames.json'
 import wikipedia from './wikipedia.json'
 import translations from './translations'
 
-const dictionary = { firstnames, lastnames, wikipedia }
+const dictionary = {
+  'firstnames-ar': firstnames,
+  'lastnames-ar': lastnames,
+  'wikipedia-ar': wikipedia,
+}
 
 export { dictionary, translations }

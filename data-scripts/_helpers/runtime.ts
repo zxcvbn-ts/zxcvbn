@@ -94,10 +94,15 @@ export default class ListHandler {
 
       const hasAdjacencyGraphs = files.includes('adjacencyGraphs.json')
 
-      const filesToIgnore = ['translations', 'adjacencyGraphs']
+      const filesToIgnore = ['translations', 'adjacencyGraphs.json']
       const dictionaryExports = files
-        .map((file) => file.replace('.json', ''))
-        .filter((file) => !filesToIgnore.includes(file))
+        .filter((file) => {
+          return !filesToIgnore.includes(file)
+        })
+        .map((file) => {
+          const dictionaryName = file.replace('.json', '')
+          return `'${dictionaryName}-${language}': ${dictionaryName}`
+        })
         .join(',\n  ')
 
       const translations = isCommon ? '' : 'translations,'

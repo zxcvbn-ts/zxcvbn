@@ -56,7 +56,7 @@ export interface DictionaryMatch extends Match {
   pattern: 'dictionary'
   matchedWord: string
   rank: number
-  dictionaryName: DictionaryNames
+  dictionaryName: DictionaryNames | string
   reversed: boolean
   l33t: boolean
 }
