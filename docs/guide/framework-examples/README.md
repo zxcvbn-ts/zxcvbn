@@ -211,7 +211,7 @@ const customMatcher = {
 const zxcvbn = new ZxcvbnFactory(options, customMatcher)
 
 const usePasswordStrength = (password: string) => {
-  const [result, setResult] = (useState < ZxcvbnResult) | (null > null)
+  const [result, setResult] = useState<ZxcvbnResult | null>(null)
   // NOTE: useDeferredValue is React v18 only, for v17 or lower use debouncing
   const deferredPassword = useDeferredValue(password)
 
@@ -223,7 +223,7 @@ const usePasswordStrength = (password: string) => {
 }
 
 export default function PasswordStrength() {
-  const [password, setPassword] = useState < string > ''
+  const [password, setPassword] = useState<string>('')
   const result = usePasswordStrength(password)
   return (
     <div>
