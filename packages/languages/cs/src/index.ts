@@ -5,6 +5,11 @@ import lastnames from './lastnames.json'
 import wikipedia from './wikipedia.json'
 import translations from './translations'
 
-const dictionary = { commonWords, firstnames, lastnames, wikipedia }
+const dictionary = {
+  'commonWords-cs': commonWords,
+  'firstnames-cs': firstnames,
+  'lastnames-cs': lastnames,
+  'wikipedia-cs': wikipedia,
+}
 
 export { dictionary, translations }
