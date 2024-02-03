@@ -1,5 +1,6 @@
 import Options from './Options'
 import {
+  CrackTimesBase,
   CrackTimesDisplay,
   CrackTimesSeconds,
   Score,
@@ -63,8 +64,37 @@ class TimeEstimates {
   constructor(private options: Options) {}
 
   public estimateAttackTimes(guesses: number) {
+    const crackTimesSeconds = this.calculateCrackTimesSeconds(guesses)
+    const crackTimesDisplay: CrackTimesDisplay = {
+      onlineThrottlingXPerHour: '',
+      onlineNoThrottlingXPerSecond: '',
+      offlineSlowHashingXPerSecond: '',
+      offlineFastHashingXPerSecond: '',
+    }
+    const crackTimesBase: CrackTimesBase = {
+      onlineThrottlingXPerHour: null,
+      onlineNoThrottlingXPerSecond: null,
+      offlineSlowHashingXPerSecond: null,
+      offlineFastHashingXPerSecond: null,
+    }
+    Object.keys(crackTimesSeconds).forEach((scenario) => {
+      const usedScenario = scenario as keyof CrackTimesSeconds
+      const seconds = crackTimesSeconds[usedScenario]
+      const { base, displayStr } = this.displayTime(seconds)
+      crackTimesBase[usedScenario] = base
+      crackTimesDisplay[usedScenario] = this.translate(displayStr, base)
+    })
+    return {
+      crackTimesSeconds,
+      crackTimesDisplay,
+      crackTimesBase,
+      score: this.guessesToScore(guesses),
+    }
+  }
+
+  private calculateCrackTimesSeconds(guesses: number): CrackTimesSeconds {
     const attackTimesOptions = this.options.timeEstimationValues.attackTime
-    const crackTimesSeconds: CrackTimesSeconds = {
+    return {
       onlineThrottlingXPerHour:
         guesses / (attackTimesOptions.onlineThrottlingXPerHour / 3600),
       onlineNoThrottlingXPerSecond:
@@ -73,22 +103,6 @@ class TimeEstimates {
         guesses / attackTimesOptions.offlineSlowHashingXPerSecond,
       offlineFastHashingXPerSecond:
         guesses / attackTimesOptions.offlineFastHashingXPerSecond,
-    }
-    const crackTimesDisplay: CrackTimesDisplay = {
-      onlineThrottlingXPerHour: '',
-      onlineNoThrottlingXPerSecond: '',
-      offlineSlowHashingXPerSecond: '',
-      offlineFastHashingXPerSecond: '',
-    }
-    Object.keys(crackTimesSeconds).forEach((scenario) => {
-      const seconds = crackTimesSeconds[scenario as keyof CrackTimesSeconds]
-      crackTimesDisplay[scenario as keyof CrackTimesDisplay] =
-        this.displayTime(seconds)
-    })
-    return {
-      crackTimesSeconds,
-      crackTimesDisplay,
-      score: this.guessesToScore(guesses),
     }
   }
 
@@ -118,7 +132,7 @@ class TimeEstimates {
 
   private displayTime(seconds: number) {
     let displayStr = 'centuries'
-    let base
+    let base = null
     const timeKeys = Object.keys(times)
     const foundIndex = timeKeys.findIndex(
       (time) => seconds < times[time as keyof typeof times],
@@ -131,12 +145,15 @@ class TimeEstimates {
         displayStr = 'ltSecond'
       }
     }
-    return this.translate(displayStr, base)
+    return {
+      base,
+      displayStr,
+    }
   }
 
-  private translate(displayStr: string, value: number | undefined) {
+  private translate(displayStr: string, value: number | null) {
     let key = displayStr
-    if (value !== undefined && value !== 1) {
+    if (value !== null && value !== 1) {
       key += 's'
     }
     const { timeEstimation } = this.options.translations

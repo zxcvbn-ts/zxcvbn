@@ -150,6 +150,13 @@ export interface CrackTimesDisplay {
   offlineFastHashingXPerSecond: string
 }
 
+export interface CrackTimesBase {
+  onlineThrottlingXPerHour: number | null
+  onlineNoThrottlingXPerSecond: number | null
+  offlineSlowHashingXPerSecond: number | null
+  offlineFastHashingXPerSecond: number | null
+}
+
 export interface FeedbackType {
   warning: string | null
   suggestions: string[]
@@ -286,6 +293,7 @@ export type Score = 0 | 1 | 2 | 3 | 4
 export interface ZxcvbnResult {
   feedback: FeedbackType
   crackTimesSeconds: CrackTimesSeconds
+  crackTimesBase: CrackTimesBase
   crackTimesDisplay: CrackTimesDisplay
   score: Score
   password: string
