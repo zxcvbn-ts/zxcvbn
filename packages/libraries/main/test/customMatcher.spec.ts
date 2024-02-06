@@ -54,6 +54,12 @@ describe('customMatcher', () => {
     result.calcTime = 0
     expect(result).toEqual({
       calcTime: 0,
+      crackTimesBase: {
+        offlineFastHashingXPerSecond: null,
+        offlineSlowHashingXPerSecond: null,
+        onlineNoThrottlingXPerSecond: 9,
+        onlineThrottlingXPerHour: 55,
+      },
       crackTimesDisplay: {
         offlineFastHashingXPerSecond: 'less than a second',
         offlineSlowHashingXPerSecond: 'less than a second',

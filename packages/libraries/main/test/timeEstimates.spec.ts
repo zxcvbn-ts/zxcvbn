@@ -13,6 +13,13 @@ describe('timeEstimates', () => {
   it('should be very weak', () => {
     const attackTimes = timeEstimates.estimateAttackTimes(10)
     expect(attackTimes).toEqual({
+      crackTimesBase: {
+        offlineFastHashingXPerSecond: null,
+        offlineSlowHashingXPerSecond: null,
+        onlineNoThrottlingXPerSecond: 1,
+        onlineThrottlingXPerHour: 6,
+      },
+
       crackTimesDisplay: {
         offlineFastHashingXPerSecond: 'less than a second',
         offlineSlowHashingXPerSecond: 'less than a second',
@@ -32,6 +39,12 @@ describe('timeEstimates', () => {
   it('should be weak', () => {
     const attackTimes = timeEstimates.estimateAttackTimes(100000)
     expect(attackTimes).toEqual({
+      crackTimesBase: {
+        offlineFastHashingXPerSecond: null,
+        offlineSlowHashingXPerSecond: 10,
+        onlineNoThrottlingXPerSecond: 3,
+        onlineThrottlingXPerHour: 1,
+      },
       crackTimesDisplay: {
         offlineFastHashingXPerSecond: 'less than a second',
         offlineSlowHashingXPerSecond: '10 seconds',
@@ -51,6 +64,13 @@ describe('timeEstimates', () => {
   it('should be good', () => {
     const attackTimes = timeEstimates.estimateAttackTimes(10000000)
     expect(attackTimes).toEqual({
+      crackTimesBase: {
+        offlineFastHashingXPerSecond: null,
+        offlineSlowHashingXPerSecond: 17,
+        onlineNoThrottlingXPerSecond: 12,
+        onlineThrottlingXPerHour: 11,
+      },
+
       crackTimesDisplay: {
         offlineFastHashingXPerSecond: 'less than a second',
         offlineSlowHashingXPerSecond: '17 minutes',
@@ -69,6 +89,12 @@ describe('timeEstimates', () => {
   it('should be very good', () => {
     const attackTimes = timeEstimates.estimateAttackTimes(1000000000)
     expect(attackTimes).toEqual({
+      crackTimesBase: {
+        offlineFastHashingXPerSecond: null,
+        offlineSlowHashingXPerSecond: 1,
+        onlineNoThrottlingXPerSecond: 3,
+        onlineThrottlingXPerHour: null,
+      },
       crackTimesDisplay: {
         offlineFastHashingXPerSecond: 'less than a second',
         offlineSlowHashingXPerSecond: '1 day',
@@ -88,6 +114,12 @@ describe('timeEstimates', () => {
   it('should be excellent', () => {
     const attackTimes = timeEstimates.estimateAttackTimes(100000000000)
     expect(attackTimes).toEqual({
+      crackTimesBase: {
+        offlineFastHashingXPerSecond: 10,
+        offlineSlowHashingXPerSecond: 4,
+        onlineNoThrottlingXPerSecond: null,
+        onlineThrottlingXPerHour: null,
+      },
       crackTimesDisplay: {
         offlineFastHashingXPerSecond: '10 seconds',
         offlineSlowHashingXPerSecond: '4 months',

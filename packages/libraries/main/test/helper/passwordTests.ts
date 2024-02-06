@@ -34,6 +34,12 @@ export default [
       offlineSlowHashingXPerSecond: 'less than a second',
       offlineFastHashingXPerSecond: 'less than a second',
     },
+    crackTimesBase: {
+      onlineThrottlingXPerHour: 4,
+      onlineNoThrottlingXPerSecond: 36,
+      offlineSlowHashingXPerSecond: null,
+      offlineFastHashingXPerSecond: null,
+    },
     score: 0,
     feedback: {
       warning: 'This is a commonly used password.',
@@ -75,6 +81,12 @@ export default [
       offlineSlowHashingXPerSecond: 'less than a second',
       offlineFastHashingXPerSecond: 'less than a second',
     },
+    crackTimesBase: {
+      onlineThrottlingXPerHour: 7,
+      onlineNoThrottlingXPerSecond: 1,
+      offlineSlowHashingXPerSecond: null,
+      offlineFastHashingXPerSecond: null,
+    },
     score: 0,
     feedback: {
       warning: 'This is a commonly used password.',
@@ -115,6 +127,12 @@ export default [
       onlineNoThrottlingXPerSecond: '1 minute',
       offlineSlowHashingXPerSecond: 'less than a second',
       offlineFastHashingXPerSecond: 'less than a second',
+    },
+    crackTimesBase: {
+      onlineThrottlingXPerHour: 7,
+      onlineNoThrottlingXPerSecond: 1,
+      offlineSlowHashingXPerSecond: null,
+      offlineFastHashingXPerSecond: null,
     },
     score: 0,
     feedback: {
@@ -162,6 +180,12 @@ export default [
       onlineNoThrottlingXPerSecond: '25 minutes',
       offlineSlowHashingXPerSecond: '2 seconds',
       offlineFastHashingXPerSecond: 'less than a second',
+    },
+    crackTimesBase: {
+      onlineThrottlingXPerHour: 6,
+      onlineNoThrottlingXPerSecond: 25,
+      offlineSlowHashingXPerSecond: 2,
+      offlineFastHashingXPerSecond: null,
     },
     score: 1,
     feedback: {
@@ -215,6 +239,12 @@ export default [
       offlineSlowHashingXPerSecond: '4 minutes',
       offlineFastHashingXPerSecond: 'less than a second',
     },
+    crackTimesBase: {
+      onlineThrottlingXPerHour: 3,
+      onlineNoThrottlingXPerSecond: 3,
+      offlineSlowHashingXPerSecond: 4,
+      offlineFastHashingXPerSecond: null,
+    },
     score: 2,
     feedback: {
       warning: 'This is similar to a commonly used password.',
@@ -253,6 +283,12 @@ export default [
       onlineNoThrottlingXPerSecond: '9 seconds',
       offlineSlowHashingXPerSecond: 'less than a second',
       offlineFastHashingXPerSecond: 'less than a second',
+    },
+    crackTimesBase: {
+      onlineThrottlingXPerHour: 51,
+      onlineNoThrottlingXPerSecond: 9,
+      offlineSlowHashingXPerSecond: null,
+      offlineFastHashingXPerSecond: null,
     },
     score: 0,
     feedback: {
@@ -298,6 +334,12 @@ export default [
       offlineSlowHashingXPerSecond: 'less than a second',
       offlineFastHashingXPerSecond: 'less than a second',
     },
+    crackTimesBase: {
+      onlineThrottlingXPerHour: 1,
+      onlineNoThrottlingXPerSecond: 11,
+      offlineSlowHashingXPerSecond: null,
+      offlineFastHashingXPerSecond: null,
+    },
     score: 0,
     feedback: {
       warning: 'This is a frequently used password.',
@@ -342,6 +384,12 @@ export default [
       offlineSlowHashingXPerSecond: 'less than a second',
       offlineFastHashingXPerSecond: 'less than a second',
     },
+    crackTimesBase: {
+      onlineThrottlingXPerHour: 1,
+      onlineNoThrottlingXPerSecond: 11,
+      offlineSlowHashingXPerSecond: null,
+      offlineFastHashingXPerSecond: null,
+    },
     score: 0,
     feedback: {
       warning: 'This is a commonly used password.',
@@ -382,6 +430,12 @@ export default [
       onlineNoThrottlingXPerSecond: '5 minutes',
       offlineSlowHashingXPerSecond: 'less than a second',
       offlineFastHashingXPerSecond: 'less than a second',
+    },
+    crackTimesBase: {
+      onlineThrottlingXPerHour: 1,
+      onlineNoThrottlingXPerSecond: 5,
+      offlineSlowHashingXPerSecond: null,
+      offlineFastHashingXPerSecond: null,
     },
     score: 1,
     feedback: {
@@ -432,6 +486,12 @@ export default [
       offlineSlowHashingXPerSecond: '1 second',
       offlineFastHashingXPerSecond: 'less than a second',
     },
+    crackTimesBase: {
+      onlineThrottlingXPerHour: 5,
+      onlineNoThrottlingXPerSecond: 20,
+      offlineSlowHashingXPerSecond: 1,
+      offlineFastHashingXPerSecond: null,
+    },
     score: 1,
     feedback: {
       warning: 'This is similar to a commonly used password.',
@@ -472,6 +532,12 @@ export default [
       onlineNoThrottlingXPerSecond: 'less than a second',
       offlineSlowHashingXPerSecond: 'less than a second',
       offlineFastHashingXPerSecond: 'less than a second',
+    },
+    crackTimesBase: {
+      onlineThrottlingXPerHour: 2,
+      onlineNoThrottlingXPerSecond: null,
+      offlineSlowHashingXPerSecond: null,
+      offlineFastHashingXPerSecond: null,
     },
     score: 0,
     feedback: {
@@ -519,6 +585,12 @@ export default [
       offlineSlowHashingXPerSecond: '2 seconds',
       offlineFastHashingXPerSecond: 'less than a second',
     },
+    crackTimesBase: {
+      onlineThrottlingXPerHour: 6,
+      onlineNoThrottlingXPerSecond: 25,
+      offlineSlowHashingXPerSecond: 2,
+      offlineFastHashingXPerSecond: null,
+    },
     score: 1,
     feedback: {
       warning: 'Recent years are easy to guess.',
@@ -559,6 +631,12 @@ export default [
       offlineSlowHashingXPerSecond: 'less than a second',
       offlineFastHashingXPerSecond: 'less than a second',
     },
+    crackTimesBase: {
+      onlineThrottlingXPerHour: 32,
+      onlineNoThrottlingXPerSecond: 5,
+      offlineSlowHashingXPerSecond: null,
+      offlineFastHashingXPerSecond: null,
+    },
     score: 0,
     feedback: {
       warning:
@@ -598,6 +676,12 @@ export default [
       onlineNoThrottlingXPerSecond: '2 minutes',
       offlineSlowHashingXPerSecond: 'less than a second',
       offlineFastHashingXPerSecond: 'less than a second',
+    },
+    crackTimesBase: {
+      onlineThrottlingXPerHour: 13,
+      onlineNoThrottlingXPerSecond: 2,
+      offlineSlowHashingXPerSecond: null,
+      offlineFastHashingXPerSecond: null,
     },
     score: 1,
     feedback: {
@@ -649,6 +733,12 @@ export default [
       offlineSlowHashingXPerSecond: 'less than a second',
       offlineFastHashingXPerSecond: 'less than a second',
     },
+    crackTimesBase: {
+      onlineThrottlingXPerHour: 20,
+      onlineNoThrottlingXPerSecond: 3,
+      offlineSlowHashingXPerSecond: null,
+      offlineFastHashingXPerSecond: null,
+    },
     score: 0,
     feedback: {
       warning: 'This is similar to a commonly used password.',
@@ -685,6 +775,12 @@ export default [
       onlineNoThrottlingXPerSecond: '17 minutes',
       offlineSlowHashingXPerSecond: '1 second',
       offlineFastHashingXPerSecond: 'less than a second',
+    },
+    crackTimesBase: {
+      onlineThrottlingXPerHour: 4,
+      onlineNoThrottlingXPerSecond: 17,
+      offlineSlowHashingXPerSecond: 1,
+      offlineFastHashingXPerSecond: null,
     },
     score: 1,
     feedback: {
@@ -770,6 +866,12 @@ export default [
       offlineSlowHashingXPerSecond: 'centuries',
       offlineFastHashingXPerSecond: 'centuries',
     },
+    crackTimesBase: {
+      onlineThrottlingXPerHour: null,
+      onlineNoThrottlingXPerSecond: null,
+      offlineSlowHashingXPerSecond: null,
+      offlineFastHashingXPerSecond: null,
+    },
     score: 4,
     feedback: { warning: null, suggestions: [] },
   },
@@ -810,6 +912,12 @@ export default [
       onlineNoThrottlingXPerSecond: '15 hours',
       offlineSlowHashingXPerSecond: '54 seconds',
       offlineFastHashingXPerSecond: 'less than a second',
+    },
+    crackTimesBase: {
+      onlineThrottlingXPerHour: 7,
+      onlineNoThrottlingXPerSecond: 15,
+      offlineSlowHashingXPerSecond: 54,
+      offlineFastHashingXPerSecond: null,
     },
     score: 1,
     feedback: {
@@ -857,6 +965,12 @@ export default [
       onlineNoThrottlingXPerSecond: '15 days',
       offlineSlowHashingXPerSecond: '21 minutes',
       offlineFastHashingXPerSecond: 'less than a second',
+    },
+    crackTimesBase: {
+      onlineThrottlingXPerHour: 14,
+      onlineNoThrottlingXPerSecond: 15,
+      offlineSlowHashingXPerSecond: 21,
+      offlineFastHashingXPerSecond: null,
     },
     score: 2,
     feedback: {
@@ -912,6 +1026,12 @@ export default [
       onlineNoThrottlingXPerSecond: '4 years',
       offlineSlowHashingXPerSecond: '2 days',
       offlineFastHashingXPerSecond: 'less than a second',
+    },
+    crackTimesBase: {
+      onlineThrottlingXPerHour: null,
+      onlineNoThrottlingXPerSecond: 4,
+      offlineSlowHashingXPerSecond: 2,
+      offlineFastHashingXPerSecond: null,
     },
     score: 3,
     feedback: { warning: null, suggestions: [] },
@@ -975,6 +1095,12 @@ export default [
       offlineSlowHashingXPerSecond: 'centuries',
       offlineFastHashingXPerSecond: '1 day',
     },
+    crackTimesBase: {
+      onlineThrottlingXPerHour: null,
+      onlineNoThrottlingXPerSecond: null,
+      offlineSlowHashingXPerSecond: null,
+      offlineFastHashingXPerSecond: 1,
+    },
     score: 4,
     feedback: { warning: null, suggestions: [] },
   },
@@ -1005,6 +1131,12 @@ export default [
       offlineSlowHashingXPerSecond: 'centuries',
       offlineFastHashingXPerSecond: 'centuries',
     },
+    crackTimesBase: {
+      onlineThrottlingXPerHour: null,
+      onlineNoThrottlingXPerSecond: null,
+      offlineSlowHashingXPerSecond: null,
+      offlineFastHashingXPerSecond: null,
+    },
     score: 4,
     feedback: { warning: null, suggestions: [] },
   },
@@ -1025,6 +1157,12 @@ export default [
       onlineNoThrottlingXPerSecond: 'less than a second',
       offlineSlowHashingXPerSecond: 'less than a second',
       offlineFastHashingXPerSecond: 'less than a second',
+    },
+    crackTimesBase: {
+      onlineThrottlingXPerHour: 36,
+      onlineNoThrottlingXPerSecond: null,
+      offlineSlowHashingXPerSecond: null,
+      offlineFastHashingXPerSecond: null,
     },
     score: 0,
     feedback: {

@@ -21,6 +21,12 @@ describe('levenshtein', () => {
     result.calcTime = 0
     expect(result).toEqual({
       calcTime: 0,
+      crackTimesBase: {
+        offlineFastHashingXPerSecond: null,
+        offlineSlowHashingXPerSecond: null,
+        onlineNoThrottlingXPerSecond: null,
+        onlineThrottlingXPerHour: 1,
+      },
       crackTimesDisplay: {
         offlineFastHashingXPerSecond: 'less than a second',
         offlineSlowHashingXPerSecond: 'less than a second',
@@ -75,6 +81,12 @@ describe('levenshtein', () => {
     ).toBeDefined()
     expect(result).toEqual({
       calcTime: 0,
+      crackTimesBase: {
+        offlineFastHashingXPerSecond: null,
+        offlineSlowHashingXPerSecond: null,
+        onlineNoThrottlingXPerSecond: 35,
+        onlineThrottlingXPerHour: 3,
+      },
       crackTimesDisplay: {
         offlineFastHashingXPerSecond: 'less than a second',
         offlineSlowHashingXPerSecond: 'less than a second',

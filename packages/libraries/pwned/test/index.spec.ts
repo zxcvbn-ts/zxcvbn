@@ -41,6 +41,13 @@ describe('main', () => {
         onlineNoThrottlingXPerSecond: 0.2,
         onlineThrottlingXPerHour: 72,
       },
+      crackTimesBase: {
+        offlineFastHashingXPerSecond: null,
+        offlineSlowHashingXPerSecond: null,
+        onlineNoThrottlingXPerSecond: null,
+        onlineThrottlingXPerHour: 1,
+      },
+
       crackTimesDisplay: {
         offlineFastHashingXPerSecond: 'ltSecond',
         offlineSlowHashingXPerSecond: 'ltSecond',
@@ -84,6 +91,12 @@ describe('main', () => {
           token: 'P4$$w0rd',
         },
       ],
+      crackTimesBase: {
+        offlineFastHashingXPerSecond: null,
+        offlineSlowHashingXPerSecond: 3,
+        onlineNoThrottlingXPerSecond: 4,
+        onlineThrottlingXPerHour: null,
+      },
       crackTimesDisplay: {
         offlineFastHashingXPerSecond: 'ltSecond',
         offlineSlowHashingXPerSecond: 'hours',

@@ -43,6 +43,12 @@ describe('main', () => {
           guessesLog10: 2.0606978403536114,
         },
       ],
+      crackTimesBase: {
+        offlineFastHashingXPerSecond: null,
+        offlineSlowHashingXPerSecond: null,
+        onlineNoThrottlingXPerSecond: 12,
+        onlineThrottlingXPerHour: 1,
+      },
       crackTimesSeconds: {
         onlineThrottlingXPerHour: 4176,
         onlineNoThrottlingXPerSecond: 11.6,
@@ -77,6 +83,12 @@ describe('main', () => {
     const result = zxcvbnCustom.check('test')
     result.calcTime = 0
     expect(result).toEqual({
+      crackTimesBase: {
+        offlineFastHashingXPerSecond: null,
+        offlineSlowHashingXPerSecond: null,
+        onlineNoThrottlingXPerSecond: null,
+        onlineThrottlingXPerHour: 1,
+      },
       crackTimesDisplay: {
         offlineFastHashingXPerSecond: 'less than a second',
         offlineSlowHashingXPerSecond: 'less than a second',
@@ -124,6 +136,12 @@ describe('main', () => {
     result.calcTime = 0
     expect(result).toEqual({
       calcTime: 0,
+      crackTimesBase: {
+        offlineFastHashingXPerSecond: null,
+        offlineSlowHashingXPerSecond: null,
+        onlineNoThrottlingXPerSecond: 4,
+        onlineThrottlingXPerHour: 22,
+      },
       crackTimesDisplay: {
         offlineFastHashingXPerSecond: 'less than a second',
         offlineSlowHashingXPerSecond: 'less than a second',
