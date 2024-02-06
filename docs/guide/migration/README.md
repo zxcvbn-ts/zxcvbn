@@ -53,6 +53,44 @@ const zxcvbn = new ZxcvbnFactory(options, customMatcher)
 zxcvbn.check(password)
 ```
 
+## Scoring thresholds naming changed
+
+Old:
+```
+{
+  crackTimesSeconds: {
+    offlineFastHashing1e10PerSecond: number,
+    offlineSlowHashing1e4PerSecond: number
+    onlineNoThrottling10PerSecond: number
+    onlineThrottling100PerHour: number
+  },
+  crackTimesDisplay: {
+    offlineFastHashing1e10PerSecond: string
+    offlineSlowHashing1e4PerSecond: string
+    onlineNoThrottling10PerSecond: string
+    onlineThrottling100PerHour: string
+  },
+}
+```
+
+New:
+```
+{
+  crackTimesSeconds: {
+    onlineThrottlingXPerHour: number
+    onlineNoThrottlingXPerSecond: number
+    offlineSlowHashingXPerSecond: number
+    offlineFastHashingXPerSecond: number
+  },
+  crackTimesDisplay: {
+    onlineThrottlingXPerHour: string,
+    onlineNoThrottlingXPerSecond: string
+    offlineSlowHashingXPerSecond: string
+    offlineFastHashingXPerSecond: string
+  },
+}
+```
+
 ## `zxcvbn-ts 2.x.x` to `zxcvbn-ts 3.x.x`
 
 ### language packages no longer have a default export

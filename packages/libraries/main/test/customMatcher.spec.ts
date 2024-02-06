@@ -55,16 +55,16 @@ describe('customMatcher', () => {
     expect(result).toEqual({
       calcTime: 0,
       crackTimesDisplay: {
-        offlineFastHashing1e10PerSecond: 'less than a second',
-        offlineSlowHashing1e4PerSecond: 'less than a second',
-        onlineNoThrottling10PerSecond: '9 seconds',
-        onlineThrottling100PerHour: '55 minutes',
+        offlineFastHashingXPerSecond: 'less than a second',
+        offlineSlowHashingXPerSecond: 'less than a second',
+        onlineNoThrottlingXPerSecond: '9 seconds',
+        onlineThrottlingXPerHour: '55 minutes',
       },
       crackTimesSeconds: {
-        offlineFastHashing1e10PerSecond: 9.1e-9,
-        offlineSlowHashing1e4PerSecond: 0.0091,
-        onlineNoThrottling10PerSecond: 9.1,
-        onlineThrottling100PerHour: 3276,
+        offlineFastHashingXPerSecond: 9.1e-9,
+        offlineSlowHashingXPerSecond: 0.0091,
+        onlineNoThrottlingXPerSecond: 9.1,
+        onlineThrottlingXPerHour: 3276,
       },
       feedback: {
         suggestions: ['Add more words that are less common.'],

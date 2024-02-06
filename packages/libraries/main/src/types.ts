@@ -137,17 +137,17 @@ export interface Optimal {
 }
 
 export interface CrackTimesSeconds {
-  onlineThrottling100PerHour: number
-  onlineNoThrottling10PerSecond: number
-  offlineSlowHashing1e4PerSecond: number
-  offlineFastHashing1e10PerSecond: number
+  onlineThrottlingXPerHour: number
+  onlineNoThrottlingXPerSecond: number
+  offlineSlowHashingXPerSecond: number
+  offlineFastHashingXPerSecond: number
 }
 
 export interface CrackTimesDisplay {
-  onlineThrottling100PerHour: string
-  onlineNoThrottling10PerSecond: string
-  offlineSlowHashing1e4PerSecond: string
-  offlineFastHashing1e10PerSecond: string
+  onlineThrottlingXPerHour: string
+  onlineNoThrottlingXPerSecond: string
+  offlineSlowHashingXPerSecond: string
+  offlineFastHashingXPerSecond: string
 }
 
 export interface FeedbackType {
@@ -171,6 +171,21 @@ export interface OptionsGraphEntry {
 
 export interface OptionsGraph {
   [key: string]: OptionsGraphEntry
+}
+
+export interface TimeEstimationValues {
+  scoring: {
+    0: number
+    1: number
+    2: number
+    3: number
+  }
+  attackTime: {
+    onlineThrottlingXPerHour: number
+    onlineNoThrottlingXPerSecond: number
+    offlineSlowHashingXPerSecond: number
+    offlineFastHashingXPerSecond: number
+  }
 }
 
 export interface OptionsType {
@@ -210,6 +225,10 @@ export interface OptionsType {
    * @default 256
    */
   maxLength?: number
+  /**
+   * @description Define the values to calculate the scoring and attack times. DO NOT CHANGE unless you know what you are doing. The default values are just fine as long as you are using a strong, slow hash function. Can be adjusted to account for increasingly powerful attacker hardware.
+   */
+  timeEstimationValues?: TimeEstimationValues
 }
 
 export interface RankedDictionary {
