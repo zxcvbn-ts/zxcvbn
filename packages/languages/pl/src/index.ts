@@ -8,12 +8,12 @@ import wikipedia from './wikipedia.json'
 import translations from './translations'
 
 const dictionary = {
-  commonWords,
-  femaleFirstnames,
-  femaleLastnames,
-  maleFirstnames,
-  maleLastnames,
-  wikipedia,
+  'commonWords-pl': commonWords,
+  'femaleFirstnames-pl': femaleFirstnames,
+  'femaleLastnames-pl': femaleLastnames,
+  'maleFirstnames-pl': maleFirstnames,
+  'maleLastnames-pl': maleLastnames,
+  'wikipedia-pl': wikipedia,
 }
 
 export { dictionary, translations }

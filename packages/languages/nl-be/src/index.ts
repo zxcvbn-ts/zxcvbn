@@ -7,11 +7,11 @@ import wikipedia from './wikipedia.json'
 import translations from './translations'
 
 const dictionary = {
-  boysFirstnames,
-  commonWords,
-  girlsFirstnames,
-  lastnames,
-  wikipedia,
+  'boysFirstnames-nl-be': boysFirstnames,
+  'commonWords-nl-be': commonWords,
+  'girlsFirstnames-nl-be': girlsFirstnames,
+  'lastnames-nl-be': lastnames,
+  'wikipedia-nl-be': wikipedia,
 }
 
 export { dictionary, translations }

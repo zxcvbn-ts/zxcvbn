@@ -50,20 +50,25 @@ const getDictionaryWarning = (
   match: MatchEstimated,
   isSoleMatch?: boolean,
 ) => {
-  let warning: string | null = null
   const dictName = match.dictionaryName
   const isAName =
-    dictName === 'lastnames' || dictName.toLowerCase().includes('firstnames')
-  if (dictName === 'passwords') {
-    warning = getDictionaryWarningPassword(options, match, isSoleMatch)
-  } else if (dictName.includes('wikipedia')) {
-    warning = getDictionaryWarningWikipedia(options, match, isSoleMatch)
-  } else if (isAName) {
-    warning = getDictionaryWarningNames(options, match, isSoleMatch)
-  } else if (dictName === 'userInputs') {
-    warning = options.translations.warnings.userInputs
+    dictName.toLowerCase().includes('lastnames') ||
+    dictName.toLowerCase().includes('firstnames')
+
+  if (dictName.includes('passwords')) {
+    return getDictionaryWarningPassword(options, match, isSoleMatch)
   }
-  return warning
+  if (dictName.includes('wikipedia')) {
+    return getDictionaryWarningWikipedia(options, match, isSoleMatch)
+  }
+  if (isAName) {
+    return getDictionaryWarningNames(options, match, isSoleMatch)
+  }
+  if (dictName.includes('userInputs')) {
+    return options.translations.warnings.userInputs
+  }
+
+  return null
 }
 
 export default (

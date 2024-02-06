@@ -83,7 +83,7 @@ New:
     offlineFastHashingXPerSecond: number
   },
   crackTimesDisplay: {
-    onlineThrottlingXPerHour: '1 hour',
+    onlineThrottlingXPerHour: string,
     onlineNoThrottlingXPerSecond: string
     offlineSlowHashingXPerSecond: string
     offlineFastHashingXPerSecond: string

@@ -31,7 +31,7 @@ describe('dictionary matching', () => {
       propsToCheck: {
         matchedWord: patterns,
         rank: [13],
-        dictionaryName: ['commonWords'],
+        dictionaryName: ['commonWords-en'],
       },
     })
   })
