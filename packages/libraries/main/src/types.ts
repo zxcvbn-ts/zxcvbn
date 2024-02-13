@@ -131,9 +131,22 @@ export interface Estimate {
 export type MatchEstimated = MatchExtended & Estimate
 
 export interface Optimal {
-  m: Match
-  pi: Match
-  g: Match
+  m: Match[]
+  pi: Record<string, number>[]
+  g: Record<string, number>[]
+}
+
+export interface CrackTime {
+  base: number | null
+  seconds: number
+  display: string
+}
+
+export interface CrackTimes {
+  onlineThrottlingXPerHour: CrackTime
+  onlineNoThrottlingXPerSecond: CrackTime
+  offlineSlowHashingXPerSecond: CrackTime
+  offlineFastHashingXPerSecond: CrackTime
 }
 
 export interface CrackTimesSeconds {
@@ -141,13 +154,6 @@ export interface CrackTimesSeconds {
   onlineNoThrottlingXPerSecond: number
   offlineSlowHashingXPerSecond: number
   offlineFastHashingXPerSecond: number
-}
-
-export interface CrackTimesDisplay {
-  onlineThrottlingXPerHour: string
-  onlineNoThrottlingXPerSecond: string
-  offlineSlowHashingXPerSecond: string
-  offlineFastHashingXPerSecond: string
 }
 
 export interface FeedbackType {
@@ -285,8 +291,7 @@ export type Score = 0 | 1 | 2 | 3 | 4
 
 export interface ZxcvbnResult {
   feedback: FeedbackType
-  crackTimesSeconds: CrackTimesSeconds
-  crackTimesDisplay: CrackTimesDisplay
+  crackTimes: CrackTimes
   score: Score
   password: string
   guesses: number

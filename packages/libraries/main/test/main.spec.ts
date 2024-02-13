@@ -43,17 +43,27 @@ describe('main', () => {
           guessesLog10: 2.0606978403536114,
         },
       ],
-      crackTimesSeconds: {
-        onlineThrottlingXPerHour: 4176,
-        onlineNoThrottlingXPerSecond: 11.6,
-        offlineSlowHashingXPerSecond: 0.0116,
-        offlineFastHashingXPerSecond: 1.16e-8,
-      },
-      crackTimesDisplay: {
-        onlineThrottlingXPerHour: '1 hour',
-        onlineNoThrottlingXPerSecond: '12 seconds',
-        offlineSlowHashingXPerSecond: 'less than a second',
-        offlineFastHashingXPerSecond: 'less than a second',
+      crackTimes: {
+        offlineFastHashingXPerSecond: {
+          base: null,
+          display: 'less than a second',
+          seconds: 1.16e-8,
+        },
+        offlineSlowHashingXPerSecond: {
+          base: null,
+          display: 'less than a second',
+          seconds: 0.0116,
+        },
+        onlineNoThrottlingXPerSecond: {
+          base: 12,
+          display: '12 seconds',
+          seconds: 11.6,
+        },
+        onlineThrottlingXPerHour: {
+          base: 1,
+          display: '1 hour',
+          seconds: 4176,
+        },
       },
       score: 0,
       feedback: {
@@ -77,17 +87,27 @@ describe('main', () => {
     const result = zxcvbnCustom.check('test')
     result.calcTime = 0
     expect(result).toEqual({
-      crackTimesDisplay: {
-        offlineFastHashingXPerSecond: 'less than a second',
-        offlineSlowHashingXPerSecond: 'less than a second',
-        onlineNoThrottlingXPerSecond: 'less than a second',
-        onlineThrottlingXPerHour: '1 minute',
-      },
-      crackTimesSeconds: {
-        offlineFastHashingXPerSecond: 2e-10,
-        offlineSlowHashingXPerSecond: 0.0002,
-        onlineNoThrottlingXPerSecond: 0.2,
-        onlineThrottlingXPerHour: 72,
+      crackTimes: {
+        offlineFastHashingXPerSecond: {
+          base: null,
+          display: 'less than a second',
+          seconds: 2e-10,
+        },
+        offlineSlowHashingXPerSecond: {
+          base: null,
+          display: 'less than a second',
+          seconds: 0.0002,
+        },
+        onlineNoThrottlingXPerSecond: {
+          base: null,
+          display: 'less than a second',
+          seconds: 0.2,
+        },
+        onlineThrottlingXPerHour: {
+          base: 1,
+          display: '1 minute',
+          seconds: 72,
+        },
       },
       feedback: {
         suggestions: [zxcvbnEnPackage.translations.suggestions.anotherWord],
@@ -124,17 +144,27 @@ describe('main', () => {
     result.calcTime = 0
     expect(result).toEqual({
       calcTime: 0,
-      crackTimesDisplay: {
-        offlineFastHashingXPerSecond: 'less than a second',
-        offlineSlowHashingXPerSecond: 'less than a second',
-        onlineNoThrottlingXPerSecond: '4 seconds',
-        onlineThrottlingXPerHour: '22 minutes',
-      },
-      crackTimesSeconds: {
-        offlineFastHashingXPerSecond: 3.7e-9,
-        offlineSlowHashingXPerSecond: 0.0037,
-        onlineNoThrottlingXPerSecond: 3.7,
-        onlineThrottlingXPerHour: 1332,
+      crackTimes: {
+        offlineFastHashingXPerSecond: {
+          base: null,
+          display: 'less than a second',
+          seconds: 3.7e-9,
+        },
+        offlineSlowHashingXPerSecond: {
+          base: null,
+          display: 'less than a second',
+          seconds: 0.0037,
+        },
+        onlineNoThrottlingXPerSecond: {
+          base: 4,
+          display: '4 seconds',
+          seconds: 3.7,
+        },
+        onlineThrottlingXPerHour: {
+          base: 22,
+          display: '22 minutes',
+          seconds: 1332,
+        },
       },
       feedback: {
         suggestions: ['Add more words that are less common.'],

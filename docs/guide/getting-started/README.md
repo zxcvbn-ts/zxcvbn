@@ -72,7 +72,7 @@ Example using jsdelivr (a CDN)
 result.guesses            # estimated guesses needed to crack password
 result.guessesLog10      # order of magnitude of result.guesses
 
-result.crackTimesSeconds # dictionary of back-of-the-envelope crack time
+result.crackTimes # dictionary of back-of-the-envelope crack time
                           # estimations, in seconds, based on a few scenarios:
 {
   # online attack on a service that ratelimits password auth attempts.
@@ -95,9 +95,16 @@ result.crackTimesSeconds # dictionary of back-of-the-envelope crack time
   offlineFastHashingXPerSecond
 }
 
-result.crackTimesDisplay # same keys as result.crackTimesSeconds,
-                           # with friendlier display string values:
-                           # "less than a second", "3 hours", "centuries", etc.
+Every scenarios has a few properties
+{
+  # the seconds in which the password is cracked
+  seconds 
+  # with friendlier display string values: "less than a second", "3 hours", "centuries", etc.
+  display 
+  # the number which is used in the display to use a custom translation system and the default translation keys.
+  base 
+}
+
 
 result.score      # Integer from 0-4 (useful for implementing a strength bar). Is configurable in the options with timeEstimationValues other wise a default value is used.
 

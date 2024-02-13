@@ -22,17 +22,27 @@ export default [
         guessesLog10: 2.559906625036112,
       },
     ],
-    crackTimesSeconds: {
-      onlineThrottlingXPerHour: 13104,
-      onlineNoThrottlingXPerSecond: 36.4,
-      offlineSlowHashingXPerSecond: 0.0364,
-      offlineFastHashingXPerSecond: 3.64e-8,
-    },
-    crackTimesDisplay: {
-      onlineThrottlingXPerHour: '4 hours',
-      onlineNoThrottlingXPerSecond: '36 seconds',
-      offlineSlowHashingXPerSecond: 'less than a second',
-      offlineFastHashingXPerSecond: 'less than a second',
+    crackTimes: {
+      onlineThrottlingXPerHour: {
+        base: 4,
+        seconds: 13104,
+        display: '4 hours',
+      },
+      onlineNoThrottlingXPerSecond: {
+        base: 36,
+        seconds: 36.4,
+        display: '36 seconds',
+      },
+      offlineSlowHashingXPerSecond: {
+        base: null,
+        seconds: 0.0364,
+        display: 'less than a second',
+      },
+      offlineFastHashingXPerSecond: {
+        base: null,
+        seconds: 3.64e-8,
+        display: 'less than a second',
+      },
     },
     score: 0,
     feedback: {
@@ -63,17 +73,27 @@ export default [
         guessesLog10: 2.8609366207000932,
       },
     ],
-    crackTimesSeconds: {
-      onlineThrottlingXPerHour: 26172,
-      onlineNoThrottlingXPerSecond: 72.7,
-      offlineSlowHashingXPerSecond: 0.0727,
-      offlineFastHashingXPerSecond: 7.27e-8,
-    },
-    crackTimesDisplay: {
-      onlineThrottlingXPerHour: '7 hours',
-      onlineNoThrottlingXPerSecond: '1 minute',
-      offlineSlowHashingXPerSecond: 'less than a second',
-      offlineFastHashingXPerSecond: 'less than a second',
+    crackTimes: {
+      onlineThrottlingXPerHour: {
+        base: 7,
+        seconds: 26172,
+        display: '7 hours',
+      },
+      onlineNoThrottlingXPerSecond: {
+        base: 1,
+        seconds: 72.7,
+        display: '1 minute',
+      },
+      offlineSlowHashingXPerSecond: {
+        base: null,
+        seconds: 0.0727,
+        display: 'less than a second',
+      },
+      offlineFastHashingXPerSecond: {
+        base: null,
+        seconds: 7.27e-8,
+        display: 'less than a second',
+      },
     },
     score: 0,
     feedback: {
@@ -104,17 +124,27 @@ export default [
         guessesLog10: 2.8609366207000932,
       },
     ],
-    crackTimesSeconds: {
-      onlineThrottlingXPerHour: 26172,
-      onlineNoThrottlingXPerSecond: 72.7,
-      offlineSlowHashingXPerSecond: 0.0727,
-      offlineFastHashingXPerSecond: 7.27e-8,
-    },
-    crackTimesDisplay: {
-      onlineThrottlingXPerHour: '7 hours',
-      onlineNoThrottlingXPerSecond: '1 minute',
-      offlineSlowHashingXPerSecond: 'less than a second',
-      offlineFastHashingXPerSecond: 'less than a second',
+    crackTimes: {
+      onlineThrottlingXPerHour: {
+        base: 7,
+        seconds: 26172,
+        display: '7 hours',
+      },
+      onlineNoThrottlingXPerSecond: {
+        base: 1,
+        seconds: 72.7,
+        display: '1 minute',
+      },
+      offlineSlowHashingXPerSecond: {
+        base: null,
+        seconds: 0.0727,
+        display: 'less than a second',
+      },
+      offlineFastHashingXPerSecond: {
+        base: null,
+        seconds: 7.27e-8,
+        display: 'less than a second',
+      },
     },
     score: 0,
     feedback: {
@@ -151,17 +181,27 @@ export default [
         guessesLog10: 1.6989700043360185,
       },
     ],
-    crackTimesSeconds: {
-      onlineThrottlingXPerHour: 540000,
-      onlineNoThrottlingXPerSecond: 1500,
-      offlineSlowHashingXPerSecond: 1.5,
-      offlineFastHashingXPerSecond: 0.0000015,
-    },
-    crackTimesDisplay: {
-      onlineThrottlingXPerHour: '6 days',
-      onlineNoThrottlingXPerSecond: '25 minutes',
-      offlineSlowHashingXPerSecond: '2 seconds',
-      offlineFastHashingXPerSecond: 'less than a second',
+    crackTimes: {
+      onlineThrottlingXPerHour: {
+        base: 6,
+        seconds: 540000,
+        display: '6 days',
+      },
+      onlineNoThrottlingXPerSecond: {
+        base: 25,
+        seconds: 1500,
+        display: '25 minutes',
+      },
+      offlineSlowHashingXPerSecond: {
+        base: 2,
+        seconds: 1.5,
+        display: '2 seconds',
+      },
+      offlineFastHashingXPerSecond: {
+        base: null,
+        seconds: 0.0000015,
+        display: 'less than a second',
+      },
     },
     score: 1,
     feedback: {
@@ -203,17 +243,27 @@ export default [
         guessesLog10: 2.9999999999999996,
       },
     ],
-    crackTimesSeconds: {
-      onlineThrottlingXPerHour: 89496000,
-      onlineNoThrottlingXPerSecond: 248600,
-      offlineSlowHashingXPerSecond: 248.6,
-      offlineFastHashingXPerSecond: 0.0002486,
-    },
-    crackTimesDisplay: {
-      onlineThrottlingXPerHour: '3 years',
-      onlineNoThrottlingXPerSecond: '3 days',
-      offlineSlowHashingXPerSecond: '4 minutes',
-      offlineFastHashingXPerSecond: 'less than a second',
+    crackTimes: {
+      onlineThrottlingXPerHour: {
+        base: 3,
+        seconds: 89496000,
+        display: '3 years',
+      },
+      onlineNoThrottlingXPerSecond: {
+        base: 3,
+        seconds: 248600,
+        display: '3 days',
+      },
+      offlineSlowHashingXPerSecond: {
+        base: 4,
+        seconds: 248.6,
+        display: '4 minutes',
+      },
+      offlineFastHashingXPerSecond: {
+        base: null,
+        seconds: 0.0002486,
+        display: 'less than a second',
+      },
     },
     score: 2,
     feedback: {
@@ -242,17 +292,27 @@ export default [
         guessesLog10: 1.9242792860618814,
       },
     ],
-    crackTimesSeconds: {
-      onlineThrottlingXPerHour: 3060,
-      onlineNoThrottlingXPerSecond: 8.5,
-      offlineSlowHashingXPerSecond: 0.0085,
-      offlineFastHashingXPerSecond: 8.5e-9,
-    },
-    crackTimesDisplay: {
-      onlineThrottlingXPerHour: '51 minutes',
-      onlineNoThrottlingXPerSecond: '9 seconds',
-      offlineSlowHashingXPerSecond: 'less than a second',
-      offlineFastHashingXPerSecond: 'less than a second',
+    crackTimes: {
+      onlineThrottlingXPerHour: {
+        base: 51,
+        seconds: 3060,
+        display: '51 minutes',
+      },
+      onlineNoThrottlingXPerSecond: {
+        base: 9,
+        seconds: 8.5,
+        display: '9 seconds',
+      },
+      offlineSlowHashingXPerSecond: {
+        base: null,
+        seconds: 0.0085,
+        display: 'less than a second',
+      },
+      offlineFastHashingXPerSecond: {
+        base: null,
+        seconds: 8.5e-9,
+        display: 'less than a second',
+      },
     },
     score: 0,
     feedback: {
@@ -286,17 +346,27 @@ export default [
         guessesLog10: 2.0334237554869494,
       },
     ],
-    crackTimesSeconds: {
-      onlineThrottlingXPerHour: 3924,
-      onlineNoThrottlingXPerSecond: 10.9,
-      offlineSlowHashingXPerSecond: 0.0109,
-      offlineFastHashingXPerSecond: 1.09e-8,
-    },
-    crackTimesDisplay: {
-      onlineThrottlingXPerHour: '1 hour',
-      onlineNoThrottlingXPerSecond: '11 seconds',
-      offlineSlowHashingXPerSecond: 'less than a second',
-      offlineFastHashingXPerSecond: 'less than a second',
+    crackTimes: {
+      onlineThrottlingXPerHour: {
+        base: 1,
+        seconds: 3924,
+        display: '1 hour',
+      },
+      onlineNoThrottlingXPerSecond: {
+        base: 11,
+        seconds: 10.9,
+        display: '11 seconds',
+      },
+      offlineSlowHashingXPerSecond: {
+        base: null,
+        seconds: 0.0109,
+        display: 'less than a second',
+      },
+      offlineFastHashingXPerSecond: {
+        base: null,
+        seconds: 1.09e-8,
+        display: 'less than a second',
+      },
     },
     score: 0,
     feedback: {
@@ -330,17 +400,27 @@ export default [
         guessesLog10: 2.0170333392987803,
       },
     ],
-    crackTimesSeconds: {
-      onlineThrottlingXPerHour: 3780,
-      onlineNoThrottlingXPerSecond: 10.5,
-      offlineSlowHashingXPerSecond: 0.0105,
-      offlineFastHashingXPerSecond: 1.05e-8,
-    },
-    crackTimesDisplay: {
-      onlineThrottlingXPerHour: '1 hour',
-      onlineNoThrottlingXPerSecond: '11 seconds',
-      offlineSlowHashingXPerSecond: 'less than a second',
-      offlineFastHashingXPerSecond: 'less than a second',
+    crackTimes: {
+      onlineThrottlingXPerHour: {
+        base: 1,
+        seconds: 3780,
+        display: '1 hour',
+      },
+      onlineNoThrottlingXPerSecond: {
+        base: 11,
+        seconds: 10.5,
+        display: '11 seconds',
+      },
+      offlineSlowHashingXPerSecond: {
+        base: null,
+        seconds: 0.0105,
+        display: 'less than a second',
+      },
+      offlineFastHashingXPerSecond: {
+        base: null,
+        seconds: 1.05e-8,
+        display: 'less than a second',
+      },
     },
     score: 0,
     feedback: {
@@ -371,17 +451,27 @@ export default [
         guessesLog10: 3.4737788346467244,
       },
     ],
-    crackTimesSeconds: {
-      onlineThrottlingXPerHour: 107208,
-      onlineNoThrottlingXPerSecond: 297.8,
-      offlineSlowHashingXPerSecond: 0.2978,
-      offlineFastHashingXPerSecond: 2.978e-7,
-    },
-    crackTimesDisplay: {
-      onlineThrottlingXPerHour: '1 day',
-      onlineNoThrottlingXPerSecond: '5 minutes',
-      offlineSlowHashingXPerSecond: 'less than a second',
-      offlineFastHashingXPerSecond: 'less than a second',
+    crackTimes: {
+      onlineThrottlingXPerHour: {
+        base: 1,
+        seconds: 107208,
+        display: '1 day',
+      },
+      onlineNoThrottlingXPerSecond: {
+        base: 5,
+        seconds: 297.8,
+        display: '5 minutes',
+      },
+      offlineSlowHashingXPerSecond: {
+        base: null,
+        seconds: 0.2978,
+        display: 'less than a second',
+      },
+      offlineFastHashingXPerSecond: {
+        base: null,
+        seconds: 2.978e-7,
+        display: 'less than a second',
+      },
     },
     score: 1,
     feedback: {
@@ -420,17 +510,27 @@ export default [
         guessesLog10: 1.041392685158225,
       },
     ],
-    crackTimesSeconds: {
-      onlineThrottlingXPerHour: 442368,
-      onlineNoThrottlingXPerSecond: 1228.8,
-      offlineSlowHashingXPerSecond: 1.2288,
-      offlineFastHashingXPerSecond: 0.0000012288,
-    },
-    crackTimesDisplay: {
-      onlineThrottlingXPerHour: '5 days',
-      onlineNoThrottlingXPerSecond: '20 minutes',
-      offlineSlowHashingXPerSecond: '1 second',
-      offlineFastHashingXPerSecond: 'less than a second',
+    crackTimes: {
+      onlineThrottlingXPerHour: {
+        base: 5,
+        seconds: 442368,
+        display: '5 days',
+      },
+      onlineNoThrottlingXPerSecond: {
+        base: 20,
+        seconds: 1228.8,
+        display: '20 minutes',
+      },
+      offlineSlowHashingXPerSecond: {
+        base: 1,
+        seconds: 1.2288,
+        display: '1 second',
+      },
+      offlineFastHashingXPerSecond: {
+        base: null,
+        seconds: 0.0000012288,
+        display: 'less than a second',
+      },
     },
     score: 1,
     feedback: {
@@ -461,17 +561,27 @@ export default [
         guessesLog10: 0.30102999566398114,
       },
     ],
-    crackTimesSeconds: {
-      onlineThrottlingXPerHour: 108,
-      onlineNoThrottlingXPerSecond: 0.3,
-      offlineSlowHashingXPerSecond: 0.0003,
-      offlineFastHashingXPerSecond: 3e-10,
-    },
-    crackTimesDisplay: {
-      onlineThrottlingXPerHour: '2 minutes',
-      onlineNoThrottlingXPerSecond: 'less than a second',
-      offlineSlowHashingXPerSecond: 'less than a second',
-      offlineFastHashingXPerSecond: 'less than a second',
+    crackTimes: {
+      onlineThrottlingXPerHour: {
+        base: 2,
+        seconds: 108,
+        display: '2 minutes',
+      },
+      onlineNoThrottlingXPerSecond: {
+        base: null,
+        seconds: 0.3,
+        display: 'less than a second',
+      },
+      offlineSlowHashingXPerSecond: {
+        base: null,
+        seconds: 0.0003,
+        display: 'less than a second',
+      },
+      offlineFastHashingXPerSecond: {
+        base: null,
+        seconds: 3e-10,
+        display: 'less than a second',
+      },
     },
     score: 0,
     feedback: {
@@ -507,17 +617,27 @@ export default [
         guessesLog10: 1.6989700043360185,
       },
     ],
-    crackTimesSeconds: {
-      onlineThrottlingXPerHour: 540000,
-      onlineNoThrottlingXPerSecond: 1500,
-      offlineSlowHashingXPerSecond: 1.5,
-      offlineFastHashingXPerSecond: 0.0000015,
-    },
-    crackTimesDisplay: {
-      onlineThrottlingXPerHour: '6 days',
-      onlineNoThrottlingXPerSecond: '25 minutes',
-      offlineSlowHashingXPerSecond: '2 seconds',
-      offlineFastHashingXPerSecond: 'less than a second',
+    crackTimes: {
+      onlineThrottlingXPerHour: {
+        base: 6,
+        seconds: 540000,
+        display: '6 days',
+      },
+      onlineNoThrottlingXPerSecond: {
+        base: 25,
+        seconds: 1500,
+        display: '25 minutes',
+      },
+      offlineSlowHashingXPerSecond: {
+        base: 2,
+        seconds: 1.5,
+        display: '2 seconds',
+      },
+      offlineFastHashingXPerSecond: {
+        base: null,
+        seconds: 0.0000015,
+        display: 'less than a second',
+      },
     },
     score: 1,
     feedback: {
@@ -547,17 +667,27 @@ export default [
         guessesLog10: 1.716003343634799,
       },
     ],
-    crackTimesSeconds: {
-      onlineThrottlingXPerHour: 1908,
-      onlineNoThrottlingXPerSecond: 5.3,
-      offlineSlowHashingXPerSecond: 0.0053,
-      offlineFastHashingXPerSecond: 5.3e-9,
-    },
-    crackTimesDisplay: {
-      onlineThrottlingXPerHour: '32 minutes',
-      onlineNoThrottlingXPerSecond: '5 seconds',
-      offlineSlowHashingXPerSecond: 'less than a second',
-      offlineFastHashingXPerSecond: 'less than a second',
+    crackTimes: {
+      onlineThrottlingXPerHour: {
+        base: 32,
+        seconds: 1908,
+        display: '32 minutes',
+      },
+      onlineNoThrottlingXPerSecond: {
+        base: 5,
+        seconds: 5.3,
+        display: '5 seconds',
+      },
+      offlineSlowHashingXPerSecond: {
+        base: null,
+        seconds: 0.0053,
+        display: 'less than a second',
+      },
+      offlineFastHashingXPerSecond: {
+        base: null,
+        seconds: 5.3e-9,
+        display: 'less than a second',
+      },
     },
     score: 0,
     feedback: {
@@ -587,17 +717,27 @@ export default [
         guessesLog10: 3.112605001534574,
       },
     ],
-    crackTimesSeconds: {
-      onlineThrottlingXPerHour: 46692,
-      onlineNoThrottlingXPerSecond: 129.7,
-      offlineSlowHashingXPerSecond: 0.1297,
-      offlineFastHashingXPerSecond: 1.297e-7,
-    },
-    crackTimesDisplay: {
-      onlineThrottlingXPerHour: '13 hours',
-      onlineNoThrottlingXPerSecond: '2 minutes',
-      offlineSlowHashingXPerSecond: 'less than a second',
-      offlineFastHashingXPerSecond: 'less than a second',
+    crackTimes: {
+      onlineThrottlingXPerHour: {
+        base: 13,
+        seconds: 46692,
+        display: '13 hours',
+      },
+      onlineNoThrottlingXPerSecond: {
+        base: 2,
+        seconds: 129.7,
+        display: '2 minutes',
+      },
+      offlineSlowHashingXPerSecond: {
+        base: null,
+        seconds: 0.1297,
+        display: 'less than a second',
+      },
+      offlineFastHashingXPerSecond: {
+        base: null,
+        seconds: 1.297e-7,
+        display: 'less than a second',
+      },
     },
     score: 1,
     feedback: {
@@ -625,9 +765,18 @@ export default [
         reversed: false,
         l33t: true,
         subs: [
-          { letter: 'a', substitution: '4' },
-          { letter: 's', substitution: '$' },
-          { letter: 'o', substitution: '0' },
+          {
+            letter: 'a',
+            substitution: '4',
+          },
+          {
+            letter: 's',
+            substitution: '$',
+          },
+          {
+            letter: 'o',
+            substitution: '0',
+          },
         ],
         subDisplay: '4 -> a, $ -> s, 0 -> o',
         baseGuesses: 2,
@@ -637,17 +786,27 @@ export default [
         guessesLog10: 1.5051499783199058,
       },
     ],
-    crackTimesSeconds: {
-      onlineThrottlingXPerHour: 1188,
-      onlineNoThrottlingXPerSecond: 3.3,
-      offlineSlowHashingXPerSecond: 0.0033,
-      offlineFastHashingXPerSecond: 3.3e-9,
-    },
-    crackTimesDisplay: {
-      onlineThrottlingXPerHour: '20 minutes',
-      onlineNoThrottlingXPerSecond: '3 seconds',
-      offlineSlowHashingXPerSecond: 'less than a second',
-      offlineFastHashingXPerSecond: 'less than a second',
+    crackTimes: {
+      onlineThrottlingXPerHour: {
+        base: 20,
+        seconds: 1188,
+        display: '20 minutes',
+      },
+      onlineNoThrottlingXPerSecond: {
+        base: 3,
+        seconds: 3.3,
+        display: '3 seconds',
+      },
+      offlineSlowHashingXPerSecond: {
+        base: null,
+        seconds: 0.0033,
+        display: 'less than a second',
+      },
+      offlineFastHashingXPerSecond: {
+        base: null,
+        seconds: 3.3e-9,
+        display: 'less than a second',
+      },
     },
     score: 0,
     feedback: {
@@ -674,17 +833,27 @@ export default [
         guessesLog10: 4,
       },
     ],
-    crackTimesSeconds: {
-      onlineThrottlingXPerHour: 360036,
-      onlineNoThrottlingXPerSecond: 1000.1,
-      offlineSlowHashingXPerSecond: 1.0001,
-      offlineFastHashingXPerSecond: 0.0000010001,
-    },
-    crackTimesDisplay: {
-      onlineThrottlingXPerHour: '4 days',
-      onlineNoThrottlingXPerSecond: '17 minutes',
-      offlineSlowHashingXPerSecond: '1 second',
-      offlineFastHashingXPerSecond: 'less than a second',
+    crackTimes: {
+      onlineThrottlingXPerHour: {
+        base: 4,
+        seconds: 360036,
+        display: '4 days',
+      },
+      onlineNoThrottlingXPerSecond: {
+        base: 17,
+        seconds: 1000.1,
+        display: '17 minutes',
+      },
+      offlineSlowHashingXPerSecond: {
+        base: 1,
+        seconds: 1.0001,
+        display: '1 second',
+      },
+      offlineFastHashingXPerSecond: {
+        base: null,
+        seconds: 0.0000010001,
+        display: 'less than a second',
+      },
     },
     score: 1,
     feedback: {
@@ -758,20 +927,33 @@ export default [
         guessesLog10: 19,
       },
     ],
-    crackTimesSeconds: {
-      onlineThrottlingXPerHour: 8.424e34,
-      onlineNoThrottlingXPerSecond: 2.34e32,
-      offlineSlowHashingXPerSecond: 2.34e29,
-      offlineFastHashingXPerSecond: 2.34e23,
-    },
-    crackTimesDisplay: {
-      onlineThrottlingXPerHour: 'centuries',
-      onlineNoThrottlingXPerSecond: 'centuries',
-      offlineSlowHashingXPerSecond: 'centuries',
-      offlineFastHashingXPerSecond: 'centuries',
+    crackTimes: {
+      onlineThrottlingXPerHour: {
+        base: null,
+        seconds: 8.424e34,
+        display: 'centuries',
+      },
+      onlineNoThrottlingXPerSecond: {
+        base: null,
+        seconds: 2.34e32,
+        display: 'centuries',
+      },
+      offlineSlowHashingXPerSecond: {
+        base: null,
+        seconds: 2.34e29,
+        display: 'centuries',
+      },
+      offlineFastHashingXPerSecond: {
+        base: null,
+        seconds: 2.34e23,
+        display: 'centuries',
+      },
     },
     score: 4,
-    feedback: { warning: null, suggestions: [] },
+    feedback: {
+      warning: null,
+      suggestions: [],
+    },
   },
   {
     calcTime: 0,
@@ -799,17 +981,27 @@ export default [
         guessesLog10: 2,
       },
     ],
-    crackTimesSeconds: {
-      onlineThrottlingXPerHour: 19368000,
-      onlineNoThrottlingXPerSecond: 53800,
-      offlineSlowHashingXPerSecond: 53.8,
-      offlineFastHashingXPerSecond: 0.0000538,
-    },
-    crackTimesDisplay: {
-      onlineThrottlingXPerHour: '7 months',
-      onlineNoThrottlingXPerSecond: '15 hours',
-      offlineSlowHashingXPerSecond: '54 seconds',
-      offlineFastHashingXPerSecond: 'less than a second',
+    crackTimes: {
+      onlineThrottlingXPerHour: {
+        base: 7,
+        seconds: 19368000,
+        display: '7 months',
+      },
+      onlineNoThrottlingXPerSecond: {
+        base: 15,
+        seconds: 53800,
+        display: '15 hours',
+      },
+      offlineSlowHashingXPerSecond: {
+        base: 54,
+        seconds: 53.8,
+        display: '54 seconds',
+      },
+      offlineFastHashingXPerSecond: {
+        base: null,
+        seconds: 0.0000538,
+        display: 'less than a second',
+      },
     },
     score: 1,
     feedback: {
@@ -846,17 +1038,27 @@ export default [
         guessesLog10: 5.7641103478653735,
       },
     ],
-    crackTimesSeconds: {
-      onlineThrottlingXPerHour: 460442304,
-      onlineNoThrottlingXPerSecond: 1279006.4,
-      offlineSlowHashingXPerSecond: 1279.0064,
-      offlineFastHashingXPerSecond: 0.0012790064,
-    },
-    crackTimesDisplay: {
-      onlineThrottlingXPerHour: '14 years',
-      onlineNoThrottlingXPerSecond: '15 days',
-      offlineSlowHashingXPerSecond: '21 minutes',
-      offlineFastHashingXPerSecond: 'less than a second',
+    crackTimes: {
+      onlineThrottlingXPerHour: {
+        base: 14,
+        seconds: 460442304,
+        display: '14 years',
+      },
+      onlineNoThrottlingXPerSecond: {
+        base: 15,
+        seconds: 1279006.4,
+        display: '15 days',
+      },
+      offlineSlowHashingXPerSecond: {
+        base: 21,
+        seconds: 1279.0064,
+        display: '21 minutes',
+      },
+      offlineFastHashingXPerSecond: {
+        base: null,
+        seconds: 0.0012790064,
+        display: 'less than a second',
+      },
     },
     score: 2,
     feedback: {
@@ -901,20 +1103,33 @@ export default [
         guessesLog10: 2.9999999999999996,
       },
     ],
-    crackTimesSeconds: {
-      onlineThrottlingXPerHour: 46843200000,
-      onlineNoThrottlingXPerSecond: 130120000,
-      offlineSlowHashingXPerSecond: 130120,
-      offlineFastHashingXPerSecond: 0.13012,
-    },
-    crackTimesDisplay: {
-      onlineThrottlingXPerHour: 'centuries',
-      onlineNoThrottlingXPerSecond: '4 years',
-      offlineSlowHashingXPerSecond: '2 days',
-      offlineFastHashingXPerSecond: 'less than a second',
+    crackTimes: {
+      onlineThrottlingXPerHour: {
+        base: null,
+        seconds: 46843200000,
+        display: 'centuries',
+      },
+      onlineNoThrottlingXPerSecond: {
+        base: 4,
+        seconds: 130120000,
+        display: '4 years',
+      },
+      offlineSlowHashingXPerSecond: {
+        base: 2,
+        seconds: 130120,
+        display: '2 days',
+      },
+      offlineFastHashingXPerSecond: {
+        base: null,
+        seconds: 0.13012,
+        display: 'less than a second',
+      },
     },
     score: 3,
-    feedback: { warning: null, suggestions: [] },
+    feedback: {
+      warning: null,
+      suggestions: [],
+    },
   },
   {
     calcTime: 0,
@@ -963,20 +1178,33 @@ export default [
         guessesLog10: 3.3386556655787,
       },
     ],
-    crackTimesSeconds: {
-      onlineThrottlingXPerHour: 40608478800000000,
-      onlineNoThrottlingXPerSecond: 112801330000000,
-      offlineSlowHashingXPerSecond: 112801330000,
-      offlineFastHashingXPerSecond: 112801.33,
-    },
-    crackTimesDisplay: {
-      onlineThrottlingXPerHour: 'centuries',
-      onlineNoThrottlingXPerSecond: 'centuries',
-      offlineSlowHashingXPerSecond: 'centuries',
-      offlineFastHashingXPerSecond: '1 day',
+    crackTimes: {
+      onlineThrottlingXPerHour: {
+        base: null,
+        seconds: 40608478800000000,
+        display: 'centuries',
+      },
+      onlineNoThrottlingXPerSecond: {
+        base: null,
+        seconds: 112801330000000,
+        display: 'centuries',
+      },
+      offlineSlowHashingXPerSecond: {
+        base: null,
+        seconds: 112801330000,
+        display: 'centuries',
+      },
+      offlineFastHashingXPerSecond: {
+        base: 1,
+        seconds: 112801.33,
+        display: '1 day',
+      },
     },
     score: 4,
-    feedback: { warning: null, suggestions: [] },
+    feedback: {
+      warning: null,
+      suggestions: [],
+    },
   },
   {
     calcTime: 0,
@@ -993,20 +1221,33 @@ export default [
         guessesLog10: 35.99999999999999,
       },
     ],
-    crackTimesSeconds: {
-      onlineThrottlingXPerHour: 3.6e37,
-      onlineNoThrottlingXPerSecond: 1e35,
-      offlineSlowHashingXPerSecond: 9.999999999999999e31,
-      offlineFastHashingXPerSecond: 9.999999999999999e25,
-    },
-    crackTimesDisplay: {
-      onlineThrottlingXPerHour: 'centuries',
-      onlineNoThrottlingXPerSecond: 'centuries',
-      offlineSlowHashingXPerSecond: 'centuries',
-      offlineFastHashingXPerSecond: 'centuries',
+    crackTimes: {
+      onlineThrottlingXPerHour: {
+        base: null,
+        seconds: 3.6e37,
+        display: 'centuries',
+      },
+      onlineNoThrottlingXPerSecond: {
+        base: null,
+        seconds: 1e35,
+        display: 'centuries',
+      },
+      offlineSlowHashingXPerSecond: {
+        base: null,
+        seconds: 9.999999999999999e31,
+        display: 'centuries',
+      },
+      offlineFastHashingXPerSecond: {
+        base: null,
+        seconds: 9.999999999999999e25,
+        display: 'centuries',
+      },
     },
     score: 4,
-    feedback: { warning: null, suggestions: [] },
+    feedback: {
+      warning: null,
+      suggestions: [],
+    },
   },
   {
     calcTime: 0,
@@ -1014,17 +1255,27 @@ export default [
     guesses: 1,
     guessesLog10: 0,
     sequence: [],
-    crackTimesSeconds: {
-      onlineThrottlingXPerHour: 36,
-      onlineNoThrottlingXPerSecond: 0.1,
-      offlineSlowHashingXPerSecond: 0.0001,
-      offlineFastHashingXPerSecond: 1e-10,
-    },
-    crackTimesDisplay: {
-      onlineThrottlingXPerHour: '36 seconds',
-      onlineNoThrottlingXPerSecond: 'less than a second',
-      offlineSlowHashingXPerSecond: 'less than a second',
-      offlineFastHashingXPerSecond: 'less than a second',
+    crackTimes: {
+      onlineThrottlingXPerHour: {
+        base: 36,
+        seconds: 36,
+        display: '36 seconds',
+      },
+      onlineNoThrottlingXPerSecond: {
+        base: null,
+        seconds: 0.1,
+        display: 'less than a second',
+      },
+      offlineSlowHashingXPerSecond: {
+        base: null,
+        seconds: 0.0001,
+        display: 'less than a second',
+      },
+      offlineFastHashingXPerSecond: {
+        base: null,
+        seconds: 1e-10,
+        display: 'less than a second',
+      },
     },
     score: 0,
     feedback: {
