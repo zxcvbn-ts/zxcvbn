@@ -35,24 +35,27 @@ describe('main', () => {
           token: 'P4$$w0rd',
         },
       ],
-      crackTimesSeconds: {
-        offlineFastHashingXPerSecond: 2e-10,
-        offlineSlowHashingXPerSecond: 0.0002,
-        onlineNoThrottlingXPerSecond: 0.2,
-        onlineThrottlingXPerHour: 72,
-      },
-      crackTimesBase: {
-        offlineFastHashingXPerSecond: null,
-        offlineSlowHashingXPerSecond: null,
-        onlineNoThrottlingXPerSecond: null,
-        onlineThrottlingXPerHour: 1,
-      },
-
-      crackTimesDisplay: {
-        offlineFastHashingXPerSecond: 'ltSecond',
-        offlineSlowHashingXPerSecond: 'ltSecond',
-        onlineNoThrottlingXPerSecond: 'ltSecond',
-        onlineThrottlingXPerHour: 'minute',
+      crackTimes: {
+        offlineFastHashingXPerSecond: {
+          base: null,
+          display: 'ltSecond',
+          seconds: 2e-10,
+        },
+        offlineSlowHashingXPerSecond: {
+          base: null,
+          display: 'ltSecond',
+          seconds: 0.0002,
+        },
+        onlineNoThrottlingXPerSecond: {
+          base: null,
+          display: 'ltSecond',
+          seconds: 0.2,
+        },
+        onlineThrottlingXPerHour: {
+          base: 1,
+          display: 'minute',
+          seconds: 72,
+        },
       },
       score: 0,
       feedback: {
@@ -91,23 +94,27 @@ describe('main', () => {
           token: 'P4$$w0rd',
         },
       ],
-      crackTimesBase: {
-        offlineFastHashingXPerSecond: null,
-        offlineSlowHashingXPerSecond: 3,
-        onlineNoThrottlingXPerSecond: 4,
-        onlineThrottlingXPerHour: null,
-      },
-      crackTimesDisplay: {
-        offlineFastHashingXPerSecond: 'ltSecond',
-        offlineSlowHashingXPerSecond: 'hours',
-        onlineNoThrottlingXPerSecond: 'months',
-        onlineThrottlingXPerHour: 'centuries',
-      },
-      crackTimesSeconds: {
-        offlineFastHashingXPerSecond: 0.0100000001,
-        offlineSlowHashingXPerSecond: 10000.0001,
-        onlineNoThrottlingXPerSecond: 10000000.1,
-        onlineThrottlingXPerHour: 3600000036,
+      crackTimes: {
+        offlineFastHashingXPerSecond: {
+          base: null,
+          display: 'ltSecond',
+          seconds: 0.0100000001,
+        },
+        offlineSlowHashingXPerSecond: {
+          base: 3,
+          display: 'hours',
+          seconds: 10000.0001,
+        },
+        onlineNoThrottlingXPerSecond: {
+          base: 4,
+          display: 'months',
+          seconds: 10000000.1,
+        },
+        onlineThrottlingXPerHour: {
+          base: null,
+          display: 'centuries',
+          seconds: 3600000036,
+        },
       },
       score: 2,
       feedback: {

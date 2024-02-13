@@ -1,7 +1,6 @@
 import Options from './Options'
 import {
-  CrackTimesBase,
-  CrackTimesDisplay,
+  CrackTimes,
   CrackTimesSeconds,
   Score,
   TimeEstimationValues,
@@ -65,29 +64,24 @@ class TimeEstimates {
 
   public estimateAttackTimes(guesses: number) {
     const crackTimesSeconds = this.calculateCrackTimesSeconds(guesses)
-    const crackTimesDisplay: CrackTimesDisplay = {
-      onlineThrottlingXPerHour: '',
-      onlineNoThrottlingXPerSecond: '',
-      offlineSlowHashingXPerSecond: '',
-      offlineFastHashingXPerSecond: '',
-    }
-    const crackTimesBase: CrackTimesBase = {
-      onlineThrottlingXPerHour: null,
-      onlineNoThrottlingXPerSecond: null,
-      offlineSlowHashingXPerSecond: null,
-      offlineFastHashingXPerSecond: null,
-    }
-    Object.keys(crackTimesSeconds).forEach((scenario) => {
-      const usedScenario = scenario as keyof CrackTimesSeconds
-      const seconds = crackTimesSeconds[usedScenario]
-      const { base, displayStr } = this.displayTime(seconds)
-      crackTimesBase[usedScenario] = base
-      crackTimesDisplay[usedScenario] = this.translate(displayStr, base)
-    })
+    const crackTimes = Object.keys(crackTimesSeconds).reduce(
+      (previousValue, crackTime) => {
+        const usedScenario = crackTime as keyof CrackTimesSeconds
+        const seconds = crackTimesSeconds[usedScenario]
+        const { base, displayStr } = this.displayTime(seconds)
+
+        // eslint-disable-next-line no-param-reassign
+        previousValue[usedScenario] = {
+          base,
+          seconds,
+          display: this.translate(displayStr, base),
+        }
+        return previousValue
+      },
+      {} as CrackTimes,
+    )
     return {
-      crackTimesSeconds,
-      crackTimesDisplay,
-      crackTimesBase,
+      crackTimes,
       score: this.guessesToScore(guesses),
     }
   }

@@ -6,12 +6,13 @@ import {
   BruteForceMatch,
   MatchEstimated,
   LooseObject,
+  Optimal,
 } from '../types'
 import Options from '../Options'
 
 const scoringHelper = {
   password: '',
-  optimal: {} as any,
+  optimal: {} as Optimal,
   excludeAdditive: false,
   separatorRegex: undefined as RegExp | null | undefined,
   fillArray(size: number, valueType: 'object' | 'array') {
@@ -196,6 +197,7 @@ export default class Scoring {
       // if there is no length-sequenceLength sequence that scores better (fewer guesses) than
       // a shorter match sequence spanning the same prefix,
       // optimal.m[k][sequenceLength] is undefined.
+      // @ts-ignore
       m: scoringHelper.fillArray(passwordLength, 'object'),
       // same structure as optimal.m -- holds the product term Prod(m.guesses for m in sequence).
       // optimal.pi allows for fast (non-looping) updates to the minimization function.

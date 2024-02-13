@@ -21,23 +21,27 @@ describe('levenshtein', () => {
     result.calcTime = 0
     expect(result).toEqual({
       calcTime: 0,
-      crackTimesBase: {
-        offlineFastHashingXPerSecond: null,
-        offlineSlowHashingXPerSecond: null,
-        onlineNoThrottlingXPerSecond: null,
-        onlineThrottlingXPerHour: 1,
-      },
-      crackTimesDisplay: {
-        offlineFastHashingXPerSecond: 'less than a second',
-        offlineSlowHashingXPerSecond: 'less than a second',
-        onlineNoThrottlingXPerSecond: 'less than a second',
-        onlineThrottlingXPerHour: '1 minute',
-      },
-      crackTimesSeconds: {
-        offlineFastHashingXPerSecond: 2e-10,
-        offlineSlowHashingXPerSecond: 0.0002,
-        onlineNoThrottlingXPerSecond: 0.2,
-        onlineThrottlingXPerHour: 72,
+      crackTimes: {
+        offlineFastHashingXPerSecond: {
+          base: null,
+          display: 'less than a second',
+          seconds: 2e-10,
+        },
+        offlineSlowHashingXPerSecond: {
+          base: null,
+          display: 'less than a second',
+          seconds: 0.0002,
+        },
+        onlineNoThrottlingXPerSecond: {
+          base: null,
+          display: 'less than a second',
+          seconds: 0.2,
+        },
+        onlineThrottlingXPerHour: {
+          base: 1,
+          display: '1 minute',
+          seconds: 72,
+        },
       },
       feedback: {
         suggestions: ['Add more words that are less common.'],
@@ -81,23 +85,27 @@ describe('levenshtein', () => {
     ).toBeDefined()
     expect(result).toEqual({
       calcTime: 0,
-      crackTimesBase: {
-        offlineFastHashingXPerSecond: null,
-        offlineSlowHashingXPerSecond: null,
-        onlineNoThrottlingXPerSecond: 35,
-        onlineThrottlingXPerHour: 3,
-      },
-      crackTimesDisplay: {
-        offlineFastHashingXPerSecond: 'less than a second',
-        offlineSlowHashingXPerSecond: 'less than a second',
-        onlineNoThrottlingXPerSecond: '35 seconds',
-        onlineThrottlingXPerHour: '3 hours',
-      },
-      crackTimesSeconds: {
-        offlineFastHashingXPerSecond: 3.45e-8,
-        offlineSlowHashingXPerSecond: 0.0345,
-        onlineNoThrottlingXPerSecond: 34.5,
-        onlineThrottlingXPerHour: 12420,
+      crackTimes: {
+        offlineFastHashingXPerSecond: {
+          base: null,
+          display: 'less than a second',
+          seconds: 3.45e-8,
+        },
+        offlineSlowHashingXPerSecond: {
+          base: null,
+          display: 'less than a second',
+          seconds: 0.0345,
+        },
+        onlineNoThrottlingXPerSecond: {
+          base: 35,
+          display: '35 seconds',
+          seconds: 34.5,
+        },
+        onlineThrottlingXPerHour: {
+          base: 3,
+          display: '3 hours',
+          seconds: 12420,
+        },
       },
       feedback: {
         suggestions: ['Add more words that are less common.'],
