@@ -1,7 +1,8 @@
 import { resolve } from 'path'
-import { defineUserConfig, defaultTheme } from 'vuepress'
+import { defineUserConfig } from 'vuepress'
+import { defaultTheme } from '@vuepress/theme-default'
 import { registerComponentsPlugin } from '@vuepress/plugin-register-components'
-
+import { viteBundler } from '@vuepress/bundler-vite'
 import { sidebar } from './sidebar'
 import { navbar } from './nav'
 // @ts-ignore
@@ -17,6 +18,10 @@ export default defineUserConfig({
       componentsDir: resolve(__dirname, './components'),
     }),
   ],
+  bundler: viteBundler({
+    viteOptions: {},
+    vuePluginOptions: {},
+  }),
   theme: defaultTheme({
     sidebar,
     navbar,
