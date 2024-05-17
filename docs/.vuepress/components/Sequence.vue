@@ -131,16 +131,6 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'ZxcvbnSequence',
-  props: {
-    result: {
-      type: Object,
-      default() {
-        return {}
-      },
-    },
-  },
-}
+<script setup>
+defineProps(['result'])
 </script>

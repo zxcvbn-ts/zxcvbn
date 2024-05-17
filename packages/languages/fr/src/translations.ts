@@ -29,7 +29,8 @@ export default {
     l33t: "Évitez les substitutions de lettres prévisibles comme '@' pour 'a'.",
     reverseWords: 'Évitez les orthographes inversées des mots courants',
     allUppercase: 'Mettez quelques lettres en majuscules, mais pas toutes.',
-    capitalization: 'Utilisez des majuscules mais pas seulement sur la première lettre.',
+    capitalization:
+      'Utilisez des majuscules mais pas seulement sur la première lettre.',
     dates:
       'Évitez les dates et les années qui vous sont associées. (ex: date ou année de naissance)',
     recentYears: 'Évitez les dernières années.',

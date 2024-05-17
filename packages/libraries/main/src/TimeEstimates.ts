@@ -59,7 +59,7 @@ export const checkTimeEstimationValues = (
  *  Estimates time for an attacker ---------------------------------------------------------------
  * -------------------------------------------------------------------------------
  */
-class TimeEstimates {
+export class TimeEstimates {
   constructor(private options: Options) {}
 
   public estimateAttackTimes(guesses: number) {
@@ -146,5 +146,3 @@ class TimeEstimates {
     )
   }
 }
-
-export default TimeEstimates

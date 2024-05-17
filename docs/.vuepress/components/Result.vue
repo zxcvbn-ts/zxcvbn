@@ -58,21 +58,12 @@
   </table>
 </template>
 
-<script>
-export default {
-  name: 'ZxcvbnResult',
-  props: {
-    result: {
-      type: Object,
-      default() {
-        return {}
-      },
-    },
-  },
-  computed: {
-    hasSuggestions() {
-      return this.result.feedback.suggestions.length > 0
-    },
-  },
-}
+<script setup>
+import { computed } from 'vue'
+
+const props = defineProps(['result'])
+
+const hasSuggestions = computed(() => {
+  return props.result.feedback.suggestions.length > 0
+})
 </script>

@@ -37,7 +37,7 @@ zxcvbn.check(password)
 
 Example using jsdelivr (a CDN)
 
-```
+```html
 <html>
   <head>
     <script src="https://cdn.jsdelivr.net/npm/@zxcvbn-ts/core@2.0.0/dist/zxcvbn-ts.js"></script>
