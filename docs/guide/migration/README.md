@@ -5,7 +5,7 @@
 ### Move from singleton options to class based approach
 
 Old:
-```
+```ts
 zxcvbnOptions.setOptions(options)
 
 zxcvbn(password)
@@ -13,7 +13,7 @@ zxcvbn(password)
 
 New:
 
-```
+```ts
 const zxcvbn = new ZxcvbnFactory(options, customMatcher)
 
 zxcvbn.check(password)
@@ -25,7 +25,7 @@ zxcvbn.check(password)
 This is an example for the pwned custom matcher changes. Generally the options doesn't need to be transferred anymore.
 
 Old:
-```
+```ts
 zxcvbnOptions.setOptions(options)
 
 const pwnedOptions = {
@@ -40,7 +40,7 @@ zxcvbn(password)
 
 New:
 
-```
+```ts
 const pwnedOptions = {
   url: string,
   networkErrorHandler: Function
@@ -56,7 +56,7 @@ zxcvbn.check(password)
 ## Scoring thresholds naming changed
 
 Old:
-```
+```json
 {
   crackTimesSeconds: {
     offlineFastHashing1e10PerSecond: number,
@@ -74,7 +74,7 @@ Old:
 ```
 
 New:
-```
+```json
 {
   crackTimesSeconds: {
     onlineThrottlingXPerHour: number

@@ -1,5 +1,5 @@
 import Matching from './Matching'
-import TimeEstimates from './TimeEstimates'
+import { TimeEstimates } from './TimeEstimates'
 import Feedback from './Feedback'
 import Options from './Options'
 import debounce from './utils/debounce'
