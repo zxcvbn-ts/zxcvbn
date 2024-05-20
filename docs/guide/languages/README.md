@@ -15,6 +15,8 @@ Current supported languages:
 - Dutch (Belgium)
 - Polish
 - Portuguese (Brazilian)
+- Czech
+- Arabic
 
 ## Feedback
 
