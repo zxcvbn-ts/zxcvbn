@@ -6,7 +6,7 @@ Current supported languages:
 
 - German
 - English
-- Spain (Spain)
+- Spanish (Spain)
 - Finnish
 - French
 - Indonesia
@@ -15,6 +15,8 @@ Current supported languages:
 - Dutch (Belgium)
 - Polish
 - Portuguese (Brazilian)
+- Czech
+- Arabic
 
 ## Feedback
 
