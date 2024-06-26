@@ -53,7 +53,7 @@ const zxcvbn = new ZxcvbnFactory(options, customMatcher)
 zxcvbn.check(password)
 ```
 
-## Scoring thresholds naming changed
+## Scoring thresholds naming changed in the output
 
 Old:
 ```json
@@ -76,17 +76,27 @@ Old:
 New:
 ```json
 {
-  crackTimesSeconds: {
-    onlineThrottlingXPerHour: number
-    onlineNoThrottlingXPerSecond: number
-    offlineSlowHashingXPerSecond: number
-    offlineFastHashingXPerSecond: number
-  },
-  crackTimesDisplay: {
-    onlineThrottlingXPerHour: string,
-    onlineNoThrottlingXPerSecond: string
-    offlineSlowHashingXPerSecond: string
-    offlineFastHashingXPerSecond: string
+  crackTimes: {
+    onlineThrottlingXPerHour: {
+      base: number | null
+      seconds: number
+      display: string
+    }
+    onlineNoThrottlingXPerSecond: {
+      base: number | null
+      seconds: number
+      display: string
+    }
+    offlineSlowHashingXPerSecond: {
+      base: number | null
+      seconds: number
+      display: string
+    }
+    offlineFastHashingXPerSecond: {
+      base: number | null
+      seconds: number
+      display: string
+    }
   },
 }
 ```
