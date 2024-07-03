@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="loading"><b>Currently comparing passwords...</b></div>
+    <div v-if="isLoading"><b>Currently comparing passwords...</b></div>
     <table class="result" v-else>
       <tr>
         <td></td>
@@ -66,12 +66,14 @@ const passwords = [
 ]
 
 const data = ref([])
-const loading = ref(true)
+const isLoading = ref(true)
 const zxcvbnTs = ref(null)
 
 onMounted(() => {
   setOptions()
-  setData()
+  setTimeout(() => {
+    setData()
+  }, 1000)
 })
 
 const setOptions = () => {
@@ -87,7 +89,7 @@ const setOptions = () => {
 }
 
 const setData = async () => {
-  loading.value = true
+  isLoading.value = true
   for (const password of passwords) {
     const zxcvbnResult = zxcvbn(password)
     const zxcvbnTsResult = await zxcvbnTs.value.checkAsync(password)
@@ -104,6 +106,6 @@ const setData = async () => {
       },
     })
   }
-  loading.value = false
+  isLoading.value = false
 }
 </script>
