@@ -16,20 +16,20 @@ This is how you lazy load dictionaries:
 
 ```js
 const loadOptions = async () => {
-  const zxcvbnCommonPackage = await import(
+  const { dictionary: commonDict, adjacencyGraphs } = await import(
     /* webpackChunkName: "zxcvbnCommonPackage" */ '@zxcvbn-ts/language-common'
   )
-  const zxcvbnEnPackage = await import(
+  const { dictionary: enDict, translations } = await import(
     /* webpackChunkName: "zxcvbnEnPackage" */ '@zxcvbn-ts/language-en'
   )
 
   return {
     dictionary: {
-      ...zxcvbnCommonPackage.default.dictionary,
-      ...zxcvbnEnPackage.default.dictionary,
+      ...commonDict,
+      ...enDict,
     },
-    graphs: zxcvbnCommonPackage.default.adjacencyGraphs,
-    translations: zxcvbnEnPackage.default.translations,
+    graphs: adjacencyGraphs,
+    translations: translations,
   }
 }
 ```
