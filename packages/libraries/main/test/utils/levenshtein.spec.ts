@@ -1,5 +1,5 @@
-import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
-import * as zxcvbnEnPackage from '@zxcvbn-ts/language-en'
+import * as zxcvbnCommonPackage from '../../../../languages/common'
+import * as zxcvbnEnPackage from '../../../../languages/en'
 import { ZxcvbnFactory } from '../../src'
 
 describe('levenshtein', () => {
