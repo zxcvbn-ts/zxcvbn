@@ -68,10 +68,10 @@ import crossFetch from 'cross-fetch'
 import {
   ZxcvbnFactory,
   debounce,
-} from '../../../packages/libraries/main/dist/index'
-import * as zxcvbnCommonPackage from '../../../packages/languages/common/dist/index'
-import * as zxcvbnEnPackage from '../../../packages/languages/en/dist/index'
-import translationKeys from '../../../packages/libraries/main/dist/data/translationKeys'
+} from '../../../packages/libraries/main/dist/index.esm'
+import * as zxcvbnCommonPackage from '../../../packages/languages/common/dist/index.esm'
+import * as zxcvbnEnPackage from '../../../packages/languages/en/dist/index.esm'
+import translationKeys from '../../../packages/libraries/main/dist/data/translationKeys.esm'
 import { matcherPwnedFactory } from '@zxcvbn-ts/matcher-pwned'
 
 const matcherPwned = matcherPwnedFactory(crossFetch)

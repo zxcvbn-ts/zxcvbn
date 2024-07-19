@@ -3,7 +3,6 @@ import babel from '@rollup/plugin-babel'
 import commonjs from '@rollup/plugin-commonjs'
 import typescript from '@rollup/plugin-typescript'
 import del from 'rollup-plugin-delete'
-import copy from 'rollup-plugin-copy'
 import nodeResolve from '@rollup/plugin-node-resolve'
 import terser from '@rollup/plugin-terser'
 import fs from 'fs'
@@ -38,8 +37,8 @@ const generateConfig = async (type, minify = false) => {
       rootDir: 'src/',
       exclude: ['test/**/*', 'dist/**/*'],
     }
-    output.entryFileNames = '[name].mjs'
-    output.assetFileNames = '[name].mjs'
+    output.entryFileNames = '[name].esm.js'
+    output.assetFileNames = '[name].esm.js'
     output.exports = 'named'
     babelrc = false
   }
@@ -88,11 +87,6 @@ const generateConfig = async (type, minify = false) => {
         extensions: ['.ts'],
         babelHelpers: 'bundled',
         babelrc,
-      }),
-      copy({
-        targets: [
-          { src: 'dist/index.d.ts', dest: 'dist', rename: 'index.d.mts' },
-        ],
       }),
       minify ? terser() : null,
     ],
