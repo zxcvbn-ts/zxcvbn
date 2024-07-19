@@ -53,7 +53,8 @@ const getDictionaryWarning = (
   const dictName = match.dictionaryName
   const isAName =
     dictName.toLowerCase().includes('lastnames') ||
-    dictName.toLowerCase().includes('firstnames')
+    dictName.toLowerCase().includes('firstnames') ||
+    dictName.toLowerCase().includes('names')
 
   if (dictName.includes('passwords')) {
     return getDictionaryWarningPassword(options, match, isSoleMatch)
