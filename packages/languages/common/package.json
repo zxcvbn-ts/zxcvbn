@@ -2,9 +2,8 @@
   "name": "@zxcvbn-ts/language-common",
   "version": "3.0.4",
   "main": "dist/index.js",
-  "module": "dist/index.mjs",
+  "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
-
   "sideEffects": false,
   "description": "The common language package for zxcvbn-ts",
   "license": "MIT",

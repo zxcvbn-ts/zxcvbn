@@ -2,9 +2,8 @@
   "name": "@zxcvbn-ts/core",
   "version": "3.0.4",
   "main": "dist/index.js",
-  "module": "dist/index.mjs",
+  "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
-
   "description": "Realistic password strength estimation written in typescript",
   "license": "MIT",
   "homepage": "https://github.com/zxcvbn-ts/zxcvbn",
