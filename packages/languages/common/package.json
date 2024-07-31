@@ -1,6 +1,6 @@
 {
   "name": "@zxcvbn-ts/language-common",
-  "version": "3.0.4",
+  "version": "4.0.0-beta.0",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
