@@ -264,6 +264,20 @@ export default {
         'https://gist.github.com/allanlewis/ddfe6e7053fd12986589c52edf6ef856/raw/bc6ca7a55527930ec5f25e448c3aa0a7deee2de6/italian-last-names.txt',
     },
   },
+  'ro': {
+    commonWords: {
+      source:
+        'https://raw.githubusercontent.com/daniesy/romanian/main/commonWords.txt',
+    },
+    firstnames: {
+      source:
+        'https://raw.githubusercontent.com/daniesy/romanian/main/firstnames.txt',
+    },
+    lastnames: {
+      source:
+        'https://raw.githubusercontent.com/daniesy/romanian/main/lastnames.txt',
+    },
+  },
   'pt-br': {
     commonWords: {
       source:
