@@ -17,15 +17,15 @@ The Danish dictionary and language package for zxcvbn-ts
 ```js
 import { ZxcvbnFactory } from '@zxcvbn-ts/core'
 import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
-import * as zxcvbnEnPackage from '@zxcvbn-ts/language-da-dk'
+import * as zxcvbnDaDkPackage from '@zxcvbn-ts/language-da-dk'
 
 const password = 'nogleAdgangskode'
 const options = {
-  translations: zxcvbnEnPackage.translations,
+  translations: zxcvbnDaDkPackage.translations,
   graphs: zxcvbnCommonPackage.adjacencyGraphs,
   dictionary: {
     ...zxcvbnCommonPackage.dictionary,
-    ...zxcvbnEnPackage.dictionary,
+    ...zxcvbnDaDkPackage.dictionary,
   },
 }
 

@@ -1,18 +1,18 @@
 {
-  "name": "@zxcvbn-ts/language-en",
+  "name": "@zxcvbn-ts/language-da-dk",
   "version": "4.0.0-beta.0",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
   "sideEffects": false,
-  "description": "The English language package for zxcvbn-ts",
+  "description": "The Danish language package for zxcvbn-ts",
   "license": "MIT",
   "homepage": "https://github.com/zxcvbn-ts/zxcvbn",
   "repository": {
     "type": "git",
     "url": "https://github.com/zxcvbn-ts/zxcvbn.git"
   },
-  "author": "zxcvbn-ts",
+  "author": "ChristianLieven",
   "files": [
     "dist",
     "src"
@@ -24,6 +24,6 @@
     "zxcvbn",
     "language",
     "translation",
-    "english"
+    "danish"
   ]
 }
