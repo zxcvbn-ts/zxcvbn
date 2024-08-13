@@ -1,33 +1,34 @@
-# @zxcvbn-ts/language-de
+# @zxcvbn-ts/language-en
 
-The German dictionary and language package for **zxcvbn-ts**
+The Danish dictionary and language package for zxcvbn-ts
 
-## Installation
+## Install
 
 #### npm:
 
-`npm install @zxcvbn-ts/language-de --save`
+`npm install @zxcvbn-ts/language-da-dk --save`
 
 #### yarn:
 
-`yarn add @zxcvbn-ts/language-de`
+`yarn add @zxcvbn-ts/language-da-dk`
 
 ## Setup
 
 ```js
 import { ZxcvbnFactory } from '@zxcvbn-ts/core'
 import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
-import * as zxcvbnDePackage from '@zxcvbn-ts/language-de'
+import * as zxcvbnEnPackage from '@zxcvbn-ts/language-da-dk'
 
 const password = 'nogleAdgangskode'
 const options = {
-  translations: zxcvbnDePackage.translations,
+  translations: zxcvbnEnPackage.translations,
   graphs: zxcvbnCommonPackage.adjacencyGraphs,
   dictionary: {
     ...zxcvbnCommonPackage.dictionary,
-    ...zxcvbnDePackage.dictionary,
+    ...zxcvbnEnPackage.dictionary,
   },
 }
+
 const zxcvbn = new ZxcvbnFactory(options)
 zxcvbn.check(password)
 ```
