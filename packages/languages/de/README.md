@@ -19,7 +19,7 @@ import { ZxcvbnFactory } from '@zxcvbn-ts/core'
 import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
 import * as zxcvbnDePackage from '@zxcvbn-ts/language-de'
 
-const password = 'nogleAdgangskode'
+const password = 'somePassword'
 const options = {
   translations: zxcvbnDePackage.translations,
   graphs: zxcvbnCommonPackage.adjacencyGraphs,
