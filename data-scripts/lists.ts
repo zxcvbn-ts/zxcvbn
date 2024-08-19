@@ -49,6 +49,25 @@ export default {
         'https://raw.githubusercontent.com/arineng/arincli/master/lib/last-names.txt',
     },
   },
+  'da-dk': {
+    commonWords: {
+      source:
+        'https://raw.githubusercontent.com/hermitdave/FrequencyWords/master/content/2018/da/da_50k.txt',
+      options: { hasOccurrences: true },
+    },
+    maleFirstnames: {
+      source:
+        'https://raw.githubusercontent.com/n0kovo/danish-wordlists/main/first_names_male_2021.txt',
+    },
+    femaleFirstnames: {
+      source:
+        'https://raw.githubusercontent.com/n0kovo/danish-wordlists/main/first_names_female_2021.txt',
+    },
+    lastnames: {
+      source:
+        'https://raw.githubusercontent.com/n0kovo/danish-wordlists/main/last_names_2021.txt',
+    },
+  },
   'pl': {
     commonWords: {
       source:
