@@ -76,12 +76,12 @@ export default {
     },
     maleFirstnames: {
       source:
-        'https://api.dane.gov.pl/resources/36411,lista-imion-meskich-w-rejestrze-pesel-stan-na-24012022-imie-pierwsze/csv',
+        'https://api.dane.gov.pl/resources/42873,lista-imion-meskich-w-rejestrze-pesel-stan-na-24012022-imie-pierwsze/csv',
       options: polishFirstnamesOptions,
     },
     femaleFirstnames: {
       source:
-        'https://api.dane.gov.pl/resources/36412,lista-imion-zenskich-w-rejestrze-pesel-stan-na-24012022-imie-pierwsze/csv',
+        'https://api.dane.gov.pl/resources/42874,lista-imion-zenskich-w-rejestrze-pesel-stan-na-24012022-imie-pierwsze/csv',
       options: polishFirstnamesOptions,
     },
     maleLastnames: {
