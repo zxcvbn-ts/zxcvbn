@@ -70,9 +70,9 @@ const generateConfig = async (type, minify = false) => {
   }
 
   if (type === 'iife') {
-    pluginsOnlyOnce.push(nodeResolve({ resolveOnly: ['fastest-levenshtein'] }))
+    pluginsOnlyOnce.push(nodeResolve({ resolveOnly: ['fastest-levenshtein', '@alttiri/base85', 'fflate'] }))
   } else {
-    external.push('fastest-levenshtein')
+    external.push('fastest-levenshtein', '@alttiri/base85', 'fflate')
   }
 
   return {
