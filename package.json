@@ -23,6 +23,7 @@
     "test": "jest --coverage",
     "changed": "lerna changed",
     "lerna-publish": "yarn build && lerna publish --conventional-commits -y",
+    "lerna-publish:beta": "yarn build && lerna publish premajor --preid beta --dist-tag beta -y",
     "generate:languageData": "yarn start-ts-file ./data-scripts/generate.ts",
     "generate:deduplicate": "yarn start-ts-file ./data-scripts/deduplicate.ts",
     "wikipediaExtractor": "yarn start-ts-file ./data-scripts/wikiExtractor/index.ts ./data-scripts/extracts",

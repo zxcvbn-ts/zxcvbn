@@ -33,5 +33,5 @@ const options = {
 const zxcvbn = new ZxcvbnFactory(options)
 
 const password = 'somePassword'
-zxcvbn(password)
+zxcvbn.check(password)
 ```

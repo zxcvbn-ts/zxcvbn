@@ -23,5 +23,5 @@ import { ZxcvbnFactory } from '@zxcvbn-ts/core'
 const password = 'somePassword'
 
 const zxcvbn = new ZxcvbnFactory()
-zxcvbn(password, ['someEmail@email.de', 'someUsername'])
+zxcvbn.check(password, ['someEmail@email.de', 'someUsername'])
 ```
