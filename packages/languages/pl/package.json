@@ -27,5 +27,9 @@
     "polish",
     "poland",
     "pl"
-  ]
+  ],
+  "dependencies": {
+    "@alttiri/base85": "^1.8.0",
+    "fflate": "^0.8.2"
+  }
 }
