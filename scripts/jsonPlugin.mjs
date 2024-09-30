@@ -13,11 +13,11 @@ const json = () => {
 
       try {
         const parsed = JSON.parse(json)
-        var code
+        let code
         if (Array.isArray(parsed)) {
           const data = parsed.join(',')
-          const data_buf = strToU8(data)
-          const compressed = compressSync(data_buf, { level: 9, mem: 12 })
+          const dataBuf = strToU8(data)
+          const compressed = compressSync(dataBuf, { level: 9, mem: 12 })
           const encoded = encodeBase85(compressed)
 
           code = `
@@ -27,10 +27,10 @@ const json = () => {
           const encoded = "${encoded}"
 
           const decoded = decodeBase85(encoded)
-          const decompressed_buf = decompressSync(decoded)
-          const decompressed = strFromU8(decompressed_buf);
-          const decompressed_array = decompressed.split(',')
-          export default decompressed_array`
+          const decompressedBuf = decompressSync(decoded)
+          const decompressed = strFromU8(decompressedBuf);
+          const decompressedArray = decompressed.split(',')
+          export default decompressedArray`
         } else {
           const data = JSON.stringify(parsed)
           code = `export default ${data}`
