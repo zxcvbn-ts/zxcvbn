@@ -1,6 +1,6 @@
 {
   "name": "@zxcvbn-ts/language-nl-be",
-  "version": "4.0.0-beta.1",
+  "version": "4.0.0-beta.2",
   "main": "dist/index.cjs",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
@@ -28,6 +28,6 @@
     "belgium"
   ],
   "dependencies": {
-    "@zxcvbn-ts/dictionary-compression": "4.0.0-beta.1"
+    "@zxcvbn-ts/dictionary-compression": "^4.0.0-beta.2"
   }
 }
