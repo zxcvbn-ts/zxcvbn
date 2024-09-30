@@ -119,6 +119,13 @@ module.exports = {
         'import/no-relative-packages': 'off',
       },
     },
+    {
+      files: ['./scripts/rollup.config.mjs', './scripts/jsonPlugin.mjs'],
+      rules: {
+        'compat/compat': 'off',
+        'max-statements': 'off',
+      },
+    },
   ],
   env: {
     browser: true,
