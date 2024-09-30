@@ -1,8 +1,8 @@
 {
   "name": "@zxcvbn-ts/matcher-pwned",
   "version": "4.0.0-beta.1",
-  "main": "dist/index.js",
-  "module": "dist/index.esm.js",
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "description": "HaveIBeenPwned Matcher for zxcvbn-ts",
   "license": "MIT",

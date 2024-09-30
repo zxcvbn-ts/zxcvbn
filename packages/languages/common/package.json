@@ -1,8 +1,8 @@
 {
   "name": "@zxcvbn-ts/language-common",
   "version": "4.0.0-beta.1",
-  "main": "dist/index.js",
-  "module": "dist/index.esm.js",
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "sideEffects": false,
   "description": "The common language package for zxcvbn-ts",
@@ -27,7 +27,6 @@
     "common"
   ],
   "dependencies": {
-    "@alttiri/base85": "^1.8.0",
-    "fflate": "^0.8.2"
+    "@zxcvbn-ts/dictionary-compression": "4.0.0-beta.1"
   }
 }

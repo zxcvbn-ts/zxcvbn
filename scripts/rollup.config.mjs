@@ -1,22 +1,12 @@
-import path from 'path'
 import babel from '@rollup/plugin-babel'
 import commonjs from '@rollup/plugin-commonjs'
 import typescript from '@rollup/plugin-typescript'
 import del from 'rollup-plugin-delete'
-import nodeResolve from '@rollup/plugin-node-resolve'
 import terser from '@rollup/plugin-terser'
-import fs from 'fs'
 import json from './jsonPlugin.mjs'
-
-const packagePath = process.cwd()
 
 let generateCounter = 0
 const generateConfig = async (type, minify = false) => {
-  const pkgString = fs.readFileSync(
-    path.join(packagePath, 'package.json'),
-    'utf-8',
-  )
-  const pkg = JSON.parse(pkgString)
   let typescriptOptions = {
     declaration: false,
   }
@@ -25,10 +15,10 @@ const generateConfig = async (type, minify = false) => {
   const output = {
     dir: 'dist/',
     format: type,
-    entryFileNames: '[name].js',
-    assetFileNames: '[name].js',
+    entryFileNames: '[name].cjs',
+    assetFileNames: '[name].cjs',
     sourcemap: true,
-    preserveModules: type !== 'iife',
+    preserveModules: true,
   }
   if (type === 'esm') {
     typescriptOptions = {
@@ -37,25 +27,13 @@ const generateConfig = async (type, minify = false) => {
       rootDir: 'src/',
       exclude: ['test/**/*', 'dist/**/*'],
     }
-    output.entryFileNames = '[name].esm.js'
-    output.assetFileNames = '[name].esm.js'
+    output.entryFileNames = '[name].mjs'
+    output.assetFileNames = '[name].mjs'
     output.exports = 'named'
     babelrc = false
   }
   if (type === 'cjs') {
     output.exports = 'auto'
-  }
-
-  if (type === 'iife') {
-    output.name = pkg.name.replace('@', '').replace('-', '').replace('/', '.')
-
-    if (minify) {
-      output.entryFileNames = 'zxcvbn-ts.min.js'
-      output.assetFileNames = 'zxcvbn-ts.min.js'
-    } else {
-      output.entryFileNames = 'zxcvbn-ts.js'
-      output.assetFileNames = 'zxcvbn-ts.js'
-    }
   }
 
   const pluginsOnlyOnce = []
@@ -69,15 +47,7 @@ const generateConfig = async (type, minify = false) => {
     generateCounter += 1
   }
 
-  if (type === 'iife') {
-    pluginsOnlyOnce.push(
-      nodeResolve({
-        resolveOnly: ['fastest-levenshtein', '@alttiri/base85', 'fflate'],
-      }),
-    )
-  } else {
-    external.push('fastest-levenshtein', '@alttiri/base85', 'fflate')
-  }
+  external.push('fastest-levenshtein', '@alttiri/base85', 'fflate')
 
   return {
     input: ['./src/index.ts'],
@@ -98,9 +68,4 @@ const generateConfig = async (type, minify = false) => {
   }
 }
 
-export default Promise.all([
-  generateConfig('esm'),
-  generateConfig('cjs'),
-  generateConfig('iife'),
-  generateConfig('iife', true), // cdn build
-])
+export default Promise.all([generateConfig('esm'), generateConfig('cjs')])
