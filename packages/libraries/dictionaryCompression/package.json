@@ -1,0 +1,32 @@
+{
+  "name": "@zxcvbn-ts/dictionary-compression",
+  "version": "4.0.0-beta.0",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "description": "dictionary-compression helper for zxcvbn-ts language packages",
+  "license": "MIT",
+  "homepage": "https://github.com/zxcvbn-ts/zxcvbn",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zxcvbn-ts/zxcvbn.git"
+  },
+  "author": "zxcvbn-ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@alttiri/base85": "1.8.0",
+    "fflate": "^0.8.2"
+  },
+  "keywords": [
+    "zxcvbn-ts",
+    "language",
+    "compression",
+    "decompression"
+  ]
+}
