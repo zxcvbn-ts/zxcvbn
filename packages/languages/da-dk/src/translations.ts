@@ -3,8 +3,7 @@ export default {
     straightRow: 'Lige rækker af taster på dit tastatur er nemme at gætte.',
     keyPattern: 'Korte tastaturmønstre er nemme at gætte.',
     simpleRepeat: 'Gentagne tegn som "aaa" er nemme at gætte.',
-    extendedRepeat:
-      'Gentagne tegnmønstre som "abcabcabc" er nemme at gætte.',
+    extendedRepeat: 'Gentagne tegnmønstre som "abcabcabc" er nemme at gætte.',
     sequences: 'Almindelige tegnsekvenser som "abc" er nemme at gætte.',
     recentYears: 'Nylige år er nemme at gætte.',
     dates: 'Datoer er nemme at gætte.',
@@ -13,9 +12,11 @@ export default {
     common: 'Dette er en almindeligt brugt adgangskode.',
     similarToCommon: 'Dette ligner en almindeligt brugt adgangskode.',
     wordByItself: 'Enkeltord er nemme at gætte.',
-    namesByThemselves: 'Enkeltstående navne eller efternavne er nemme at gætte.',
+    namesByThemselves:
+      'Enkeltstående navne eller efternavne er nemme at gætte.',
     commonNames: 'Almindelige navne og efternavne er nemme at gætte.',
-    userInputs: 'Der bør ikke være nogen personlige eller side-relaterede data.',
+    userInputs:
+      'Der bør ikke være nogen personlige eller side-relaterede data.',
     pwned: 'Din adgangskode blev afsløret i et databrud på internettet.',
   },
   suggestions: {

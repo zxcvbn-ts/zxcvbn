@@ -12,7 +12,6 @@ export interface LanguageListEntry {
   options?: {
     [key: string]: any
   }
-  // eslint-disable-next-line @typescript-eslint/ban-types
   generator?: Function
   customList?: boolean
 }
