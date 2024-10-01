@@ -15,6 +15,17 @@
           Use recommended dictionary
         </label>
       </li>
+      <li v-if="useDictionaries">
+        <Multiselect
+          v-model="activeLanguages"
+          :options="languages"
+          :multiple="true"
+          :close-on-select="false"
+          :clear-on-select="false"
+          :preserve-search="true"
+          placeholder="Pick some"
+        />
+      </li>
 
       <li>
         <label>
@@ -65,18 +76,20 @@
 
 <script>
 import crossFetch from 'cross-fetch'
+import Multiselect from 'vue-multiselect'
 import {
   ZxcvbnFactory,
   debounce,
 } from '../../../packages/libraries/main/dist/index'
-import * as zxcvbnCommonPackage from '../../../packages/languages/common/dist/index'
-import * as zxcvbnEnPackage from '../../../packages/languages/en/dist/index'
 import translationKeys from '../../../packages/libraries/main/dist/data/translationKeys'
 import { matcherPwnedFactory } from '@zxcvbn-ts/matcher-pwned'
 
 const matcherPwned = matcherPwnedFactory(crossFetch)
 export default {
   name: 'ZxcvbnInteractive',
+  components: {
+    Multiselect,
+  },
   data() {
     return {
       password: '',
@@ -90,12 +103,37 @@ export default {
       debounce: debounce(this.useZxcvbn, 200),
       userInputs: '',
       zxcvbn: null,
+      activeLanguages: ['en', 'common'],
+      languages: [
+        'ar',
+        'common',
+        'cs',
+        'da-dk',
+        'de',
+        'en',
+        'es-es',
+        'fi',
+        'fr',
+        'id',
+        'it',
+        'ja',
+        'nl-be',
+        'pl',
+        'pl-br',
+      ],
+      loadedLanguagePackages: {},
     }
   },
-  mounted() {
+  async mounted() {
+    await this.fillLoadedLanguages(this.activeLanguages)
     this.setOptions(true)
   },
   methods: {
+    async loadLanguagePack(language) {
+      return await import(
+        `../../../packages/languages/${language}/dist/index.mjs`
+      )
+    },
     setResult(result) {
       this.result = result
     },
@@ -107,16 +145,22 @@ export default {
         useLevenshteinDistance: this.useLevenshteinDistance,
       }
       if (this.useDictionaries) {
-        options.dictionary = {
-          ...zxcvbnCommonPackage.dictionary,
-          ...zxcvbnEnPackage.dictionary,
-        }
+        options.dictionary = Object.entries(this.loadedLanguagePackages)
+          .filter(([language]) => {
+            return this.activeLanguages.includes(language)
+          })
+          .reduce((acc, [language, languagePackage]) => {
+            return {
+              ...acc,
+              ...languagePackage.dictionary,
+            }
+          }, {})
       }
-      if (this.useTranslations) {
-        options.translations = zxcvbnEnPackage.translations
+      if (this.useTranslations && this.loadedLanguagePackages.en) {
+        options.translations = this.loadedLanguagePackages.en.translations
       }
-      if (this.useGraphs) {
-        options.graphs = zxcvbnCommonPackage.adjacencyGraphs
+      if (this.useGraphs && this.loadedLanguagePackages.common) {
+        options.graphs = this.loadedLanguagePackages.common.adjacencyGraphs
       }
       const customMatcher = {}
       if (hasPwnedMatcher) {
@@ -133,6 +177,15 @@ export default {
         this.result = null
       }
       console.log(this.result)
+    },
+    async fillLoadedLanguages(newValue) {
+      const promises = newValue.map(async (language) => {
+        if (!this.loadedLanguagePackages[language]) {
+          this.loadedLanguagePackages[language] =
+            await this.loadLanguagePack(language)
+        }
+      })
+      await Promise.all(promises)
     },
   },
   watch: {
@@ -167,9 +220,17 @@ export default {
         this.setOptions()
       }
     },
+    async activeLanguages(newValue) {
+      if (newValue) {
+        await this.fillLoadedLanguages(newValue)
+      }
+      this.password = ''
+      this.setOptions()
+    },
   },
 }
 </script>
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 
 <style>
 .example input[type='text'] {
@@ -191,5 +252,32 @@ export default {
 .example {
   padding: 1em 0 1em;
   margin-bottom: 2em;
+}
+
+/* in your app.scss of laravel */
+.multiselect .multiselect__tags {
+  background-color: var(--vp-c-gutter);
+  border-color: var(--vp-c-border);
+  color: var(--vp-c-text);
+}
+
+.multiselect__tags .multiselect__single {
+  color: var(--vp-c-text);
+}
+
+.multiselect .multiselect__input {
+  background-color: var(--vp-c-gutter);
+  border-color: var(--vp-c-border);
+  color: var(--vp-c-text);
+}
+
+.multiselect .multiselect__content-wrapper {
+  background-color: var(--vp-c-gutter);
+  border-color: var(--vp-c-border);
+  color: var(--vp-c-text);
+}
+
+.multiselect .multiselect__option--selected {
+  background-color: var(--vp-c-bg-elv);
 }
 </style>
