@@ -69,6 +69,7 @@ class MatchSequence {
       password,
       result,
     })
+    console.log(result)
     return result
   }
 

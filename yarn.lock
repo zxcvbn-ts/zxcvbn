@@ -3339,6 +3339,14 @@
   dependencies:
     argparse "^2.0.1"
 
+"@zxcvbn-ts/dictionary-compression@1.0.0", "@zxcvbn-ts/dictionary-compression@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@zxcvbn-ts/dictionary-compression/-/dictionary-compression-1.0.0.tgz#e7aa181a6f3e387a2532f4dec9d78eeec38da9b5"
+  integrity sha512-K4Ge15UqrDpGX9SMTgZYEhZNVqP4n8GIA7Cjk+URIw52TcaQ3QQde8s0khhGtitD53dBaQN7uY6FOInrD+h+vQ==
+  dependencies:
+    "@alttiri/base85" "1.8.0"
+    fflate "^0.8.2"
+
 JSONStream@^1.3.5:
   version "1.3.5"
   resolved "https://registry.yarnpkg.com/JSONStream/-/JSONStream-1.3.5.tgz#3208c1f08d3a4d99261ab64f92302bc15e111ca0"
