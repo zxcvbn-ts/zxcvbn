@@ -27,6 +27,6 @@
     "danish"
   ],
   "dependencies": {
-    "@zxcvbn-ts/dictionary-compression": "^1.0.0"
+    "@zxcvbn-ts/dictionary-compression": "^2.0.0"
   }
 }

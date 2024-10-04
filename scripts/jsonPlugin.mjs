@@ -1,4 +1,5 @@
-import { compress } from '@zxcvbn-ts/dictionary-compression'
+// eslint-disable-next-line import/extensions
+import compress from '@zxcvbn-ts/dictionary-compression/compress'
 
 const json = () => {
   return {
@@ -17,7 +18,7 @@ const json = () => {
           const encoded = compress(parsed)
 
           code = `
-import { decompress } from '@zxcvbn-ts/dictionary-compression'
+import decompress from '@zxcvbn-ts/dictionary-compression/decompress'
 
 export default decompress('${encoded}')`
         } else {
