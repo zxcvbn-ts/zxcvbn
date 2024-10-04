@@ -3339,10 +3339,10 @@
   dependencies:
     argparse "^2.0.1"
 
-"@zxcvbn-ts/dictionary-compression@1.0.0", "@zxcvbn-ts/dictionary-compression@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@zxcvbn-ts/dictionary-compression/-/dictionary-compression-1.0.0.tgz#e7aa181a6f3e387a2532f4dec9d78eeec38da9b5"
-  integrity sha512-K4Ge15UqrDpGX9SMTgZYEhZNVqP4n8GIA7Cjk+URIw52TcaQ3QQde8s0khhGtitD53dBaQN7uY6FOInrD+h+vQ==
+"@zxcvbn-ts/dictionary-compression@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@zxcvbn-ts/dictionary-compression/-/dictionary-compression-2.0.0.tgz#6a180a9ecf0fba98d87d58c5955fdab9245b65f5"
+  integrity sha512-gTUSR73B2IDfg7PccGRbwOm5wurK0D1LobQsUyLPqe7pOZ4iQYMJfJ3F0dyMjFlRsc2hmdM2gyPX8HWq4nl9VQ==
   dependencies:
     "@alttiri/base85" "1.8.0"
     fflate "^0.8.2"
