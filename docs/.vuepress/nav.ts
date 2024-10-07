@@ -1,8 +1,8 @@
 // @ts-ignore
 import pkg from '../../package.json'
-import { NavbarItem } from '@vuepress/theme-default/lib/shared/nav'
+import { AutoLinkOptions } from '@vuepress/theme-default/lib/shared/nav'
 
-export const navbar: NavbarItem[] = [
+export const navbar: AutoLinkOptions[] = [
   {
     text: 'Guide',
     link: '/guide/',
