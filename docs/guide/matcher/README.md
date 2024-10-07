@@ -41,6 +41,10 @@ The sequence matcher identifies sequences by looking for repeated differences in
 
 The spatial matcher searches for patterns based on keyboard layout, for example, qwertz.
 
+### Separator
+
+The separator matcher searches for common separators like a space or a hyphen
+
 ## Custom Matcher
 
 Custom matchers can be created if needed, including asynchronous matchers. If creating an asynchronous matcher, the function should be debounced using the included debounce function.
