@@ -76,7 +76,7 @@
 
 <script>
 import crossFetch from 'cross-fetch'
-import Multiselect from 'vue-multiselect'
+import Multiselect from 'vue-multiselect/dist/vue-multiselect.common.js'
 import {
   ZxcvbnFactory,
   debounce,
