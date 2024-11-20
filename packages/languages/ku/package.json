@@ -1,0 +1,34 @@
+{
+    "name": "@zxcvbn-ts/language-ku",
+    "version": "4.0.0-beta.2",
+    "main": "dist/index.cjs",
+    "module": "dist/index.mjs",
+    "types": "dist/index.d.ts",
+    "sideEffects": false,
+    "description": "The Kurdish (Kurmanjî dialect) language package for zxcvbn-ts",
+    "license": "MIT",
+    "homepage": "https://github.com/zxcvbn-ts/zxcvbn",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/zxcvbn-ts/zxcvbn.git"
+    },
+    "author": "zxcvbn-ts",
+    "files": [
+      "dist",
+      "src"
+    ],
+    "publishConfig": {
+      "access": "public"
+    },
+    "keywords": [
+      "zxcvbn",
+      "language",
+      "translation",
+      "kurdish",
+      "kurmanji"
+    ],
+    "dependencies": {
+      "@zxcvbn-ts/dictionary-compression": "^2.0.0"
+    }
+  }
+  
