@@ -21,11 +21,11 @@ import * as zxcvbnPlPackage from '@zxcvbn-ts/language-pl'
 
 const password = 'somePassword'
 const options = {
-  translations: pl.translations,
+  translations: zxcvbnPlPackage.translations,
   graphs: zxcvbnCommonPackage.adjacencyGraphs,
   dictionary: {
     ...zxcvbnCommonPackage.dictionary,
-    ...pl.dictionary,
+    ...zxcvbnPlPackage.dictionary,
   },
 }
 

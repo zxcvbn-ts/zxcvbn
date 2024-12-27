@@ -4,6 +4,9 @@
 
 Current supported languages:
 
+- Arabic
+- Czech
+- Danish (Denmark)
 - German
 - English
 - Spanish (Spain)
@@ -14,9 +17,7 @@ Current supported languages:
 - Japanese
 - Dutch (Belgium)
 - Polish
-- Portuguese (Brazilian)
-- Czech
-- Arabic
+- Portuguese (Brazil)
 
 ## Feedback
 
