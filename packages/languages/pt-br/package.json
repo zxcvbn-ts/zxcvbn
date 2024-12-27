@@ -25,10 +25,8 @@
     "zxcvbn-ts",
     "language",
     "translation",
-    "brazilian",
     "portuguese",
-    "pt-br",
-    "ptbr"
+    "brazil"
   ],
   "dependencies": {
     "@zxcvbn-ts/dictionary-compression": "^2.0.0"
