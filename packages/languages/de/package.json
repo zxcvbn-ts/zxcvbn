@@ -27,6 +27,6 @@
     "german"
   ],
   "dependencies": {
-    "@zxcvbn-ts/dictionary-compression": "^2.0.0"
+     "@zxcvbn-ts/dictionary-compression": "^3.0.1"
   }
 }
