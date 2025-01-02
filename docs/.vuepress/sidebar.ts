@@ -30,6 +30,10 @@ export const sidebar: SidebarGroupOptions[] = [
         link: '/guide/languages/',
       },
       {
+        text: 'Filtering custom words',
+        link: '/guide/filtering-custom-words/',
+      },
+      {
         text: 'Lazy loading',
         link: '/guide/lazy-loading/',
       },
@@ -40,10 +44,6 @@ export const sidebar: SidebarGroupOptions[] = [
       {
         text: 'Options',
         link: '/guide/options/',
-      },
-      {
-        text: 'User input',
-        link: '/guide/user-input/',
       },
       {
         text: 'Framework examples',
