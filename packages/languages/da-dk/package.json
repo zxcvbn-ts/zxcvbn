@@ -24,7 +24,8 @@
     "zxcvbn",
     "language",
     "translation",
-    "danish"
+    "danish",
+    "denmark"
   ],
   "dependencies": {
     "@zxcvbn-ts/dictionary-compression": "^2.0.0"

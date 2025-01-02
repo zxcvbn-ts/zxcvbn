@@ -21,7 +21,7 @@ import * as zxcvbnJaPackage from '@zxcvbn-ts/language-ja'
 
 const password = 'somePassword'
 const options = {
-  translations: zxcvbnEnPackage.translations,
+  translations: zxcvbnJaPackage.translations,
   graphs: zxcvbnCommonPackage.adjacencyGraphs,
   dictionary: {
     ...zxcvbnCommonPackage.dictionary,

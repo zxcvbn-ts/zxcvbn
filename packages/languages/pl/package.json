@@ -24,9 +24,7 @@
     "zxcvbn",
     "language",
     "translation",
-    "polish",
-    "poland",
-    "pl"
+    "polish"
   ],
   "dependencies": {
     "@zxcvbn-ts/dictionary-compression": "^2.0.0"
