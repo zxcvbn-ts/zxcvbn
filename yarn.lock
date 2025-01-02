@@ -2,11 +2,6 @@
 # yarn lockfile v1
 
 
-"@alttiri/base85@1.8.0":
-  version "1.8.0"
-  resolved "https://registry.yarnpkg.com/@alttiri/base85/-/base85-1.8.0.tgz#9a859a9b9bd1847173260e37b58d6fc6c8fd50ce"
-  integrity sha512-HrfdFtOPJ2dlZjHcCDgd9o4ph9+iQnZ+ayWNALImDm1VLv46aMriO13QZ0bpZuvDc8XbPcQK2rb4o38Xt+MMpA==
-
 "@ampproject/remapping@^2.2.0":
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/@ampproject/remapping/-/remapping-2.3.0.tgz#ed441b6fa600072520ce18b43d2c8cc8caecc7f4"
@@ -3339,13 +3334,10 @@
   dependencies:
     argparse "^2.0.1"
 
-"@zxcvbn-ts/dictionary-compression@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@zxcvbn-ts/dictionary-compression/-/dictionary-compression-2.0.0.tgz#6a180a9ecf0fba98d87d58c5955fdab9245b65f5"
-  integrity sha512-gTUSR73B2IDfg7PccGRbwOm5wurK0D1LobQsUyLPqe7pOZ4iQYMJfJ3F0dyMjFlRsc2hmdM2gyPX8HWq4nl9VQ==
-  dependencies:
-    "@alttiri/base85" "1.8.0"
-    fflate "^0.8.2"
+"@zxcvbn-ts/dictionary-compression@^3.0.1":
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@zxcvbn-ts/dictionary-compression/-/dictionary-compression-3.0.1.tgz#f357ad46e08fff8ba92f6f163d6b38b9533fc849"
+  integrity sha512-p3KyPzxGc3vWSap5hHA6SllbUCmh7s+NtpGyC3qEWrxYJT9t9TUAzjPm48Okipo+UUyPQfDlIvTcs9JRShBFiQ==
 
 JSONStream@^1.3.5:
   version "1.3.5"

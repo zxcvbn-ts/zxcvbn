@@ -20,7 +20,7 @@ const json = () => {
           code = `
 import decompress from '@zxcvbn-ts/dictionary-compression/decompress'
 
-export default decompress('${encoded}')`
+export default decompress("${encoded}")`
         } else {
           const data = JSON.stringify(parsed)
           code = `export default ${data}`
