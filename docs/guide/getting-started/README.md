@@ -1,18 +1,22 @@
 # Getting started
+The `.mjs` build is for modern browsers and includes ES5 or higher.
+If you want to use it and want to include your own polyfills, you need to transpile it within your build process.
 
 ## Installation
 
-### npm:
+::: code-tabs#shell
 
-`npm install @zxcvbn-ts/core @zxcvbn-ts/language-common @zxcvbn-ts/language-en --save`
+@tab pnpm
 
-### yarn:
+pnpm create @zxcvbn-ts/core @zxcvbn-ts/language-common @zxcvbn-ts/language-en
+@tab yarn
 
-`yarn add @zxcvbn-ts/core @zxcvbn-ts/language-common @zxcvbn-ts/language-en`
+yarn create @zxcvbn-ts/core @zxcvbn-ts/language-common @zxcvbn-ts/language-en
+@tab npm
 
+npm install @zxcvbn-ts/core @zxcvbn-ts/language-common @zxcvbn-ts/language-en
+:::
 ## Usage
-
-### Bundler like webpack
 
 ```js
 import { ZxcvbnFactory } from '@zxcvbn-ts/core'
@@ -99,31 +103,3 @@ result.sequence   # the list of patterns that zxcvbn based the
 result.calcTime  # how long it took zxcvbn to calculate an answer,
                   # in milliseconds.
 ```
-
-We highly recommend always using the common and English language packages for the optimal scoring result.
-If your language is available as a package, you should import it as well. If your language is missing, feel free to open a PR. For the time being, you could extend the default set.
-
-The `esm` build is for modern browsers and includes ES5 or higher.
-If you want to use it and want to include your own polyfills, you need to transpile it within your build process.
-
-## Change prior to original library
-
-- I18n support for feedback, dictionaries and keyboard patterns. By default, the feedback are keys now
-- All dictionaries are optional, but the `en` dictionary is highly recommend (wished feature in some issues)
-- Dictionaries are separate from the core library. This means zxcvbn-ts is relatively small without its dictionaries
-- compress dictionaries for smaller bundle size => up to 33% smaller dictionaries while having more entries
-- The project is a monorepo with a core library `@zxcvbn-ts/core` and language packages `@txcvbn-ts/language-en`.
-- Keyboard layouts can be customised. This means you can overwrite the default set of layouts with your own or extend it.
-  E.g., if you are developing a Russian website, you need to include a Cyrillic keyboard set. Create a PR so that others can benefit from it.
-- You can use multiple keyboard layouts, which means that the library will check against them by default.
-- the tests are Jest based, so we get a coverage score
-- eslint/prettier for consistent code style
-- Added static page docs https://zxcvbn-ts.github.io/zxcvbn/
-- esm, commonJS
-- Custom matcher can be added which means you can create your own matcher
-- Async matcher can be added which means you can create a matcher that makes an API call
-- [haveibeenpwned](https://haveibeenpwned.com/Passwords) matcher
-- included debounce helper
-- levenshtein check for the dictionaries
-- diceware dictionary
-- extended l33t matcher for substitutions like `|_| => u`

@@ -1,6 +1,6 @@
-import { SidebarGroupCollapsible } from '@vuepress/theme-default/lib/shared/nav'
+import { SidebarGroupOptions } from '@vuepress/theme-default/lib/shared/sidebar'
 
-export const sidebar: SidebarGroupCollapsible[] = [
+export const sidebar: SidebarGroupOptions[] = [
   {
     text: 'Guide',
     collapsible: false,
@@ -14,8 +14,12 @@ export const sidebar: SidebarGroupCollapsible[] = [
         link: '/guide/getting-started/',
       },
       {
-        text: 'Migration',
-        link: '/guide/migration/',
+        text: 'Examples',
+        link: '/guide/examples/',
+      },
+      {
+        text: 'Best Practices',
+        link: '/guide/best-practices/',
       },
       {
         text: 'Comparison',
@@ -24,6 +28,10 @@ export const sidebar: SidebarGroupCollapsible[] = [
       {
         text: 'Languages',
         link: '/guide/languages/',
+      },
+      {
+        text: 'Filtering custom words',
+        link: '/guide/filtering-custom-words/',
       },
       {
         text: 'Lazy loading',
@@ -38,16 +46,12 @@ export const sidebar: SidebarGroupCollapsible[] = [
         link: '/guide/options/',
       },
       {
-        text: 'User input',
-        link: '/guide/user-input/',
-      },
-      {
         text: 'Framework examples',
         link: '/guide/framework-examples/',
       },
       {
-        text: 'Examples',
-        link: '/guide/examples/',
+        text: 'Migration',
+        link: '/guide/migration/',
       },
     ],
   },
