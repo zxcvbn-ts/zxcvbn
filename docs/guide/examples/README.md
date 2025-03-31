@@ -17,7 +17,7 @@ const someCallableFunction = () => {
 const debouncedZxcvbn = debounce(someCallableFunction, 200)
 
 
-// than you can call debouncedZxcvbn and if it is in the timeframe of 200ms the someCallableFunction will only be called once by the last call
+// then you can call debouncedZxcvbn and if it is in the timeframe of 200ms the someCallableFunction will only be called once by the last call
 debouncedZxcvbn()
 debouncedZxcvbn()
 debouncedZxcvbn()
@@ -43,7 +43,7 @@ const someCallableFunction = () => {
 const debouncedZxcvbn = debounce(someCallableFunction, 200, true)
 
 
-// than you can call debouncedZxcvbn and if it is in the timeframe of 200ms the someCallableFunction will only be called once by the first call
+// then you can call debouncedZxcvbn and if it is in the timeframe of 200ms the someCallableFunction will only be called once by the first call
 debouncedZxcvbn()
 debouncedZxcvbn()
 debouncedZxcvbn()
