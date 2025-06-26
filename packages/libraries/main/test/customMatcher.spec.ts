@@ -7,9 +7,9 @@ import Options from '../src/Options'
 
 const minLengthMatcher: Matcher = {
   Matching: class MatchMinLength {
-    constructor(private options: Options) {}
-
     minLength = 10
+
+    constructor(private options: Options) {}
 
     match({ password }: { password: string }) {
       const matches: Match[] = []

@@ -2,9 +2,7 @@ import * as fs from 'fs'
 import * as path from 'path'
 import { execSync } from 'child_process'
 
-export interface LooseObject {
-  [key: string]: any
-}
+export type LooseObject = Record<string, any>
 
 export interface ListConfig {
   language: string
@@ -25,7 +23,7 @@ interface RegisterListOptions {
 export default class ListHandler {
   lists: ListConfig[] = []
 
-  languages: Set<string> = new Set()
+  languages = new Set<string>()
 
   async generateData() {
     // eslint-disable-next-line no-restricted-syntax
@@ -67,7 +65,7 @@ export default class ListHandler {
     }
   }
 
-  async generateIndices() {
+  generateIndices() {
     const dataFolder = path.join(__dirname, '../../packages/languages/')
 
     const languages = fs
@@ -134,7 +132,7 @@ export {
 
   async run() {
     await this.generateData()
-    await this.generateIndices()
+    this.generateIndices()
   }
 
   registerList(options: RegisterListOptions) {

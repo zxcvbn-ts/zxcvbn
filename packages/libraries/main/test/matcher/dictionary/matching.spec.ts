@@ -17,7 +17,6 @@ describe('dictionary matching', () => {
     const matchDictionary = new MatchDictionary(zxcvbnOptions)
     const matches = matchDictionary
       .match({ password: 'we' })
-      // @ts-ignore
       .filter((match) => match.reversed === false)
     const patterns = ['we']
     const msg = 'default dictionaries'
@@ -48,7 +47,6 @@ describe('dictionary matching', () => {
     const dm = (pw: string) =>
       matchDictionary
         .match({ password: pw })
-        // @ts-ignore
         .filter((match) => match.reversed === false)
     let matches = dm('motherboard')
     let patterns = ['mother', 'motherboard', 'board']
@@ -133,7 +131,7 @@ describe('dictionary matching', () => {
     Object.keys(zxcvbnOptions.rankedDictionaries).forEach((name) => {
       const dict = zxcvbnOptions.rankedDictionaries[name]
       Object.keys(dict).forEach((word) => {
-        const rank = dict[word as keyof typeof dict]
+        const rank = dict[word]
         if (word !== 'motherboard') {
           matches = dm(word)
           msg = 'matches against all words in provided dictionaries'
@@ -164,7 +162,6 @@ describe('dictionary matching', () => {
     const matchDictionary = new MatchDictionary(zxcvbnOptions)
     const matches = matchDictionary
       .match({ password: 'foobar' })
-      // @ts-ignore
       .filter((match) => match.dictionaryName === 'userInputs')
 
     const msg = 'matches with provided user input dictionary'

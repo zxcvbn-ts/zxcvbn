@@ -4,7 +4,7 @@ export default (pattern: string, prefixes: string[], suffixes: string[]) => {
   const slicedSuffixes = suffixes.slice()
   const combined = [slicedPrefixes, slicedSuffixes]
   combined.forEach((lst) => {
-    if (lst.indexOf('') === -1) {
+    if (!lst.includes('')) {
       lst.unshift('')
     }
   })

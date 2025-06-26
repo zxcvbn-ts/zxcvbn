@@ -13,6 +13,7 @@ describe('dictionary reverse matching', () => {
   const dictionaryMatcher = new MatchDictionary(zxcvbnOptions)
   const matchDictionaryReverse = new MatchDictionaryReverse(
     zxcvbnOptions,
+
     dictionaryMatcher.defaultMatch,
   )
   const password = '0123456789'

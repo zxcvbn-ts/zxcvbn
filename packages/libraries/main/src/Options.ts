@@ -40,13 +40,13 @@ export default class Options {
 
   public graphs: OptionsGraph = {}
 
-  public useLevenshteinDistance: boolean = false
+  public useLevenshteinDistance = false
 
-  public levenshteinThreshold: number = 2
+  public levenshteinThreshold = 2
 
-  public l33tMaxSubstitutions: number = 100
+  public l33tMaxSubstitutions = 100
 
-  public maxLength: number = 256
+  public maxLength = 256
 
   timeEstimationValues: TimeEstimationValues = {
     scoring: {
@@ -190,7 +190,7 @@ export default class Options {
     dictionary?: (string | number)[],
   ): UserInputsOptions {
     let rankedDictionary: RankedDictionary = {}
-    let rankedDictionaryMaxWordSize: number = 0
+    let rankedDictionaryMaxWordSize = 0
     if (dictionary) {
       rankedDictionary = this.buildSanitizedRankedDictionary(dictionary)
       rankedDictionaryMaxWordSize =

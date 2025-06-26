@@ -1,22 +1,17 @@
 import utils from '../../scoring/utils'
 import Options from '../../Options'
-import {
-  LooseObject,
-  MatchEstimated,
-  MatchExtended,
-  OptionsGraphEntry,
-} from '../../types'
+import { MatchEstimated, MatchExtended, OptionsGraphEntry } from '../../types'
 
 interface EstimatePossiblePatternsOptions {
   token: string
   turns: number
 }
 
-const calcAverageDegree = (graph: LooseObject) => {
+const calcAverageDegree = (graph: OptionsGraphEntry) => {
   let average = 0
   Object.keys(graph).forEach((key) => {
     const neighbors = graph[key]
-    average += neighbors.filter((entry: string) => !!entry).length
+    average += neighbors.filter((entry) => !!entry).length
   })
   average /= Object.entries(graph).length
   return average
@@ -59,7 +54,10 @@ export default (
     } else {
       let shiftedVariations = 0
       for (let i = 1; i <= Math.min(shiftedCount, unShiftedCount); i += 1) {
-        shiftedVariations += utils.nCk(shiftedCount + unShiftedCount, i)
+        shiftedVariations += utils.nCk(
+          (shiftedCount as number) + unShiftedCount,
+          i,
+        )
       }
       guesses *= shiftedVariations
     }

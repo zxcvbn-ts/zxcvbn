@@ -16,7 +16,7 @@ const textEncode = (text: string) => {
   }
   try {
     return new TextEncoder().encode(text)
-  } catch (error) {
+  } catch (error: any) {
     throw new Error(`No encoder found, ${error}`)
   }
 }
@@ -25,7 +25,7 @@ const digestMessage = async (message: string) => {
   const data = textEncode(message)
   let hash = ''
   if (isNodeJs) {
-    // eslint-disable-next-line global-require
+    // eslint-disable-next-line global-require,@typescript-eslint/no-require-imports
     const crypto = require('crypto')
     hash = crypto.createHash('sha1').update(message).digest('hex').toUpperCase()
   } else if (crypto) {
@@ -65,8 +65,8 @@ export default async (
     headers: {
       'Add-Padding': 'true',
     },
-  }).catch((error) => {
-    return networkErrorHandler(error)
+  }).catch((error: unknown) => {
+    return networkErrorHandler(error as Error)
   })
 
   if (typeof response === 'boolean') {

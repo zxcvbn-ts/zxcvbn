@@ -197,7 +197,7 @@ export default class Scoring {
       // if there is no length-sequenceLength sequence that scores better (fewer guesses) than
       // a shorter match sequence spanning the same prefix,
       // optimal.m[k][sequenceLength] is undefined.
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       m: scoringHelper.fillArray(passwordLength, 'object'),
       // same structure as optimal.m -- holds the product term Prod(m.guesses for m in sequence).
       // optimal.pi allows for fast (non-looping) updates to the minimization function.

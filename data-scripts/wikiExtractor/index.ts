@@ -1,7 +1,7 @@
 import fs from 'fs'
 import readline from 'readline'
 import path from 'path'
-// @ts-ignore
+// @ts-expect-error for testing purposes
 import globAll from 'glob-all'
 import natural from 'natural'
 import { LooseObject } from '../../packages/libraries/main/src/types'
@@ -14,13 +14,13 @@ const SOME_NON_ALPHA = /[\W\d]/
 const EXCLUDED = /^(__)(.*)(__)$/
 
 class TopTokenCounter {
-  count: LooseObject = {}
+  count: Record<string, number> = {}
 
   legomena = new Set()
 
   discarded = new Set()
 
-  addTokens(tokens: string[], splitHyphens: boolean = true) {
+  addTokens(tokens: string[], splitHyphens = true) {
     tokens.forEach((token) => {
       const hyphenArray = token.split('-')
       if (splitHyphens && [1, 2].includes(hyphenArray.length)) {
@@ -75,6 +75,7 @@ class TopTokenCounter {
   batchPrune() {
     this.legomena.forEach((token) => {
       if (this.count[token as string]) {
+        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
         delete this.count[token as string]
       }
     })
@@ -89,6 +90,7 @@ class TopTokenCounter {
       }
     })
     underCutoff.forEach((token) => {
+      // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
       delete this.count[token as string]
     })
     this.legomena = new Set()
@@ -134,7 +136,6 @@ const readLinePromise = (
   readInterface: readline.Interface,
   callback: ReadLinePromiseCallback,
 ) => {
-  // eslint-disable-next-line compat/compat
   return new Promise((resolve) => {
     readInterface.on('line', callback)
     readInterface.on('close', () => {
@@ -155,7 +156,7 @@ const getTokens = async (inputDir: string, counter: TopTokenCounter) => {
       input: fs.createReadStream(filePath),
       terminal: false,
     })
-    await readLinePromise(readInterface, async (line: string) => {
+    await readLinePromise(readInterface, (line: string) => {
       const tokens = tokenizer.tokenize(line) ?? []
       counter.addTokens(tokens)
       lines += 1
@@ -167,12 +168,11 @@ const getTokens = async (inputDir: string, counter: TopTokenCounter) => {
     })
   })
 
-  // eslint-disable-next-line compat/compat
   await Promise.all(promises)
 }
 
 const write = (output: string, pairs: LooseObject) => {
-  const outputStreamJson = fs.createWriteStream(`${output}`, {
+  const outputStreamJson = fs.createWriteStream(output, {
     encoding: 'utf8',
   })
   const outputStreamTxt = fs.createWriteStream(`${output}.txt`, {
@@ -209,4 +209,5 @@ const main = async (inputDir: string, _outputFile: string) => {
 
 const inputDir = path.join(__dirname, 'extracts')
 const outputFile = path.join(__dirname, 'wikipedia.json')
+// eslint-disable-next-line @typescript-eslint/no-floating-promises
 main(inputDir, outputFile)

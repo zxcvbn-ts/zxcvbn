@@ -14,9 +14,7 @@ const defaultFeedback = {
   suggestions: [],
 }
 
-type Matchers = {
-  [key: string]: DefaultFeedbackFunction
-}
+type Matchers = Record<string, DefaultFeedbackFunction>
 /*
  * -------------------------------------------------------------------------------
  *  Generate feedback ---------------------------------------------------------------

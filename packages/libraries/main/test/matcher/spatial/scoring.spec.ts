@@ -14,7 +14,7 @@ describe('scoring: guesses spatial', () => {
       shiftedCount: 0,
     }
 
-    // @ts-ignore
+    // @ts-expect-error for testing purposes
     expect(spatialGuesses(match, zxcvbnOptions)).toEqual(2160)
   })
 
@@ -27,7 +27,7 @@ describe('scoring: guesses spatial', () => {
       guesses: null,
     }
 
-    // @ts-ignore
+    // @ts-expect-error for testing purposes
     expect(spatialGuesses(match, zxcvbnOptions)).toEqual(45360)
   })
 
@@ -39,7 +39,7 @@ describe('scoring: guesses spatial', () => {
       shiftedCount: 6,
       guesses: null,
     }
-    // @ts-ignore
+    // @ts-expect-error for testing purposes
     expect(spatialGuesses(match, zxcvbnOptions)).toEqual(4320)
   })
 
@@ -51,7 +51,7 @@ describe('scoring: guesses spatial', () => {
       shiftedCount: 0,
     }
 
-    // @ts-ignore
+    // @ts-expect-error for testing purposes
     expect(spatialGuesses(match, zxcvbnOptions)).toEqual(558461)
   })
 })

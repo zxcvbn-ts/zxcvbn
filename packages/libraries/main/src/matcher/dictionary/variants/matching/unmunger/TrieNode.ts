@@ -1,11 +1,11 @@
 export default class TrieNode {
-  constructor(public parents: string[] = []) {}
-
-  children: Map<string, TrieNode> = new Map()
+  children = new Map<string, TrieNode>()
 
   subs?: string[]
 
-  addSub(key: string, ...subs: string[]): TrieNode {
+  constructor(public parents: string[] = []) {}
+
+  addSub(key: string, ...subs: string[]): this {
     const firstChar = key.charAt(0)
     if (!this.children.has(firstChar)) {
       this.children.set(firstChar, new TrieNode([...this.parents, firstChar]))
@@ -18,7 +18,7 @@ export default class TrieNode {
       }
       cur = cur.getChild(c)!
     }
-    cur.subs = (cur.subs || []).concat(subs)
+    cur.subs = (cur.subs ?? []).concat(subs)
     return this
   }
 

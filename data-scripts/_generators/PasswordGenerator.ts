@@ -15,9 +15,7 @@ const { sprintf } = sprintfClass
 const zxcvbnOptions = new Options()
 const matching = new Matching(zxcvbnOptions)
 
-interface Counts {
-  [key: string]: number
-}
+type Counts = Record<string, number>
 
 const normalize = (token: string) => {
   return token.toLowerCase()
@@ -25,6 +23,20 @@ const normalize = (token: string) => {
 
 // GET file from https://xato.net/today-i-am-releasing-ten-million-passwords-b6278bbe7495
 export default class PasswordGenerator {
+  private static prune(counts: Counts) {
+    const results: (boolean | undefined)[] = []
+    Object.keys(counts).forEach((pw) => {
+      const count = counts[pw]
+      if (count === 1) {
+        // eslint-disable-next-line no-param-reassign,@typescript-eslint/no-dynamic-delete
+        results.push(delete counts[pw])
+      } else {
+        results.push(undefined)
+      }
+    })
+    return results
+  }
+
   public data: any = []
 
   private shouldInclude(password: string, xatoRank: number) {
@@ -56,22 +68,7 @@ export default class PasswordGenerator {
     return true
   }
 
-  private static prune(counts: Counts) {
-    const results: (boolean | undefined)[] = []
-    Object.keys(counts).forEach((pw) => {
-      const count = counts[pw]
-      if (count === 1) {
-        // eslint-disable-next-line no-param-reassign
-        results.push(delete counts[pw])
-      } else {
-        results.push(undefined)
-      }
-    })
-    return results
-  }
-
   public async run(output: string) {
-    // eslint-disable-next-line compat/compat
     return new Promise<void>((resolve) => {
       const counts: Counts = {}
       let skippedLines = 0
@@ -124,6 +121,7 @@ export default class PasswordGenerator {
           if (count > CUTOFF) {
             pairs.push([pw, count])
           }
+          // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
           delete counts[pw]
         })
         console.info('sorting')
@@ -162,7 +160,6 @@ export default class PasswordGenerator {
           outputStreamJson.end()
         }
 
-        // @ts-ignore
         resolve()
       })
     })

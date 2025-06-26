@@ -10,7 +10,7 @@ describe('feedback', () => {
     const feedbackClass = new Feedback(zxcvbnOptions)
 
     it('should return no feedback for a good password', () => {
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       const data = feedbackClass.getFeedback(3, [{}])
       expect(data).toEqual({
         warning: null,
@@ -30,7 +30,7 @@ describe('feedback', () => {
     })
 
     it('should return some basic feedback if no feedback could be generated', () => {
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       const data = feedbackClass.getFeedback(1, [{}])
       expect(data).toEqual({
         warning: null,
@@ -48,7 +48,7 @@ describe('feedback', () => {
         rank: 10,
         guessesLog10: 4,
       }
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       let data = feedbackClass.getFeedback(1, [options])
       expect(data).toEqual({
         warning: translations.warnings.topTen,
@@ -56,7 +56,7 @@ describe('feedback', () => {
       })
 
       data = feedbackClass.getFeedback(1, [
-        // @ts-ignore
+        // @ts-expect-error for testing purposes
         {
           ...options,
           rank: 100,
@@ -68,7 +68,7 @@ describe('feedback', () => {
       })
 
       data = feedbackClass.getFeedback(1, [
-        // @ts-ignore
+        // @ts-expect-error for testing purposes
         {
           ...options,
           rank: 1000,
@@ -80,7 +80,7 @@ describe('feedback', () => {
       })
 
       data = feedbackClass.getFeedback(1, [
-        // @ts-ignore
+        // @ts-expect-error for testing purposes
         {
           ...options,
           l33t: true,
@@ -95,7 +95,7 @@ describe('feedback', () => {
       })
 
       data = feedbackClass.getFeedback(1, [
-        // @ts-ignore
+        // @ts-expect-error for testing purposes
         {
           ...options,
           reversed: true,
@@ -110,7 +110,7 @@ describe('feedback', () => {
       })
 
       data = feedbackClass.getFeedback(1, [
-        // @ts-ignore
+        // @ts-expect-error for testing purposes
         {
           ...options,
           reversed: true,
@@ -128,7 +128,7 @@ describe('feedback', () => {
       })
 
       data = feedbackClass.getFeedback(1, [
-        // @ts-ignore
+        // @ts-expect-error for testing purposes
         {
           ...options,
           reversed: true,
@@ -146,7 +146,7 @@ describe('feedback', () => {
       })
 
       data = feedbackClass.getFeedback(1, [
-        // @ts-ignore
+        // @ts-expect-error for testing purposes
         {
           ...options,
           dictionaryName: 'wikipedia',
@@ -158,12 +158,12 @@ describe('feedback', () => {
       })
 
       data = feedbackClass.getFeedback(1, [
-        // @ts-ignore
+        // @ts-expect-error for testing purposes
         {
           ...options,
           dictionaryName: 'wikipedia',
         },
-        // @ts-ignore
+        // @ts-expect-error for testing purposes
         {
           ...options,
           dictionaryName: 'wikipedia',
@@ -175,7 +175,7 @@ describe('feedback', () => {
       })
 
       data = feedbackClass.getFeedback(1, [
-        // @ts-ignore
+        // @ts-expect-error for testing purposes
         {
           ...options,
           dictionaryName: 'test_name',
@@ -187,7 +187,7 @@ describe('feedback', () => {
       })
 
       data = feedbackClass.getFeedback(1, [
-        // @ts-ignore
+        // @ts-expect-error for testing purposes
         {
           ...options,
           dictionaryName: 'lastnames',
@@ -198,7 +198,7 @@ describe('feedback', () => {
         suggestions: [translations.suggestions.anotherWord],
       })
       data = feedbackClass.getFeedback(1, [
-        // @ts-ignore
+        // @ts-expect-error for testing purposes
         {
           ...options,
           dictionaryName: 'firstnames',
@@ -210,12 +210,12 @@ describe('feedback', () => {
       })
 
       data = feedbackClass.getFeedback(1, [
-        // @ts-ignore
+        // @ts-expect-error for testing purposes
         {
           ...options,
           dictionaryName: 'firstnames',
         },
-        // @ts-ignore
+        // @ts-expect-error for testing purposes
         {
           ...options,
           dictionaryName: 'firstnames',
@@ -227,7 +227,7 @@ describe('feedback', () => {
       })
 
       data = feedbackClass.getFeedback(1, [
-        // @ts-ignore
+        // @ts-expect-error for testing purposes
         {
           ...options,
           dictionaryName: 'userInputs',
@@ -246,7 +246,7 @@ describe('feedback', () => {
         graph: 'qwerty',
         turns: 1,
       }
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       let data = feedbackClass.getFeedback(2, [options])
       expect(data).toEqual({
         warning: translations.warnings.straightRow,
@@ -256,7 +256,7 @@ describe('feedback', () => {
         ],
       })
       data = feedbackClass.getFeedback(2, [
-        // @ts-ignore
+        // @ts-expect-error for testing purposes
         {
           ...options,
           turns: 2,
@@ -277,7 +277,7 @@ describe('feedback', () => {
         token: 'tests',
         baseToken: 'a',
       }
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       let data = feedbackClass.getFeedback(2, [options])
       expect(data).toEqual({
         warning: translations.warnings.simpleRepeat,
@@ -287,7 +287,7 @@ describe('feedback', () => {
         ],
       })
       data = feedbackClass.getFeedback(2, [
-        // @ts-ignore
+        // @ts-expect-error for testing purposes
         {
           ...options,
           baseToken: 'aa',
@@ -307,7 +307,7 @@ describe('feedback', () => {
         pattern: 'sequence',
         token: 'tests',
       }
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       const data = feedbackClass.getFeedback(2, [options])
       expect(data).toEqual({
         warning: translations.warnings.sequences,
@@ -324,7 +324,7 @@ describe('feedback', () => {
         token: 'tests',
         regexName: 'recentYear',
       }
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       const data = feedbackClass.getFeedback(2, [options])
       expect(data).toEqual({
         warning: translations.warnings.recentYears,
@@ -341,7 +341,7 @@ describe('feedback', () => {
         pattern: 'date',
         token: 'tests',
       }
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       const data = feedbackClass.getFeedback(2, [options])
       expect(data).toEqual({
         warning: translations.warnings.dates,

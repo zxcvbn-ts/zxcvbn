@@ -34,9 +34,7 @@ const getMinGuesses = (
   return minGuesses
 }
 
-type Matchers = {
-  [key: string]: DefaultScoringFunction
-}
+type Matchers = Record<string, DefaultScoringFunction>
 
 const matchers: Matchers = {
   bruteforce: bruteforceMatcher,

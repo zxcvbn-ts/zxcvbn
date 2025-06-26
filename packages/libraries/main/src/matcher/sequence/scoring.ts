@@ -7,7 +7,7 @@ export default ({ token, ascending }: MatchExtended | MatchEstimated) => {
   // lower guesses for obvious starting points
   if (startingPoints.includes(firstChr)) {
     baseGuesses = 4
-  } else if (firstChr.match(/\d/)) {
+  } else if (/\d/.exec(firstChr)) {
     baseGuesses = 10 // digits
   } else {
     // could give a higher base for uppercase,

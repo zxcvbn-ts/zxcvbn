@@ -47,7 +47,7 @@ class MatchSpatial {
 
       while (true) {
         const prevChar = password.charAt(j - 1)
-        const adjacents = graph[prevChar as keyof typeof graph] || []
+        const adjacents = graph[prevChar] ?? []
         let found = false
         let foundDirection = -1
         let curDirection = -1

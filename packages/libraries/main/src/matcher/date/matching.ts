@@ -256,6 +256,7 @@ class MatchDate {
 
   mapIntegersToDayMonth(integers: number[]) {
     const temp = [integers, integers.slice().reverse()]
+    // eslint-disable-next-line @typescript-eslint/prefer-for-of
     for (let i = 0; i < temp.length; i += 1) {
       const data = temp[i]
       const day = data[0]

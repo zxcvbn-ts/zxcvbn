@@ -5106,6 +5106,11 @@ eslint-plugin-prettier@5.5.1:
     prettier-linter-helpers "^1.0.0"
     synckit "^0.11.7"
 
+eslint-plugin-sort-class-members@1.21.0:
+  version "1.21.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-sort-class-members/-/eslint-plugin-sort-class-members-1.21.0.tgz#e0ee1e5eddf698d5c997a071133b0cc51bb3de34"
+  integrity sha512-QKV4jvGMu/ge1l4s1TUBC6rqqV/fbABWY7q2EeNpV3FRikoX6KuLhiNvS8UuMi+EERe0hKGrNU9e6ukFDxNnZQ==
+
 eslint-scope@^8.4.0:
   version "8.4.0"
   resolved "https://registry.yarnpkg.com/eslint-scope/-/eslint-scope-8.4.0.tgz#88e646a207fad61436ffa39eb505147200655c82"
@@ -10280,6 +10285,15 @@ typedarray@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha512-/aCDEGatGvZ2BIk+HmLf4ifCJFwvKFNb9/JeZPMulfgFracn9QFcAf5GO8B/mweUjSoblS5In0cWhqpfs/5PQA==
+
+typescript-eslint@8.35.0:
+  version "8.35.0"
+  resolved "https://registry.yarnpkg.com/typescript-eslint/-/typescript-eslint-8.35.0.tgz#65afcdde973614b8f44fa89293919420ca9b904e"
+  integrity sha512-uEnz70b7kBz6eg/j0Czy6K5NivaYopgxRjsnAJ2Fx5oTLo3wefTHIbL7AkQr1+7tJCRVpTs/wiM8JR/11Loq9A==
+  dependencies:
+    "@typescript-eslint/eslint-plugin" "8.35.0"
+    "@typescript-eslint/parser" "8.35.0"
+    "@typescript-eslint/utils" "8.35.0"
 
 typescript@5.8.3, "typescript@>=3 < 6":
   version "5.8.3"

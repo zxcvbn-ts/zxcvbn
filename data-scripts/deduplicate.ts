@@ -4,12 +4,13 @@ import fs from 'fs'
 const DENY_LIST = ['adjacencyGraphs.json']
 const LANGUAGES_PATH = path.join(__dirname, '..', 'packages', 'languages')
 
-interface LanguageRankingsTable {
-  [key: string]: {
+type LanguageRankingsTable = Record<
+  string,
+  {
     file: string
     rank: number
   }
-}
+>
 
 const main = async () => {
   const forceLanguage = process.argv.length > 2 ? process.argv[2] : undefined
@@ -19,7 +20,7 @@ const main = async () => {
     .filter((dirent) => dirent.isDirectory())
     .map((dirent) => dirent.name)
 
-  languages.map(async (language) => {
+  const promises = languages.map(async (language) => {
     console.info(`loading ${language} files...`)
     if (forceLanguage !== undefined && language !== forceLanguage) {
       return
@@ -38,7 +39,6 @@ const main = async () => {
 
     const languageRankTable: LanguageRankingsTable = {}
 
-    // eslint-disable-next-line compat/compat
     await Promise.all(
       files
         .map((file) => async () => {
@@ -55,15 +55,14 @@ const main = async () => {
           })
         })
         .map(async (job) => {
-          const result = await job()
-          return result
+          await job()
         }),
     )
 
     console.info(`re-sorting ${language} words...`)
     const groupedByFile = Object.entries(languageRankTable).reduce(
       (
-        acc: { [key: string]: { word: string; rank: number }[] },
+        acc: Record<string, { word: string; rank: number }[]>,
         [word, { file, rank }],
       ) => {
         if (acc[file] === undefined) {
@@ -85,6 +84,9 @@ const main = async () => {
     })
     console.info(`finished ${language}!`)
   })
+
+  await Promise.all(promises)
 }
 
+// eslint-disable-next-line @typescript-eslint/no-floating-promises
 main()

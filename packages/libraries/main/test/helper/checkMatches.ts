@@ -1,6 +1,5 @@
 import { LooseObject, MatchExtended } from '../../src/types'
 
-// eslint-disable-next-line jest/no-export
 export interface CheckMatchesOptions {
   messagePrefix: string
   matches: MatchExtended[]
@@ -10,7 +9,6 @@ export interface CheckMatchesOptions {
   propsToCheck: LooseObject
 }
 
-// eslint-disable-next-line jest/no-export
 export default function checkMatches({
   messagePrefix,
   matches,
@@ -43,7 +41,7 @@ export default function checkMatches({
     const pattern = patterns[k]
     const [i, j] = ijs[k]
 
-    it(`${messagePrefix}: matches[${k}].pattern == '${usedPatternNames}'`, () => {
+    it(`${messagePrefix}: matches[${k}].pattern == '${usedPatternNames.join(',')}'`, () => {
       expect(match.pattern).toEqual(patternName)
     })
     it(`${messagePrefix}: matches[${k}] should have [i, j] of [${i}, ${j}]`, () => {
@@ -60,7 +58,6 @@ export default function checkMatches({
         propMsg = `'${propMsg}'`
       }
       it(`${messagePrefix}: matches[${k}].${propName} == ${propMsg}`, () => {
-        // @ts-ignore
         expect(match[propName]).toEqual(propList[k])
       })
     })

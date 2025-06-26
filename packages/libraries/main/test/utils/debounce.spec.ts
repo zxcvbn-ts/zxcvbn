@@ -1,14 +1,14 @@
 import debounce from '../../src/utils/debounce'
 
 describe('debounce', () => {
-  it('should call handler immediately', async () => {
+  it('should call handler immediately', () => {
     const testFn = jest.fn()
     const temp = debounce(testFn, 100, true)
     temp()
     expect(testFn).toHaveBeenCalledTimes(1)
   })
 
-  it('should debounce after timeout', async () => {
+  it('should debounce after timeout', () => {
     jest.useFakeTimers()
     const testFn = jest.fn()
     const temp = debounce(testFn, 100, false)

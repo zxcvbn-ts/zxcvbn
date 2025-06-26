@@ -9,18 +9,13 @@ import latin2Decoder from './latin2Decoder'
 
 export interface LanguageListEntry {
   source?: string
-  options?: {
-    [key: string]: any
-  }
+  options?: Record<string, any>
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   generator?: Function
   customList?: boolean
 }
 
-export interface LanguageList {
-  [key: string]: {
-    [key: string]: LanguageListEntry
-  }
-}
+export type LanguageList = Record<string, Record<string, LanguageListEntry>>
 
 const polishFirstnamesOptions = {
   hasOccurrences: true,
@@ -316,7 +311,7 @@ export default {
           const REGEX = /<li><a .*>([A-z]+)<\/a><\/li>/g
           const lastnamesArray = Array.from(
             HTMLData.toString().matchAll(REGEX),
-            (m: Array<string>) => m[1],
+            (m: string[]) => m[1],
           )
           return lastnamesArray
         },
@@ -362,7 +357,7 @@ export default {
 
           const firstnamesArray = Array.from(
             latin2Decoder(HTMLData).matchAll(REGEX),
-            (m: Array<string>) => {
+            (m: string[]) => {
               return m[1]
             },
           )
@@ -385,7 +380,7 @@ export default {
             /<tr class="itemprijmeni"><td>\d{1,2}\.<\/td><td><a href='.*'>(.+)<\/a><\/td><td>\d*<\/td><\/tr>/g
           const lastnamesArray = Array.from(
             latin2Decoder(HTMLData).matchAll(REGEX),
-            (m: Array<string>) => m[1],
+            (m: string[]) => m[1],
           )
           return lastnamesArray
         },

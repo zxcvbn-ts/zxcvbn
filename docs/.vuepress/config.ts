@@ -5,7 +5,7 @@ import { registerComponentsPlugin } from '@vuepress/plugin-register-components'
 import { viteBundler } from '@vuepress/bundler-vite'
 import { sidebar } from './sidebar'
 import { navbar } from './nav'
-// @ts-ignore
+// @ts-expect-error for testing purposes
 import pkg from '../../package.json'
 
 export default defineUserConfig({

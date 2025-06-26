@@ -3,7 +3,7 @@ import * as zxcvbnEnPackage from '@zxcvbn-ts/language-en/src/index'
 import { ZxcvbnFactory } from '@zxcvbn-ts/core/src/index'
 
 // eslint-disable-next-line
-(async () => {
+;(async () => {
   const options = {
     dictionary: {
       ...zxcvbnCommonPackage.dictionary,
@@ -21,7 +21,7 @@ import { ZxcvbnFactory } from '@zxcvbn-ts/core/src/index'
     console.log(match)
     process.exit(0)
   })
-  .catch((e: Error) => {
-    console.error(e)
+  .catch((error: unknown) => {
+    console.error(error as Error)
     process.exit(1)
   })

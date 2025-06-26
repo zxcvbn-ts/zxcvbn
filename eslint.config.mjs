@@ -1,38 +1,57 @@
-const { defineConfig, globalIgnores } = require('eslint/config')
-const tsParser = require('@typescript-eslint/parser')
-const importPlugin = require('eslint-plugin-import')
-const prettier = require('eslint-plugin-prettier')
-const jest = require('eslint-plugin-jest')
-const typescriptEslint = require('@typescript-eslint/eslint-plugin')
-const js = require('@eslint/js')
-const { FlatCompat } = require('@eslint/eslintrc')
+import { defineConfig, globalIgnores } from 'eslint/config'
+import tsParser from '@typescript-eslint/parser'
+import importPlugin from 'eslint-plugin-import'
+import eslintConfigPrettier from 'eslint-config-prettier/flat'
+import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
+import jest from 'eslint-plugin-jest'
+import compatPlugin from 'eslint-plugin-compat'
+import js from '@eslint/js'
+import { FlatCompat } from '@eslint/eslintrc'
+import tseslint from 'typescript-eslint'
+import sortClassMembers from 'eslint-plugin-sort-class-members'
+import prettierConfig from './prettier.mjs'
 
 const compat = new FlatCompat({
-  baseDirectory: __dirname,
+  baseDirectory: import.meta.dirname,
   recommendedConfig: js.configs.recommended,
   allConfig: js.configs.all,
 })
-const prettierConfig = require('./prettier')
 
-module.exports = defineConfig([
+export default defineConfig([
+  globalIgnores([
+    '**/.vuepress',
+    '**/node_modules',
+    '**/dist',
+    '**/dist2',
+    '**/demo',
+    '**/coverage',
+    'data-scripts/wikiExtractor/extracts',
+    '**/dist_new',
+  ]),
+  js.configs.recommended,
+  ...compat.extends('airbnb-base'),
+  compatPlugin.configs['flat/recommended'],
+  tseslint.configs.strictTypeChecked,
+  tseslint.configs.stylisticTypeChecked,
+  sortClassMembers.configs['flat/recommended'],
   {
     languageOptions: {
+      globals: {
+        ...jest.environments.globals.globals,
+      },
       parser: tsParser,
+      parserOptions: {
+        project: true,
+        __tsconfigRootDir: import.meta.dirname,
+        warnOnUnsupportedTypeScriptVersion: false,
+      },
     },
 
-    extends: compat.extends(
-      'airbnb-base',
-      'plugin:compat/recommended',
-      'prettier',
-      'plugin:jest/recommended',
-      'plugin:@typescript-eslint/eslint-recommended',
-    ),
+    extends: compat.extends('airbnb-base'),
 
     plugins: {
-      'import': importPlugin,
-      prettier,
+      import: importPlugin,
       jest,
-      '@typescript-eslint': typescriptEslint,
     },
 
     settings: {
@@ -138,6 +157,25 @@ module.exports = defineConfig([
           object: true,
         },
       ],
+      '@typescript-eslint/restrict-template-expressions': [
+        'error',
+        {
+          allowNumber: true,
+          allowNever: true,
+        },
+      ],
+      // TODO temporary disable strict any rules to fix the "easy" once first
+      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/no-unsafe-return': 'off',
+      '@typescript-eslint/no-unsafe-argument': 'off',
+      '@typescript-eslint/no-unnecessary-condition': 'off',
+      '@typescript-eslint/no-unsafe-assignment': 'off',
+      '@typescript-eslint/no-unsafe-member-access': 'off',
+      '@typescript-eslint/no-non-null-assertion': 'off',
+      '@typescript-eslint/no-unsafe-call': 'off',
+      '@typescript-eslint/no-redundant-type-constituents': 'off',
+      '@typescript-eslint/unbound-method': 'off',
+      '@typescript-eslint/prefer-nullish-coalescing': 'off',
     },
   },
   {
@@ -164,9 +202,9 @@ module.exports = defineConfig([
       '**/*.config.js',
       '**/test/**/*.ts',
     ],
-
     rules: {
       'import/no-relative-packages': 'off',
+      'compat/compat': 'off',
     },
   },
   {
@@ -177,15 +215,6 @@ module.exports = defineConfig([
       'max-statements': 'off',
     },
   },
-  globalIgnores([
-    '**/.cache',
-    '**/.temp',
-    '**/node_modules',
-    '**/dist',
-    '**/dist2',
-    '**/demo',
-    '**/coverage',
-    'data-scripts/wikiExtractor/extracts',
-    '**/dist_new',
-  ]),
+  eslintConfigPrettier,
+  eslintPluginPrettierRecommended,
 ])

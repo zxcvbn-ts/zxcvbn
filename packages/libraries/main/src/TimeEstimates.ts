@@ -44,7 +44,7 @@ export const checkTimeEstimationValues = (
 ) => {
   Object.entries(timeEstimationValues).forEach(([key, data]) => {
     Object.entries(data).forEach(([subKey, value]) => {
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       if (value < timeEstimationValuesDefaults[key][subKey]) {
         throw new Error(
           'Time estimation values are not to be allowed to be less than default',

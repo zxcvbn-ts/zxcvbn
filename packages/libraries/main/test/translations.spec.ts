@@ -17,7 +17,7 @@ describe('translations', () => {
   )
   languages.forEach((language) => {
     const translationPath = `${languagePath}/${language}/src/translations.ts`
-    // eslint-disable-next-line global-require,import/no-dynamic-require
+    // eslint-disable-next-line global-require,import/no-dynamic-require,@typescript-eslint/no-require-imports
     const translations = require(translationPath).default
     it(`should have all translation keys for ${language}`, () => {
       Object.entries(translationKeys).forEach(([key, value]) => {

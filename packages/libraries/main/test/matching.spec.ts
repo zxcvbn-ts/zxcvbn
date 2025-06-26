@@ -21,7 +21,7 @@ describe('omnimatch matching', () => {
 
   const password = 'r0sebudmaelstrom11/20/91aaaa'
   const matches = omniMatch.match(password) as MatchExtended[]
-  const data = [
+  const data: [string, [number, number]][] = [
     ['dictionary', [0, 6]],
     ['dictionary', [7, 14]],
     ['date', [16, 23]],
@@ -36,7 +36,7 @@ describe('omnimatch matching', () => {
       }
     })
     const msg = `for ${password}, matches a ${patternName} pattern at [${i}, ${j}]`
-    // eslint-disable-next-line jest/valid-title
+
     it(msg, () => {
       expect(included).toBeTruthy()
     })

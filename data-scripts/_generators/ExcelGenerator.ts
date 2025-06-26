@@ -83,6 +83,7 @@ export class ExcelGenerator extends SimpleListGenerator<Options> {
       if (!cell) {
         break
       }
+      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
       const value = `${cell.w ?? cell.v ?? ''}`
       if (value.length === 0) {
         break

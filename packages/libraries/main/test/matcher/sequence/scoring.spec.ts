@@ -16,9 +16,8 @@ describe('scoring: guesses sequence', () => {
     }
     const msg = `the sequence pattern '${token}' has guesses of ${guesses}`
 
-    // eslint-disable-next-line jest/valid-title
     it(msg, () => {
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       expect(sequenceGuesses(match)).toEqual(guesses)
     })
   })
