@@ -3,7 +3,8 @@ import { matcherPwnedFactory } from '../src'
 
 describe('main', () => {
   it('should use pwned matcher', async () => {
-    const fetch = jest.fn(() => ({
+    // eslint-disable-next-line @typescript-eslint/require-await
+    const fetch = jest.fn(async () => ({
       text() {
         return `008A205652858375D71117A63004CC75167:5\r\n3EA386688A0147AB736AABCEDE496610382:244`
       },
@@ -66,7 +67,8 @@ describe('main', () => {
   })
 
   it('should ignore pwned matcher on fetch error', async () => {
-    const fetch = jest.fn(() => {
+    // eslint-disable-next-line @typescript-eslint/require-await
+    const fetch = jest.fn(async () => {
       throw new Error('Some Network error')
     })
     const zxcvbn = new ZxcvbnFactory(

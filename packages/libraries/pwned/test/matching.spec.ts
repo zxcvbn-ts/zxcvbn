@@ -1,7 +1,8 @@
 import { matcherPwnedFactory } from '../src'
 import Options from '../../main/src/Options'
 
-const fetch = jest.fn(() => ({
+// eslint-disable-next-line @typescript-eslint/require-await
+const fetch = jest.fn(async () => ({
   text() {
     return `008A205652858375D71117A63004CC75167:5\r\n3EA386688A0147AB736AABCEDE496610382:244`
   },
