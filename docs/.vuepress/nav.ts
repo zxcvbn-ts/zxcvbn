@@ -1,7 +1,7 @@
-// @ts-ignore
-import pkg from '../../package.json'
 import { AutoLinkOptions } from '@vuepress/theme-default/lib/shared/nav'
+import pkg from '../../package.json'
 
+// eslint-disable-next-line import/prefer-default-export
 export const navbar: AutoLinkOptions[] = [
   {
     text: 'Guide',

@@ -27,7 +27,6 @@ export default class ListHandler {
 
   languages: Set<string> = new Set()
 
-  // eslint-disable-next-line max-statements
   async generateData() {
     // eslint-disable-next-line no-restricted-syntax
     for (const options of this.lists) {

@@ -44,7 +44,6 @@ class MatchSeparator {
     // return new RegExp(`(?<!${separator})(${separator})(?!${separator})`, 'g')
   }
 
-  // eslint-disable-next-line max-statements
   match({ password }: SeparatorMatchOptions) {
     const result: SeparatorMatch[] = []
 

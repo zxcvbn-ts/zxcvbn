@@ -1,5 +1,6 @@
 import { SidebarGroupOptions } from '@vuepress/theme-default/lib/shared/sidebar'
 
+// eslint-disable-next-line import/prefer-default-export
 export const sidebar: SidebarGroupOptions[] = [
   {
     text: 'Guide',

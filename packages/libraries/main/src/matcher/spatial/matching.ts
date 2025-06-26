@@ -44,7 +44,7 @@ class MatchSpatial {
       let lastDirection: number | null = null
       let turns = 0
       shiftedCount = this.checkIfShifted(graphName, password, i)
-      // eslint-disable-next-line no-constant-condition
+
       while (true) {
         const prevChar = password.charAt(j - 1)
         const adjacents = graph[prevChar as keyof typeof graph] || []

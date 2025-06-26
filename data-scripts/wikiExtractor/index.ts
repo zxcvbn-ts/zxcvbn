@@ -191,7 +191,6 @@ const write = (output: string, pairs: LooseObject) => {
   outputStreamJson.end()
 }
 
-// eslint-disable-next-line max-statements
 const main = async (inputDir: string, _outputFile: string) => {
   const counter = new TopTokenCounter()
   await getTokens(inputDir, counter)

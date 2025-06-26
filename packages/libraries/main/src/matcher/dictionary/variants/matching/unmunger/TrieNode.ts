@@ -1,7 +1,6 @@
 export default class TrieNode {
   constructor(public parents: string[] = []) {}
 
-  // eslint-disable-next-line no-use-before-define
   children: Map<string, TrieNode> = new Map()
 
   subs?: string[]
