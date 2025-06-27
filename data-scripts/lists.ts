@@ -282,6 +282,23 @@ export default {
         'https://gist.github.com/allanlewis/ddfe6e7053fd12986589c52edf6ef856/raw/bc6ca7a55527930ec5f25e448c3aa0a7deee2de6/italian-last-names.txt',
     },
   },
+  'th': {
+    commonWords: {
+      source:
+        'https://github.com/hermitdave/FrequencyWords/raw/master/content/2018/th/th_50k.txt',
+      options: { hasOccurrences: true },
+    },
+    firstnames: {
+      // Same as English
+      source:
+        'https://gist.github.com/allanlewis/ddfe6e7053fd12986589c52edf6ef856/raw/bc6ca7a55527930ec5f25e448c3aa0a7deee2de6/italian-first-names.txt',
+    },
+    lastnames: {
+      // Same as English
+      source:
+        'https://gist.github.com/allanlewis/ddfe6e7053fd12986589c52edf6ef856/raw/bc6ca7a55527930ec5f25e448c3aa0a7deee2de6/italian-last-names.txt',
+    },
+  },
   'pt-br': {
     commonWords: {
       source:

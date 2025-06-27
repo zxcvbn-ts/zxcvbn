@@ -18,6 +18,7 @@ Current supported languages:
 - Dutch (Belgium)
 - Polish
 - Portuguese (Brazil)
+- Thailand
 
 ## Feedback
 
