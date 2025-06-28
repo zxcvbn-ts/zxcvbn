@@ -7,6 +7,7 @@ import repeatMatcher from './matcher/repeat/matching'
 import sequenceMatcher from './matcher/sequence/matching'
 import spatialMatcher from './matcher/spatial/matching'
 import separatorMatcher from './matcher/separator/matching'
+import wordSequenceMatcher from './matcher/wordSequence/matching'
 import Options from './Options'
 
 /*
@@ -26,6 +27,7 @@ class Matching {
     sequence: sequenceMatcher,
     spatial: spatialMatcher,
     separator: separatorMatcher,
+    wordSequence: wordSequenceMatcher,
   }
 
   constructor(private options: Options) {}
