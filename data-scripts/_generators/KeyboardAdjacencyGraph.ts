@@ -1,6 +1,5 @@
 import fs, { readdirSync } from 'fs'
 import path from 'path'
-import { LooseObject } from '../_helpers/runtime'
 
 // returns the six adjacent coordinates on a standard keyboard, where each row is slanted to the
 // right from the last. adjacencies are clockwise, starting with key to the left, then two keys
@@ -99,6 +98,8 @@ const getTokens = (layoutStr: string) => {
   return tokens
 }
 
+type Graph = Record<string, (string | null)[]>
+
 // builds an adjacency graph as a dictionary: {character: [adjacentCharacters]}.
 //     adjacent characters occur in a clockwise order.
 //     for example:
@@ -122,7 +123,7 @@ const buildGraph = (layoutStr: string, slanted: boolean) => {
 
   const positionTable = getPositionTable(layoutStr, xUnit, slanted) // maps from tuple (x,y) -> characters at that position.
 
-  const adjacencyGraph: LooseObject = {}
+  const adjacencyGraph: Graph = {}
   Object.entries(positionTable).forEach(([coordinates, chars]) => {
     const [x, y] = parseCoordinates(coordinates)
     const charsArray = chars.split('')
@@ -158,7 +159,7 @@ export default class KeyboardAdjacencyGraph {
     const languages = getDirectories(layoutsFolder)
     languages.forEach((language) => {
       const layouts = `${layoutsFolder}/${language}`
-      const graphs: LooseObject = {}
+      const graphs: Record<string, Graph> = {}
       const files = getFiles(layouts)
       files.forEach((file) => {
         // eslint-disable-next-line global-require,import/no-dynamic-require,@typescript-eslint/no-require-imports

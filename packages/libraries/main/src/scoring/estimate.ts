@@ -6,7 +6,7 @@ import utils from './utils'
 import Options from '../Options'
 import {
   DefaultScoringFunction,
-  LooseObject,
+  DictionaryScoringExtras,
   MatchEstimated,
   MatchExtended,
 } from '../types'
@@ -70,7 +70,7 @@ export default (
   match: MatchExtended | MatchEstimated,
   password: string,
 ) => {
-  const extraData: LooseObject = {}
+  const extraData: Partial<DictionaryScoringExtras> = {}
   // a match's guess estimate doesn't change. cache it.
   if ('guesses' in match && match.guesses != null) {
     return match

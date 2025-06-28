@@ -271,6 +271,12 @@ export type Matchers = Record<string, Matcher>
 
 export type Score = 0 | 1 | 2 | 3 | 4
 
+export interface DictionaryScoringExtras {
+  baseGuesses: number
+  uppercaseVariations: number
+  l33tVariations: number
+}
+
 export interface ZxcvbnResult {
   feedback: FeedbackType
   crackTimes: CrackTimes

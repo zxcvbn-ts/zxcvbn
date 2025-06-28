@@ -1,4 +1,4 @@
-import { LooseObject, MatchExtended } from '../../src/types'
+import { MatchExtended } from '../../src/types'
 
 export interface CheckMatchesOptions {
   messagePrefix: string
@@ -6,7 +6,7 @@ export interface CheckMatchesOptions {
   patternNames: string
   patterns: string[]
   ijs: number[][]
-  propsToCheck: LooseObject
+  propsToCheck: Record<string, string>
 }
 
 export default function checkMatches({

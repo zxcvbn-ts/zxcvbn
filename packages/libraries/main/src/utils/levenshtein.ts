@@ -1,5 +1,5 @@
 import { distance } from 'fastest-levenshtein'
-import { LooseObject } from '../types'
+import { RankedDictionary } from '../types'
 
 const getUsedThreshold = (
   password: string,
@@ -22,7 +22,7 @@ export interface FindLevenshteinDistanceResult {
 
 const findLevenshteinDistance = (
   password: string,
-  rankedDictionary: LooseObject,
+  rankedDictionary: RankedDictionary,
   threshold: number,
 ): Partial<FindLevenshteinDistanceResult> => {
   let foundDistance = 0

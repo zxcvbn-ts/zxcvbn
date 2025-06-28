@@ -1,10 +1,9 @@
 import fs from 'fs'
 import readline from 'readline'
 import path from 'path'
-// @ts-expect-error for testing purposes
+// @ts-expect-error doesn't have types
 import globAll from 'glob-all'
 import natural from 'natural'
-import { LooseObject } from '../../packages/libraries/main/src/types'
 
 const SENTENCES_PER_BATCH = 500000 // after each batch, delete all counts with count == 1 (hapax legomena)
 const PRE_SORT_CUTOFF = 500 // before sorting, discard all words with less than this count
@@ -13,8 +12,10 @@ const ALL_NON_ALPHA = /^[\W\d]*$/
 const SOME_NON_ALPHA = /[\W\d]/
 const EXCLUDED = /^(__)(.*)(__)$/
 
+type Count = Record<string, number>
+
 class TopTokenCounter {
-  count: Record<string, number> = {}
+  count: Count = {}
 
   legomena = new Set()
 
@@ -112,7 +113,7 @@ class TopTokenCounter {
 
         return 0
       })
-      .reduce((obj: LooseObject, entry) => {
+      .reduce((obj: Count, entry) => {
         const key = entry[0]
         // eslint-disable-next-line no-param-reassign
         obj[key] = this.count[key]
@@ -171,7 +172,7 @@ const getTokens = async (inputDir: string, counter: TopTokenCounter) => {
   await Promise.all(promises)
 }
 
-const write = (output: string, pairs: LooseObject) => {
+const write = (output: string, pairs: Record<string, number>) => {
   const outputStreamJson = fs.createWriteStream(output, {
     encoding: 'utf8',
   })

@@ -2,7 +2,7 @@ import MatchSpatial from '../../../src/matcher/spatial/matching'
 import checkMatches from '../../helper/checkMatches'
 import * as zxcvbnCommonPackage from '../../../../../languages/common/src'
 import Options from '../../../src/Options'
-import { LooseObject } from '../../../src/types'
+import { OptionsGraph } from '../../../src/types'
 
 const { adjacencyGraphs } = zxcvbnCommonPackage
 
@@ -15,7 +15,7 @@ describe('spatial matching', () => {
       expect(matchSpatial.match({ password })).toEqual([])
     })
   })
-  const graphs: LooseObject = {
+  const graphs: OptionsGraph = {
     qwerty: adjacencyGraphs.qwerty,
   }
   const zxcvbnOptions = new Options({ graphs })

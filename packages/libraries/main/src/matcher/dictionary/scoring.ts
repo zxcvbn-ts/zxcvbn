@@ -1,11 +1,12 @@
 import uppercaseVariant from './variants/scoring/uppercase'
 import l33tVariant from './variants/scoring/l33t'
-import { MatchEstimated, MatchExtended } from '../../types'
+import {
+  DictionaryScoringExtras,
+  MatchEstimated,
+  MatchExtended,
+} from '../../types'
 
-export interface DictionaryReturn {
-  baseGuesses: number
-  uppercaseVariations: number
-  l33tVariations: number
+export interface DictionaryReturn extends DictionaryScoringExtras {
   calculation: number
 }
 

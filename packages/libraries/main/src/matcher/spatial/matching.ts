@@ -1,6 +1,6 @@
 import { sorted, extend } from '../../utils/helper'
 import Options from '../../Options'
-import { LooseObject, MatchOptions, SpatialMatch } from '../../types'
+import { MatchOptions, OptionsGraphEntry, SpatialMatch } from '../../types'
 
 type SpatialMatchOptions = Pick<MatchOptions, 'password'>
 /*
@@ -34,7 +34,7 @@ class MatchSpatial {
   }
 
   // eslint-disable-next-line complexity, max-statements
-  helper(password: string, graph: LooseObject, graphName: string) {
+  helper(password: string, graph: OptionsGraphEntry, graphName: string) {
     let shiftedCount
     const matches: SpatialMatch[] = []
     let i = 0
