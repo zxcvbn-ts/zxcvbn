@@ -16,6 +16,7 @@ export type Pattern =
   | 'spatial'
   | 'repeat'
   | 'sequence'
+  | 'wordSequence'
   | 'regex'
   | 'date'
   | 'bruteforce'
@@ -106,12 +107,21 @@ export interface SeparatorMatch extends Match {
   pattern: 'separator'
 }
 
+export interface WordSequenceMatch extends Match {
+  pattern: 'wordSequence'
+  words: string[]
+  wordCount: number
+  dictionaryName: string
+  ascending: boolean
+}
+
 export type MatchExtended =
   | DictionaryMatch
   | L33tMatch
   | SpatialMatch
   | RepeatMatch
   | SequenceMatch
+  | WordSequenceMatch
   | RegexMatch
   | DateMatch
   | BruteForceMatch
