@@ -31,9 +31,8 @@ describe('scoring guesses repeated', () => {
     const expectedGuesses = baseGuesses * repeatCount
     const msg = `the repeat pattern '${token}' has guesses of ${expectedGuesses}`
 
-    // eslint-disable-next-line jest/valid-title
     it(msg, () => {
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       expect(repeatGuesses(match)).toEqual(expectedGuesses)
     })
   })

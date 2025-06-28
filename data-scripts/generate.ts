@@ -10,15 +10,15 @@ const main = async () => {
     if (forceLanguage !== undefined && language !== forceLanguage) {
       return
     }
-    const languageLists = lists[language as keyof typeof lists]
+    const languageLists = lists[language]
     Object.keys(languageLists).forEach((name) => {
-      const data = languageLists[name as keyof typeof languageLists]
+      const data = languageLists[name]
 
       listHandler.registerList({
         language,
         filename: name,
         url: data.source,
-        generator: data.generator || SimpleListGenerator,
+        generator: data.generator ?? SimpleListGenerator,
         options: data.options,
       })
     })
@@ -27,4 +27,5 @@ const main = async () => {
   await listHandler.run()
 }
 
+// eslint-disable-next-line @typescript-eslint/no-floating-promises
 main()

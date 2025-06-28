@@ -2,7 +2,7 @@ import { ALL_UPPER, ALL_LOWER, ALL_DIGIT } from '../../data/const'
 import { MatchOptions, SequenceMatch } from '../../types'
 import Options from '../../Options'
 
-type UpdateParams = {
+interface UpdateParams {
   i: number
   j: number
   delta: number
@@ -46,7 +46,7 @@ class MatchSequence {
     const passwordLength = password.length
     for (let k = 1; k < passwordLength; k += 1) {
       const delta = password.charCodeAt(k) - password.charCodeAt(k - 1)
-      if (lastDelta == null) {
+      if (lastDelta === null) {
         lastDelta = delta
       }
       if (delta !== lastDelta) {
@@ -65,7 +65,7 @@ class MatchSequence {
     this.update({
       i,
       j: passwordLength - 1,
-      delta: lastDelta as number,
+      delta: lastDelta!,
       password,
       result,
     })

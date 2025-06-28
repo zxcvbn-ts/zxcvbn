@@ -1,6 +1,6 @@
-// @ts-ignore
+// @ts-expect-error for testing purposes
 import Kuroshiro from 'kuroshiro'
-// @ts-ignore
+// @ts-expect-error for testing purposes
 import KuromojiAnalyzer from 'kuroshiro-analyzer-kuromoji'
 import SimpleListGenerator from './SimpleListGenerator'
 
@@ -9,7 +9,7 @@ export default class SimpleJapaneseListGenerator extends SimpleListGenerator {
     const kuroshiro = new Kuroshiro()
     await kuroshiro.init(new KuromojiAnalyzer())
     console.info('Converting hiragana and katakana to romaji')
-    const promises = this.data.map(async (entry) => {
+    const promises = this.data.map((entry) => {
       const isKatakana = entry.split('').every((char) => {
         return Kuroshiro.Util.isKatakana(char)
       })
@@ -21,7 +21,7 @@ export default class SimpleJapaneseListGenerator extends SimpleListGenerator {
         romajiSystem: 'passport',
       })
     })
-    // eslint-disable-next-line compat/compat
+
     this.data = await Promise.all(promises)
   }
 

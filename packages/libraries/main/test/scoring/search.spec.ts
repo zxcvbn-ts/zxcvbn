@@ -38,7 +38,7 @@ describe('scoring search', () => {
     const firstMatch = matches[0]
     const result = scoring.mostGuessableMatchSequence(
       password,
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       matches,
       excludeAdditive,
     )
@@ -66,7 +66,7 @@ describe('scoring search', () => {
     const firstMatch = matches[0]
     const result = scoring.mostGuessableMatchSequence(
       password,
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       matches,
       excludeAdditive,
     )
@@ -93,7 +93,7 @@ describe('scoring search', () => {
     const matches = [getMatch(1, 8, 1)]
     const result = scoring.mostGuessableMatchSequence(
       password,
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       matches,
       excludeAdditive,
     )
@@ -123,7 +123,7 @@ describe('scoring search', () => {
     const secondMatch = matches[1]
     let result = scoring.mostGuessableMatchSequence(
       password,
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       matches,
       excludeAdditive,
     )
@@ -143,7 +143,7 @@ describe('scoring search', () => {
     firstMatch.guesses = 3
     result = scoring.mostGuessableMatchSequence(
       password,
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       matches,
       excludeAdditive,
     )
@@ -162,7 +162,7 @@ describe('scoring search', () => {
     describe('when m0 covers m1 and m2, choose [m0] when m0 < m1 * m2 * fact(2):', () => {
       const result = scoring.mostGuessableMatchSequence(
         password,
-        // @ts-ignore
+        // @ts-expect-error for testing purposes
         matches,
         excludeAdditive,
       )
@@ -179,7 +179,7 @@ describe('scoring search', () => {
       firstMatch.guesses = 5
       const result = scoring.mostGuessableMatchSequence(
         password,
-        // @ts-ignore
+        // @ts-expect-error for testing purposes
         matches,
         excludeAdditive,
       )

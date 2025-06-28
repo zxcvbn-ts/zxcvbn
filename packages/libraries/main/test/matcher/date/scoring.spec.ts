@@ -12,7 +12,7 @@ describe('scoring: guesses date', () => {
       day: 1,
     }
     const result = 365 * Math.abs(REFERENCE_YEAR - match.year)
-    // @ts-ignore
+    // @ts-expect-error for testing purposes
     expect(date(match)).toEqual(result)
   })
 
@@ -26,7 +26,7 @@ describe('scoring: guesses date', () => {
       day: 1,
     }
     const result = 365 * MIN_YEAR_SPACE * 4
-    // @ts-ignore
+    // @ts-expect-error for testing purposes
     expect(date(match)).toEqual(result)
   })
 })

@@ -34,9 +34,7 @@ const getMinGuesses = (
   return minGuesses
 }
 
-type Matchers = {
-  [key: string]: DefaultScoringFunction
-}
+type Matchers = Record<string, DefaultScoringFunction>
 
 const matchers: Matchers = {
   bruteforce: bruteforceMatcher,
@@ -66,7 +64,7 @@ const getScoring = (
 // ------------------------------------------------------------------------------
 // guess estimation -- one function per match pattern ---------------------------
 // ------------------------------------------------------------------------------
-// eslint-disable-next-line complexity, max-statements
+
 export default (
   options: Options,
   match: MatchExtended | MatchEstimated,

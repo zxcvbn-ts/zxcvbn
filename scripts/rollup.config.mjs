@@ -6,7 +6,7 @@ import terser from '@rollup/plugin-terser'
 import json from './jsonPlugin.mjs'
 
 let generateCounter = 0
-const generateConfig = async (type, minify = false) => {
+const generateConfig = (type, minify = false) => {
   let typescriptOptions = {
     declaration: false,
   }

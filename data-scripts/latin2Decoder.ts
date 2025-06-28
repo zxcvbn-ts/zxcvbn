@@ -159,7 +159,7 @@ export default (
     for (let index = 0; index < length; index += 1) {
       bytes[index] = input.charCodeAt(index)
     }
-    // @ts-ignore
+    // @ts-expect-error for testing purposes
     // eslint-disable-next-line no-param-reassign
     input = bytes
   }
@@ -169,16 +169,16 @@ export default (
     const byteValue = input[index]
     // “If `byte` is an ASCII byte, return a code point whose value is
     // `byte`.”
-    // @ts-ignore
+    // @ts-expect-error for testing purposes
     if (byteValue >= 0x00 && byteValue <= 0x7f) {
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       buffer.push(stringFromCharCode(byteValue))
       // eslint-disable-next-line no-continue
       continue
     }
     // “Let `code point` be the index code point for `byte − 0x80` in index
     // single-byte.”
-    // @ts-ignore
+    // @ts-expect-error for testing purposes
     const pointer = byteValue - 0x80
     if (INDEX_BY_POINTER.has(pointer)) {
       // “Return a code point whose value is `code point`.”

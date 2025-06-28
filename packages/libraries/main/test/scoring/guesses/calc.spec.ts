@@ -8,7 +8,7 @@ describe('scoring', () => {
     const match = {
       guesses: 1,
     }
-    // @ts-ignore
+    // @ts-expect-error for testing purposes
     expect(estimate(zxcvbnOptions, match, '')).toEqual({
       guesses: 1,
     })
@@ -23,14 +23,14 @@ describe('scoring', () => {
       month: 7,
       day: 14,
     }
-    // @ts-ignore
+    // @ts-expect-error for testing purposes
     expect(estimate(zxcvbnOptions, match, '1977')).toEqual({
       pattern: 'date',
       token: usedYear.toString(),
       year: usedYear,
       month: 7,
       day: 14,
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       guesses: dateGuesses(match),
       guessesLog10: 4.225050696138048,
     })

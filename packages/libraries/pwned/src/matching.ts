@@ -1,4 +1,4 @@
-// @ts-ignore
+// @ts-expect-error for testing purposes
 import { MatchExtended, MatchOptions } from '@zxcvbn-ts/core'
 import haveIBeenPwned from './haveIBeenPwned'
 import { FetchApi, MatcherPwnedFactoryConfig } from './types'
@@ -21,7 +21,6 @@ export default (
         networkErrorHandler,
       })
       if (pwned) {
-        // @ts-ignore
         matches.push({
           pattern: 'pwned',
           pwnedAmount: parseInt(pwned.split(':')[1], 10),

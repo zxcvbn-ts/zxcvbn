@@ -25,6 +25,7 @@ describe('l33t matching', () => {
     const dictionaryMatcher = new MatchDictionary(zxcvbnOptions)
     const matchL33t = new MatchL33t(
       zxcvbnOptions,
+
       dictionaryMatcher.defaultMatch,
     )
     it("doesn't match single-character l33ted words", () => {
@@ -38,6 +39,7 @@ describe('l33t matching', () => {
     l33tMaxSubstitutions: 15,
   })
   const dictionaryMatcher = new MatchDictionary(zxcvbnOptions)
+
   const matchL33t = new MatchL33t(zxcvbnOptions, dictionaryMatcher.defaultMatch)
 
   describe('main match', () => {

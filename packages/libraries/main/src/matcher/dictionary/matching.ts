@@ -3,7 +3,7 @@ import findLevenshteinDistance, {
 } from '../../utils/levenshtein'
 import { sorted } from '../../utils/helper'
 import Options from '../../Options'
-import { DictionaryNames, DictionaryMatch, L33tMatch } from '../../types'
+import { DictionaryNames, DictionaryMatch } from '../../types'
 import Reverse from './variants/matching/reverse'
 import L33t from './variants/matching/l33t'
 import { DictionaryMatchOptions } from './types'
@@ -21,9 +21,9 @@ class MatchDictionary {
 
   match(matchOptions: DictionaryMatchOptions) {
     const matches = [
-      ...(this.defaultMatch(matchOptions) as DictionaryMatch[]),
+      ...this.defaultMatch(matchOptions),
       ...(this.reverse.match(matchOptions) as DictionaryMatch[]),
-      ...(this.l33t.match(matchOptions) as L33tMatch[]),
+      ...this.l33t.match(matchOptions),
     ]
     return sorted(matches)
   }
@@ -76,7 +76,7 @@ class MatchDictionary {
 
           if (isInDictionary || isLevenshteinMatch) {
             const usedRankPassword = isLevenshteinMatch
-              ? (foundLevenshteinDistance.levenshteinDistanceEntry as string)
+              ? foundLevenshteinDistance.levenshteinDistanceEntry!
               : usedPassword
 
             const rank = rankedDict[usedRankPassword]

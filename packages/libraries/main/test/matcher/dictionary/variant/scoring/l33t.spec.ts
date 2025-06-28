@@ -6,7 +6,7 @@ import { LooseObject } from '../../../../../src/types'
 const { nCk } = utils
 
 describe('scoring: variant l33t', () => {
-  const data = [
+  const data: [string, number, LooseObject][] = [
     ['', 1, {}],
     ['a', 1, {}],
     [
@@ -125,9 +125,9 @@ describe('scoring: variant l33t', () => {
       const match = {
         token: word,
         subs,
-        l33t: !empty(subs as LooseObject),
+        l33t: !empty(subs),
       }
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       expect(l33t(match)).toEqual(variants)
     })
   })
@@ -144,7 +144,7 @@ describe('scoring: variant l33t', () => {
       ],
     }
     const variants = nCk(6, 2) + nCk(6, 1)
-    // @ts-ignore
+    // @ts-expect-error for testing purposes
     expect(l33t(match)).toEqual(variants)
   })
 })

@@ -28,7 +28,7 @@ describe('scoring: guesses bruteforce', () => {
       },
     ]
     testData.forEach((data) => {
-      // @ts-ignore
+      // @ts-expect-error for testing purposes
       expect(bruteforce(data.match)).toEqual(data.result)
     })
   })
@@ -38,7 +38,7 @@ describe('scoring: guesses bruteforce', () => {
     const match = {
       token,
     }
-    // @ts-ignore
+    // @ts-expect-error for testing purposes
     expect(bruteforce(match)).toEqual(Number.MAX_VALUE)
   })
 
@@ -46,17 +46,17 @@ describe('scoring: guesses bruteforce', () => {
     const match = {
       token: 'a',
     }
-    // @ts-ignore
+    // @ts-expect-error for testing purposes
     expect(bruteforce(match)).toEqual(11)
   })
 
   // TODO this can't be reached because min guesses is 51 and with a password length of 2 you get 100 already
-  // eslint-disable-next-line jest/no-disabled-tests
+
   it.skip(`should be ${MIN_SUBMATCH_GUESSES_MULTI_CHAR} from MIN_SUBMATCH_GUESSES_MULTI_CHAR`, () => {
     const match = {
       token: 'ab',
     }
-    // @ts-ignore
+    // @ts-expect-error for testing purposes
     expect(bruteforce(match)).toEqual(11)
   })
 })

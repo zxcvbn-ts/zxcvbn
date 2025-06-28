@@ -18,7 +18,7 @@ describe('scoring: guesses dictionary', () => {
       token: 'aaaaa',
     }
     const result = 32
-    // @ts-ignore
+    // @ts-expect-error for testing purposes
     expect(dictionaryGuesses(match)).toEqual({
       baseGuesses: 32,
       calculation: result,
@@ -33,7 +33,7 @@ describe('scoring: guesses dictionary', () => {
       token: 'AAAaaa',
     }
     const result = 32 * uppercaseVariant(match.token)
-    // @ts-ignore
+    // @ts-expect-error for testing purposes
     expect(dictionaryGuesses(match)).toEqual({
       baseGuesses: 32,
       calculation: result,
@@ -49,7 +49,7 @@ describe('scoring: guesses dictionary', () => {
       reversed: true,
     }
     const result = 32 * 2
-    // @ts-ignore
+    // @ts-expect-error for testing purposes
     expect(dictionaryGuesses(match)).toEqual({
       baseGuesses: 32,
       calculation: result,
@@ -70,9 +70,9 @@ describe('scoring: guesses dictionary', () => {
         },
       ],
     }
-    // @ts-ignore
+    // @ts-expect-error for testing purposes
     const result = 32 * l33tVariant(match)
-    // @ts-ignore
+    // @ts-expect-error for testing purposes
     expect(dictionaryGuesses(match)).toEqual({
       baseGuesses: 32,
       calculation: result,
@@ -93,9 +93,9 @@ describe('scoring: guesses dictionary', () => {
         },
       ],
     }
-    // @ts-ignore
+    // @ts-expect-error for testing purposes
     const result = 32 * l33tVariant(match) * uppercaseVariant(match.token)
-    // @ts-ignore
+    // @ts-expect-error for testing purposes
     expect(dictionaryGuesses(match)).toEqual({
       baseGuesses: 32,
       calculation: result,
@@ -110,7 +110,7 @@ describe('scoring: guesses dictionary', () => {
       dictionaryName: 'diceware',
       token: 'AaA@@@',
     }
-    // @ts-ignore
+    // @ts-expect-error for testing purposes
     expect(dictionaryGuesses(match)).toEqual({
       baseGuesses: 32,
       calculation: 3888,

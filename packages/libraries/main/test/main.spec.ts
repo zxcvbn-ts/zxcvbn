@@ -78,7 +78,7 @@ describe('main', () => {
       dictionary: {
         ...zxcvbnCommonPackage.dictionary,
         ...zxcvbnEnPackage.dictionary,
-        // @ts-ignore
+        // @ts-expect-error for testing purposes
         userInputs: ['test', 12, true, []],
       },
       graphs: zxcvbnCommonPackage.adjacencyGraphs,

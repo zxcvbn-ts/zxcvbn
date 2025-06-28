@@ -49,7 +49,7 @@ export default class SimpleListGenerator<
 
   constructor({ url, options }: ConstructorOptions) {
     this.url = url
-    // @ts-ignore
+    // @ts-expect-error for testing purposes
     this.options = { ...SimpleListGeneratorDefaultOptions }
     Object.assign(this.options, options)
   }

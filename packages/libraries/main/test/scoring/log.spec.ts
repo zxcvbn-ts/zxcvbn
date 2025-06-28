@@ -39,35 +39,30 @@ describe('scoring: utils log', () => {
     expect(calculation).toEqual(result)
   }
 
-  // eslint-disable-next-line jest/expect-expect
   it('product rule', () => {
     const calculation = log10(firstNumber * secondNumber)
     const result = log10(firstNumber) + log10(secondNumber)
     approxEqual(calculation, result)
   })
 
-  // eslint-disable-next-line jest/expect-expect
   it('quotient rule', () => {
     const calculation = log10(firstNumber / secondNumber)
     const result = log10(firstNumber) - log10(secondNumber)
     approxEqual(calculation, result)
   })
 
-  // eslint-disable-next-line jest/expect-expect
   it('base switch rule', () => {
     const calculation = log10(Math.E)
     const result = 1 / Math.log(10)
     approxEqual(calculation, result)
   })
 
-  // eslint-disable-next-line jest/expect-expect
   it('power rule', () => {
     const calculation = log10(firstNumber ** secondNumber)
     const result = secondNumber * log10(firstNumber)
     approxEqual(calculation, result)
   })
 
-  // eslint-disable-next-line jest/expect-expect
   it('base rule', () => {
     const calculation = log10(firstNumber)
     const result = Math.log(firstNumber) / Math.log(10)

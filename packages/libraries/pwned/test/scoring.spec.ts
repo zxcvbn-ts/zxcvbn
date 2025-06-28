@@ -5,7 +5,7 @@ describe('scoring: guesses pwned', () => {
     const match = {
       pwnedAmount: 1,
     }
-    // @ts-ignore
+    // @ts-expect-error for testing purposes
     expect(pwned(match)).toEqual(1)
   })
 })

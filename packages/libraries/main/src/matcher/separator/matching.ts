@@ -12,8 +12,6 @@ const separatorRegex = new RegExp(`[${SEPERATOR_CHARS.join('')}]`)
  *-------------------------------------------------------------------------------
  */
 class MatchSeparator {
-  constructor(private options: Options) {}
-
   static getMostUsedSeparatorChar(password: string): string | undefined {
     const mostUsedSeperators = [
       ...password
@@ -22,7 +20,7 @@ class MatchSeparator {
         .reduce((memo, c) => {
           const m = memo.get(c)
           if (m) {
-            memo.set(c, m + 1)
+            memo.set(c, parseInt(m, 10) + 1)
           } else {
             memo.set(c, 1)
           }
@@ -44,7 +42,8 @@ class MatchSeparator {
     // return new RegExp(`(?<!${separator})(${separator})(?!${separator})`, 'g')
   }
 
-  // eslint-disable-next-line max-statements
+  constructor(private options: Options) {}
+
   match({ password }: SeparatorMatchOptions) {
     const result: SeparatorMatch[] = []
 

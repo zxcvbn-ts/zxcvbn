@@ -15,16 +15,13 @@ import Options from './Options'
  * -------------------------------------------------------------------------------
  */
 
-type Matchers = {
-  [key: string]: MatchingType
-}
+type Matchers = Record<string, MatchingType>
 
 class Matching {
   private readonly matchers: Matchers = {
     date: dateMatcher,
     dictionary: dictionaryMatcher,
     regex: regexMatcher,
-    // @ts-ignore => TODO resolve this type issue. This is because it is possible to be async
     repeat: repeatMatcher,
     sequence: sequenceMatcher,
     spatial: spatialMatcher,
@@ -50,6 +47,7 @@ class Matching {
     result: MatchExtended[] | Promise<MatchExtended[]>,
   ) {
     if (result instanceof Promise) {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
       result.then((response) => {
         extend(matches, response)
       })
@@ -69,8 +67,9 @@ class Matching {
           .then(() => {
             resolve(sorted(matches))
           })
-          .catch((error) => {
-            reject(error)
+          .catch((error: unknown) => {
+            // eslint-disable-next-line prefer-promise-reject-errors
+            reject(error as Error)
           })
       })
     }

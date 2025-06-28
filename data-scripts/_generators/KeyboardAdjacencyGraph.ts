@@ -52,17 +52,13 @@ const parseCoordinates = (coordinates: string) => {
   return coordinates.split(',').map((coordinate) => parseInt(coordinate, 10))
 }
 
-interface PositionTable {
-  [key: string]: string
-}
+type PositionTable = Record<string, string>
 
 const getPositionTable = (
   layoutStr: string,
   xUnit: number,
   slanted: boolean,
-): {
-  [key: string]: string
-} => {
+): Record<string, string> => {
   const positionTable: PositionTable = {}
   const lines = getLines(layoutStr)
   // eslint-disable-next-line no-restricted-syntax
@@ -165,7 +161,7 @@ export default class KeyboardAdjacencyGraph {
       const graphs: LooseObject = {}
       const files = getFiles(layouts)
       files.forEach((file) => {
-        // eslint-disable-next-line global-require,import/no-dynamic-require
+        // eslint-disable-next-line global-require,import/no-dynamic-require,@typescript-eslint/no-require-imports
         const fileData = require(`${layouts}/${file}`)
         const layout = fileData.default
         const graph = buildGraph(layout.layout, layout.slanted)

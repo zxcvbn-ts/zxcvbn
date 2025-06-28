@@ -6,7 +6,6 @@ import { Matcher, MatchExtended } from '../src/types'
 const asyncMatcher: Matcher = {
   Matching: class MatchAsync {
     match({ password }: { password: string }): Promise<MatchExtended[]> {
-      // eslint-disable-next-line compat/compat
       return new Promise((resolve) => {
         setTimeout(() => {
           resolve([
@@ -54,7 +53,7 @@ describe('asyncMatcher', () => {
     expect(result.calcTime).toBeDefined()
   })
 
-  it('should throw an error for wrong function usage', async () => {
+  it('should throw an error for wrong function usage', () => {
     expect(() => {
       zxcvbn.check('ep8fkw8ds')
     }).toThrow(

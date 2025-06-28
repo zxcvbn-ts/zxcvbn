@@ -9,7 +9,7 @@ describe('scoring: guesses regex', () => {
       regexMatch: ['aizocdk'],
     }
     const result = 26 ** 7
-    // @ts-ignore
+    // @ts-expect-error for testing purposes
     expect(regexGuesses(match)).toEqual(result)
   })
 
@@ -20,7 +20,7 @@ describe('scoring: guesses regex', () => {
       regexMatch: ['ag7C8'],
     }
     const result = (2 * 26 + 10) ** 5
-    // @ts-ignore
+    // @ts-expect-error for testing purposes
     expect(regexGuesses(match)).toEqual(result)
   })
 
@@ -31,7 +31,7 @@ describe('scoring: guesses regex', () => {
       regexMatch: ['1972'],
     }
     const result = Math.abs(REFERENCE_YEAR - 1972)
-    // @ts-ignore
+    // @ts-expect-error for testing purposes
     expect(regexGuesses(match)).toEqual(result)
   })
 
@@ -41,7 +41,7 @@ describe('scoring: guesses regex', () => {
       regexName: 'recentYear',
       regexMatch: ['2005'],
     }
-    // @ts-ignore
+    // @ts-expect-error for testing purposes
     expect(regexGuesses(match)).toEqual(MIN_YEAR_SPACE)
   })
 
@@ -51,7 +51,7 @@ describe('scoring: guesses regex', () => {
       regexName: 'someRegexName',
       regexMatch: [''],
     }
-    // @ts-ignore
+    // @ts-expect-error for testing purposes
     expect(regexGuesses(match)).toEqual(0)
   })
 })

@@ -9,9 +9,7 @@ import Options from './Options'
 export type TranslationKeys = typeof translationKeys
 export type L33tTableDefault = typeof l33tTableDefault
 
-export interface LooseObject {
-  [key: string]: any
-}
+export type LooseObject = Record<string, any>
 
 export type Pattern =
   | 'dictionary'
@@ -161,23 +159,13 @@ export interface FeedbackType {
   suggestions: string[]
 }
 
-export type OptionsL33tTable =
-  | L33tTableDefault
-  | {
-      [key: string]: string[]
-    }
+export type OptionsL33tTable = L33tTableDefault | Record<string, string[]>
 
-export type OptionsDictionary = {
-  [key: string]: (string | number)[]
-}
+export type OptionsDictionary = Record<string, (string | number)[]>
 
-export interface OptionsGraphEntry {
-  [key: string]: (string | null)[]
-}
+export type OptionsGraphEntry = Record<string, (string | null)[]>
 
-export interface OptionsGraph {
-  [key: string]: OptionsGraphEntry
-}
+export type OptionsGraph = Record<string, OptionsGraphEntry>
 
 export interface TimeEstimationValues {
   scoring: {
@@ -237,13 +225,9 @@ export interface OptionsType {
   timeEstimationValues?: TimeEstimationValues
 }
 
-export interface RankedDictionary {
-  [key: string]: number
-}
+export type RankedDictionary = Record<string, number>
 
-export interface RankedDictionaries {
-  [key: string]: RankedDictionary
-}
+export type RankedDictionaries = Record<string, RankedDictionary>
 
 export type DefaultFeedbackFunction = (
   options: Options,
@@ -283,9 +267,7 @@ export interface Matcher {
   Matching: MatchingType
 }
 
-export interface Matchers {
-  [key: string]: Matcher
-}
+export type Matchers = Record<string, Matcher>
 
 export type Score = 0 | 1 | 2 | 3 | 4
 
