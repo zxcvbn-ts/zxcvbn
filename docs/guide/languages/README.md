@@ -20,6 +20,7 @@ Current supported languages:
 - Dutch (Belgium)
 - Polish
 - Portuguese (Brazil)
+- Romanian
 - Thai
 - Chinese
 
