@@ -74,6 +74,34 @@ describe('WordSequence Matcher', () => {
         expect(wordSequenceMatch.dictionaryName).toBe('cardinalNumbers')
       }
     })
+
+    it('should detect dot-separated cardinal number sequences', () => {
+      const result = zxcvbn.check('seven.eight.nine')
+
+      const wordSequenceMatch = result.sequence.find(
+        (match) => match.pattern === 'wordSequence',
+      )
+
+      expect(wordSequenceMatch).toBeDefined()
+      if (wordSequenceMatch && wordSequenceMatch.pattern === 'wordSequence') {
+        expect(wordSequenceMatch.words).toEqual(['seven', 'eight', 'nine'])
+        expect(wordSequenceMatch.wordCount).toBe(3)
+      }
+    })
+
+    it('should detect space-separated cardinal number sequences', () => {
+      const result = zxcvbn.check('ten eleven twelve')
+
+      const wordSequenceMatch = result.sequence.find(
+        (match) => match.pattern === 'wordSequence',
+      )
+
+      expect(wordSequenceMatch).toBeDefined()
+      if (wordSequenceMatch && wordSequenceMatch.pattern === 'wordSequence') {
+        expect(wordSequenceMatch.words).toEqual(['ten', 'eleven', 'twelve'])
+        expect(wordSequenceMatch.wordCount).toBe(3)
+      }
+    })
   })
 
   describe('Days of Week', () => {
@@ -213,6 +241,94 @@ describe('WordSequence Matcher', () => {
   })
 
   describe('Edge Cases', () => {
+    it('should detect sequences with one-character uppercase separators (isCamelCase logic)', () => {
+      // "oneTwo" -> textBetween.length === 1 and it is 'T' (uppercase)
+      const result = zxcvbn.check('oneTwo')
+
+      const wordSequenceMatch = result.sequence.find(
+        (match) => match.pattern === 'wordSequence',
+      )
+
+      expect(wordSequenceMatch).toBeDefined()
+      if (wordSequenceMatch && wordSequenceMatch.pattern === 'wordSequence') {
+        expect(wordSequenceMatch.words).toEqual(['one', 'two'])
+      }
+    })
+
+    it('should detect ascending sequences based on dictionary rank', () => {
+      // Assuming words in wordSequences.json are in order of frequency/rank
+      const result = zxcvbn.check('oneTwoThree')
+      const match = result.sequence.find(
+        (m) => m.pattern === 'wordSequence',
+      ) as any
+      expect(match.ascending).toBe(true)
+    })
+
+    it('should detect non-ascending sequences based on dictionary rank', () => {
+      const result = zxcvbn.check('threeTwoOne')
+      const match = result.sequence.find(
+        (m) => m.pattern === 'wordSequence',
+      ) as any
+      expect(match.ascending).toBe(false)
+    })
+
+    it('should use the most common dictionary name for mixed sequences', () => {
+      // 'one', 'two' are cardinalNumbers. 'monday' is daysOfWeek.
+      const result = zxcvbn.check('oneTwoMonday')
+      const match = result.sequence.find(
+        (m) => m.pattern === 'wordSequence',
+      ) as any
+      expect(match.dictionaryName).toBe('cardinalNumbers')
+    })
+
+    it('should detect sequences with custom separators', () => {
+      // Dots and spaces are allowed as per separators array in matching.ts
+      const result = zxcvbn.check('one.two three')
+
+      const wordSequenceMatch = result.sequence.find(
+        (match) => match.pattern === 'wordSequence',
+      )
+
+      expect(wordSequenceMatch).toBeDefined()
+      if (wordSequenceMatch && wordSequenceMatch.pattern === 'wordSequence') {
+        expect(wordSequenceMatch.words).toEqual(['one', 'two', 'three'])
+      }
+    })
+
+    it('should not detect sequences with invalid separators', () => {
+      // '+' is not in the separators list
+      const result = zxcvbn.check('one+two+three')
+
+      const wordSequenceMatch = result.sequence.find(
+        (match) => match.pattern === 'wordSequence',
+      )
+
+      expect(wordSequenceMatch).toBeUndefined()
+    })
+
+    it('should handle gaps by creating multiple sequences', () => {
+      const result = zxcvbn.check('oneTwo XXX threeFour')
+      const matches = result.sequence.filter(
+        (m) => m.pattern === 'wordSequence',
+      )
+
+      expect(matches.length).toBe(2)
+      expect((matches[0] as any).words).toEqual(['one', 'two'])
+      expect((matches[1] as any).words).toEqual(['three', 'four'])
+    })
+
+    it('should detect very long sequences', () => {
+      const result = zxcvbn.check(
+        'one_two_three_four_five_six_seven_eight_nine_ten',
+      )
+      const match = result.sequence.find(
+        (m) => m.pattern === 'wordSequence',
+      ) as any
+
+      expect(match).toBeDefined()
+      expect(match.wordCount).toBe(10)
+    })
+
     it('should not detect single words as sequences', () => {
       const result = zxcvbn.check('one')
 
