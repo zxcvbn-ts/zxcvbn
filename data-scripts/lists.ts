@@ -417,6 +417,40 @@ export default {
         'https://raw.githubusercontent.com/AKhateeb/arabic-names/master/Most-Popular-Arabic-LastNames.txt',
     },
   },
+  'fa': {
+    /**
+     * Exclusion of Common Words in Persian Language for Passwords
+     * 1. **Persian Letter Usage**: In practice, speakers of the Persian language often do not use standard Persian letters in their passwords. When they do, the passwords are generally more secure.
+     * 2. **Lack of Standardized Romanization**: Unlike languages such as Japanese, there is no widely-accepted method for converting Persian letters into Roman letters. This makes it challenging to apply a common conversion algorithm for password security.
+     */
+    // commonWords: {
+    //   source:
+    //     'https://github.com/hermitdave/FrequencyWords/raw/master/content/2018/fa/fa_50k.txt',
+    //   options: { hasOccurrences: true },
+    // },
+    firstnames: {
+      source:
+        'https://raw.githubusercontent.com/winkcor/persian-first-names/refs/heads/main/persian-first-names.txt',
+    },
+    lastnames: {
+      source:
+        'https://raw.githubusercontent.com/farbodbj/iranian-surname-frequencies/refs/heads/github-master/iranian-surname-frequencies.csv',
+      options: {
+        hasOccurrences: true,
+        minOccurrences: 0.001, // filter very rare names
+        splitter: '\n',
+        clearLine: (line: string) => {
+          if (line.startsWith('name,')) return ''
+
+          const [, frequency, nameEnglish] = line.split(',')
+
+          if (!nameEnglish || !/^[A-Za-z]+$/.test(nameEnglish)) return ''
+
+          return `${nameEnglish} ${Number(frequency)}`
+        },
+      },
+    },
+  },
   'common': {
     passwords: {
       generator: PasswordGenerator,
