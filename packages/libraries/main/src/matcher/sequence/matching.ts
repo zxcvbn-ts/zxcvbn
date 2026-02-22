@@ -73,13 +73,13 @@ class MatchSequence extends MatcherBaseClass {
     if (j - i > 1 || Math.abs(delta) === 1) {
       const absoluteDelta = Math.abs(delta)
       if (absoluteDelta > 0 && absoluteDelta <= this.MAX_DELTA) {
-        const token = password.slice(i, +j + 1 || 9e9)
+        const token = password.slice(i, j + 1 || 9e9)
         const { sequenceName, sequenceSpace } = this.getSequence(token)
         return result.push({
           pattern: 'sequence',
           i,
           j,
-          token: password.slice(i, +j + 1 || 9e9),
+          token: password.slice(i, j + 1 || 9e9),
           sequenceName,
           sequenceSpace,
           ascending: delta > 0,

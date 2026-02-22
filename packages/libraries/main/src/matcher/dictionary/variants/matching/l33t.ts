@@ -85,10 +85,7 @@ class MatchL33t extends MatchDictionary {
             match.i === 0 && match.j === matchOptions.password.length - 1
         }
         const extras = getExtras(subbedPassword, match.i, match.j)
-        const token = matchOptions.password.slice(
-          extras.i,
-          +extras.j + 1 || 9e9,
-        )
+        const token = matchOptions.password.slice(extras.i, extras.j + 1 || 9e9)
         const newMatch: L33tMatch = {
           ...match,
           l33t: true,

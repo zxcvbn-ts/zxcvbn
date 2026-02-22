@@ -51,9 +51,7 @@ class MatchSeparator extends MatcherBaseClass {
 
     const isSeparator = MatchSeparator.getSeparatorRegex(mostUsedSpecial)
 
-    // eslint-disable-next-line no-restricted-syntax
     for (const match of password.matchAll(isSeparator)) {
-      // eslint-disable-next-line no-continue
       if (match.index === undefined) continue
 
       // add one to the index because we changed the regex from negative lookbehind to something simple.

@@ -115,7 +115,7 @@ class TopTokenCounter {
       })
       .reduce((obj: Count, entry) => {
         const key = entry[0]
-        // eslint-disable-next-line no-param-reassign
+
         obj[key] = this.count[key]
         return obj
       }, {})

@@ -67,7 +67,6 @@ class Matching {
             resolve(sorted(matches))
           })
           .catch((error: unknown) => {
-            // eslint-disable-next-line prefer-promise-reject-errors
             reject(error as Error)
           })
       })

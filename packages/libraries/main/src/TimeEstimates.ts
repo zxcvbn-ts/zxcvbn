@@ -70,7 +70,6 @@ export class TimeEstimates {
         const seconds = crackTimesSeconds[usedScenario]
         const { base, displayStr } = this.displayTime(seconds)
 
-        // eslint-disable-next-line no-param-reassign
         previousValue[usedScenario] = {
           base,
           seconds,

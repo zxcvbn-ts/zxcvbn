@@ -75,7 +75,7 @@ export class TxtGenerator extends SimpleListGenerator<Options> {
         if (line[this.options.occurrenceColumn]) {
           occurrence = parseInt(line[this.options.occurrenceColumn], 10)
         }
-        if (Number.isNaN(+occurrence)) {
+        if (Number.isNaN(occurrence)) {
           throw new Error(
             `Expecting number at column ${this.options.occurrenceColumn}`,
           )
@@ -85,7 +85,7 @@ export class TxtGenerator extends SimpleListGenerator<Options> {
           occurrence < this.options.minOccurrences
         ) {
           // Don't add this one
-          // eslint-disable-next-line no-continue
+
           continue
         } else if (!this.data.includes(line[this.options.valueColumn])) {
           this.data.push(line[this.options.valueColumn])

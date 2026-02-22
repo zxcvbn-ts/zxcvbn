@@ -24,7 +24,7 @@ describe('WordSequence Matcher', () => {
       )
 
       expect(wordSequenceMatch).toBeDefined()
-      if (wordSequenceMatch && wordSequenceMatch.pattern === 'wordSequence') {
+      if (wordSequenceMatch?.pattern === 'wordSequence') {
         expect(wordSequenceMatch.words).toEqual(['one', 'two', 'three'])
         expect(wordSequenceMatch.wordCount).toBe(3)
         expect(wordSequenceMatch.dictionaryName).toBe('cardinalNumbers')
@@ -39,7 +39,7 @@ describe('WordSequence Matcher', () => {
       )
 
       expect(wordSequenceMatch).toBeDefined()
-      if (wordSequenceMatch && wordSequenceMatch.pattern === 'wordSequence') {
+      if (wordSequenceMatch?.pattern === 'wordSequence') {
         expect(wordSequenceMatch.words).toEqual(['four', 'five', 'six'])
         expect(wordSequenceMatch.wordCount).toBe(3)
       }
@@ -53,7 +53,7 @@ describe('WordSequence Matcher', () => {
       )
 
       expect(wordSequenceMatch).toBeDefined()
-      if (wordSequenceMatch && wordSequenceMatch.pattern === 'wordSequence') {
+      if (wordSequenceMatch?.pattern === 'wordSequence') {
         expect(wordSequenceMatch.words).toEqual(['three', 'two', 'one'])
         expect(wordSequenceMatch.wordCount).toBe(3)
         expect(wordSequenceMatch.dictionaryName).toBe('cardinalNumbers')
@@ -68,7 +68,7 @@ describe('WordSequence Matcher', () => {
       )
 
       expect(wordSequenceMatch).toBeDefined()
-      if (wordSequenceMatch && wordSequenceMatch.pattern === 'wordSequence') {
+      if (wordSequenceMatch?.pattern === 'wordSequence') {
         expect(wordSequenceMatch.words).toEqual(['three', 'two', 'one'])
         expect(wordSequenceMatch.wordCount).toBe(3)
         expect(wordSequenceMatch.dictionaryName).toBe('cardinalNumbers')
@@ -83,7 +83,7 @@ describe('WordSequence Matcher', () => {
       )
 
       expect(wordSequenceMatch).toBeDefined()
-      if (wordSequenceMatch && wordSequenceMatch.pattern === 'wordSequence') {
+      if (wordSequenceMatch?.pattern === 'wordSequence') {
         expect(wordSequenceMatch.words).toEqual(['seven', 'eight', 'nine'])
         expect(wordSequenceMatch.wordCount).toBe(3)
       }
@@ -97,7 +97,7 @@ describe('WordSequence Matcher', () => {
       )
 
       expect(wordSequenceMatch).toBeDefined()
-      if (wordSequenceMatch && wordSequenceMatch.pattern === 'wordSequence') {
+      if (wordSequenceMatch?.pattern === 'wordSequence') {
         expect(wordSequenceMatch.words).toEqual(['ten', 'eleven', 'twelve'])
         expect(wordSequenceMatch.wordCount).toBe(3)
       }
@@ -113,7 +113,7 @@ describe('WordSequence Matcher', () => {
       )
 
       expect(wordSequenceMatch).toBeDefined()
-      if (wordSequenceMatch && wordSequenceMatch.pattern === 'wordSequence') {
+      if (wordSequenceMatch?.pattern === 'wordSequence') {
         expect(wordSequenceMatch.words).toEqual([
           'monday',
           'tuesday',
@@ -133,7 +133,7 @@ describe('WordSequence Matcher', () => {
       )
 
       expect(wordSequenceMatch).toBeDefined()
-      if (wordSequenceMatch && wordSequenceMatch.pattern === 'wordSequence') {
+      if (wordSequenceMatch?.pattern === 'wordSequence') {
         expect(wordSequenceMatch.words).toEqual([
           'january',
           'february',
@@ -153,7 +153,7 @@ describe('WordSequence Matcher', () => {
       )
 
       expect(wordSequenceMatch).toBeDefined()
-      if (wordSequenceMatch && wordSequenceMatch.pattern === 'wordSequence') {
+      if (wordSequenceMatch?.pattern === 'wordSequence') {
         expect(wordSequenceMatch.words).toEqual(['red', 'orange', 'yellow'])
         expect(wordSequenceMatch.wordCount).toBe(3)
       }
@@ -169,7 +169,7 @@ describe('WordSequence Matcher', () => {
       )
 
       expect(wordSequenceMatch).toBeDefined()
-      if (wordSequenceMatch && wordSequenceMatch.pattern === 'wordSequence') {
+      if (wordSequenceMatch?.pattern === 'wordSequence') {
         expect(wordSequenceMatch.words).toEqual(['alpha', 'bravo', 'charlie'])
         expect(wordSequenceMatch.wordCount).toBe(3)
       }
@@ -185,7 +185,7 @@ describe('WordSequence Matcher', () => {
       )
 
       expect(wordSequenceMatch).toBeDefined()
-      if (wordSequenceMatch && wordSequenceMatch.pattern === 'wordSequence') {
+      if (wordSequenceMatch?.pattern === 'wordSequence') {
         expect(wordSequenceMatch.words).toEqual(['mercury', 'venus', 'earth'])
         expect(wordSequenceMatch.wordCount).toBe(3)
       }
@@ -201,7 +201,7 @@ describe('WordSequence Matcher', () => {
       )
 
       expect(wordSequenceMatch).toBeDefined()
-      if (wordSequenceMatch && wordSequenceMatch.pattern === 'wordSequence') {
+      if (wordSequenceMatch?.pattern === 'wordSequence') {
         expect(wordSequenceMatch.words).toEqual(['aries', 'taurus', 'gemini'])
         expect(wordSequenceMatch.wordCount).toBe(3)
       }
@@ -217,7 +217,7 @@ describe('WordSequence Matcher', () => {
       )
 
       expect(wordSequenceMatch).toBeDefined()
-      if (wordSequenceMatch && wordSequenceMatch.pattern === 'wordSequence') {
+      if (wordSequenceMatch?.pattern === 'wordSequence') {
         expect(wordSequenceMatch.words).toEqual(['rat', 'ox', 'tiger'])
         expect(wordSequenceMatch.wordCount).toBe(3)
       }
@@ -233,7 +233,7 @@ describe('WordSequence Matcher', () => {
       )
 
       expect(wordSequenceMatch).toBeDefined()
-      if (wordSequenceMatch && wordSequenceMatch.pattern === 'wordSequence') {
+      if (wordSequenceMatch?.pattern === 'wordSequence') {
         expect(wordSequenceMatch.words).toEqual(['one', 'monday', 'red'])
         expect(wordSequenceMatch.wordCount).toBe(3)
       }
@@ -250,7 +250,7 @@ describe('WordSequence Matcher', () => {
       )
 
       expect(wordSequenceMatch).toBeDefined()
-      if (wordSequenceMatch && wordSequenceMatch.pattern === 'wordSequence') {
+      if (wordSequenceMatch?.pattern === 'wordSequence') {
         expect(wordSequenceMatch.words).toEqual(['one', 'two'])
       }
     })
@@ -290,7 +290,7 @@ describe('WordSequence Matcher', () => {
       )
 
       expect(wordSequenceMatch).toBeDefined()
-      if (wordSequenceMatch && wordSequenceMatch.pattern === 'wordSequence') {
+      if (wordSequenceMatch?.pattern === 'wordSequence') {
         expect(wordSequenceMatch.words).toEqual(['one', 'two', 'three'])
       }
     })
@@ -357,7 +357,7 @@ describe('WordSequence Matcher', () => {
       )
 
       expect(wordSequenceMatch).toBeDefined()
-      if (wordSequenceMatch && wordSequenceMatch.pattern === 'wordSequence') {
+      if (wordSequenceMatch?.pattern === 'wordSequence') {
         expect(wordSequenceMatch.words).toEqual(['one', 'two', 'three'])
         expect(wordSequenceMatch.wordCount).toBe(3)
       }

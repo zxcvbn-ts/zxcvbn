@@ -5,7 +5,6 @@ const json = () => {
   return {
     name: 'json',
 
-    // eslint-disable-next-line no-shadow
     transform: function transform(json, id) {
       if (id.slice(-5) !== '.json') {
         return null

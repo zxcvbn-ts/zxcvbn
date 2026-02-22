@@ -17,7 +17,7 @@ describe('Options', () => {
     it('should return error for wrong custom translations', () => {
       expect(() => {
         // @ts-expect-error for testing purposes
-        // eslint-disable-next-line no-new
+
         new Options({ translations: customTranslations })
       }).toThrow('Invalid translations object fallback to keys')
     })

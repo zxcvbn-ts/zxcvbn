@@ -66,7 +66,7 @@ class MatchDictionary extends MatcherBaseClass {
       for (let i = 0; i < passwordLength; i += 1) {
         const searchEnd = Math.min(i + searchWidth, passwordLength)
         for (let j = i; j < searchEnd; j += 1) {
-          const usedPassword = passwordLower.slice(i, +j + 1 || 9e9)
+          const usedPassword = passwordLower.slice(i, j + 1 || 9e9)
           const isInDictionary = usedPassword in rankedDict
           let foundLevenshteinDistance: Partial<FindLevenshteinDistanceResult> =
             {}
@@ -98,7 +98,7 @@ class MatchDictionary extends MatcherBaseClass {
               pattern: 'dictionary',
               i,
               j,
-              token: password.slice(i, +j + 1 || 9e9),
+              token: password.slice(i, j + 1 || 9e9),
               matchedWord: usedPassword,
               rank,
               dictionaryName: dictionaryName as DictionaryNames,

@@ -1,8 +1,6 @@
 import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common/src/index'
 import * as zxcvbnEnPackage from '@zxcvbn-ts/language-en/src/index'
 import { ZxcvbnFactory } from '@zxcvbn-ts/core/src/index'
-
-// eslint-disable-next-line
 ;(async () => {
   const options = {
     dictionary: {
