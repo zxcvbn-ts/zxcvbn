@@ -1,4 +1,3 @@
-// @ts-expect-error for testing purposes
 import { DefaultFeedbackFunction } from '@zxcvbn-ts/core'
 
 const pwnedFeedback: DefaultFeedbackFunction = (options) => {

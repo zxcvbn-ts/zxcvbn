@@ -1,4 +1,3 @@
-// @ts-expect-error for testing purposes
 import { Matcher } from '@zxcvbn-ts/core'
 import MatchPwned from './matching'
 import scoring from './scoring'
