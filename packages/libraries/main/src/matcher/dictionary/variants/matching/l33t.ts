@@ -1,10 +1,10 @@
-import Options from '../../../../Options'
 import { DictionaryMatch, L33tMatch } from '../../../../types'
-import { DefaultMatch, DictionaryMatchOptions } from '../../types'
+import { DictionaryMatchOptions } from '../../types'
 import getCleanPasswords, {
   PasswordChanges,
   PasswordWithSubs,
 } from './unmunger/getCleanPasswords'
+import MatchDictionary from '../../matching'
 
 const getExtras = (
   passwordWithSubs: PasswordWithSubs,
@@ -53,13 +53,8 @@ const getExtras = (
  *  Dictionary l33t matching -----------------------------------------------------
  * -------------------------------------------------------------------------------
  */
-class MatchL33t {
-  constructor(
-    private options: Options,
-    private defaultMatch: DefaultMatch,
-  ) {}
-
-  isAlreadyIncluded(matches: L33tMatch[], newMatch: L33tMatch) {
+class MatchL33t extends MatchDictionary {
+  private isAlreadyIncluded(matches: L33tMatch[], newMatch: L33tMatch) {
     return matches.some((l33tMatch) => {
       return Object.entries(l33tMatch).every(([key, value]) => {
         return key === 'subs' || value === newMatch[key]
@@ -67,7 +62,7 @@ class MatchL33t {
     })
   }
 
-  match(matchOptions: DictionaryMatchOptions) {
+  public match(matchOptions: DictionaryMatchOptions) {
     const matches: L33tMatch[] = []
     const subbedPasswords = getCleanPasswords(
       matchOptions.password,
@@ -79,7 +74,7 @@ class MatchL33t {
       if (hasFullMatch) {
         return
       }
-      const matchedDictionary = this.defaultMatch({
+      const matchedDictionary = super.match({
         ...matchOptions,
         password: subbedPassword.password,
         useLevenshtein: subbedPassword.isFullSubstitution,

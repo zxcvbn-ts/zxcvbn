@@ -1,18 +1,17 @@
-// @ts-expect-error for testing purposes
-import { MatchExtended, MatchOptions } from '@zxcvbn-ts/core'
+import {
+  MatchExtended,
+  MatchOptions,
+  MatcherBaseClass,
+  MatcherConstructor,
+} from '@zxcvbn-ts/core'
 import haveIBeenPwned from './haveIBeenPwned'
 import { FetchApi, MatcherPwnedFactoryConfig } from './types'
 
-/*
- * -------------------------------------------------------------------------------
- *  Have i been pwned matching factory ---------------------------------------------------
- * -------------------------------------------------------------------------------
- */
-export default (
+const matchingFactory = (
   universalFetch: FetchApi,
   { url, networkErrorHandler }: MatcherPwnedFactoryConfig,
-) => {
-  return class MatchPwned {
+): MatcherConstructor => {
+  class MatchPwned extends MatcherBaseClass {
     async match({ password }: MatchOptions) {
       const matches: MatchExtended[] = []
       const pwned = await haveIBeenPwned(password, {
@@ -32,4 +31,12 @@ export default (
       return matches
     }
   }
+
+  return MatchPwned
 }
+/*
+ * -------------------------------------------------------------------------------
+ *  Have i been pwned matching factory ---------------------------------------------------
+ * -------------------------------------------------------------------------------
+ */
+export default matchingFactory

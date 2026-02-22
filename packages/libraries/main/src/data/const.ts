@@ -7,7 +7,7 @@ export const BRUTEFORCE_CARDINALITY = 10
 export const MIN_GUESSES_BEFORE_GROWING_SEQUENCE = 10000
 export const MIN_SUBMATCH_GUESSES_SINGLE_CHAR = 10
 export const MIN_SUBMATCH_GUESSES_MULTI_CHAR = 50
-export const MIN_YEAR_SPACE = 20
+export const MIN_YEAR_SPACE = 21
 // \xbf-\xdf is a range for almost all special uppercase letter like Ä and so on
 export const START_UPPER = /^[A-Z\xbf-\xdf][^A-Z\xbf-\xdf]+$/
 export const END_UPPER = /^[^A-Z\xbf-\xdf]+[A-Z\xbf-\xdf]$/

@@ -8,6 +8,7 @@ import repeatMatcher from './matcher/repeat/feedback'
 import sequenceMatcher from './matcher/sequence/feedback'
 import spatialMatcher from './matcher/spatial/feedback'
 import separatorMatcher from './matcher/separator/feedback'
+import wordSequenceMatcher from './matcher/wordSequence/feedback'
 
 const defaultFeedback = {
   warning: null,
@@ -30,6 +31,7 @@ class Feedback {
     sequence: sequenceMatcher,
     spatial: spatialMatcher,
     separator: separatorMatcher,
+    wordSequence: wordSequenceMatcher,
   }
 
   private defaultFeedback: FeedbackType = {

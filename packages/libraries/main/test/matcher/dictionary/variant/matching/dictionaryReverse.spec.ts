@@ -1,5 +1,4 @@
 import MatchDictionaryReverse from '../../../../../src/matcher/dictionary/variants/matching/reverse'
-import MatchDictionary from '../../../../../src/matcher/dictionary/matching'
 import checkMatches from '../../../../helper/checkMatches'
 import Options from '../../../../../src/Options'
 
@@ -10,12 +9,7 @@ describe('dictionary reverse matching', () => {
   const zxcvbnOptions = new Options({
     dictionary: testDicts,
   })
-  const dictionaryMatcher = new MatchDictionary(zxcvbnOptions)
-  const matchDictionaryReverse = new MatchDictionaryReverse(
-    zxcvbnOptions,
-
-    dictionaryMatcher.defaultMatch,
-  )
+  const matchDictionaryReverse = new MatchDictionaryReverse(zxcvbnOptions)
   const password = '0123456789'
   const matches = matchDictionaryReverse.match({ password })
   const msg = 'matches against reversed words'

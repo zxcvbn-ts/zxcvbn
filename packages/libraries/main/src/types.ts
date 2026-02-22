@@ -1,10 +1,10 @@
-import translationKeys from './data/translationKeys'
-import l33tTableDefault from './data/l33tTable'
-import { REGEXEN } from './data/const'
-import { DictionaryReturn } from './matcher/dictionary/scoring'
-import Matching from './Matching'
-import { PasswordChanges } from './matcher/dictionary/variants/matching/unmunger/getCleanPasswords'
 import Options from './Options'
+import { PasswordChanges } from './matcher/dictionary/variants/matching/unmunger/getCleanPasswords'
+import Matching from './Matching'
+import { DictionaryReturn } from './matcher/dictionary/scoring'
+import { REGEXEN } from './data/const'
+import l33tTableDefault from './data/l33tTable'
+import translationKeys from './data/translationKeys'
 
 export type TranslationKeys = typeof translationKeys
 export type L33tTableDefault = typeof l33tTableDefault
@@ -16,6 +16,7 @@ export type Pattern =
   | 'spatial'
   | 'repeat'
   | 'sequence'
+  | 'wordSequence'
   | 'regex'
   | 'date'
   | 'bruteforce'
@@ -106,12 +107,21 @@ export interface SeparatorMatch extends Match {
   pattern: 'separator'
 }
 
+export interface WordSequenceMatch extends Match {
+  pattern: 'wordSequence'
+  words: string[]
+  wordCount: number
+  dictionaryName: string
+  ascending: boolean
+}
+
 export type MatchExtended =
   | DictionaryMatch
   | L33tMatch
   | SpatialMatch
   | RepeatMatch
   | SequenceMatch
+  | WordSequenceMatch
   | RegexMatch
   | DateMatch
   | BruteForceMatch
@@ -253,18 +263,21 @@ export interface MatchOptions {
   userInputsOptions?: UserInputsOptions
 }
 
-export type MatchingType = new (options: Options) => {
-  match({
-    password,
-    omniMatch,
-    userInputsOptions,
-  }: MatchOptions): MatchExtended[] | Promise<MatchExtended[]>
+export abstract class MatcherBaseClass {
+  constructor(protected options: Options) {}
+
+  abstract match(
+    matchOptions: MatchOptions,
+  ): MatchExtended[] | Promise<MatchExtended[]>
 }
+
+export type MatcherConstructor<T extends MatcherBaseClass = MatcherBaseClass> =
+  new (options: Options) => T
 
 export interface Matcher {
   feedback: DefaultFeedbackFunction
   scoring: DefaultScoringFunction
-  Matching: MatchingType
+  Matching: MatcherConstructor
 }
 
 export type Matchers = Record<string, Matcher>

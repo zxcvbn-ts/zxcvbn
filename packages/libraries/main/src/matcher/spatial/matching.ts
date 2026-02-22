@@ -1,6 +1,10 @@
 import { sorted, extend } from '../../utils/helper'
-import Options from '../../Options'
-import { MatchOptions, OptionsGraphEntry, SpatialMatch } from '../../types'
+import {
+  MatcherBaseClass,
+  MatchOptions,
+  OptionsGraphEntry,
+  SpatialMatch,
+} from '../../types'
 
 type SpatialMatchOptions = Pick<MatchOptions, 'password'>
 /*
@@ -8,10 +12,8 @@ type SpatialMatchOptions = Pick<MatchOptions, 'password'>
  * spatial match (qwerty/dvorak/keypad and so on) -----------------------------------------
  * ------------------------------------------------------------------------------
  */
-class MatchSpatial {
+class MatchSpatial extends MatcherBaseClass {
   SHIFTED_RX = /[~!@#$%^&*()_+QWERTYUIOP{}|ASDFGHJKL:"ZXCVBNM<>?]/
-
-  constructor(private options: Options) {}
 
   match({ password }: SpatialMatchOptions) {
     const matches: SpatialMatch[] = []

@@ -48,6 +48,23 @@ export default class Options {
 
   public maxLength = 256
 
+  public wordSequenceNames = [
+    'cardinalNumbers',
+    'ordinalNumbers',
+    'daysOfWeek',
+    'months',
+    'seasons',
+    'timePeriods',
+    'rainbowColors',
+    'directions',
+    'intermediateDirections',
+    'sizeProgression',
+    'militaryAlphabet',
+    'planets',
+    'zodiacSigns',
+    'chineseZodiac',
+  ]
+
   timeEstimationValues: TimeEstimationValues = {
     scoring: {
       ...timeEstimationValuesDefaults.scoring,

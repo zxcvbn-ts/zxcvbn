@@ -1,7 +1,6 @@
 import { REGEXEN } from '../../data/const'
 import { sorted } from '../../utils/helper'
-import { MatchOptions, RegexMatch } from '../../types'
-import Options from '../../Options'
+import { MatcherBaseClass, MatchOptions, RegexMatch } from '../../types'
 
 type RegexMatchOptions = Pick<MatchOptions, 'password'>
 
@@ -11,9 +10,7 @@ type RegexesKeys = keyof typeof REGEXEN
  *  regex matching ---------------------------------------------------------------
  * -------------------------------------------------------------------------------
  */
-class MatchRegex {
-  constructor(private options: Options) {}
-
+class MatchRegex extends MatcherBaseClass {
   match({ password }: RegexMatchOptions) {
     const matches: RegexMatch[] = []
     Object.keys(REGEXEN).forEach((name) => {

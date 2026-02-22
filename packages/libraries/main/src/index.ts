@@ -88,4 +88,4 @@ class ZxcvbnFactory {
 }
 
 export * from './types'
-export { ZxcvbnFactory, debounce }
+export { ZxcvbnFactory, debounce, Options }

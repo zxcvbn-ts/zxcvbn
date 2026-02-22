@@ -1,6 +1,5 @@
 import { SEPERATOR_CHARS } from '../../data/const'
-import { MatchOptions, SeparatorMatch } from '../../types'
-import Options from '../../Options'
+import { MatcherBaseClass, MatchOptions, SeparatorMatch } from '../../types'
 
 type SeparatorMatchOptions = Pick<MatchOptions, 'password'>
 
@@ -11,7 +10,7 @@ const separatorRegex = new RegExp(`[${SEPERATOR_CHARS.join('')}]`)
  * separators (any semi-repeated special character) -----------------------------
  *-------------------------------------------------------------------------------
  */
-class MatchSeparator {
+class MatchSeparator extends MatcherBaseClass {
   static getMostUsedSeparatorChar(password: string): string | undefined {
     const mostUsedSeperators = [
       ...password
@@ -41,8 +40,6 @@ class MatchSeparator {
     // https://github.com/zxcvbn-ts/zxcvbn/issues/202
     // return new RegExp(`(?<!${separator})(${separator})(?!${separator})`, 'g')
   }
-
-  constructor(private options: Options) {}
 
   match({ password }: SeparatorMatchOptions) {
     const result: SeparatorMatch[] = []
