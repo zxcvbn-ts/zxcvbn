@@ -4,6 +4,7 @@ import commonWords from './commonWords.json'
 import girlsFirstnames from './girlsFirstnames.json'
 import lastnames from './lastnames.json'
 import wikipedia from './wikipedia.json'
+import wordSequences from './wordSequences.json'
 import translations from './translations'
 
 const dictionary = {
@@ -14,4 +15,4 @@ const dictionary = {
   'wikipedia-nl-be': wikipedia,
 }
 
-export { dictionary, translations }
+export { dictionary, translations, wordSequences }
