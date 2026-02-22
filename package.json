@@ -52,9 +52,9 @@
     "@types/sprintf-js": "1.1.4",
     "@typescript-eslint/eslint-plugin": "8.56.0",
     "@typescript-eslint/parser": "8.56.0",
-    "@vuepress/bundler-vite": "2.0.0-rc.23",
-    "@vuepress/plugin-register-components": "2.0.0-rc.110",
-    "@vuepress/theme-default": "2.0.0-rc.110",
+    "@vuepress/bundler-vite": "2.0.0-rc.26",
+    "@vuepress/plugin-register-components": "2.0.0-rc.123",
+    "@vuepress/theme-default": "2.0.0-rc.123",
     "@zxcvbn-ts/dictionary-compression": "^3.0.1",
     "axios": "1.13.5",
     "byline": "5.0.0",
@@ -77,7 +77,7 @@
     "jszip": "^3.10.1",
     "kuroshiro": "1.2.0",
     "kuroshiro-analyzer-kuromoji": "1.1.0",
-    "lerna": "8.2.2",
+    "lerna": "9.0.4",
     "natural": "8.1.0",
     "prettier": "3.8.1",
     "rollup": "4.59.0",
@@ -89,7 +89,7 @@
     "typescript": "5.9.3",
     "typescript-eslint": "8.56.0",
     "vue-multiselect": "3.4.0",
-    "vuepress": "2.0.0-rc.23",
+    "vuepress": "2.0.0-rc.26",
     "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz",
     "yarn-audit-fix": "10.1.1",
     "zxcvbn": "4.4.2"
@@ -110,10 +110,12 @@
     "bruteforce"
   ],
   "resolutions": {
-    "minimist": "^1.2.8",
-    "http-cache-semantics": "^4.1.1",
+    "minimist": "1.2.8",
+    "http-cache-semantics": "4.1.1",
     "json5": "2.2.3",
-    "semver": "7.6.3"
+    "semver": "7.7.4",
+    "tar": "7.5.9",
+    "lodash": "4.17.23"
   },
   "overrides": {},
   "dependencies": {}
