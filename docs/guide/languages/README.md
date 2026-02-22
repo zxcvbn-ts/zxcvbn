@@ -10,14 +10,18 @@ Current supported languages:
 - German
 - English
 - Spanish (Spain)
+- Farsi (Persian)
 - Finnish
 - French
 - Indonesia
 - Italian
 - Japanese
+- Kurmanjî (Kurdish)
 - Dutch (Belgium)
 - Polish
 - Portuguese (Brazil)
+- Thai
+- Chinese
 
 ## Feedback
 
