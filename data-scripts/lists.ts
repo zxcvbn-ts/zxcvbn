@@ -281,7 +281,8 @@ export default {
   'ro': {
     commonWords: {
       source:
-        'https://raw.githubusercontent.com/daniesy/romanian/main/commonWords.txt',
+        'https://raw.githubusercontent.com/hermitdave/FrequencyWords/refs/heads/master/content/2018/ro/ro_50k.txt',
+      options: { hasOccurrences: true },
     },
     firstnames: {
       source:

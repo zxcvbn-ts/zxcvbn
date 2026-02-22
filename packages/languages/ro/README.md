@@ -17,14 +17,14 @@ The Romanian dictionary and language package for zxcvbn-ts
 ```js
 import { ZxcvbnFactory } from '@zxcvbn-ts/core'
 import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
-import * as zxcvbnFrPackage from '@zxcvbn-ts/language-ro'
+import * as zxcvbnRoPackage from '@zxcvbn-ts/language-ro'
 
 const password = 'somePassword'
 const options = {
-  translations: zxcvbnFrPackage.translations,
+  translations: zxcvbnRoPackage.translations,
   dictionary: {
     ...zxcvbnCommonPackage.dictionary,
-    ...zxcvbnFrPackage.dictionary,
+    ...zxcvbnRoPackage.dictionary,
   },
 }
 
