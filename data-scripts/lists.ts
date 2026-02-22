@@ -318,6 +318,16 @@ export default {
       },
     },
   },
+  'zh': {
+    firstnames: {
+      source:
+        'https://raw.githubusercontent.com/limzykenneth/chinese-wordlist/master/pinyin.txt',
+    },
+    lastnames: {
+      source:
+        'https://raw.githubusercontent.com/Greenwolf/Spray/master/name-lists/chinese-last-100.txt',
+    },
+  },
   'ja': {
     commonWords: {
       source:
