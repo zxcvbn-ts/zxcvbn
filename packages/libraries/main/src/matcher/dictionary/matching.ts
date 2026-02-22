@@ -1,34 +1,52 @@
 import findLevenshteinDistance, {
   FindLevenshteinDistanceResult,
 } from '../../utils/levenshtein'
-import { sorted } from '../../utils/helper'
 import Options from '../../Options'
-import { DictionaryNames, DictionaryMatch } from '../../types'
-import Reverse from './variants/matching/reverse'
-import L33t from './variants/matching/l33t'
+import {
+  DictionaryNames,
+  DictionaryMatch,
+  UserInputsOptions,
+  MatcherBaseClass,
+  RankedDictionaries,
+} from '../../types'
 import { DictionaryMatchOptions } from './types'
 import mergeUserInputDictionary from '../../utils/mergeUserInputDictionary'
 
-class MatchDictionary {
-  l33t: L33t
-
-  reverse: Reverse
-
-  constructor(private options: Options) {
-    this.l33t = new L33t(options, this.defaultMatch)
-    this.reverse = new Reverse(options, this.defaultMatch)
+class MatchDictionary extends MatcherBaseClass {
+  constructor(
+    options: Options,
+    protected wordSequenceCheck?: boolean,
+  ) {
+    super(options)
   }
 
-  match(matchOptions: DictionaryMatchOptions) {
-    const matches = [
-      ...this.defaultMatch(matchOptions),
-      ...(this.reverse.match(matchOptions) as DictionaryMatch[]),
-      ...this.l33t.match(matchOptions),
-    ]
-    return sorted(matches)
+  private getRangedDictionaries(userInputsOptions?: UserInputsOptions) {
+    if (this.wordSequenceCheck) {
+      const rankedDictionaries: RankedDictionaries = {}
+      const rankedDictionariesMaxWordSize: Record<string, number> = {}
+      Object.keys(this.options.rankedDictionaries).forEach((key) => {
+        if (
+          this.options.wordSequenceNames.includes(key) &&
+          this.options.rankedDictionaries[key]
+        ) {
+          rankedDictionaries[key] = this.options.rankedDictionaries[key]
+          rankedDictionariesMaxWordSize[key] =
+            this.options.rankedDictionariesMaxWordSize[key]
+        }
+      }, {})
+      return {
+        rankedDictionaries,
+        rankedDictionariesMaxWordSize,
+      }
+    }
+    return mergeUserInputDictionary(
+      this.options.rankedDictionaries,
+      this.options.rankedDictionariesMaxWordSize,
+      userInputsOptions,
+    )
   }
 
-  defaultMatch({
+  public match({
     password,
     userInputsOptions,
     useLevenshtein = true,
@@ -36,13 +54,9 @@ class MatchDictionary {
     const matches: DictionaryMatch[] = []
     const passwordLength = password.length
     const passwordLower = password.toLowerCase()
-
     const { rankedDictionaries, rankedDictionariesMaxWordSize } =
-      mergeUserInputDictionary(
-        this.options.rankedDictionaries,
-        this.options.rankedDictionariesMaxWordSize,
-        userInputsOptions,
-      )
+      this.getRangedDictionaries(userInputsOptions)
+
     // eslint-disable-next-line complexity,max-statements
     Object.keys(rankedDictionaries).forEach((dictionaryName) => {
       const rankedDict = rankedDictionaries[dictionaryName as DictionaryNames]

@@ -1,6 +1,14 @@
-import { MatchOptions, WordSequenceMatch, DictionaryMatch } from '../../types'
-import Options from '../../Options'
+import DictionaryL33tMatcher from '../dictionary/variants/matching/l33t'
+import DictionaryReverseMatcher from '../dictionary/variants/matching/reverse'
 import DictionaryMatcher from '../dictionary/matching'
+import Options from '../../Options'
+import {
+  MatchOptions,
+  WordSequenceMatch,
+  DictionaryMatch,
+  MatcherBaseClass,
+  L33tMatch,
+} from '../../types'
 
 interface WordMatch {
   word: string
@@ -15,32 +23,66 @@ interface WordMatch {
  * word sequences (oneTwoThree, fourFiveSix) ------------------------------
  *-------------------------------------------------------------------------------
  */
-class MatchWordSequence {
-  constructor(private options: Options) {}
+class MatchWordSequence extends MatcherBaseClass {
+  dictionary: DictionaryMatcher
+
+  dictionaryL33t: DictionaryL33tMatcher
+
+  dictionaryReverse: DictionaryReverseMatcher
+
+  constructor(options: Options) {
+    super(options)
+    this.dictionary = new DictionaryMatcher(this.options, true)
+    this.dictionaryL33t = new DictionaryL33tMatcher(this.options, true)
+    this.dictionaryReverse = new DictionaryReverseMatcher(this.options, true)
+  }
 
   match(matchOptions: MatchOptions): WordSequenceMatch[] {
     const { password } = matchOptions
 
     // Get all dictionary matches first
-    const dictionaryMatcher = new DictionaryMatcher(this.options)
-    const dictionaryMatches = dictionaryMatcher.match(matchOptions)
+    const dictionaryMatches = this.dictionary.match(matchOptions)
+    const dictionaryL33tMatches = this.dictionaryL33t.match(matchOptions)
+    const dictionaryReverseMatches = this.dictionaryReverse.match(matchOptions)
 
-    if (dictionaryMatches instanceof Promise) {
-      // Handle async case if needed
-      return []
-    }
-
-    // Filter to only dictionary matches (exclude l33t, reverse, etc.)
-    const pureDictionaryMatches = dictionaryMatches.filter(
-      (match) =>
-        match.pattern === 'dictionary' && !match.l33t && !match.reversed,
-    ) as DictionaryMatch[]
-
+    const filteredDictionaryMatches = this.filterDictionaryMatches([
+      ...dictionaryMatches,
+      ...dictionaryL33tMatches,
+      ...dictionaryReverseMatches,
+    ])
     // Convert dictionary matches to our internal format
-    const wordMatches = this.convertToWordMatches(pureDictionaryMatches)
+    const wordMatches = this.convertToWordMatches(filteredDictionaryMatches)
 
     // Find sequences of consecutive words
     return this.findWordSequences(wordMatches, password)
+  }
+
+  private filterDictionaryMatches(matches: (L33tMatch | DictionaryMatch)[]) {
+    // sort by start index, then by end index
+    return (
+      [...matches]
+        .sort((a, b) => {
+          if (a.i !== b.i) return a.i - b.i
+          if (a.j !== b.j) return a.j - b.j
+
+          // prefer forward over reversed
+          if (a.reversed !== b.reversed) return a.reversed ? 1 : -1
+
+          // prefer non-l33t
+          if (a.l33t !== b.l33t) return a.l33t ? 1 : -1
+
+          // prefer better rank
+          return a.rank - b.rank
+        })
+        // Keep only non-overlapping matches, favoring earlier ones
+        .reduce<DictionaryMatch[]>((acc, match) => {
+          const last = acc[acc.length - 1]
+          if (!last || match.i > last.j) {
+            acc.push(match)
+          }
+          return acc
+        }, [])
+    )
   }
 
   private convertToWordMatches(

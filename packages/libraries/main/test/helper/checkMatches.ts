@@ -6,7 +6,7 @@ export interface CheckMatchesOptions {
   patternNames: string
   patterns: string[]
   ijs: number[][]
-  propsToCheck: Record<string, string>
+  propsToCheck: Record<string, any>
 }
 
 export default function checkMatches({

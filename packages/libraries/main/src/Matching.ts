@@ -1,13 +1,15 @@
 import { extend, sorted } from './utils/helper'
-import { MatchExtended, MatchingType, UserInputsOptions } from './types'
-import dateMatcher from './matcher/date/matching'
-import dictionaryMatcher from './matcher/dictionary/matching'
-import regexMatcher from './matcher/regex/matching'
-import repeatMatcher from './matcher/repeat/matching'
-import sequenceMatcher from './matcher/sequence/matching'
-import spatialMatcher from './matcher/spatial/matching'
-import separatorMatcher from './matcher/separator/matching'
-import wordSequenceMatcher from './matcher/wordSequence/matching'
+import { MatcherBaseClass, MatchExtended, UserInputsOptions } from './types'
+import DateMatcher from './matcher/date/matching'
+import DictionaryMatcher from './matcher/dictionary/matching'
+import DictionaryL33tMatcher from './matcher/dictionary/variants/matching/l33t'
+import DictionaryReverseMatcher from './matcher/dictionary/variants/matching/reverse'
+import RegexMatcher from './matcher/regex/matching'
+import RepeatMatcher from './matcher/repeat/matching'
+import SequenceMatcher from './matcher/sequence/matching'
+import SpatialMatcher from './matcher/spatial/matching'
+import SeparatorMatcher from './matcher/separator/matching'
+import WordSequenceMatcher from './matcher/wordSequence/matching'
 import Options from './Options'
 
 /*
@@ -16,31 +18,26 @@ import Options from './Options'
  * -------------------------------------------------------------------------------
  */
 
-type Matchers = Record<string, MatchingType>
-
 class Matching {
-  private readonly matchers: Matchers = {
-    date: dateMatcher,
-    dictionary: dictionaryMatcher,
-    regex: regexMatcher,
-    repeat: repeatMatcher,
-    sequence: sequenceMatcher,
-    spatial: spatialMatcher,
-    separator: separatorMatcher,
-    wordSequence: wordSequenceMatcher,
-  }
+  matchers: Record<string, MatcherBaseClass> = {}
 
-  constructor(private options: Options) {}
-
-  private matcherFactory(name: string) {
-    if (!this.matchers[name] && !this.options.matchers[name]) {
-      return null
+  constructor(private options: Options) {
+    this.matchers = {
+      date: new DateMatcher(this.options),
+      dictionary: new DictionaryMatcher(this.options),
+      dictionaryL33t: new DictionaryL33tMatcher(this.options),
+      dictionaryReverse: new DictionaryReverseMatcher(this.options),
+      regex: new RegexMatcher(this.options),
+      repeat: new RepeatMatcher(this.options),
+      sequence: new SequenceMatcher(this.options),
+      spatial: new SpatialMatcher(this.options),
+      separator: new SeparatorMatcher(this.options),
+      wordSequence: new WordSequenceMatcher(this.options),
     }
-    const Matcher = this.matchers[name]
-      ? this.matchers[name]
-      : this.options.matchers[name].Matching
 
-    return new Matcher(this.options)
+    Object.entries(this.options.matchers).forEach(([key, Matcher]) => {
+      this.matchers[key] = new Matcher.Matching(this.options)
+    })
   }
 
   private processResult(
@@ -85,15 +82,7 @@ class Matching {
     const matches: MatchExtended[] = []
 
     const promises: Promise<MatchExtended[]>[] = []
-    const matchers = [
-      ...Object.keys(this.matchers),
-      ...Object.keys(this.options.matchers),
-    ]
-    matchers.forEach((key) => {
-      const matcher = this.matcherFactory(key)
-      if (!matcher) {
-        return
-      }
+    Object.values(this.matchers).forEach((matcher) => {
       const result = matcher.match({
         password,
         omniMatch: this,

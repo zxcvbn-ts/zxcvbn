@@ -1,6 +1,5 @@
 import { ALL_UPPER, ALL_LOWER, ALL_DIGIT } from '../../data/const'
-import { MatchOptions, SequenceMatch } from '../../types'
-import Options from '../../Options'
+import { MatcherBaseClass, MatchOptions, SequenceMatch } from '../../types'
 
 interface UpdateParams {
   i: number
@@ -16,10 +15,8 @@ type SequenceMatchOptions = Pick<MatchOptions, 'password'>
  * sequences (abcdef) ------------------------------
  *-------------------------------------------------------------------------------
  */
-class MatchSequence {
+class MatchSequence extends MatcherBaseClass {
   MAX_DELTA = 5
-
-  constructor(private options: Options) {}
 
   // eslint-disable-next-line max-statements
   match({ password }: SequenceMatchOptions) {

@@ -1,10 +1,10 @@
 import * as zxcvbnCommonPackage from '../../../languages/common/src'
 import * as zxcvbnEnPackage from '../../../languages/en/src'
-import { ZxcvbnFactory } from '../src'
+import { MatcherBaseClass, ZxcvbnFactory } from '../src'
 import { Matcher, MatchExtended } from '../src/types'
 
 const asyncMatcher: Matcher = {
-  Matching: class MatchAsync {
+  Matching: class MatchAsync extends MatcherBaseClass {
     match({ password }: { password: string }): Promise<MatchExtended[]> {
       return new Promise((resolve) => {
         setTimeout(() => {

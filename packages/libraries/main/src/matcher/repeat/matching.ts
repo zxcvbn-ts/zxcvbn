@@ -1,4 +1,4 @@
-import { MatchOptions, RepeatMatch } from '../../types'
+import { MatcherBaseClass, MatchOptions, RepeatMatch } from '../../types'
 import Scoring from '../../scoring'
 import Matching from '../../Matching'
 import Options from '../../Options'
@@ -8,10 +8,11 @@ import Options from '../../Options'
  * repeats (aaa, abcabcabc) ------------------------------
  *-------------------------------------------------------------------------------
  */
-class MatchRepeat {
+class MatchRepeat extends MatcherBaseClass {
   private scoring: Scoring
 
-  constructor(private options: Options) {
+  constructor(options: Options) {
+    super(options)
     this.scoring = new Scoring(options)
   }
 

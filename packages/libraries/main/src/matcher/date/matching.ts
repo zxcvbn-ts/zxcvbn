@@ -5,8 +5,7 @@ import {
   REFERENCE_YEAR,
 } from '../../data/const'
 import { sorted } from '../../utils/helper'
-import { DateMatch, MatchOptions } from '../../types'
-import Options from '../../Options'
+import { MatcherBaseClass, DateMatch, MatchOptions } from '../../types'
 
 type DateMatchOptions = Pick<MatchOptions, 'password'>
 
@@ -15,9 +14,7 @@ type DateMatchOptions = Pick<MatchOptions, 'password'>
  *  date matching ----------------------------------------------------------------
  * -------------------------------------------------------------------------------
  */
-class MatchDate {
-  constructor(private options: Options) {}
-
+class MatchDate extends MatcherBaseClass {
   /*
    * a "date" is recognized as:
    *   any 3-tuple that starts or ends with a 2- or 4-digit year,

@@ -18,7 +18,7 @@ describe('WordSequence Matcher', () => {
   describe('Cardinal Numbers', () => {
     it('should detect camelCase cardinal number sequences', () => {
       const result = zxcvbn.check('oneTwoThree')
-
+      // console.log(result)
       const wordSequenceMatch = result.sequence.find(
         (match) => match.pattern === 'wordSequence',
       )
@@ -27,7 +27,7 @@ describe('WordSequence Matcher', () => {
       if (wordSequenceMatch && wordSequenceMatch.pattern === 'wordSequence') {
         expect(wordSequenceMatch.words).toEqual(['one', 'two', 'three'])
         expect(wordSequenceMatch.wordCount).toBe(3)
-        expect(wordSequenceMatch.dictionaryName).toBe('wordSequences')
+        expect(wordSequenceMatch.dictionaryName).toBe('cardinalNumbers')
       }
     })
 
@@ -42,6 +42,36 @@ describe('WordSequence Matcher', () => {
       if (wordSequenceMatch && wordSequenceMatch.pattern === 'wordSequence') {
         expect(wordSequenceMatch.words).toEqual(['four', 'five', 'six'])
         expect(wordSequenceMatch.wordCount).toBe(3)
+      }
+    })
+
+    it('should detect reverse camelCase cardinal number sequences', () => {
+      const result = zxcvbn.check('ThreeTwoOne')
+      // console.log(result)
+      const wordSequenceMatch = result.sequence.find(
+        (match) => match.pattern === 'wordSequence',
+      )
+
+      expect(wordSequenceMatch).toBeDefined()
+      if (wordSequenceMatch && wordSequenceMatch.pattern === 'wordSequence') {
+        expect(wordSequenceMatch.words).toEqual(['three', 'two', 'one'])
+        expect(wordSequenceMatch.wordCount).toBe(3)
+        expect(wordSequenceMatch.dictionaryName).toBe('cardinalNumbers')
+      }
+    })
+
+    it('should detect l33t camelCase cardinal number sequences', () => {
+      const result = zxcvbn.check('Thr33Tw0One')
+      // console.log(result)
+      const wordSequenceMatch = result.sequence.find(
+        (match) => match.pattern === 'wordSequence',
+      )
+
+      expect(wordSequenceMatch).toBeDefined()
+      if (wordSequenceMatch && wordSequenceMatch.pattern === 'wordSequence') {
+        expect(wordSequenceMatch.words).toEqual(['three', 'two', 'one'])
+        expect(wordSequenceMatch.wordCount).toBe(3)
+        expect(wordSequenceMatch.dictionaryName).toBe('cardinalNumbers')
       }
     })
   })

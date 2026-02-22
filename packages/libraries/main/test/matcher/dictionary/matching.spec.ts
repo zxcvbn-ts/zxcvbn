@@ -15,9 +15,7 @@ describe('dictionary matching', () => {
       translations: zxcvbnEnPackage.translations,
     })
     const matchDictionary = new MatchDictionary(zxcvbnOptions)
-    const matches = matchDictionary
-      .match({ password: 'we' })
-      .filter((match) => match.reversed === false)
+    const matches = matchDictionary.match({ password: 'we' })
     const patterns = ['we']
     const msg = 'default dictionaries'
     const ijs: number[][] = [[0, 1]]
@@ -45,9 +43,7 @@ describe('dictionary matching', () => {
     })
     const matchDictionary = new MatchDictionary(zxcvbnOptions)
     const dm = (pw: string) =>
-      matchDictionary
-        .match({ password: pw })
-        .filter((match) => match.reversed === false)
+      matchDictionary.match({ password: pw }).filter((match) => !match.reversed)
     let matches = dm('motherboard')
     let patterns = ['mother', 'motherboard', 'board']
     let msg = 'matches words that contain other words'
