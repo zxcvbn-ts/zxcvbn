@@ -105,7 +105,7 @@ export class ExcelGenerator extends SimpleListGenerator<Options> {
 
         if (occurrence < this.options.minOccurrences) {
           // Don't add this one
-          // eslint-disable-next-line no-continue
+
           continue
         }
       }

@@ -160,7 +160,7 @@ export default (
       bytes[index] = input.charCodeAt(index)
     }
     // @ts-expect-error for testing purposes
-    // eslint-disable-next-line no-param-reassign
+
     input = bytes
   }
 
@@ -173,7 +173,7 @@ export default (
     if (byteValue >= 0x00 && byteValue <= 0x7f) {
       // @ts-expect-error for testing purposes
       buffer.push(stringFromCharCode(byteValue))
-      // eslint-disable-next-line no-continue
+
       continue
     }
     // “Let `code point` be the index code point for `byte − 0x80` in index

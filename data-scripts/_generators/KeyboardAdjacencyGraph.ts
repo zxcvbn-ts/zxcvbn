@@ -60,13 +60,12 @@ const getPositionTable = (
 ): Record<string, string> => {
   const positionTable: PositionTable = {}
   const lines = getLines(layoutStr)
-  // eslint-disable-next-line no-restricted-syntax
+
   for (const [index, line] of lines.entries()) {
     // the way I illustrated keys above, each qwerty row is indented one space in from the last
     const slant = slanted ? index - 1 : 0
     const lineArray = line.split(' ')
     if (line) {
-      // eslint-disable-next-line no-restricted-syntax
       for (const token of lineArray) {
         if (token) {
           const [x, remainder] = divmod(line.indexOf(token) - slant, xUnit)
@@ -162,7 +161,7 @@ export default class KeyboardAdjacencyGraph {
       const graphs: Record<string, Graph> = {}
       const files = getFiles(layouts)
       files.forEach((file) => {
-        // eslint-disable-next-line global-require,import/no-dynamic-require,@typescript-eslint/no-require-imports
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
         const fileData = require(`${layouts}/${file}`)
         const layout = fileData.default
         const graph = buildGraph(layout.layout, layout.slanted)

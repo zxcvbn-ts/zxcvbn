@@ -98,12 +98,11 @@ class CleanPasswords {
         // this should work in all language as there shouldn't be the same letter more than four times in a row
         // So we can ignore the rest to save calculation time
         if (lastSubLetter === sub && consecutiveSubCount >= 3) {
-          // eslint-disable-next-line no-continue
           continue
         }
         hasSubs = true
         const letters = cur.subs!
-        // eslint-disable-next-line no-restricted-syntax
+
         for (const letter of letters) {
           this.buffer.push(letter)
           const newSubs = changes.concat({

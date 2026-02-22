@@ -20,7 +20,7 @@ export default ({
     )
   }
   // TODO add more regex types for example special dates like 09.11
-  // eslint-disable-next-line default-case
+
   switch (regexName) {
     case 'recentYear':
       // conservative estimate of year space: num years from REFERENCE_YEAR.

@@ -18,7 +18,7 @@ class MatchRegex extends MatcherBaseClass {
       regex.lastIndex = 0 // keeps regexMatch stateless
 
       let regexMatch: RegExpExecArray | null
-      // eslint-disable-next-line no-cond-assign
+
       while ((regexMatch = regex.exec(password))) {
         if (regexMatch) {
           const token = regexMatch[0]

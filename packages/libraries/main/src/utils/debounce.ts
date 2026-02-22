@@ -30,7 +30,7 @@ export default <F extends Procedure>(
       func.apply(context, args)
       return
     }
-    // eslint-disable-next-line consistent-return
+
     return undefined
   }
 }

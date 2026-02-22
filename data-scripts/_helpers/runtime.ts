@@ -26,14 +26,13 @@ export default class ListHandler {
   languages = new Set<string>()
 
   async generateData() {
-    // eslint-disable-next-line no-restricted-syntax
     for (const options of this.lists) {
       console.info(
         `----------- Starting ${options.language} ${options.filename} -----------`,
       )
       // eslint-disable-next-line no-console
       console.time(options.filename)
-      // eslint-disable-next-line new-cap
+
       const generator = new options.generator({
         options: options.options,
         url: options.url,
@@ -48,7 +47,6 @@ export default class ListHandler {
         fs.mkdirSync(folder, { recursive: true })
       }
 
-      // eslint-disable-next-line no-await-in-loop
       const data = await generator.run()
       if (data) {
         fs.writeFileSync(

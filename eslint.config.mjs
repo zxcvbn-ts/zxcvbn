@@ -6,16 +6,9 @@ import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
 import jest from 'eslint-plugin-jest'
 import compatPlugin from 'eslint-plugin-compat'
 import js from '@eslint/js'
-import { FlatCompat } from '@eslint/eslintrc'
 import tseslint from 'typescript-eslint'
 import sortClassMembers from 'eslint-plugin-sort-class-members'
 import prettierConfig from './prettier.mjs'
-
-const compat = new FlatCompat({
-  baseDirectory: import.meta.dirname,
-  recommendedConfig: js.configs.recommended,
-  allConfig: js.configs.all,
-})
 
 export default defineConfig([
   globalIgnores([
@@ -29,7 +22,6 @@ export default defineConfig([
     '**/dist_new',
   ]),
   js.configs.recommended,
-  ...compat.extends('airbnb-base'),
   compatPlugin.configs['flat/recommended'],
   tseslint.configs.strictTypeChecked,
   tseslint.configs.stylisticTypeChecked,
@@ -46,8 +38,6 @@ export default defineConfig([
         warnOnUnsupportedTypeScriptVersion: false,
       },
     },
-
-    extends: compat.extends('airbnb-base'),
 
     plugins: {
       import: importPlugin,

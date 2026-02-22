@@ -1,9 +1,7 @@
 import { HaveIBeenPwnedConfig } from './types'
 
 const isNodeJs =
-  typeof process !== 'undefined' &&
-  process.release &&
-  process.release.name === 'node'
+  typeof process !== 'undefined' && process.release?.name === 'node'
 
 const textEncode = (text: string) => {
   if (isNodeJs) {
@@ -25,7 +23,7 @@ const digestMessage = async (message: string) => {
   const data = textEncode(message)
   let hash = ''
   if (isNodeJs) {
-    // eslint-disable-next-line global-require,@typescript-eslint/no-require-imports
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const crypto = require('crypto')
     hash = crypto.createHash('sha1').update(message).digest('hex').toUpperCase()
   } else if (crypto) {

@@ -41,6 +41,7 @@ class MatchRepeat extends MatcherBaseClass {
       return match instanceof Promise
     })
     if (hasPromises) {
+      // eslint-disable-next-line @typescript-eslint/await-thenable
       return Promise.all(matches)
     }
     return matches as RepeatMatch[]

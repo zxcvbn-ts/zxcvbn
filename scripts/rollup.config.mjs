@@ -68,4 +68,5 @@ const generateConfig = (type, minify = false) => {
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/await-thenable
 export default Promise.all([generateConfig('esm'), generateConfig('cjs')])

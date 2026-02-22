@@ -28,7 +28,7 @@ export default class PasswordGenerator {
     Object.keys(counts).forEach((pw) => {
       const count = counts[pw]
       if (count === 1) {
-        // eslint-disable-next-line no-param-reassign,@typescript-eslint/no-dynamic-delete
+        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
         results.push(delete counts[pw])
       } else {
         results.push(undefined)
@@ -59,7 +59,6 @@ export default class PasswordGenerator {
       return isFullPassword && !isDictionary
     })
 
-    // eslint-disable-next-line no-restricted-syntax
     for (const match of matches) {
       if (estimateGuesses(zxcvbnOptions, match, password).guesses < xatoRank) {
         return false
@@ -85,7 +84,7 @@ export default class PasswordGenerator {
       stream.on('readable', () => {
         let line
         const results: number[] = []
-        // eslint-disable-next-line no-cond-assign
+
         while ((line = stream.read()) !== null) {
           lineCount += 1
           if (lineCount % BATCH_SIZE === 0) {
@@ -95,7 +94,7 @@ export default class PasswordGenerator {
           const tokens = line.trim().split(/\s+/)
           if (tokens.length !== 2) {
             skippedLines += 1
-            // eslint-disable-next-line no-continue
+
             continue
           }
           const combo = tokens.slice(0, 2)
