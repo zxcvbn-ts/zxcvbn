@@ -1,14 +1,21 @@
 import Scoring from '../../src/scoring'
 import Options from '../../src/Options'
 
-describe('scoring search', () => {
+const getMatch = (
+  i: number,
+  j: number,
+  guesses: number,
+  pattern = 'dictionary',
+) => ({
+  i,
+  j,
+  token: 'x'.repeat(j - i + 1),
+  pattern,
+  guesses,
+})
+describe('scoring', () => {
   const zxcvbnOptions = new Options()
   const scoring = new Scoring(zxcvbnOptions)
-  const getMatch = (i: number, j: number, guesses: number) => ({
-    i,
-    j,
-    guesses,
-  })
   const excludeAdditive = true
   const password = '0123456789'
 
@@ -38,7 +45,6 @@ describe('scoring search', () => {
     const firstMatch = matches[0]
     const result = scoring.mostGuessableMatchSequence(
       password,
-      // @ts-expect-error for testing purposes
       matches,
       excludeAdditive,
     )
@@ -66,7 +72,6 @@ describe('scoring search', () => {
     const firstMatch = matches[0]
     const result = scoring.mostGuessableMatchSequence(
       password,
-      // @ts-expect-error for testing purposes
       matches,
       excludeAdditive,
     )
@@ -93,7 +98,6 @@ describe('scoring search', () => {
     const matches = [getMatch(1, 8, 1)]
     const result = scoring.mostGuessableMatchSequence(
       password,
-      // @ts-expect-error for testing purposes
       matches,
       excludeAdditive,
     )
@@ -123,7 +127,6 @@ describe('scoring search', () => {
     const secondMatch = matches[1]
     let result = scoring.mostGuessableMatchSequence(
       password,
-      // @ts-expect-error for testing purposes
       matches,
       excludeAdditive,
     )
@@ -143,7 +146,6 @@ describe('scoring search', () => {
     firstMatch.guesses = 3
     result = scoring.mostGuessableMatchSequence(
       password,
-      // @ts-expect-error for testing purposes
       matches,
       excludeAdditive,
     )
@@ -162,7 +164,6 @@ describe('scoring search', () => {
     describe('when m0 covers m1 and m2, choose [m0] when m0 < m1 * m2 * fact(2):', () => {
       const result = scoring.mostGuessableMatchSequence(
         password,
-        // @ts-expect-error for testing purposes
         matches,
         excludeAdditive,
       )
@@ -179,7 +180,6 @@ describe('scoring search', () => {
       firstMatch.guesses = 5
       const result = scoring.mostGuessableMatchSequence(
         password,
-        // @ts-expect-error for testing purposes
         matches,
         excludeAdditive,
       )
@@ -190,6 +190,105 @@ describe('scoring search', () => {
       it('sequence is [m1, m2]', () => {
         expect(result.sequence).toEqual([secondMatch, thirdMatch])
       })
+    })
+  })
+
+  describe('extended tests:', () => {
+    it('handles empty password', () => {
+      const result = scoring.mostGuessableMatchSequence('', [])
+      expect(result.guesses).toEqual(1)
+      expect(result.sequence).toEqual([])
+    })
+
+    it('applies additive penalty when excludeAdditive is false (default)', () => {
+      const passwordLocal = 'password'
+      // Single match covering everything
+      const matches = [getMatch(0, 7, 100)]
+      const result = scoring.mostGuessableMatchSequence(passwordLocal, matches)
+      // g = sequenceLength! * Product(guesses) + D^(sequenceLength - 1)
+      // for sequenceLength 1: 1! * 100 + 10000^0 = 100 + 1 = 101
+      expect(result.guesses).toEqual(101)
+    })
+
+    it('does not apply additive penalty when excludeAdditive is true', () => {
+      const passwordLocal = 'password'
+      const matches = [getMatch(0, 7, 100)]
+      const result = scoring.mostGuessableMatchSequence(
+        passwordLocal,
+        matches,
+        true,
+      )
+      // g = sequenceLength! * Product(guesses) = 1! * 100 = 100
+      expect(result.guesses).toEqual(100)
+    })
+
+    it('handles multiple matches in a sequence with additive penalty', () => {
+      const passwordLocal = 'password'
+      // Two matches: [0,3] and [4,7]
+      const matches = [getMatch(0, 3, 10), getMatch(4, 7, 10)]
+      const result = scoring.mostGuessableMatchSequence(passwordLocal, matches)
+      // sequenceLength = 2
+      // pi = 10 * 10 = 100
+      // g = 2! * 100 + 10000^(2-1) = 2 * 100 + 10000 = 10200
+      expect(result.guesses).toEqual(10200)
+    })
+
+    it('sorts matches by starting index i for deterministic output', () => {
+      const passwordLocal = 'abc'
+      // Matches with same j but different i.
+      // If we provide them out of order, they should be sorted.
+      const m1 = getMatch(1, 2, 10)
+      const m2 = getMatch(0, 2, 100)
+      const result = scoring.mostGuessableMatchSequence(passwordLocal, [m1, m2])
+      const resultReverse = scoring.mostGuessableMatchSequence(passwordLocal, [
+        m2,
+        m1,
+      ])
+      expect(result).toEqual(resultReverse)
+    })
+
+    it('avoids adjacent bruteforce matches', () => {
+      const passwordLocal = 'abc'
+      // We want to see if it ever produces [bruteforce(0,0), bruteforce(1,2)]
+      // It should always prefer [bruteforce(0,2)]
+      const result = scoring.mostGuessableMatchSequence(passwordLocal, [])
+      expect(result.sequence.length).toEqual(1)
+      expect(result.sequence[0].pattern).toEqual('bruteforce')
+      expect(result.sequence[0].i).toEqual(0)
+      expect(result.sequence[0].j).toEqual(2)
+    })
+
+    it('includes guessesLog10 in the result', () => {
+      const passwordLocal = 'p'
+      const result = scoring.mostGuessableMatchSequence(passwordLocal, [])
+      expect(result.guessesLog10).toBeDefined()
+      expect(result.guessesLog10).toBeCloseTo(Math.log10(result.guesses), 10)
+    })
+
+    it('chooses the best sequence length when multiple are possible', () => {
+      // This tests the logic in unwind where it finds the sequenceLength with minimum g
+      const passwordLocal = 'abcd'
+      // Suppose we have matches such that a sequence of length 1 and length 2 both cover the password.
+      // m1: [0,3], guesses=1000
+      // m2: [0,1], guesses=10
+      // m3: [2,3], guesses=10
+      // excludeAdditive = true to simplify math
+      const m1 = getMatch(0, 3, 1000)
+      const m2 = getMatch(0, 1, 10)
+      const m3 = getMatch(2, 3, 10)
+
+      const result = scoring.mostGuessableMatchSequence(
+        passwordLocal,
+        [m1, m2, m3],
+        true,
+      )
+
+      // sequence length 1: g = 1! * 1000 = 1000
+      // sequence length 2: g = 2! * (10 * 10) = 2 * 100 = 200
+      // should choose length 2
+      expect(result.sequence.length).toEqual(2)
+      expect(result.guesses).toEqual(200)
+      expect(result.sequence).toEqual([m2, m3])
     })
   })
 })

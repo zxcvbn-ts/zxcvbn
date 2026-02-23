@@ -80,6 +80,7 @@
     "kuroshiro-analyzer-kuromoji": "1.1.0",
     "lerna": "9.0.4",
     "natural": "8.1.0",
+    "nodejieba": "3.5.2",
     "prettier": "3.8.1",
     "rollup": "4.59.0",
     "rollup-plugin-copy": "3.5.0",

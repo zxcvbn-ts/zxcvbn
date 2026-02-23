@@ -29,7 +29,6 @@ Current supported languages:
 By default, `zxcvbn-ts` uses `keys` as feedback. This way you can integrate `zxcvbn-ts` into your own translation system.
 If you don't have an own translation system or want to use predefined translation you can use one of the language packs.
 Each language pack has its own translation file that you can use like this:
-
 ```js
 import { ZxcvbnFactory } from '@zxcvbn-ts/core'
 import { translations } from '@zxcvbn-ts/language-en'
