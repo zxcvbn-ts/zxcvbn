@@ -37,6 +37,7 @@ The reason of this project is to modernize zxcvbn and make it maintainable with 
 
 - estimate strength of a password
 - get a score for the password
+- check passwords asynchronously for API-based matchers
 - i18n support, for dictionaries and feedback translations
 - extend existing dictionaries with your own
 - usable without dictionaries at all, which reduce the scoring efficiency rapidly. This is not recommended

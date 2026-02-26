@@ -2,7 +2,7 @@
 
 The @zxcvbn-ts/core library provides built-in matchers to evaluate the strength of a password. 
 Custom matchers can also be created, including asynchronous matchers such as the pwned-matcher which can be found in the [@zxcvbn-ts/matcher-pwned](https://www.npmjs.com/package/@zxcvbn-ts/matcher-pwned) library. 
-When using an asynchronous custom matcher, the zxcvbnAsync function should be used.
+When using an asynchronous custom matcher, the `checkAsync` method should be used.
 
 ## Built-in Matchers
 There are several built-in matchers available:
@@ -57,17 +57,16 @@ Here is an example of how to create a custom matcher to check for minimum passwo
 import { ZxcvbnFactory } from '@zxcvbn-ts/core'
 import {
   MatchEstimated,
-  ExtendedMatch,
+  MatchExtended,
   Matcher,
-  Match,
-} from '@zxcvbn-ts/core/dist/types'
+} from '@zxcvbn-ts/core'
 
 const minLengthMatcher: Matcher = {
   Matching: class MatchMinLength {
     minLength = 10
 
     match({ password }: { password: string }) {
-      const matches: Match[] = []
+      const matches: MatchExtended[] = []
       if (password.length <= this.minLength) {
         matches.push({
           pattern: 'minLength',
@@ -85,10 +84,14 @@ const minLengthMatcher: Matcher = {
       suggestions: [],
     }
   },
-  scoring(match: ExtendedMatch) {
+  scoring(match: MatchExtended) {
     // The length of the password is multiplied by 10 to create a higher score the more characters are added.
     return match.token.length * 10
   },
+}
+
+const options = {
+  // your options
 }
 
 new ZxcvbnFactory(options, {

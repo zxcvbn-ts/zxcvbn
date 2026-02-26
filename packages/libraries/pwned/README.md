@@ -19,7 +19,10 @@ The pwned matcher is an async matcher that will make a k-anonymity password requ
 import { ZxcvbnFactory } from '@zxcvbn-ts/core'
 import { matcherPwnedFactory } from '@zxcvbn-ts/matcher-pwned'
 
-const matcherPwned = matcherPwnedFactory(fetch)
+const config = {
+  url: 'https://api.pwnedpasswords.com/range/'
+}
+const matcherPwned = matcherPwnedFactory(fetch, config)
 const customMatcher = {
   pwned: matcherPwned
 }
@@ -38,9 +41,15 @@ zxcvbn.checkAsync(password).then((result) => {
 ### fetch
 This needs to be some fetch function either the default browser fetch or a fetch package from nodejs
 
-### url
+### config
+This is an object with the following properties:
+
+#### url
 This is the url to the haveibeenpwned api. By default, it is set to `https://api.pwnedpasswords.com/range/`.
 This option can be used if you don't trust haveibeenpwned and download their list to host your own instance of pwnedpasswords
+
+#### networkErrorHandler
+An error handler to handle network request. By default this function will just return false to silently ignore the pwned matcher.
 
 ### Can't resolve 'crypto' Error
 

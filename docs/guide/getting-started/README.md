@@ -8,10 +8,10 @@ If you want to use it and want to include your own polyfills, you need to transp
 
 @tab pnpm
 
-pnpm create @zxcvbn-ts/core @zxcvbn-ts/language-common @zxcvbn-ts/language-en
+pnpm add @zxcvbn-ts/core @zxcvbn-ts/language-common @zxcvbn-ts/language-en
 @tab yarn
 
-yarn create @zxcvbn-ts/core @zxcvbn-ts/language-common @zxcvbn-ts/language-en
+yarn add @zxcvbn-ts/core @zxcvbn-ts/language-common @zxcvbn-ts/language-en
 @tab npm
 
 npm install @zxcvbn-ts/core @zxcvbn-ts/language-common @zxcvbn-ts/language-en
@@ -35,6 +35,8 @@ const options = {
 
 const zxcvbn = new ZxcvbnFactory(options)
 zxcvbn.check(password)
+// or for async matchers
+await zxcvbn.checkAsync(password)
 ```
 
 ## Output
@@ -66,7 +68,7 @@ result.crackTimes # dictionary of back-of-the-envelope crack time
   offlineFastHashingXPerSecond
 }
 
-Every scenarios has a few properties
+Every scenario has a few properties
 {
   # the seconds in which the password is cracked
   seconds 

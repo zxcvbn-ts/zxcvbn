@@ -17,12 +17,14 @@ New:
 const zxcvbn = new ZxcvbnFactory(options, customMatcher)
 
 zxcvbn.check(password)
+// or for async matchers
+await zxcvbn.checkAsync(password)
 ```
 
 
 ### Custom matcher setup changed
 
-This is an example for the pwned custom matcher changes. Generally the options doesn't need to be transferred anymore.
+This is an example for the pwned custom matcher changes. Generally the options don't need to be transferred anymore.
 
 Old:
 ```ts
@@ -32,7 +34,7 @@ const pwnedOptions = {
   url: string,
   networkErrorHandler: Function
 }
-const matcherPwned = matcherPwnedFactory(crossFetch, zxcvbnOptions, pwnedOptions)
+const matcherPwned = matcherPwnedFactory(crossFetch, pwnedOptions)
 zxcvbnOptions.addMatcher('pwned', matcherPwned)
 
 zxcvbn(password)
@@ -41,16 +43,16 @@ zxcvbn(password)
 New:
 
 ```ts
-const pwnedOptions = {
+const pwnedConfig = {
   url: string,
   networkErrorHandler: Function
 }
 const customMatcher = {
-  pwned: matcherPwnedFactory(fetch, pwnedOptions),
+  pwned: matcherPwnedFactory(fetch, pwnedConfig),
 }
 
 const zxcvbn = new ZxcvbnFactory(options, customMatcher)
-zxcvbn.check(password)
+await zxcvbn.checkAsync(password)
 ```
 
 ## Scoring thresholds naming changed in the output
@@ -120,7 +122,7 @@ or like this
 
 ### pwned matcher doesn't have a default export anymore
 
-Instead of importing  the pwned matcher with
+Instead of importing the pwned matcher with
 
 `import matcherPwnedFactory from '@zxcvbn-ts/matcher-pwned'`
 
@@ -138,7 +140,7 @@ This means if you don't have any async matcher in use you don't have to do anyth
 
 There is a new option for levenshtein calculation which can be activated to be stricter with the dictionary matcher.
 
-- If you are using async matcher you need to move from `zxcvbn` to `zxcvnAsync`.
+- If you are using async matcher you need to move from `zxcvbn` to `zxcvbnAsync`.
 - `ZxcvbnOptions` export renamed to `zxcvbnOptions`
 - `@zxcvbn-ts/matcher-pwned` needs `zxcvbnOptions` as the second parameter
 
