@@ -2,6 +2,7 @@
 import firstnames from './firstnames.json'
 import lastnames from './lastnames.json'
 import commonWords from './commonWords.json'
+import wordSequences from './wordSequences.json'
 import translations from './translations'
 import wikipedia from './wikipedia.json'
 
@@ -12,4 +13,4 @@ const dictionary = {
   'wikipedia-ku': wikipedia,
 }
 
-export { dictionary, translations }
+export { dictionary, translations, wordSequences }

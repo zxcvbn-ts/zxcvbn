@@ -1,6 +1,15 @@
 # Options
 
-## setOptions
+The options can be passed to the `ZxcvbnFactory` constructor.
+
+```js
+const options = {
+  // your options
+}
+const zxcvbn = new ZxcvbnFactory(options)
+```
+
+## Available Options
 
 | Prop                   | Type    | Default           | Description                                                          |
 |------------------------| ------- |-------------------|----------------------------------------------------------------------|
@@ -63,6 +72,6 @@ Defines how many character of the password are checked. A password longer than t
 
 Define the values to calculate the scoring and attack times. DO NOT CHANGE unless you know what you are doing. The default values are just fine as long as you are using a strong, slow hash function. Can be adjusted to account for increasingly powerful attacker hardware.
 
-## addMatcher
+## Custom Matchers
 
-With this function you can add your own matcher for more information checkout the [matcher documentation](../matcher)
+With the second parameter of `ZxcvbnFactory` you can add your own matchers. For more information check out the [matcher documentation](../matcher)

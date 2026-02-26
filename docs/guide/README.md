@@ -42,8 +42,8 @@ Thanks to the original creators [dropbox](https://github.com/dropbox) for their 
 ## Performance
 
 **zxcvbn** operates below human perception of delay for most input: ~5-20ms for ~25 character passwords on modern browsers/CPUs, ~100ms for passwords around 100 characters.
-To curb runtime latency for really long passwords, consider sending `zxcvbn.check()` only the first 100 characters or so of user input. 
-For security reasons a limit was implemented for 256 characters by default but can be customized it with `maxLength`.
+To curb runtime latency for really long passwords, consider sending `zxcvbn.check(password)` only the first 100 characters or so of user input. 
+For security reasons a limit was implemented for 256 characters by default but can be customized with `maxLength`.
 
 
 ## Change prior to original library
@@ -52,7 +52,7 @@ For security reasons a limit was implemented for 256 characters by default but c
 - All dictionaries are optional, but the `en` dictionary is highly recommend (wished feature in some issues)
 - Dictionaries are separate from the core library. This means zxcvbn-ts is relatively small without its dictionaries
 - compress dictionaries for smaller bundle size => up to 33% smaller dictionaries while having more entries
-- The project is a monorepo with a core library `@zxcvbn-ts/core` and language packages `@txcvbn-ts/language-en`.
+- The project is a monorepo with a core library `@zxcvbn-ts/core` and language packages `@zxcvbn-ts/language-en`.
 - Keyboard layouts can be customised. This means you can overwrite the default set of layouts with your own or extend it.
   E.g., if you are developing a Russian website, you need to include a Cyrillic keyboard set. Create a PR so that others can benefit from it.
 - You can use multiple keyboard layouts, which means that the library will check against them by default.
