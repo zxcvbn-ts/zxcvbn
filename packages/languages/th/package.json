@@ -1,18 +1,18 @@
 {
-  "name": "@zxcvbn-ts/language-ku",
+  "name": "@zxcvbn-ts/language-th",
   "version": "4.0.0-beta.2",
   "main": "dist/index.cjs",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "sideEffects": false,
-  "description": "The Kurdish (Kurmanjî dialect) language package for zxcvbn-ts",
+  "description": "The Thai language package for zxcvbn-ts",
   "license": "MIT",
   "homepage": "https://github.com/zxcvbn-ts/zxcvbn",
   "repository": {
     "type": "git",
     "url": "https://github.com/zxcvbn-ts/zxcvbn.git"
   },
-  "author": "zxcvbn-ts",
+  "author": "Shane Jordan",
   "files": [
     "dist",
     "src"
@@ -24,8 +24,7 @@
     "zxcvbn",
     "language",
     "translation",
-    "kurdish",
-    "kurmanji"
+    "thai"
   ],
   "dependencies": {
     "@zxcvbn-ts/dictionary-compression": "^3.0.1"

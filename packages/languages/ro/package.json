@@ -1,30 +1,32 @@
 {
-    "name": "@zxcvbn-ts/language-ro",
-    "version": "3.0.2",
-    "main": "dist/index.js",
-    "module": "dist/index.esm.js",
-    "types": "dist/index.d.ts",
-    "sideEffects": false,
-    "description": "The Romanian language package for zxcvbn-ts",
-    "license": "MIT",
-    "homepage": "https://github.com/jeromes80/zxcvbn",
-    "repository": {
-      "type": "git",
-      "url": "https://github.com/jeromes80/zxcvbn.git"
-    },
-    "author": "jsalvat",
-    "files": [
-      "dist",
-      "src"
-    ],
-    "publishConfig": {
-      "access": "public"
-    },
-    "keywords": [
-      "zxcvbn",
-      "language",
-      "translation",
-      "romanian"
-    ]
+  "name": "@zxcvbn-ts/language-ro",
+  "version": "4.0.0-beta.2",
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "sideEffects": false,
+  "description": "The Romanian language package for zxcvbn-ts",
+  "license": "MIT",
+  "homepage": "https://github.com/zxcvbn-ts/zxcvbn",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zxcvbn-ts/zxcvbn.git"
+  },
+  "author": "daniesy",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "zxcvbn",
+    "language",
+    "translation",
+    "romanian"
+  ],
+  "dependencies": {
+    "@zxcvbn-ts/dictionary-compression": "^3.0.1"
   }
-  
+}

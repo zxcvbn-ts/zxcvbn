@@ -4,6 +4,16 @@ import path from 'path'
 // @ts-expect-error doesn't have types
 import globAll from 'glob-all'
 import natural from 'natural'
+// @ts-expect-error doesn't have types
+import pinyin from 'chinese-to-pinyin'
+import nodejieba from 'nodejieba'
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const tokenizerZh = {
+  tokenize(text: string) {
+    return nodejieba.cut(text)
+  },
+}
 
 const SENTENCES_PER_BATCH = 500000 // after each batch, delete all counts with count == 1 (hapax legomena)
 const PRE_SORT_CUTOFF = 500 // before sorting, discard all words with less than this count
@@ -26,10 +36,10 @@ class TopTokenCounter {
       const hyphenArray = token.split('-')
       if (splitHyphens && [1, 2].includes(hyphenArray.length)) {
         hyphenArray.forEach((subToken) => {
-          this.addToken(subToken)
+          this.addToken(pinyin(subToken))
         })
       } else {
-        this.addToken(token)
+        this.addToken(pinyin(token))
       }
     })
   }
@@ -146,13 +156,15 @@ const readLinePromise = (
 }
 
 const getTokens = async (inputDir: string, counter: TopTokenCounter) => {
-  const files: string[] = globAll.sync([`${inputDir}/**/wiki_*`])
+  // const tokenizer = tokenizerZh
   // const tokenizer = new natural.TokenizerJa()
   const tokenizer = new natural.RegexpTokenizer({
     pattern: /[^A-Za-z\xbf-\xdf\xdf-\xff]/,
   })
   let lines = 0
-  const promises = files.map(async (filePath) => {
+  let filesProcessedCounter = 0
+  const files: string[] = globAll.sync([`${inputDir}/**/wiki_*`])
+  for (const filePath of files) {
     const readInterface = readline.createInterface({
       input: fs.createReadStream(filePath),
       terminal: false,
@@ -163,13 +175,15 @@ const getTokens = async (inputDir: string, counter: TopTokenCounter) => {
       lines += 1
       if (lines % SENTENCES_PER_BATCH === 0) {
         counter.batchPrune()
-        console.info(counter.getStats())
-        console.info(`processing: ${filePath}`)
+        console.info(counter.getStats(), `processing: ${filePath}`)
       }
     })
-  })
-
-  await Promise.all(promises)
+    filesProcessedCounter += 1
+    console.info(
+      counter.getStats(),
+      `processed: ${filePath} ${filesProcessedCounter}/${files.length} `,
+    )
+  }
 }
 
 const write = (output: string, pairs: Record<string, number>) => {

@@ -5,6 +5,7 @@ import { TxtGenerator } from './_generators/TxtGenerator'
 import ApiGenerator from './_generators/ApiGenerator'
 import HTMLGenerator from './_generators/HTMLGenerator'
 import SimpleJapaneseListGenerator from './_generators/SimpleJapaneseListGenerator'
+import SimpleChineseListGenerator from './_generators/SimpleChineseListGenerator'
 import latin2Decoder from './latin2Decoder'
 
 export interface LanguageListEntry {
@@ -280,7 +281,8 @@ export default {
   'ro': {
     commonWords: {
       source:
-        'https://raw.githubusercontent.com/daniesy/romanian/main/commonWords.txt',
+        'https://raw.githubusercontent.com/hermitdave/FrequencyWords/refs/heads/master/content/2018/ro/ro_50k.txt',
+      options: { hasOccurrences: true },
     },
     firstnames: {
       source:
@@ -333,6 +335,12 @@ export default {
     },
   },
   'zh': {
+    commonWords: {
+      source:
+        'https://raw.githubusercontent.com/hermitdave/FrequencyWords/refs/heads/master/content/2018/zh_cn/zh_cn_50k.txt',
+      options: { hasOccurrences: true },
+      generator: SimpleChineseListGenerator,
+    },
     firstnames: {
       source:
         'https://raw.githubusercontent.com/limzykenneth/chinese-wordlist/master/pinyin.txt',
@@ -463,6 +471,13 @@ export default {
           return `${nameEnglish} ${Number(frequency)}`
         },
       },
+    },
+  },
+  'th': {
+    commonWords: {
+      source:
+        'https://github.com/hermitdave/FrequencyWords/raw/master/content/2018/th/th_50k.txt',
+      options: { hasOccurrences: true },
     },
   },
   'common': {
