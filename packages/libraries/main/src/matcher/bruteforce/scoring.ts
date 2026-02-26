@@ -7,7 +7,7 @@ import { MatchEstimated, MatchExtended } from '../../types'
 
 export default ({ token }: MatchExtended | MatchEstimated) => {
   let guesses = BRUTEFORCE_CARDINALITY ** token.length
-  if (guesses === Number.POSITIVE_INFINITY) {
+  if (Number.isFinite(guesses)) {
     guesses = Number.MAX_VALUE
   }
   let minGuesses

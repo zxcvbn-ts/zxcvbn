@@ -50,3 +50,8 @@ If you get this error in node browser builds you can fix this by adding this to 
 "crypto": false
 }
 ```
+
+## Warning
+Incremental searching involves performing a search for the password as each character is typed by the user, for example via an asynchronous request from their browser. [This may provide a 3rd party (namely someone with access to view inbound requests at Cloudflare) with the ability to observe the API requests with sufficient information to discern the original password being searched for.](https://blog.quarkslab.com/passbolt-a-bold-use-of-haveibeenpwned.html) Waiting until the entire password is entered before checking Pwned Passwords (for example, when [the blur event](https://developer.mozilla.org/en-US/docs/Web/API/Element/blur_event) is raised on the password field), mitigates this risk.
+
+Source: https://haveibeenpwned.com/api/v3#PwnedPasswordsIncrementalSearching
