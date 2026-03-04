@@ -1,6 +1,6 @@
 {
   "name": "@zxcvbn-ts/language-ja",
-  "version": "4.0.0-beta.2",
+  "version": "4.0.0-beta.3",
   "main": "dist/index.cjs",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
@@ -27,6 +27,6 @@
     "japanese"
   ],
   "dependencies": {
-     "@zxcvbn-ts/dictionary-compression": "^3.0.1"
+    "@zxcvbn-ts/dictionary-compression": "^3.0.1"
   }
 }

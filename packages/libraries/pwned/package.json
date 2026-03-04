@@ -1,6 +1,6 @@
 {
   "name": "@zxcvbn-ts/matcher-pwned",
-  "version": "4.0.0-beta.2",
+  "version": "4.0.0-beta.3",
   "main": "dist/index.cjs",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
@@ -23,7 +23,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@zxcvbn-ts/core": "^4.0.0-beta.2"
+    "@zxcvbn-ts/core": "^4.0.0-beta.3"
   },
   "keywords": [
     "pwned",
