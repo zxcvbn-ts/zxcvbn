@@ -5,7 +5,6 @@ import {
   MatchExtended,
   BruteForceMatch,
   MatchEstimated,
-  LooseObject,
   Optimal,
 } from '../types'
 import Options from '../Options'
@@ -22,7 +21,7 @@ export default class Scoring {
   private fillArray(size: number, valueType: 'object' | 'array') {
     const result: any[] = []
     for (let i = 0; i < size; i += 1) {
-      let value: [] | LooseObject = []
+      let value: any = []
       if (valueType === 'object') {
         value = {}
       }
@@ -47,7 +46,7 @@ export default class Scoring {
   private update(match: MatchExtended, sequenceLength: number) {
     const k = match.j
     const estimatedMatch = estimateGuesses(this.options, match, this.password)
-    let pi = estimatedMatch.guesses as number
+    let pi = estimatedMatch.guesses
     if (sequenceLength > 1) {
       // we're considering a length-sequenceLength sequence ending with match m:
       // obtain the product term in the minimization function by multiplying m's guesses
@@ -65,9 +64,11 @@ export default class Scoring {
     // with sequenceLength or fewer matches,
     // fare better than this sequence. if so, skip it and return.
     let shouldSkip = false
-    Object.keys(this.optimal.g[k]).forEach((competingPatternLength) => {
-      const competingMetricMatch = this.optimal.g[k][competingPatternLength]
-      if (parseInt(competingPatternLength, 10) <= sequenceLength) {
+    const competingG = this.optimal.g[k]
+    Object.keys(competingG).forEach((competingPatternLengthStr) => {
+      const competingPatternLength = parseInt(competingPatternLengthStr, 10)
+      const competingMetricMatch = competingG[competingPatternLength]
+      if (competingPatternLength <= sequenceLength) {
         if (competingMetricMatch <= g) {
           shouldSkip = true
         }
@@ -94,7 +95,8 @@ export default class Scoring {
       match = this.makeBruteforceMatch(i, passwordCharIndex)
       const tmp = this.optimal.m[i - 1]
 
-      Object.keys(tmp).forEach((sequenceLength) => {
+      Object.keys(tmp).forEach((sequenceLengthStr) => {
+        const sequenceLength = parseInt(sequenceLengthStr, 10)
         const lastMatch = tmp[sequenceLength]
         // corner: an optimal sequence will never have two adjacent bruteforce matches.
         // it is strictly better to have a single bruteforce match spanning the same region:
@@ -102,7 +104,7 @@ export default class Scoring {
         // --> safe to skip those cases.
         if (lastMatch.pattern !== 'bruteforce') {
           // try adding m to this length-sequenceLength sequence.
-          this.update(match, parseInt(sequenceLength, 10) + 1)
+          this.update(match, sequenceLength + 1)
         }
       })
     }
@@ -120,10 +122,11 @@ export default class Scoring {
     const temp = this.optimal.g[k]
     // safety check for empty passwords
     if (temp) {
-      Object.keys(temp).forEach((candidateSequenceLength) => {
+      Object.keys(temp).forEach((candidateSequenceLengthStr) => {
+        const candidateSequenceLength = parseInt(candidateSequenceLengthStr, 10)
         const candidateMetricMatch = temp[candidateSequenceLength]
         if (candidateMetricMatch < g) {
-          sequenceLength = parseInt(candidateSequenceLength, 10)
+          sequenceLength = candidateSequenceLength
           g = candidateMetricMatch
         }
       })
@@ -206,8 +209,10 @@ export default class Scoring {
     for (let k = 0; k < passwordLength; k += 1) {
       matchesByCoordinateJ[k].forEach((match: MatchExtended) => {
         if (match.i > 0) {
-          Object.keys(this.optimal.m[match.i - 1]).forEach((sequenceLength) => {
-            this.update(match, parseInt(sequenceLength, 10) + 1)
+          const prevM = this.optimal.m[match.i - 1]
+          Object.keys(prevM).forEach((sequenceLengthStr) => {
+            const sequenceLength = parseInt(sequenceLengthStr, 10)
+            this.update(match, sequenceLength + 1)
           })
         } else {
           this.update(match, 1)

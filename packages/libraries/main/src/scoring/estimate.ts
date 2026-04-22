@@ -71,11 +71,11 @@ export default (
   options: Options,
   match: MatchExtended | MatchEstimated,
   password: string,
-) => {
+): MatchEstimated => {
   const extraData: Partial<DictionaryScoringExtras> = {}
   // a match's guess estimate doesn't change. cache it.
   if ('guesses' in match && match.guesses != null) {
-    return match
+    return match as MatchEstimated
   }
 
   const minGuesses = getMinGuesses(match, password)

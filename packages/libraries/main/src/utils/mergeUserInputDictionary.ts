@@ -5,17 +5,17 @@ export default (
   optionsRankedDictionariesMaxWordSize: Record<string, number>,
   userInputsOptions?: UserInputsOptions,
 ) => {
+  if (!userInputsOptions) {
+    return {
+      rankedDictionaries: optionsRankedDictionaries,
+      rankedDictionariesMaxWordSize: optionsRankedDictionariesMaxWordSize,
+    }
+  }
   const rankedDictionaries = {
     ...optionsRankedDictionaries,
   }
   const rankedDictionariesMaxWordSize = {
     ...optionsRankedDictionariesMaxWordSize,
-  }
-  if (!userInputsOptions) {
-    return {
-      rankedDictionaries,
-      rankedDictionariesMaxWordSize,
-    }
   }
 
   rankedDictionaries.userInputs = {

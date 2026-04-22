@@ -1,3 +1,5 @@
+import { readFileSync } from 'fs'
+import { builtinModules } from 'module'
 import babel from '@rollup/plugin-babel'
 import commonjs from '@rollup/plugin-commonjs'
 import typescript from '@rollup/plugin-typescript'
@@ -5,68 +7,54 @@ import del from 'rollup-plugin-delete'
 import terser from '@rollup/plugin-terser'
 import json from './jsonPlugin.mjs'
 
-let generateCounter = 0
-const generateConfig = (type, minify = false) => {
-  let typescriptOptions = {
-    declaration: false,
-  }
-  const external = []
-  let babelrc = true
-  const output = {
-    dir: 'dist/',
-    format: type,
-    entryFileNames: '[name].cjs',
-    assetFileNames: '[name].cjs',
-    sourcemap: true,
-    preserveModules: true,
-  }
-  if (type === 'esm') {
-    typescriptOptions = {
+const pkg = JSON.parse(readFileSync('./package.json', 'utf8'))
+
+const external = [
+  ...builtinModules,
+  ...Object.keys(pkg.dependencies || {}),
+  ...Object.keys(pkg.peerDependencies || {}),
+].map((id) => new RegExp(`^${id}($|/)`))
+
+export default {
+  input: ['./src/index.ts'],
+  output: [
+    {
+      dir: 'dist/',
+      format: 'esm',
+      entryFileNames: '[name].mjs',
+      assetFileNames: '[name].mjs',
+      sourcemap: true,
+      preserveModules: true,
+      exports: 'named',
+    },
+    {
+      dir: 'dist/',
+      format: 'cjs',
+      entryFileNames: '[name].cjs',
+      assetFileNames: '[name].cjs',
+      sourcemap: true,
+      preserveModules: true,
+      exports: 'auto',
+    },
+  ],
+  plugins: [
+    del({
+      targets: 'dist/*',
+    }),
+    json(),
+    typescript({
       declarationDir: `dist/`,
       declaration: true,
       rootDir: 'src/',
       exclude: ['test/**/*', 'dist/**/*'],
-    }
-    output.entryFileNames = '[name].mjs'
-    output.assetFileNames = '[name].mjs'
-    output.exports = 'named'
-    babelrc = false
-  }
-  if (type === 'cjs') {
-    output.exports = 'auto'
-  }
-
-  const pluginsOnlyOnce = []
-  if (generateCounter === 0) {
-    pluginsOnlyOnce.push(
-      del({
-        targets: 'dist/*',
-      }),
-    )
-
-    generateCounter += 1
-  }
-
-  external.push('fastest-levenshtein', '@alttiri/base85', 'fflate')
-
-  return {
-    input: ['./src/index.ts'],
-    output,
-    plugins: [
-      ...pluginsOnlyOnce,
-      json(),
-      typescript(typescriptOptions),
-      commonjs(),
-      babel({
-        extensions: ['.ts'],
-        babelHelpers: 'bundled',
-        babelrc,
-      }),
-      minify ? terser() : null,
-    ],
-    external,
-  }
+    }),
+    commonjs(),
+    babel({
+      extensions: ['.ts'],
+      babelHelpers: 'bundled',
+      babelrc: false,
+    }),
+    process.env.NODE_ENV === 'production' ? terser() : null,
+  ],
+  external,
 }
-
-// eslint-disable-next-line @typescript-eslint/await-thenable
-export default Promise.all([generateConfig('esm'), generateConfig('cjs')])

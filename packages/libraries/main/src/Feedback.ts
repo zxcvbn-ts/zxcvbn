@@ -22,17 +22,7 @@ type Matchers = Record<string, DefaultFeedbackFunction>
  * -------------------------------------------------------------------------------
  */
 class Feedback {
-  private readonly matchers: Matchers = {
-    bruteforce: bruteforceMatcher,
-    date: dateMatcher,
-    dictionary: dictionaryMatcher,
-    regex: regexMatcher,
-    repeat: repeatMatcher,
-    sequence: sequenceMatcher,
-    spatial: spatialMatcher,
-    separator: separatorMatcher,
-    wordSequence: wordSequenceMatcher,
-  }
+  private matchers: Matchers = {}
 
   private defaultFeedback: FeedbackType = {
     warning: null,
@@ -41,6 +31,23 @@ class Feedback {
 
   constructor(private options: Options) {
     this.setDefaultSuggestions()
+    this.matchers = {
+      bruteforce: bruteforceMatcher,
+      date: dateMatcher,
+      dictionary: dictionaryMatcher,
+      regex: regexMatcher,
+      repeat: repeatMatcher,
+      sequence: sequenceMatcher,
+      spatial: spatialMatcher,
+      separator: separatorMatcher,
+      wordSequence: wordSequenceMatcher,
+    }
+
+    Object.entries(this.options.matchers).forEach(([key, matcher]) => {
+      if (matcher.feedback) {
+        this.matchers[key] = matcher.feedback
+      }
+    })
   }
 
   private setDefaultSuggestions() {
@@ -73,28 +80,19 @@ class Feedback {
 
   private getLongestMatch(sequence: MatchEstimated[]) {
     let longestMatch = sequence[0]
-    const slicedSequence = sequence.slice(1)
-    slicedSequence.forEach((match: MatchEstimated) => {
+    // ignore first entry
+    for (let i = 1; i < sequence.length; i += 1) {
+      const match = sequence[i]
       if (match.token.length > longestMatch.token.length) {
         longestMatch = match
       }
-    })
+    }
     return longestMatch
   }
 
   private getMatchFeedback(match: MatchEstimated, isSoleMatch: boolean) {
     if (this.matchers[match.pattern]) {
       return this.matchers[match.pattern](this.options, match, isSoleMatch)
-    }
-    if (
-      this.options.matchers[match.pattern] &&
-      'feedback' in this.options.matchers[match.pattern]
-    ) {
-      return this.options.matchers[match.pattern].feedback(
-        this.options,
-        match,
-        isSoleMatch,
-      )
     }
     return defaultFeedback
   }

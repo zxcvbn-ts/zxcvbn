@@ -19,22 +19,29 @@ class ZxcvbnFactory {
 
   private scoring: Scoring
 
+  private matching: Matching
+
+  private feedback: Feedback
+
+  private timeEstimates: TimeEstimates
+
   constructor(
     options: OptionsType = {},
     customMatchers: Record<string, Matcher> = {},
   ) {
     this.options = new Options(options, customMatchers)
     this.scoring = new Scoring(this.options)
+    this.matching = new Matching(this.options)
+    this.feedback = new Feedback(this.options)
+    this.timeEstimates = new TimeEstimates(this.options)
   }
 
   private estimateAttackTimes(guesses: number) {
-    const timeEstimates = new TimeEstimates(this.options)
-    return timeEstimates.estimateAttackTimes(guesses)
+    return this.timeEstimates.estimateAttackTimes(guesses)
   }
 
   private getFeedback(score: number, sequence: MatchEstimated[]) {
-    const feedback = new Feedback(this.options)
-    return feedback.getFeedback(score, sequence)
+    return this.feedback.getFeedback(score, sequence)
   }
 
   private createReturnValue(
@@ -60,9 +67,7 @@ class ZxcvbnFactory {
   private main(password: string, userInputs?: (string | number)[]) {
     const userInputsOptions = this.options.getUserInputsOptions(userInputs)
 
-    const matching = new Matching(this.options)
-
-    return matching.match(password, userInputsOptions)
+    return this.matching.match(password, userInputsOptions)
   }
 
   public check(password: string, userInputs?: (string | number)[]) {

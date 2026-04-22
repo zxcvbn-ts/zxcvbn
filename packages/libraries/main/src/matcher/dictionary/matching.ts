@@ -24,16 +24,13 @@ class MatchDictionary extends MatcherBaseClass {
     if (this.wordSequenceCheck) {
       const rankedDictionaries: RankedDictionaries = {}
       const rankedDictionariesMaxWordSize: Record<string, number> = {}
-      Object.keys(this.options.rankedDictionaries).forEach((key) => {
-        if (
-          this.options.wordSequenceNames.includes(key) &&
-          this.options.rankedDictionaries[key]
-        ) {
+      this.options.wordSequenceNames.forEach((key) => {
+        if (this.options.rankedDictionaries[key]) {
           rankedDictionaries[key] = this.options.rankedDictionaries[key]
           rankedDictionariesMaxWordSize[key] =
             this.options.rankedDictionariesMaxWordSize[key]
         }
-      }, {})
+      })
       return {
         rankedDictionaries,
         rankedDictionariesMaxWordSize,

@@ -139,7 +139,7 @@ export interface Estimate {
 export type MatchEstimated = MatchExtended & Estimate
 
 export interface Optimal {
-  m: Match[]
+  m: Record<string, MatchEstimated>[]
   pi: Record<string, number>[]
   g: Record<string, number>[]
 }

@@ -7,14 +7,16 @@ export const extend = (listToExtend: any[], list: any[]) =>
   listToExtend.push.apply(listToExtend, list)
 
 export const translate = (string: string, chrMap: LooseObject) => {
-  let newString = string
-  Object.entries(chrMap).forEach(([key, value]) => {
-    const escapedKey = key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-    const regex = new RegExp(escapedKey, 'g')
-    newString = newString.replace(regex, value)
-  })
+  const keys = Object.keys(chrMap)
+  if (keys.length === 0) {
+    return string
+  }
+  const pattern = keys
+    .map((key) => key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+    .join('|')
+  const regex = new RegExp(pattern, 'g')
 
-  return newString
+  return string.replace(regex, (matched) => chrMap[matched])
 }
 
 // mod implementation that works for negative numbers

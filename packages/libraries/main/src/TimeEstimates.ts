@@ -64,21 +64,20 @@ export class TimeEstimates {
 
   public estimateAttackTimes(guesses: number) {
     const crackTimesSeconds = this.calculateCrackTimesSeconds(guesses)
-    const crackTimes = Object.keys(crackTimesSeconds).reduce(
-      (previousValue, crackTime) => {
-        const usedScenario = crackTime as keyof CrackTimesSeconds
-        const seconds = crackTimesSeconds[usedScenario]
-        const { base, displayStr } = this.displayTime(seconds)
+    const crackTimes = {} as CrackTimes
 
-        previousValue[usedScenario] = {
-          base,
-          seconds,
-          display: this.translate(displayStr, base),
-        }
-        return previousValue
-      },
-      {} as CrackTimes,
-    )
+    Object.keys(crackTimesSeconds).forEach((crackTime) => {
+      const usedScenario = crackTime as keyof CrackTimesSeconds
+      const seconds = crackTimesSeconds[usedScenario]
+      const { base, displayStr } = this.displayTime(seconds)
+
+      crackTimes[usedScenario] = {
+        base,
+        seconds,
+        display: this.translate(displayStr, base),
+      }
+    })
+
     return {
       crackTimes,
       score: this.guessesToScore(guesses),

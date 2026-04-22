@@ -45,6 +45,10 @@ The spatial matcher searches for patterns based on keyboard layout, for example,
 
 The separator matcher searches for common separators like a space or a hyphen
 
+### Word sequence matcher
+
+The word sequence matcher is a combination of the sequence matcher and the dictionary matcher. It searches for sequences of words in a specific topic like months.
+
 ## Custom Matcher
 
 Custom matchers can be created if needed, including asynchronous matchers. If creating an asynchronous matcher, the function should be debounced using the included debounce function.
