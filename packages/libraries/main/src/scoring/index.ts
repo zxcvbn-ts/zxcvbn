@@ -235,13 +235,12 @@ export default class Scoring {
 
   getGuesses(password: string, optimalSequenceLength: number) {
     const passwordLength = password.length
-    let guesses = 0
     if (password.length === 0) {
-      guesses = 1
+      return 1
     } else {
-      guesses =
-        this.optimal.totalGuesses[passwordLength - 1][optimalSequenceLength]
+      return this.optimal.totalGuesses[passwordLength - 1][
+        optimalSequenceLength
+      ]
     }
-    return guesses
   }
 }

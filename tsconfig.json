@@ -1,11 +1,11 @@
 {
   "compilerOptions": {
     "target": "es2018",
-    "module": "CommonJS",
+    "module": "NodeNext",
     "strict": true,
     "jsx": "preserve",
     "importHelpers": true,
-    "moduleResolution": "node",
+    "moduleResolution": "nodenext",
     "noEmit": true,
     "declaration": true,
     "noImplicitAny": true,
@@ -15,16 +15,11 @@
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "lib": [
-      "es2018",
-      "es2019",
-      "dom"
-    ],
+    "lib": ["es2018", "es2019", "dom"],
     "types": ["node", "jest"],
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "strictNullChecks": true,
-    "baseUrl": ".",
     "skipLibCheck": true
   },
   "exclude": ["node_modules", "dist", "test"]

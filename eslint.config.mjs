@@ -154,6 +154,8 @@ export default defineConfig([
           allowNever: true,
         },
       ],
+      // browser with es2018 doesn't have cause on error class
+      'preserve-caught-error': 'off',
       // TODO temporary disable strict any rules to fix the "easy" once first
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-unsafe-return': 'off',

@@ -2,7 +2,7 @@ import { MatchEstimated, MatchExtended } from '../../types'
 
 export default ({ token, ascending }: MatchExtended | MatchEstimated) => {
   const firstChr = token.charAt(0)
-  let baseGuesses = 0
+  let baseGuesses
   const startingPoints = ['a', 'A', 'z', 'Z', '0', '1', '9']
   // lower guesses for obvious starting points
   if (startingPoints.includes(firstChr)) {
