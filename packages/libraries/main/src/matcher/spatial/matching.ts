@@ -51,7 +51,6 @@ class MatchSpatial extends MatcherBaseClass {
         const prevChar = password.charAt(j - 1)
         const adjacents = graph[prevChar] || []
         let found = false
-        let foundDirection = -1
         let curDirection = -1
         // consider growing pattern by one character if j hasn't gone over the edge.
         if (j < passwordLength) {
@@ -66,7 +65,6 @@ class MatchSpatial extends MatcherBaseClass {
               // eslint-disable-next-line max-depth
               if (adjacentIndex !== -1) {
                 found = true
-                foundDirection = curDirection
                 // eslint-disable-next-line max-depth
                 if (adjacentIndex === 1) {
                   // # index 1 in the adjacency means the key is shifted,
@@ -75,6 +73,7 @@ class MatchSpatial extends MatcherBaseClass {
                   // # @ is shifted w/ index 1, 2 is unshifted.
                   shiftedCount += 1
                 }
+                const foundDirection = curDirection
                 // eslint-disable-next-line max-depth
                 if (lastDirection !== foundDirection) {
                   // # adding a turn is correct even in the initial

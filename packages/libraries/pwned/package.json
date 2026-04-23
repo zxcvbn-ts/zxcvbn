@@ -22,6 +22,9 @@
   "publishConfig": {
     "access": "public"
   },
+  "scripts": {
+    "build": "rollup -c ../../../scripts/rollup.config.mjs"
+  },
   "dependencies": {
     "@zxcvbn-ts/core": "^4.0.0-beta.3"
   },

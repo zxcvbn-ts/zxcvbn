@@ -98,7 +98,7 @@ class MatchDictionary extends MatcherBaseClass {
               token: password.slice(i, j + 1 || 9e9),
               matchedWord: usedPassword,
               rank,
-              dictionaryName: dictionaryName as DictionaryNames,
+              dictionaryName: dictionaryName,
               reversed: false,
               l33t: false,
               ...foundLevenshteinDistance,

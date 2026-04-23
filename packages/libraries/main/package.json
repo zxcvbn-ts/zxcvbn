@@ -19,6 +19,9 @@
   "publishConfig": {
     "access": "public"
   },
+  "scripts": {
+    "build": "rollup -c ../../../scripts/rollup.config.mjs"
+  },
   "dependencies": {
     "fastest-levenshtein": "1.0.16"
   },

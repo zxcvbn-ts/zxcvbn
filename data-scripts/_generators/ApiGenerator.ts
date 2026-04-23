@@ -48,23 +48,22 @@ export default class ApiGenerator extends SimpleListGenerator<Options> {
   // eslint-disable-next-line max-statements
   public async run(): Promise<string[] | null> {
     console.info('Downloading')
-    let data = []
     try {
-      data = await this.getData()
+      const data = await this.getData()
+      if (this.options.mapFunction) {
+        this.data = data.map(this.options.mapFunction)
+      }
+      this.filterOccurrences()
+      this.trimWhitespaces()
+      this.convertToLowerCase()
+      this.splitCompoundNames()
+      this.normalizeDiacritics()
+      this.removeDuplicates()
+      this.filterMinLength()
+      return this.data
     } catch (error: any) {
       console.info('!!!!!! ERROR: getData had an error !!!!!!', error.message)
       return null
     }
-    if (this.options.mapFunction) {
-      this.data = data.map(this.options.mapFunction)
-    }
-    this.filterOccurrences()
-    this.trimWhitespaces()
-    this.convertToLowerCase()
-    this.splitCompoundNames()
-    this.normalizeDiacritics()
-    this.removeDuplicates()
-    this.filterMinLength()
-    return this.data
   }
 }

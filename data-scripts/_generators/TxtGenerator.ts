@@ -51,9 +51,7 @@ export class TxtGenerator extends SimpleListGenerator<Options> {
       return null
     }
 
-    let content: string[] = []
-
-    content = await JSZip.loadAsync(data)
+    const content: string[] = await JSZip.loadAsync(data)
       .then((zip) => {
         const keys = Object.keys(zip.files)
         const zipObject = zip.file(keys[0])!
