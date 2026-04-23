@@ -293,6 +293,41 @@ export default {
         'https://raw.githubusercontent.com/daniesy/romanian/main/lastnames.txt',
     },
   },
+  'hr': {
+    commonWords: {
+      source:
+        'https://raw.githubusercontent.com/hermitdave/FrequencyWords/master/content/2018/hr/hr_50k.txt',
+      options: { hasOccurrences: true, normalizeDiacritics: true },
+    },
+    firstnames: {
+      generator: HTMLGenerator,
+      source:
+        'https://raw.githubusercontent.com/faker-js/faker/main/src/locales/hr/person/first_name.ts',
+      options: {
+        normalizeDiacritics: true,
+        extractorFunction: (fileContent: Buffer) => {
+          return Array.from(
+            fileContent.toString('utf8').matchAll(/'((?:\\'|[^'])+)'/g),
+            (match: string[]) => match[1].replace(/\\'/g, "'"),
+          )
+        },
+      },
+    },
+    lastnames: {
+      generator: HTMLGenerator,
+      source:
+        'https://raw.githubusercontent.com/faker-js/faker/main/src/locales/hr/person/last_name.ts',
+      options: {
+        normalizeDiacritics: true,
+        extractorFunction: (fileContent: Buffer) => {
+          return Array.from(
+            fileContent.toString('utf8').matchAll(/'((?:\\'|[^'])+)'/g),
+            (match: string[]) => match[1].replace(/\\'/g, "'"),
+          )
+        },
+      },
+    },
+  },
   'pt-br': {
     commonWords: {
       source:

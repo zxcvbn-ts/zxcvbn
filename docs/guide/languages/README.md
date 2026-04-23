@@ -6,6 +6,7 @@ Current supported languages:
 
 - Arabic
 - Czech
+- Croatian
 - Danish (Denmark)
 - German
 - English

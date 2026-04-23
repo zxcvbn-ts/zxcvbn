@@ -41,18 +41,19 @@ export default class Scoring {
   }
 
   // helper: considers whether a length-sequenceLength
-  // sequence ending at match m is better (fewer guesses)
+  // sequence ending at match bestMatches is better (fewer guesses)
   // than previously encountered sequences, updating state if so.
   private update(match: MatchExtended, sequenceLength: number) {
     const k = match.j
     const estimatedMatch = estimateGuesses(this.options, match, this.password)
     let pi = estimatedMatch.guesses
     if (sequenceLength > 1) {
-      // we're considering a length-sequenceLength sequence ending with match m:
-      // obtain the product term in the minimization function by multiplying m's guesses
+      // we're considering a length-sequenceLength sequence ending with match bestMatches:
+      // obtain the product term in the minimization function by multiplying bestMatches's guesses
       // by the product of the length-(sequenceLength-1)
-      // sequence ending just before m, at m.i - 1.
-      pi *= this.optimal.pi[estimatedMatch.i - 1][sequenceLength - 1]
+      // sequence ending just before bestMatches, at bestMatches.i - 1.
+      pi *=
+        this.optimal.guessesProduct[estimatedMatch.i - 1][sequenceLength - 1]
     }
     // calculate the minimization func
     let g = utils.factorial(sequenceLength) * pi
@@ -64,7 +65,7 @@ export default class Scoring {
     // with sequenceLength or fewer matches,
     // fare better than this sequence. if so, skip it and return.
     let shouldSkip = false
-    const competingG = this.optimal.g[k]
+    const competingG = this.optimal.totalGuesses[k]
     Object.keys(competingG).forEach((competingPatternLengthStr) => {
       const competingPatternLength = parseInt(competingPatternLengthStr, 10)
       const competingMetricMatch = competingG[competingPatternLength]
@@ -76,9 +77,9 @@ export default class Scoring {
     })
     if (!shouldSkip) {
       // this sequence might be part of the final optimal sequence.
-      this.optimal.g[k][sequenceLength] = g
-      this.optimal.m[k][sequenceLength] = estimatedMatch
-      this.optimal.pi[k][sequenceLength] = pi
+      this.optimal.totalGuesses[k][sequenceLength] = g
+      this.optimal.bestMatches[k][sequenceLength] = estimatedMatch
+      this.optimal.guessesProduct[k][sequenceLength] = pi
     }
   }
 
@@ -93,7 +94,7 @@ export default class Scoring {
       // see if adding these new matches to any of the sequences in optimal[i-1]
       // leads to new bests.
       match = this.makeBruteforceMatch(i, passwordCharIndex)
-      const tmp = this.optimal.m[i - 1]
+      const tmp = this.optimal.bestMatches[i - 1]
 
       Object.keys(tmp).forEach((sequenceLengthStr) => {
         const sequenceLength = parseInt(sequenceLengthStr, 10)
@@ -103,14 +104,14 @@ export default class Scoring {
         // same contribution to the guess product with a lower length.
         // --> safe to skip those cases.
         if (lastMatch.pattern !== 'bruteforce') {
-          // try adding m to this length-sequenceLength sequence.
+          // try adding bestMatches to this length-sequenceLength sequence.
           this.update(match, sequenceLength + 1)
         }
       })
     }
   }
 
-  // helper: step backwards through optimal.m starting at the end,
+  // helper: step backwards through optimal.bestMatches starting at the end,
   // constructing the final optimal match sequence.
   private unwind(passwordLength: number) {
     const optimalMatchSequence: MatchEstimated[] = []
@@ -119,7 +120,7 @@ export default class Scoring {
     let sequenceLength = 0
     // eslint-disable-next-line no-loss-of-precision
     let g = 2e308
-    const temp = this.optimal.g[k]
+    const temp = this.optimal.totalGuesses[k]
     // safety check for empty passwords
     if (temp) {
       Object.keys(temp).forEach((candidateSequenceLengthStr) => {
@@ -132,7 +133,7 @@ export default class Scoring {
       })
     }
     while (k >= 0) {
-      const match: MatchEstimated = this.optimal.m[k][sequenceLength]
+      const match: MatchEstimated = this.optimal.bestMatches[k][sequenceLength]
       optimalMatchSequence.unshift(match)
       k = match.i - 1
       sequenceLength -= 1
@@ -153,7 +154,7 @@ export default class Scoring {
   // the optimal "minimum guesses" sequence is here defined to be the sequence that
   // minimizes the following function:
   //
-  //    g = sequenceLength! * Product(m.guesses for m in sequence) + D^(sequenceLength - 1)
+  //    totalGuesses = sequenceLength! * Product(m.guesses for m in sequence) + D^(sequenceLength - 1)
   //
   // where sequenceLength is the length of the sequence.
   //
@@ -192,24 +193,24 @@ export default class Scoring {
     )
 
     this.optimal = {
-      // optimal.m[k][sequenceLength] holds final match in the best length-sequenceLength
+      // optimal.bestMatches[k][sequenceLength] holds final match in the best length-sequenceLength
       // match sequence covering the
       // password prefix up to k, inclusive.
       // if there is no length-sequenceLength sequence that scores better (fewer guesses) than
       // a shorter match sequence spanning the same prefix,
-      // optimal.m[k][sequenceLength] is undefined.
-      m: this.fillArray(passwordLength, 'object'),
-      // same structure as optimal.m -- holds the product term Prod(m.guesses for m in sequence).
-      // optimal.pi allows for fast (non-looping) updates to the minimization function.
-      pi: this.fillArray(passwordLength, 'object'),
-      // same structure as optimal.m -- holds the overall metric.
-      g: this.fillArray(passwordLength, 'object'),
+      // optimal.bestMatches[k][sequenceLength] is undefined.
+      bestMatches: this.fillArray(passwordLength, 'object'),
+      // same structure as optimal.bestMatches -- holds the product term Prod(bestMatches.guesses for bestMatches in sequence).
+      // optimal.guessesProduct allows for fast (non-looping) updates to the minimization function.
+      guessesProduct: this.fillArray(passwordLength, 'object'),
+      // same structure as optimal.bestMatches -- holds the overall metric.
+      totalGuesses: this.fillArray(passwordLength, 'object'),
     }
 
     for (let k = 0; k < passwordLength; k += 1) {
       matchesByCoordinateJ[k].forEach((match: MatchExtended) => {
         if (match.i > 0) {
-          const prevM = this.optimal.m[match.i - 1]
+          const prevM = this.optimal.bestMatches[match.i - 1]
           Object.keys(prevM).forEach((sequenceLengthStr) => {
             const sequenceLength = parseInt(sequenceLengthStr, 10)
             this.update(match, sequenceLength + 1)
@@ -237,7 +238,8 @@ export default class Scoring {
     if (password.length === 0) {
       guesses = 1
     } else {
-      guesses = this.optimal.g[passwordLength - 1][optimalSequenceLength]
+      guesses =
+        this.optimal.totalGuesses[passwordLength - 1][optimalSequenceLength]
     }
     return guesses
   }

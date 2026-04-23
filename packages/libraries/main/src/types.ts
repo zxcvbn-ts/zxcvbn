@@ -161,9 +161,9 @@ export interface Estimate {
 export type MatchEstimated = MatchExtended & Estimate
 
 export interface Optimal {
-  m: Record<string, MatchEstimated>[]
-  pi: Record<string, number>[]
-  g: Record<string, number>[]
+  bestMatches: Record<string, MatchEstimated>[]
+  guessesProduct: Record<string, number>[]
+  totalGuesses: Record<string, number>[]
 }
 
 export interface CrackTime {
