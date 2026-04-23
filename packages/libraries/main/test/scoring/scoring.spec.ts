@@ -205,7 +205,7 @@ describe('scoring', () => {
       // Single match covering everything
       const matches = [getMatch(0, 7, 100)]
       const result = scoring.mostGuessableMatchSequence(passwordLocal, matches)
-      // g = sequenceLength! * Product(guesses) + D^(sequenceLength - 1)
+      // totalGuesses = sequenceLength! * Product(guesses) + D^(sequenceLength - 1)
       // for sequenceLength 1: 1! * 100 + 10000^0 = 100 + 1 = 101
       expect(result.guesses).toEqual(101)
     })
@@ -218,7 +218,7 @@ describe('scoring', () => {
         matches,
         true,
       )
-      // g = sequenceLength! * Product(guesses) = 1! * 100 = 100
+      // totalGuesses = sequenceLength! * Product(guesses) = 1! * 100 = 100
       expect(result.guesses).toEqual(100)
     })
 
@@ -228,8 +228,8 @@ describe('scoring', () => {
       const matches = [getMatch(0, 3, 10), getMatch(4, 7, 10)]
       const result = scoring.mostGuessableMatchSequence(passwordLocal, matches)
       // sequenceLength = 2
-      // pi = 10 * 10 = 100
-      // g = 2! * 100 + 10000^(2-1) = 2 * 100 + 10000 = 10200
+      // guessesProduct = 10 * 10 = 100
+      // totalGuesses = 2! * 100 + 10000^(2-1) = 2 * 100 + 10000 = 10200
       expect(result.guesses).toEqual(10200)
     })
 
@@ -266,7 +266,7 @@ describe('scoring', () => {
     })
 
     it('chooses the best sequence length when multiple are possible', () => {
-      // This tests the logic in unwind where it finds the sequenceLength with minimum g
+      // This tests the logic in unwind where it finds the sequenceLength with minimum totalGuesses
       const passwordLocal = 'abcd'
       // Suppose we have matches such that a sequence of length 1 and length 2 both cover the password.
       // m1: [0,3], guesses=1000
@@ -283,8 +283,8 @@ describe('scoring', () => {
         true,
       )
 
-      // sequence length 1: g = 1! * 1000 = 1000
-      // sequence length 2: g = 2! * (10 * 10) = 2 * 100 = 200
+      // sequence length 1: totalGuesses = 1! * 1000 = 1000
+      // sequence length 2: totalGuesses = 2! * (10 * 10) = 2 * 100 = 200
       // should choose length 2
       expect(result.sequence.length).toEqual(2)
       expect(result.guesses).toEqual(200)
