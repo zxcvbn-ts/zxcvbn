@@ -151,6 +151,13 @@ export default class Options {
           if (!(key in translations[translationType])) {
             valid = false
           }
+          const translation = (translations[translationType] as any)[key]
+          if (
+            typeof translation !== 'string' &&
+            typeof translation !== 'function'
+          ) {
+            valid = false
+          }
         })
       } else {
         valid = false

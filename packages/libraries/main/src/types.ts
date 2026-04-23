@@ -6,7 +6,29 @@ import { REGEXEN } from './data/const'
 import l33tTableDefault from './data/l33tTable'
 import translationKeys from './data/translationKeys'
 
-export type TranslationKeys = typeof translationKeys
+export type PluralizationFunction = (value: number) => string
+
+export interface TranslationKeys {
+  warnings: {
+    [key in keyof typeof translationKeys.warnings]: string
+  }
+  suggestions: {
+    [key in keyof typeof translationKeys.suggestions]: string
+  }
+  timeEstimation: {
+    [key in keyof typeof translationKeys.timeEstimation]: key extends
+      | 'ltSecond'
+      | 'second'
+      | 'minute'
+      | 'hour'
+      | 'day'
+      | 'month'
+      | 'year'
+      | 'centuries'
+      ? string
+      : string | PluralizationFunction
+  }
+}
 export type L33tTableDefault = typeof l33tTableDefault
 
 export type LooseObject = Record<string, any>

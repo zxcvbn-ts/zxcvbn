@@ -149,9 +149,10 @@ export class TimeEstimates {
       key += 's'
     }
     const { timeEstimation } = this.options.translations
-    return timeEstimation[key as keyof typeof timeEstimation].replace(
-      '{base}',
-      `${value}`,
-    )
+    const translation = timeEstimation[key as keyof typeof timeEstimation]
+    if (typeof translation === 'function') {
+      return translation(value!)
+    }
+    return translation.replace('{base}', `${value}`)
   }
 }
