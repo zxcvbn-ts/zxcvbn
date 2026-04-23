@@ -43,6 +43,7 @@ export default class Scoring {
   // helper: considers whether a length-sequenceLength
   // sequence ending at match bestMatches is better (fewer guesses)
   // than previously encountered sequences, updating state if so.
+  // eslint-disable-next-line max-statements
   private update(match: MatchExtended, sequenceLength: number) {
     const k = match.j
     const estimatedMatch = estimateGuesses(this.options, match, this.password)
