@@ -1,8 +1,6 @@
-import fs from 'fs'
-import readline from 'readline'
-import path from 'path'
-// @ts-expect-error doesn't have types
-import globAll from 'glob-all'
+import fs from 'node:fs'
+import readline from 'node:readline'
+import path from 'node:path'
 import natural from 'natural'
 // @ts-expect-error doesn't have types
 import pinyin from 'chinese-to-pinyin'
@@ -163,7 +161,7 @@ const getTokens = async (inputDir: string, counter: TopTokenCounter) => {
   })
   let lines = 0
   let filesProcessedCounter = 0
-  const files: string[] = globAll.sync([`${inputDir}/**/wiki_*`])
+  const files: string[] = fs.globSync(`${inputDir}/**/wiki_*`)
   for (const filePath of files) {
     const readInterface = readline.createInterface({
       input: fs.createReadStream(filePath),

@@ -27,6 +27,9 @@
     "spanish",
     "spain"
   ],
+  "scripts": {
+    "build": "rollup -c ../../../scripts/rollup.config.mjs"
+  },
   "dependencies": {
     "@zxcvbn-ts/dictionary-compression": "^3.0.1"
   }

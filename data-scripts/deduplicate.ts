@@ -43,6 +43,9 @@ const main = async () => {
       files
         .map((file) => async () => {
           const words = await import(path.join(languagePath, file))
+          if (!Array.isArray(words.default)) {
+            return
+          }
           words.default.forEach((word: string, rank: number) => {
             // if this is the first time seeing this word OR it has a better rank, keep it
             if (
