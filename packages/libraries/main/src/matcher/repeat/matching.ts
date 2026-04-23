@@ -2,6 +2,7 @@ import { MatcherBaseClass, MatchOptions, RepeatMatch } from '../../types'
 import Scoring from '../../scoring'
 import Matching from '../../Matching'
 import Options from '../../Options'
+import { MaybePromise } from 'rollup'
 
 /*
  *-------------------------------------------------------------------------------
@@ -53,7 +54,7 @@ class MatchRepeat extends MatcherBaseClass {
     j: number,
     match: RegExpExecArray,
     baseGuesses: number | Promise<number>,
-  ) {
+  ): MaybePromise<RepeatMatch> {
     const baseMatch: RepeatMatch = {
       pattern: 'repeat',
       i: match.index,
@@ -68,13 +69,13 @@ class MatchRepeat extends MatcherBaseClass {
         return {
           ...baseMatch,
           baseGuesses: resolvedBaseGuesses,
-        } as RepeatMatch
+        }
       })
     }
     return {
       ...baseMatch,
       baseGuesses,
-    } as RepeatMatch
+    }
   }
 
   getGreedyMatch(password: string, lastIndex: number) {

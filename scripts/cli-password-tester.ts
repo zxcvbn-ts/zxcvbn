@@ -20,6 +20,6 @@ import { ZxcvbnFactory } from '@zxcvbn-ts/core/src/index'
     process.exit(0)
   })
   .catch((error: unknown) => {
-    console.error(error as Error)
+    console.error(error)
     process.exit(1)
   })
