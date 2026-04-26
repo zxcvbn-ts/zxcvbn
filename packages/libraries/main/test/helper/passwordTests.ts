@@ -1209,7 +1209,7 @@ export default [
   {
     calcTime: 0,
     password: 'a65a54cf-eadb-4f7c-893c-9d4a6f81f8c2',
-    guesses: 9.999999999999999e35,
+    guesses: 1e36,
     guessesLog10: 35.99999999999999,
     sequence: [
       {
@@ -1217,14 +1217,14 @@ export default [
         token: 'a65a54cf-eadb-4f7c-893c-9d4a6f81f8c2',
         i: 0,
         j: 35,
-        guesses: 9.999999999999999e35,
+        guesses: 1e36,
         guessesLog10: 35.99999999999999,
       },
     ],
     crackTimes: {
       onlineThrottlingXPerHour: {
         base: null,
-        seconds: 3.6e37,
+        seconds: 3.6000000000000004e37,
         display: 'centuries',
       },
       onlineNoThrottlingXPerSecond: {
@@ -1234,20 +1234,17 @@ export default [
       },
       offlineSlowHashingXPerSecond: {
         base: null,
-        seconds: 9.999999999999999e31,
+        seconds: 1e32,
         display: 'centuries',
       },
       offlineFastHashingXPerSecond: {
         base: null,
-        seconds: 9.999999999999999e25,
+        seconds: 1e26,
         display: 'centuries',
       },
     },
     score: 4,
-    feedback: {
-      warning: null,
-      suggestions: [],
-    },
+    feedback: { warning: null, suggestions: [] },
   },
   {
     calcTime: 0,
