@@ -14,8 +14,10 @@ const json = () => {
         const parsed = JSON.parse(json)
         let code
         if (Array.isArray(parsed)) {
-          const encoded = compress(parsed)
-
+          let encoded = compress(parsed)
+          if (Array.isArray(encoded)) {
+            encoded = JSON.stringify(encoded)
+          }
           code = `
 import decompress from '@zxcvbn-ts/dictionary-compression/decompress'
 
