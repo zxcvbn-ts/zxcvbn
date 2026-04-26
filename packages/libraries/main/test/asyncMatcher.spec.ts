@@ -60,4 +60,27 @@ describe('asyncMatcher', () => {
       'You are using a Promised matcher, please use `zxcvbnAsync` for it.',
     )
   })
+
+  it('should handle rejection in async matcher', async () => {
+    const errorMatcher: Matcher = {
+      Matching: class MatchError extends MatcherBaseClass {
+        match(): Promise<MatchExtended[]> {
+          return Promise.reject(new Error('Async error'))
+        }
+      },
+      feedback: () => ({ warning: null, suggestions: [] }),
+      scoring: () => 0,
+    }
+    const zxcvbnError = new ZxcvbnFactory(
+      {
+        translations: zxcvbnEnPackage.translations,
+      },
+      {
+        error: errorMatcher,
+      },
+    )
+    await expect(zxcvbnError.checkAsync('password')).rejects.toThrow(
+      'Async error',
+    )
+  })
 })

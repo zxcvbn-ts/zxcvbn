@@ -16,6 +16,11 @@ describe('main', () => {
     })
   })
 
+  it('should allow creating factory with no arguments', () => {
+    const factory = new ZxcvbnFactory()
+    expect(factory.check('password')).toBeDefined()
+  })
+
   it('should check without userInputs', () => {
     const result = zxcvbn.check('test')
     expect(result.calcTime).toBeDefined()
@@ -213,6 +218,12 @@ describe('main', () => {
     it('should not die while processing and have a appropriate calcTime for regex attacks', () => {
       const result = zxcvbn.check(`\x00\x00${'\x00'.repeat(100)}\n`)
       expect(result.calcTime).toBeLessThan(2000)
+    })
+
+    it('should handle very long passwords by truncating them', () => {
+      const longPassword = 'a'.repeat(300)
+      const result = zxcvbn.check(longPassword)
+      expect(result.password.length).toBe(256)
     })
   })
 

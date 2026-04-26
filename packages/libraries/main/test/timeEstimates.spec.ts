@@ -1,14 +1,47 @@
 import translations from '../../../languages/en/src/translations'
-import { TimeEstimates } from '../src/TimeEstimates'
+import { TimeEstimates, checkTimeEstimationValues } from '../src/TimeEstimates'
 import Options from '../src/Options'
 
 const zxcvbnOptions = new Options({
   translations,
 })
 
-// TODO add tests
 describe('timeEstimates', () => {
   const timeEstimates = new TimeEstimates(zxcvbnOptions)
+
+  it('should throw error if time estimation values are less than default', () => {
+    const invalidValues = {
+      scoring: {
+        0: 100, // default is 1e3
+      },
+    }
+    expect(() => {
+      // @ts-expect-error for testing purposes
+      checkTimeEstimationValues(invalidValues)
+    }).toThrow(
+      'Time estimation values are not to be allowed to be less than default',
+    )
+  })
+
+  it('should not throw if values are equal to or greater than default', () => {
+    const validValues = {
+      scoring: {
+        0: 1000,
+        1: 1000000,
+        2: 100000000,
+        3: 10000000000,
+      },
+      attackTime: {
+        onlineThrottlingXPerHour: 100,
+        onlineNoThrottlingXPerSecond: 10,
+        offlineSlowHashingXPerSecond: 10000,
+        offlineFastHashingXPerSecond: 10000000000,
+      },
+    }
+    expect(() => {
+      checkTimeEstimationValues(validValues)
+    }).not.toThrow()
+  })
 
   it('should be very weak', () => {
     const attackTimes = timeEstimates.estimateAttackTimes(10)

@@ -1,5 +1,8 @@
 import { ZxcvbnFactory } from '../../../src'
 import wordSequences from '../../../../../languages/en/src/wordSequences.json'
+import scoring from '../../../src/matcher/wordSequence/scoring'
+import feedback from '../../../src/matcher/wordSequence/feedback'
+import Options from '../../../src/Options'
 
 describe('WordSequence Matcher', () => {
   let zxcvbn: ZxcvbnFactory
@@ -281,6 +284,15 @@ describe('WordSequence Matcher', () => {
       expect(match.dictionaryName).toBe('cardinalNumbers')
     })
 
+    it('should handle tie in dictionary names by using the first one', () => {
+      // 'one' (cardinalNumbers), 'monday' (daysOfWeek)
+      const result = zxcvbn.check('oneMonday')
+      const match = result.sequence.find(
+        (m) => m.pattern === 'wordSequence',
+      ) as any
+      expect(match.dictionaryName).toBe('cardinalNumbers')
+    })
+
     it('should detect sequences with custom separators', () => {
       // Dots and spaces are allowed as per separators array in matching.ts
       const result = zxcvbn.check('one.two three')
@@ -413,6 +425,30 @@ describe('WordSequence Matcher', () => {
 
       expect(hasFirstSequence).toBe(true)
       expect(hasSecondSequence).toBe(true)
+    })
+  })
+
+  describe('Scoring and Feedback unit tests', () => {
+    it('scoring should return 0 if pattern is not wordSequence', () => {
+      expect(scoring({ pattern: 'dictionary' } as any)).toBe(0)
+    })
+
+    it('feedback should return null if pattern is not wordSequence', () => {
+      const options = new Options()
+      expect(feedback(options, { pattern: 'dictionary' } as any)).toBeNull()
+    })
+
+    it('feedback should provide different suggestions for non-ascending sequences', () => {
+      const options = new Options()
+      const match = {
+        pattern: 'wordSequence',
+        wordCount: 2,
+        ascending: false,
+      } as any
+      const result = feedback(options, match)
+      expect(result?.suggestions).toContain(
+        options.translations.suggestions.anotherWord,
+      )
     })
   })
 })

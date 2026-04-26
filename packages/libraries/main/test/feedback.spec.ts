@@ -325,7 +325,7 @@ describe('feedback', () => {
         regexName: 'recentYear',
       }
       // @ts-expect-error for testing purposes
-      const data = feedbackClass.getFeedback(2, [options])
+      let data = feedbackClass.getFeedback(2, [options])
       expect(data).toEqual({
         warning: translations.warnings.recentYears,
         suggestions: [
@@ -333,6 +333,18 @@ describe('feedback', () => {
           translations.suggestions.recentYears,
           translations.suggestions.associatedYears,
         ],
+      })
+
+      data = feedbackClass.getFeedback(2, [
+        // @ts-expect-error for testing purposes
+        {
+          ...options,
+          regexName: 'alpha',
+        },
+      ])
+      expect(data).toEqual({
+        warning: null,
+        suggestions: [translations.suggestions.anotherWord],
       })
     })
 
@@ -348,6 +360,38 @@ describe('feedback', () => {
         suggestions: [
           translations.suggestions.anotherWord,
           translations.suggestions.dates,
+        ],
+      })
+    })
+
+    it('should return feedback for separator', () => {
+      const options = {
+        pattern: 'separator',
+        token: '-',
+      }
+      // @ts-expect-error for testing purposes
+      const data = feedbackClass.getFeedback(2, [options])
+      expect(data).toEqual({
+        warning: null,
+        suggestions: [translations.suggestions.anotherWord],
+      })
+    })
+
+    it('should return feedback for wordSequence', () => {
+      const options = {
+        pattern: 'wordSequence',
+        token: 'oneTwoThree',
+        wordCount: 3,
+        ascending: true,
+      }
+      // @ts-expect-error for testing purposes
+      const data = feedbackClass.getFeedback(2, [options])
+      expect(data).toEqual({
+        warning: translations.warnings.sequences,
+        suggestions: [
+          translations.suggestions.anotherWord,
+          translations.suggestions.sequences,
+          translations.suggestions.useWords,
         ],
       })
     })

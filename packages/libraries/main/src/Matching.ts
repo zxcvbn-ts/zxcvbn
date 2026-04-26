@@ -46,11 +46,11 @@ class Matching {
     result: MatchExtended[] | Promise<MatchExtended[]>,
   ) {
     if (result instanceof Promise) {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      result.then((response) => {
+      const wrappedPromise = result.then((response) => {
         extend(matches, response)
+        return response
       })
-      promises.push(result)
+      promises.push(wrappedPromise)
     } else {
       extend(matches, result)
     }
