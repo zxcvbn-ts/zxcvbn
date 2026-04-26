@@ -238,6 +238,11 @@ export default {
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 
 <style>
+.example {
+  padding: 1em 0 1em;
+  margin-bottom: 2em;
+}
+
 .example input[type='text'] {
   padding: 0.75em 0.5em;
   font-size: 100%;
@@ -254,14 +259,9 @@ export default {
   margin: 15px 0;
 }
 
-.example {
-  padding: 1em 0 1em;
-  margin-bottom: 2em;
-}
-
 /* in your app.scss of laravel */
 .multiselect .multiselect__tags {
-  background-color: var(--vp-c-gutter);
+  background-color: var(--vp-c-control);
   border-color: var(--vp-c-border);
   color: var(--vp-c-text);
 }
@@ -271,13 +271,13 @@ export default {
 }
 
 .multiselect .multiselect__input {
-  background-color: var(--vp-c-gutter);
+  background-color: var(--vp-c-control);
   border-color: var(--vp-c-border);
   color: var(--vp-c-text);
 }
 
 .multiselect .multiselect__content-wrapper {
-  background-color: var(--vp-c-gutter);
+  background-color: var(--vp-c-bg);
   border-color: var(--vp-c-border);
   color: var(--vp-c-text);
 }
