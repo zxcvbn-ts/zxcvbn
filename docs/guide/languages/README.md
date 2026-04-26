@@ -43,6 +43,30 @@ const zxcvbn = new ZxcvbnFactory(options)
 zxcvbn.check(password)
 ```
 
+### Pluralization
+
+For the `timeEstimation` translations, you can use a string with a `{base}` placeholder or a function for more complex pluralization rules.
+
+```js
+const translations = {
+  warnings: {
+    // ...
+  },
+  suggestions: {
+    // ...
+  },
+  timeEstimation: {
+    ltSecond: 'less than a second',
+    second: '{base} second',
+    seconds: (value) => {
+      if (value === 2) return 'exactly two seconds'
+      return `${value} seconds`
+    },
+    // ...
+  },
+}
+```
+
 ## Dictionary
 
 By default, `zxcvbn-ts` doesn't use any dictionaries to let the developer decide how much of the library will be used.
@@ -100,7 +124,7 @@ To add a missing language package you need to do the following things:
 - tsconfig.json
 ```
 
-- Fill `src/translations.ts` with translations for your language.
+- Fill `src/translations.ts` with translations for your language. You can use strings with `{base}` or functions for `timeEstimation` if your language has complex pluralization rules.
 - Adjust `README.md` file as appropriate.
 - Find some reliable sources for some dictionaries. As a minimum, you need to have a source for `firstname`, `lastname` and `commonWords`.
   For common words you can check out <https://github.com/hermitdave/FrequencyWords> - there are a lot of languages available.
