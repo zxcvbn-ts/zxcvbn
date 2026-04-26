@@ -3,18 +3,25 @@ The `.mjs` build is for modern browsers and includes ES5 or higher.
 If you want to use it and want to include your own polyfills, you need to transpile it within your build process.
 
 ## Installation
+::: code-tabs
 
-::: code-tabs#shell
+@tab npm
+
+```shell
+npm install @zxcvbn-ts/core @zxcvbn-ts/language-common @zxcvbn-ts/language-en
+```
+
+@tab yarn
+
+```shell
+yarn add @zxcvbn-ts/core @zxcvbn-ts/language-common @zxcvbn-ts/language-en
+```
 
 @tab pnpm
 
+```shell
 pnpm add @zxcvbn-ts/core @zxcvbn-ts/language-common @zxcvbn-ts/language-en
-@tab yarn
-
-yarn add @zxcvbn-ts/core @zxcvbn-ts/language-common @zxcvbn-ts/language-en
-@tab npm
-
-npm install @zxcvbn-ts/core @zxcvbn-ts/language-common @zxcvbn-ts/language-en
+```
 :::
 ## Usage
 
