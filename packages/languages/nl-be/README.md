@@ -34,6 +34,7 @@ zxcvbn.check(password)
 
 ## Sources
 
-First and last names (open data) from statbel
+- commonWords.json is generated from the OpenSubtitles 2024 dataset provided via OPUS (https://opus.nlpl.eu/datasets/OpenSubtitles). The dataset is licensed under ODC-BY (Open Data Commons Attribution License) and requires attribution when redistributed.
+- First and last names (open data) from statbel
 https://statbel.fgov.be/nl/themas/bevolking/namen-en-voornamen/voornamen-van-meisjes-en-jongens#panel-13
 https://statbel.fgov.be/nl/themas/bevolking/namen-en-voornamen/familienamen#figures

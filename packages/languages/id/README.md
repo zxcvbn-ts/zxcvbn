@@ -4,7 +4,7 @@ The Indonesia dictionary and language package for zxcvbn-ts
 
 ## Sources
 
-- `commonWords.json` list is generated from the 2018 full wordlist in [FrequencyWords](https://github.com/hermitdave/FrequencyWords) repository.
+- commonWords.json is generated from the OpenSubtitles 2024 dataset provided via OPUS (https://opus.nlpl.eu/datasets/OpenSubtitles). The dataset is licensed under ODC-BY (Open Data Commons Attribution License) and requires attribution when redistributed.
 - `names.json` source is based on [this gist](https://gist.github.com/bagaswastu/35c80cdd8c32ca0b6aafa119e80e93ef) and currently is fetched from [Wikitionary](https://en.wiktionary.org/wiki/Appendix:Indonesian_given_names). The list will be updated later from several articles or blogs.
 - `wikipedia.json` is generated from [Indonesia Wikipedia dump](https://dumps.wikimedia.org/idwiki/latest/idwiki-latest-pages-articles.xml.bz2).
 
@@ -34,7 +34,6 @@ const options = {
     ...zxcvbnIdPackage.dictionary,
   },
 }
-
 const zxcvbn = new ZxcvbnFactory(options)
 zxcvbn.check(password)
 ```

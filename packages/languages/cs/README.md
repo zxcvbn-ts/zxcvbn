@@ -2,7 +2,6 @@
 
 The Czech dictionary and language package for zxcvbn-ts
 
-
 ## Install
 
 #### npm:
@@ -32,3 +31,7 @@ const options = {
 const zxcvbn = new ZxcvbnFactory(options)
 zxcvbn.check(password)
 ```
+
+## Sources
+
+- commonWords.json is generated from the OpenSubtitles 2024 dataset provided via OPUS (https://opus.nlpl.eu/datasets/OpenSubtitles). The dataset is licensed under ODC-BY (Open Data Commons Attribution License) and requires attribution when redistributed.
