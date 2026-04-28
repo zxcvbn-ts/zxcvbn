@@ -7,6 +7,7 @@ import HTMLGenerator from './_generators/HTMLGenerator'
 import SimpleJapaneseListGenerator from './_generators/SimpleJapaneseListGenerator'
 import SimpleChineseListGenerator from './_generators/SimpleChineseListGenerator'
 import latin2Decoder from './latin2Decoder'
+import CommonWordsGenerator from './_generators/CommonWordsGenerator'
 
 export interface LanguageListEntry {
   source?: string
@@ -31,8 +32,9 @@ const polishFirstnamesOptions = {
 export default {
   'en': {
     commonWords: {
+      generator: CommonWordsGenerator,
       source:
-        'https://github.com/hermitdave/FrequencyWords/raw/master/content/2018/en/en_50k.txt',
+        'https://object.pouta.csc.fi/OPUS-OpenSubtitles/v2024/freq/en.freq.gz',
       options: { hasOccurrences: true },
     },
     firstnames: {
@@ -46,8 +48,9 @@ export default {
   },
   'da-dk': {
     commonWords: {
+      generator: CommonWordsGenerator,
       source:
-        'https://raw.githubusercontent.com/hermitdave/FrequencyWords/master/content/2018/da/da_50k.txt',
+        'https://object.pouta.csc.fi/OPUS-OpenSubtitles/v2024/freq/da.freq.gz',
       options: { hasOccurrences: true },
     },
     maleFirstnames: {
@@ -65,9 +68,9 @@ export default {
   },
   'pl': {
     commonWords: {
+      generator: CommonWordsGenerator,
       source:
-        'https://raw.githubusercontent.com/hermitdave/FrequencyWords/master/content/2018/pl/pl_50k.txt',
-      options: { hasOccurrences: true },
+        'https://object.pouta.csc.fi/OPUS-OpenSubtitles/v2024/freq/pl.freq.gz',
     },
     maleFirstnames: {
       source:
@@ -102,9 +105,9 @@ export default {
   },
   'de': {
     commonWords: {
+      generator: CommonWordsGenerator,
       source:
-        'https://raw.githubusercontent.com/hermitdave/FrequencyWords/master/content/2018/de/de_50k.txt',
-      options: { hasOccurrences: true },
+        'https://object.pouta.csc.fi/OPUS-OpenSubtitles/v2024/freq/de.freq.gz',
     },
     firstnames: {
       source:
@@ -117,9 +120,9 @@ export default {
   },
   'nl-be': {
     commonWords: {
+      generator: CommonWordsGenerator,
       source:
-        'https://github.com/hermitdave/FrequencyWords/raw/master/content/2018/nl/nl_50k.txt',
-      options: { hasOccurrences: true },
+        'https://object.pouta.csc.fi/OPUS-OpenSubtitles/v2024/freq/nl.freq.gz',
     },
     boysFirstnames: {
       generator: ExcelGenerator,
@@ -156,9 +159,9 @@ export default {
   },
   'fi': {
     commonWords: {
+      generator: CommonWordsGenerator,
       source:
-        'https://github.com/hermitdave/FrequencyWords/raw/master/content/2018/fi/fi_50k.txt',
-      options: { hasOccurrences: true },
+        'https://object.pouta.csc.fi/OPUS-OpenSubtitles/v2024/freq/fi.freq.gz',
     },
     maleFirstnames: {
       generator: ExcelGenerator,
@@ -196,9 +199,9 @@ export default {
   },
   'fr': {
     commonWords: {
+      generator: CommonWordsGenerator,
       source:
-        'https://github.com/hermitdave/FrequencyWords/raw/master/content/2018/fr/fr_50k.txt',
-      options: { hasOccurrences: true },
+        'https://object.pouta.csc.fi/OPUS-OpenSubtitles/v2024/freq/fr.freq.gz',
     },
     firstnames: {
       generator: TxtGenerator,
@@ -225,9 +228,9 @@ export default {
   },
   'id': {
     commonWords: {
+      generator: CommonWordsGenerator,
       source:
-        'https://github.com/hermitdave/FrequencyWords/raw/master/content/2018/id/id_50k.txt',
-      options: { hasOccurrences: true },
+        'https://object.pouta.csc.fi/OPUS-OpenSubtitles/v2024/freq/id.freq.gz',
     },
     names: {
       source:
@@ -236,9 +239,9 @@ export default {
   },
   'es-es': {
     commonWords: {
+      generator: CommonWordsGenerator,
       source:
-        'https://github.com/hermitdave/FrequencyWords/raw/master/content/2018/es/es_50k.txt',
-      options: { hasOccurrences: true },
+        'https://object.pouta.csc.fi/OPUS-OpenSubtitles/v2024/freq/es.freq.gz',
     },
     firstnames: {
       generator: ExcelGenerator,
@@ -264,9 +267,9 @@ export default {
   },
   'it': {
     commonWords: {
+      generator: CommonWordsGenerator,
       source:
-        'https://github.com/hermitdave/FrequencyWords/raw/master/content/2018/it/it_50k.txt',
-      options: { hasOccurrences: true },
+        'https://object.pouta.csc.fi/OPUS-OpenSubtitles/v2024/freq/it.freq.gz',
     },
     firstnames: {
       source:
@@ -280,9 +283,9 @@ export default {
   },
   'ro': {
     commonWords: {
+      generator: CommonWordsGenerator,
       source:
-        'https://raw.githubusercontent.com/hermitdave/FrequencyWords/refs/heads/master/content/2018/ro/ro_50k.txt',
-      options: { hasOccurrences: true },
+        'https://object.pouta.csc.fi/OPUS-OpenSubtitles/v2024/freq/ro.freq.gz',
     },
     firstnames: {
       source:
@@ -295,9 +298,10 @@ export default {
   },
   'hr': {
     commonWords: {
+      generator: CommonWordsGenerator,
       source:
-        'https://raw.githubusercontent.com/hermitdave/FrequencyWords/master/content/2018/hr/hr_50k.txt',
-      options: { hasOccurrences: true, normalizeDiacritics: true },
+        'https://object.pouta.csc.fi/OPUS-OpenSubtitles/v2024/freq/hr.freq.gz',
+      options: { normalizeDiacritics: true },
     },
     firstnames: {
       generator: HTMLGenerator,
@@ -330,9 +334,9 @@ export default {
   },
   'pt-br': {
     commonWords: {
+      generator: CommonWordsGenerator,
       source:
-        'https://raw.githubusercontent.com/hermitdave/FrequencyWords/master/content/2018/pt_br/pt_br_50k.txt',
-      options: { hasOccurrences: true },
+        'https://object.pouta.csc.fi/OPUS-OpenSubtitles/v2024/freq/pt_BR.freq.gz',
     },
     firstnames: {
       generator: ApiGenerator,
@@ -371,10 +375,9 @@ export default {
   },
   'zh': {
     commonWords: {
-      source:
-        'https://raw.githubusercontent.com/hermitdave/FrequencyWords/refs/heads/master/content/2018/zh_cn/zh_cn_50k.txt',
-      options: { hasOccurrences: true },
       generator: SimpleChineseListGenerator,
+      source:
+        'https://object.pouta.csc.fi/OPUS-OpenSubtitles/v2024/freq/zh_CN.freq.gz',
     },
     firstnames: {
       source:
@@ -387,10 +390,9 @@ export default {
   },
   'ja': {
     commonWords: {
-      source:
-        'https://github.com/hermitdave/FrequencyWords/raw/master/content/2018/ja/ja_full.txt',
-      options: { hasOccurrences: true },
       generator: SimpleJapaneseListGenerator,
+      source:
+        'https://object.pouta.csc.fi/OPUS-OpenSubtitles/v2024/freq/ja.freq.gz',
     },
     firstnames: {
       source:
@@ -403,11 +405,11 @@ export default {
   },
   'cs': {
     commonWords: {
+      generator: CommonWordsGenerator,
       source:
-        'https://raw.githubusercontent.com/hermitdave/FrequencyWords/master/content/2018/cs/cs_full.txt',
-      options: { hasOccurrences: true, normalizeDiacritics: true },
+        'https://object.pouta.csc.fi/OPUS-OpenSubtitles/v2024/freq/cs.freq.gz',
+      options: { normalizeDiacritics: true },
     },
-
     firstnames: {
       generator: HTMLGenerator,
       source:
@@ -461,9 +463,10 @@ export default {
      * 2. **Lack of Standardized Romanization**: Unlike languages such as Japanese, there is no widely-accepted method for converting Arabic letters into Roman letters. This makes it challenging to apply a common conversion algorithm for password security.
      */
     // commonWords: {
+    //   generator: CommonWordsGenerator,
     //   source:
-    //     'https://raw.githubusercontent.com/hermitdave/FrequencyWords/master/content/2018/ar/ar_full.txt',
-    //   options: { hasOccurrences: true, normalizeDiacritics: true },
+    //     'https://object.pouta.csc.fi/OPUS-OpenSubtitles/v2024/freq/ar.freq.gz',
+    //   options: { normalizeDiacritics: true },
     // },
     firstnames: {
       source:
@@ -481,9 +484,9 @@ export default {
      * 2. **Lack of Standardized Romanization**: Unlike languages such as Japanese, there is no widely-accepted method for converting Persian letters into Roman letters. This makes it challenging to apply a common conversion algorithm for password security.
      */
     // commonWords: {
+    //   generator: CommonWordsGenerator,
     //   source:
-    //     'https://github.com/hermitdave/FrequencyWords/raw/master/content/2018/fa/fa_50k.txt',
-    //   options: { hasOccurrences: true },
+    //     'https://object.pouta.csc.fi/OPUS-OpenSubtitles/v2024/freq/fa.freq.gz',
     // },
     firstnames: {
       source:
@@ -510,9 +513,9 @@ export default {
   },
   'th': {
     commonWords: {
+      generator: CommonWordsGenerator,
       source:
-        'https://github.com/hermitdave/FrequencyWords/raw/master/content/2018/th/th_50k.txt',
-      options: { hasOccurrences: true },
+        'https://object.pouta.csc.fi/OPUS-OpenSubtitles/v2024/freq/th.freq.gz',
     },
   },
   'common': {

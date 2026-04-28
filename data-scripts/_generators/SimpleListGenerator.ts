@@ -34,7 +34,7 @@ export const SimpleListGeneratorDefaultOptions: SimpleListGeneratorOptions = {
   clearLine: (entry: string) => entry,
 }
 
-interface ConstructorOptions {
+export interface ConstructorOptions {
   options: SimpleListGeneratorOptions
   url: string
 }
