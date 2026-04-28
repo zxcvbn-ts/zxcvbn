@@ -897,11 +897,11 @@ export default [
         j: 11,
         token: 'do',
         matchedWord: 'do',
-        rank: 22,
+        rank: 26,
         dictionaryName: 'commonWords-en',
         reversed: false,
         l33t: false,
-        baseGuesses: 22,
+        baseGuesses: 26,
         uppercaseVariations: 1,
         l33tVariations: 1,
         guesses: 50,
@@ -950,10 +950,7 @@ export default [
       },
     },
     score: 4,
-    feedback: {
-      warning: null,
-      suggestions: [],
-    },
+    feedback: { warning: null, suggestions: [] },
   },
   {
     calcTime: 0,
@@ -1134,8 +1131,8 @@ export default [
   {
     calcTime: 0,
     password: 'horse stable battery',
-    guesses: 1128013300000000,
-    guessesLog10: 15.052314220287887,
+    guesses: 1197369100000000,
+    guessesLog10: 15.07822804629952,
     sequence: [
       {
         pattern: 'dictionary',
@@ -1143,15 +1140,15 @@ export default [
         j: 4,
         token: 'horse',
         matchedWord: 'horse',
-        rank: 862,
+        rank: 915,
         dictionaryName: 'commonWords-en',
         reversed: false,
         l33t: false,
-        baseGuesses: 862,
+        baseGuesses: 915,
         uppercaseVariations: 1,
         l33tVariations: 1,
-        guesses: 862,
-        guessesLog10: 2.9355072658247123,
+        guesses: 915,
+        guessesLog10: 2.961421094066448,
       },
       {
         pattern: 'bruteforce',
@@ -1181,30 +1178,27 @@ export default [
     crackTimes: {
       onlineThrottlingXPerHour: {
         base: null,
-        seconds: 40608478800000000,
+        seconds: 43105287600000000,
         display: 'centuries',
       },
       onlineNoThrottlingXPerSecond: {
         base: null,
-        seconds: 112801330000000,
+        seconds: 119736910000000,
         display: 'centuries',
       },
       offlineSlowHashingXPerSecond: {
         base: null,
-        seconds: 112801330000,
+        seconds: 119736910000,
         display: 'centuries',
       },
       offlineFastHashingXPerSecond: {
         base: 1,
-        seconds: 112801.33,
+        seconds: 119736.91,
         display: '1 day',
       },
     },
     score: 4,
-    feedback: {
-      warning: null,
-      suggestions: [],
-    },
+    feedback: { warning: null, suggestions: [] },
   },
   {
     calcTime: 0,
