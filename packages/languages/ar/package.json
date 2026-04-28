@@ -15,7 +15,8 @@
   "author": "Mo Mansour",
   "files": [
     "dist",
-    "src"
+    "src",
+    "CHANGELOG.md"
   ],
   "publishConfig": {
     "access": "public"
