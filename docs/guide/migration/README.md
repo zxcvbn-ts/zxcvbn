@@ -167,6 +167,14 @@ The distribution files in the packages changed their extensions to follow Node.j
 - `dist/index.cjs` (CommonJS)
 - `dist/index.mjs` (ESM)
 
+### New commonWords source
+
+Moved from https://github.com/hermitdave/FrequencyWords from 2018 to directly use the source https://opus.nlpl.eu/datasets/OpenSubtitles from 2024.
+As this is a bigger and up-to-date list, it can result in a different scoring
+
+**BEWARE**
+The commonWords.json file had always the license ODC-BY. It was just miscommunicated inside @zxcvbn-ts but now the correct license notice was added. 
+
 ---
 
 ## 2.x.x to 3.x.x
