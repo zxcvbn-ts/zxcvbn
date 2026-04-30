@@ -28,8 +28,10 @@ const options = {
     ...zxcvbnThPackage.dictionary,
   },
 }
-
 const zxcvbn = new ZxcvbnFactory(options)
 zxcvbn.check(password)
 ```
-s
+
+## Sources
+
+- commonWords.json is generated from the OpenSubtitles 2024 dataset provided via OPUS (https://opus.nlpl.eu/datasets/OpenSubtitles). The dataset is licensed under ODC-BY (Open Data Commons Attribution License) and requires attribution when redistributed.

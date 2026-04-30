@@ -28,7 +28,6 @@ const options = {
     ...zxcvbnPlPackage.dictionary,
   },
 }
-
 const zxcvbn = new ZxcvbnFactory(options)
 zxcvbn.check(password)
 ```
@@ -39,7 +38,7 @@ zxcvbn.check(password)
    * These lists are ranked by popularity and consist of the names of individuals registered in the Polish Universal Electronic System for Population Register (PESEL). They may also include the names of foreigners, such as refugees from Ukraine, who were assigned a PESEL number following the Russian invasion of Ukraine.
    * [Last Names Dataset](https://dane.gov.pl/pl/dataset/1681,nazwiska-osob-zyjacych-wystepujace-w-rejestrze-pesel) (CC0 1.0 licensed)
    * [First Names Dataset](https://dane.gov.pl/pl/dataset/1667,lista-imion-wystepujacych-w-rejestrze-pesel-osoby-zyjace) (CC0 1.0 licensed)
-2. Common Words data use to be a dictionary for zxcvbn-ts are extracted from files available on https://opus.nlpl.eu/OpenSubtitles2018.php .Files based on that data and used to generate zxcvbn-ts dictionary are available publicly on <https://github.com/hermitdave/FrequencyWords> (MIT licensed)
+2. `commonWords.json` is generated from the [OPUS](https://opus.nlpl.eu/datasets/OpenSubtitles) 2024 OpenSubtitles list, which is licensed under [ODC-BY](https://opendatacommons.org/licenses/by/1-0/).
 
 ## Author
 

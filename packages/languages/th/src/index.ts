@@ -4,9 +4,6 @@ import wikipedia from './wikipedia.json'
 import wordSequences from './wordSequences.json'
 import translations from './translations'
 
-const dictionary = {
-  'commonWords-th': commonWords,
-  'wikipedia-th': wikipedia,
-}
+const dictionary = { 'commonWords-th': commonWords, 'wikipedia-th': wikipedia }
 
 export { dictionary, translations, wordSequences }

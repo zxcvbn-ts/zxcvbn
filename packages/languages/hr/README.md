@@ -4,7 +4,7 @@ The Croatian dictionary and language package for zxcvbn-ts
 
 ## Sources
 
-- `commonWords.json` is generated from the Croatian 2018 word-frequency list in [FrequencyWords](https://github.com/hermitdave/FrequencyWords).
+- commonWords.json is generated from the OpenSubtitles 2024 dataset provided via OPUS (https://opus.nlpl.eu/datasets/OpenSubtitles). The dataset is licensed under ODC-BY (Open Data Commons Attribution License) and requires attribution when redistributed.
 - `firstnames.json` is generated from the Croatian first-name locale data in [FakerJS](https://github.com/faker-js/faker/blob/main/src/locales/hr/person/first_name.ts).
 - `lastnames.json` is generated from the Croatian surname locale data in [FakerJS](https://github.com/faker-js/faker/blob/main/src/locales/hr/person/last_name.ts).
 - `wikipedia.json` is generated from the Croatian Wikipedia dump at <https://dumps.wikimedia.org/hrwiki/latest/hrwiki-latest-pages-articles.xml.bz2> using the repo's documented `wikiextractor` plus `yarn wikipediaExtractor` flow.
@@ -36,7 +36,6 @@ const options = {
     ...zxcvbnHrPackage.dictionary,
   },
 }
-
 const zxcvbn = new ZxcvbnFactory(options)
 zxcvbn.check(password)
 ```

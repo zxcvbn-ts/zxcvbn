@@ -15,7 +15,10 @@
   "author": "daniesy",
   "files": [
     "dist",
-    "src"
+    "src",
+    "CHANGELOG.md",
+    "NOTICE.md",
+    "THIRD_PARTY_LICENSES.md"
   ],
   "publishConfig": {
     "access": "public"

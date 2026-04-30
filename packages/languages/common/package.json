@@ -15,7 +15,8 @@
   "author": "zxcvbn-ts",
   "files": [
     "dist",
-    "src"
+    "src",
+    "CHANGELOG.md"
   ],
   "publishConfig": {
     "access": "public"

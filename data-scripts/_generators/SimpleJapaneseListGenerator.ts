@@ -2,9 +2,9 @@
 import Kuroshiro from 'kuroshiro'
 // @ts-expect-error for testing purposes
 import KuromojiAnalyzer from 'kuroshiro-analyzer-kuromoji'
-import SimpleListGenerator from './SimpleListGenerator'
+import CommonWordsGenerator from './CommonWordsGenerator'
 
-export default class SimpleJapaneseListGenerator extends SimpleListGenerator {
+export default class SimpleJapaneseListGenerator extends CommonWordsGenerator {
   async convertJapanese() {
     const kuroshiro = new Kuroshiro()
     await kuroshiro.init(new KuromojiAnalyzer())
@@ -29,6 +29,7 @@ export default class SimpleJapaneseListGenerator extends SimpleListGenerator {
     console.info('Downloading')
     const data = await this.getData()
     this.data = data.split(this.options.splitter)
+    this.clearLine()
     this.filterOccurrences()
     this.commentPrefixes()
     this.trimWhitespaces()

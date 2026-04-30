@@ -27,7 +27,7 @@ describe('dictionary matching', () => {
       ijs,
       propsToCheck: {
         matchedWord: patterns,
-        rank: [13],
+        rank: [19],
         dictionaryName: ['commonWords-en'],
       },
     })
