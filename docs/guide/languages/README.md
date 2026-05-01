@@ -24,6 +24,7 @@ Current supported languages:
 - Romanian
 - Thai
 - Chinese
+- Turkish
 
 ## Feedback
 

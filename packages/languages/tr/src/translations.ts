@@ -1,0 +1,57 @@
+export default {
+  warnings: {
+    straightRow: 'Klavyede aynı satırdaki tuş dizileri kolayca tahmin edilir.',
+    keyPattern: 'Kısa klavye desenleri kolayca tahmin edilir.',
+    simpleRepeat: '"aaa" gibi tekrar eden karakterler kolayca tahmin edilir.',
+    extendedRepeat:
+      '"abcabcabc" gibi tekrar eden kalıplar kolayca tahmin edilir.',
+    sequences: '"abc" gibi yaygın karakter dizileri kolayca tahmin edilir.',
+    recentYears: 'Son yıllar kolayca tahmin edilir.',
+    dates: 'Tarihler kolayca tahmin edilir.',
+    topTen: 'Bu, çok yoğun kullanılan bir paroladır.',
+    topHundred: 'Bu, sık kullanılan bir paroladır.',
+    common: 'Bu, yaygın kullanılan bir paroladır.',
+    similarToCommon: 'Yaygın kullanılan bir parolaya çok benziyor.',
+    wordByItself: 'Tek başına bir kelime kolayca tahmin edilir.',
+    namesByThemselves: 'Tek başına ad veya soyad kolayca tahmin edilir.',
+    commonNames: 'Yaygın ad ve soyadlar kolayca tahmin edilir.',
+    userInputs:
+      'Kişisel bilgilerinizi veya bu sayfayla ilgili verileri kullanmayın.',
+    pwned: 'Parolanız bir veri ihlalinde açığa çıkmış.',
+  },
+  suggestions: {
+    l33t: '"a" yerine "@" gibi tahmin edilebilir harf değişikliklerinden kaçının.',
+    reverseWords: 'Yaygın kelimeleri tersten yazmaktan kaçının.',
+    allUppercase:
+      'Bütün harfleri büyük yazmak yerine yalnızca bazılarını büyük yazın.',
+    capitalization: 'Yalnızca ilk harfi değil, başka harfleri de büyük yazın.',
+    dates: 'Sizinle ilgili tarih ve yıllardan kaçının.',
+    recentYears: 'Son yıllardan kaçının.',
+    associatedYears: 'Sizinle ilgili yıllardan kaçının.',
+    sequences: 'Yaygın karakter dizilerinden kaçının.',
+    repeated: 'Tekrarlanan kelime ve karakterlerden kaçının.',
+    longerKeyboardPattern:
+      'Daha uzun klavye desenleri kullanın ve yazma yönünü birkaç kez değiştirin.',
+    anotherWord: 'Daha az kullanılan birkaç kelime daha ekleyin.',
+    useWords: 'Birden fazla kelime kullanın; ancak yaygın ifadelerden kaçının.',
+    noNeed:
+      'Sembol, rakam veya büyük harf olmadan da güçlü parolalar oluşturabilirsiniz.',
+    pwned: 'Bu parolayı başka bir yerde kullanıyorsanız değiştirmelisiniz.',
+  },
+  timeEstimation: {
+    ltSecond: 'bir saniyeden az',
+    second: '{base} saniye',
+    seconds: '{base} saniye',
+    minute: '{base} dakika',
+    minutes: '{base} dakika',
+    hour: '{base} saat',
+    hours: '{base} saat',
+    day: '{base} gün',
+    days: '{base} gün',
+    month: '{base} ay',
+    months: '{base} ay',
+    year: '{base} yıl',
+    years: '{base} yıl',
+    centuries: 'yüzyıllar',
+  },
+}
