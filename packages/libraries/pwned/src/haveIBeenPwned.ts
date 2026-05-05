@@ -1,17 +1,6 @@
 import { HaveIBeenPwnedConfig } from './types'
 
-const isNodeJs =
-  typeof process !== 'undefined' && process.release?.name === 'node'
-
 const textEncode = (text: string) => {
-  if (isNodeJs) {
-    const utf8 = decodeURI(encodeURIComponent(text))
-    const result = new Uint8Array(utf8.length)
-    for (let i = 0; i < utf8.length; i += 1) {
-      result[i] = utf8.charCodeAt(i)
-    }
-    return result
-  }
   try {
     return new TextEncoder().encode(text)
   } catch (error: any) {
@@ -21,20 +10,12 @@ const textEncode = (text: string) => {
 
 const digestMessage = async (message: string) => {
   const data = textEncode(message)
-  let hash = ''
-  if (isNodeJs) {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const crypto = require('crypto')
-    hash = crypto.createHash('sha1').update(message).digest('hex').toUpperCase()
-  } else if (crypto) {
-    const hashBuffer = await crypto.subtle.digest('SHA-1', data)
-    const hashArray = Array.from(new Uint8Array(hashBuffer))
-    hash = hashArray
-      .map((b) => b.toString(16).padStart(2, '0'))
-      .join('')
-      .toUpperCase()
-  }
-  return hash
+  const hashBuffer = await crypto.subtle.digest('SHA-1', data)
+  const hashArray = Array.from(new Uint8Array(hashBuffer))
+  return hashArray
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('')
+    .toUpperCase()
 }
 
 const pwnedUrl = 'https://api.pwnedpasswords.com/range/'
