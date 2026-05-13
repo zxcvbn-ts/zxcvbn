@@ -13,9 +13,7 @@ describe('pwned matching', () => {
   // @ts-expect-error for testing purposes
   const matcherPwned = matcherPwnedFactory(fetch)
   it('should return a match', async () => {
-    // @ts-expect-error for testing purposes
     const matchPwned = new matcherPwned.Matching(options)
-    // @ts-expect-error for testing purposes
     const match = await matchPwned.match({ password: 'P4$$w0rd' })
     expect(match).toEqual([
       {
@@ -29,8 +27,6 @@ describe('pwned matching', () => {
   })
 
   it('should return a scoring', async () => {
-    // @ts-expect-error for testing purposes
-    // eslint-disable-next-line @typescript-eslint/await-thenable
     const match = await matcherPwned.scoring({
       pattern: 'pwned',
       pwnedAmount: 244,

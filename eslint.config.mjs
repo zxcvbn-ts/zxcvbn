@@ -23,10 +23,13 @@ export default defineConfig([
   ]),
   js.configs.recommended,
   compatPlugin.configs['flat/recommended'],
-  tseslint.configs.strictTypeChecked,
-  tseslint.configs.stylisticTypeChecked,
   sortClassMembers.configs['flat/recommended'],
   {
+    extends: [
+      tseslint.configs.strictTypeChecked,
+      tseslint.configs.stylisticTypeChecked,
+    ],
+    files: ['**/*.{ts,tsx}'],
     languageOptions: {
       globals: {
         ...jest.environments.globals.globals,
@@ -200,8 +203,12 @@ export default defineConfig([
     },
   },
   {
-    files: ['./scripts/rollup.config.mjs', './scripts/jsonPlugin.mjs'],
-
+    files: ['**/*.{js,mjs,cjs}'],
+    languageOptions: {
+      parserOptions: {
+        sourceType: 'module',
+      },
+    },
     rules: {
       'compat/compat': 'off',
       'max-statements': 'off',

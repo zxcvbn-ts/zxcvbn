@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/extensions
 import compress from '@zxcvbn-ts/dictionary-compression/compress'
 
 const json = () => {
