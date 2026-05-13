@@ -1,6 +1,6 @@
 {
   "name": "@zxcvbn-ts/language-ar",
-  "version": "4.0.0-beta.3",
+  "version": "4.0.0-beta.4",
   "main": "dist/index.cjs",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
