@@ -66,7 +66,9 @@ export default class ListHandler {
   generateIndices() {
     const dataFolder = path.join(__dirname, '../../packages/languages/')
 
-    const languages = fs.readdirSync(dataFolder)
+    const languages = fs
+      .readdirSync(dataFolder)
+      .filter((language) => this.languages.has(language))
 
     // eslint-disable-next-line max-statements
     languages.forEach((language) => {
@@ -133,7 +135,7 @@ export {
   }
 
   async run() {
-    // await this.generateData()
+    await this.generateData()
     this.generateIndices()
   }
 
