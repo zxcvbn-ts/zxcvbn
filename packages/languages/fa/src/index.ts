@@ -3,9 +3,6 @@ import firstnames from './firstnames.json'
 import lastnames from './lastnames.json'
 import translations from './translations'
 
-const dictionary = {
-  'firstnames-fa': firstnames,
-  'lastnames-fa': lastnames,
-}
+const dictionary = { 'firstnames-fa': firstnames, 'lastnames-fa': lastnames }
 
 export { dictionary, translations }

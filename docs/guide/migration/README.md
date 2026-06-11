@@ -24,6 +24,8 @@ This guide provides information on how to migrate between different versions of 
 
 The previous singleton-based approach (`zxcvbnOptions.setOptions`) has been replaced by a class-based approach using `ZxcvbnFactory`. This allows for multiple instances with different configurations.
 
+**NOTE:** The top-level `zxcvbn` and `zxcvbnAsync` functions have been removed.
+
 **Old (3.x.x):**
 ```ts
 zxcvbnOptions.setOptions(options)
@@ -173,7 +175,41 @@ Moved from [https://github.com/hermitdave/FrequencyWords](https://github.com/her
 As this is a bigger and up-to-date list, it can result in a different scoring
 
 **BEWARE**
-The commonWords.json file had always the license ODC-BY. It was just miscommunicated inside @zxcvbn-ts but now the correct license notice was added. 
+The commonWords.json file had always the license ODC-BY. It was just miscommunicated inside @zxcvbn-ts but now the correct license notice was added.
+
+### New word sequence matching
+
+We added a new matcher for word sequences. This improves the estimation for passphrases. It is included in the dictionaries.
+
+**Example:**
+```ts
+import { dictionary } from '@zxcvbn-ts/language-en'
+
+const options = {
+  // ...
+  dictionary: {
+    ...dictionary
+  }
+}
+```
+
+### Advanced translations (pluralization)
+
+Time estimation translations now support functions for better pluralization support. This is especially useful for languages with complex plural rules.
+
+**Example:**
+```ts
+const translations = {
+  // ...
+  timeEstimation: {
+    minute: (value: number) => {
+       if (value === 1) return '1 Minute'
+       return `${value} Minuten`
+    },
+    // ...
+  }
+}
+```
 
 ---
 

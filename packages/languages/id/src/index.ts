@@ -9,6 +9,7 @@ const dictionary = {
   'commonWords-id': commonWords,
   'names-id': names,
   'wikipedia-id': wikipedia,
+  ...wordSequences,
 }
 
-export { dictionary, translations, wordSequences }
+export { dictionary, translations }

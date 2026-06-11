@@ -11,6 +11,7 @@ const dictionary = {
   'firstnames-tr': firstnames,
   'lastnames-tr': lastnames,
   'wikipedia-tr': wikipedia,
+  ...wordSequences,
 }
 
-export { dictionary, translations, wordSequences }
+export { dictionary, translations }

@@ -11,6 +11,7 @@ const dictionary = {
   'femaleFirstnames-da-dk': femaleFirstnames,
   'lastnames-da-dk': lastnames,
   'maleFirstnames-da-dk': maleFirstnames,
+  ...wordSequences,
 }
 
-export { dictionary, translations, wordSequences }
+export { dictionary, translations }
