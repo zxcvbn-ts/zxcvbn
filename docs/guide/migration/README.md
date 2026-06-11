@@ -169,7 +169,7 @@ The distribution files in the packages changed their extensions to follow Node.j
 
 ### New commonWords source
 
-Moved from https://github.com/hermitdave/FrequencyWords from 2018 to directly use the source https://opus.nlpl.eu/datasets/OpenSubtitles from 2024.
+Moved from [https://github.com/hermitdave/FrequencyWords](https://github.com/hermitdave/FrequencyWords) from 2018 to directly use the source [https://opus.nlpl.eu/datasets/OpenSubtitles](https://opus.nlpl.eu/datasets/OpenSubtitles) from 2024.
 As this is a bigger and up-to-date list, it can result in a different scoring
 
 **BEWARE**
