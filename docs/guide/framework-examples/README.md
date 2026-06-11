@@ -69,9 +69,6 @@ export default {
     }
   },
   methods: {
-    setResult(result) {
-      this.result = result
-    },
     async useZxcvbn() {
       if (this.password) {
         this.result = await this.$zxcvbn.checkAsync(this.password)
@@ -246,3 +243,47 @@ export default function PasswordStrength() {
 ## Angular
 
 tbd.
+
+## Fastify
+
+```ts
+import Fastify from 'fastify'
+import { ZxcvbnFactory } from '@zxcvbn-ts/core'
+import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
+import * as zxcvbnEnPackage from '@zxcvbn-ts/language-en'
+
+const fastify = Fastify()
+
+const options = {
+  // recommended
+  dictionary: {
+    ...zxcvbnCommonPackage.dictionary,
+    ...zxcvbnEnPackage.dictionary,
+  },
+  // recommended
+  graphs: zxcvbnCommonPackage.adjacencyGraphs,
+  // recommended
+  useLevenshteinDistance: true,
+  // optional
+  translations: zxcvbnEnPackage.translations,
+}
+
+const zxcvbn = new ZxcvbnFactory(options)
+
+fastify.post<{Body: string}>('/password-strength', async (request, reply) => {
+  if (request.body) {
+    return zxcvbn.check(request.body)
+  }
+  return reply.status(400).send({ error: 'Password is required' })
+})
+
+const start = async () => {
+  try {
+    await fastify.listen({ port: 3000 })
+  } catch (err) {
+    fastify.log.error(err)
+    process.exit(1)
+  }
+}
+start()
+```
