@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="generator" content="VuePress 2.0.0-rc.28" />
+    <style>
+      :root {
+        --vp-c-bg: #fff;
+      }
+
+      [data-theme='dark'] {
+        --vp-c-bg: #1b1b1f;
+      }
+
+      html,
+      body {
+        background-color: var(--vp-c-bg);
+      }
+    </style>
+    <script>
+      const useChoice = localStorage.getItem('vuepress-color-scheme')
+      const systemStatus =
+        'matchMedia' in window
+          ? window.matchMedia('(prefers-color-scheme: dark)').matches
+          : false
+
+      if (useChoice === 'light') {
+        document.documentElement.dataset.theme = 'light'
+      } else if (useChoice === 'dark' || systemStatus) {
+        document.documentElement.dataset.theme = 'dark'
+      }
+    </script>
+    <title>zxcvbn-ts</title><meta name="description" content="Realistic password strength estimation written in typescript">
+    <link rel="preload" href="/zxcvbn/assets/style-XA9apWNF.css" as="style"><link rel="stylesheet" href="/zxcvbn/assets/style-XA9apWNF.css">
+    <link rel="modulepreload" href="/zxcvbn/assets/app-B4tzcj7h.js"><link rel="modulepreload" href="/zxcvbn/assets/README-kI0GQM80.js">
+    <link rel="prefetch" href="/zxcvbn/assets/README-BOtptpiC.js" as="script"><link rel="prefetch" href="/zxcvbn/assets/README-l0JWJOO6.js" as="script"><link rel="prefetch" href="/zxcvbn/assets/README-v6by7UxJ.js" as="script"><link rel="prefetch" href="/zxcvbn/assets/README-CB1Lh6MD.js" as="script"><link rel="prefetch" href="/zxcvbn/assets/README-CI9SNkE8.js" as="script"><link rel="prefetch" href="/zxcvbn/assets/README-CmqadeRB.js" as="script"><link rel="prefetch" href="/zxcvbn/assets/README-Cs4T-ljM.js" as="script"><link rel="prefetch" href="/zxcvbn/assets/README-DGZVdOEc.js" as="script"><link rel="prefetch" href="/zxcvbn/assets/README-lirXs1Xn.js" as="script"><link rel="prefetch" href="/zxcvbn/assets/README-3j_9wS0a.js" as="script"><link rel="prefetch" href="/zxcvbn/assets/README-D2KDhT8C.js" as="script"><link rel="prefetch" href="/zxcvbn/assets/README-OnuxG_wC.js" as="script"><link rel="prefetch" href="/zxcvbn/assets/README-BLKQ585E.js" as="script"><link rel="prefetch" href="/zxcvbn/assets/404.html-DTFsND22.js" as="script"><link rel="prefetch" href="/zxcvbn/assets/Comparison-DPEvi9GQ.js" as="script"><link rel="prefetch" href="/zxcvbn/assets/Result-D23oAWjy.js" as="script"><link rel="prefetch" href="/zxcvbn/assets/Sequence-y_5BCWDp.js" as="script"><link rel="prefetch" href="/zxcvbn/assets/ZxcvbnInteractive-Cacs_fU1.js" as="script">
+  </head>
+  <body>
+    <div id="app"><!--[--><div class="vp-theme-container no-sidebar external-link-icon" vp-container><!--[--><header class="vp-navbar" vp-navbar><div class="vp-toggle-sidebar-button" title="toggle sidebar" aria-expanded="false" role="button" tabindex="0"><div class="icon" aria-hidden="true"><span></span><span></span><span></span></div></div><span><a class="route-link" href="/zxcvbn/"><!----><span class="vp-site-name" aria-hidden="true">zxcvbn-ts</span></a></span><div class="vp-navbar-items-wrapper" style=""><!--[--><!--]--><nav class="vp-navbar-items vp-hide-mobile" aria-label="site navigation"><!--[--><div class="vp-navbar-item"><a class="route-link auto-link" href="/zxcvbn/guide/" aria-label="Guide"><!--[--><!--[--><!--]--><!--]-->Guide<!--[--><!--[--><!--]--><!--]--></a></div><div class="vp-navbar-item"><a class="route-link auto-link" href="/zxcvbn/demo/" aria-label="Demo"><!--[--><!--[--><!--]--><!--]-->Demo<!--[--><!--[--><!--]--><!--]--></a></div><div class="vp-navbar-item"><a class="auto-link external-link" href="https://github.com/zxcvbn-ts/zxcvbn/blob/master/packages/libraries/main/CHANGELOG.md" aria-label="Changelog" rel="noopener noreferrer" target="_blank"><!--[--><!--[--><!--]--><!--]-->Changelog<!--[--><!--[--><!--]--><!--]--></a></div><div class="vp-navbar-item"><a class="auto-link external-link" href="https://github.com/zxcvbn-ts/zxcvbn" aria-label="GitHub" rel="noopener noreferrer" target="_blank"><!--[--><!--[--><!--]--><!--]-->GitHub<!--[--><!--[--><!--]--><!--]--></a></div><!--]--></nav><!--[--><!--]--><button type="button" class="vp-toggle-color-mode-button" title="toggle color mode"><svg class="light-icon" viewbox="0 0 32 32" style=""><path d="M16 12.005a4 4 0 1 1-4 4a4.005 4.005 0 0 1 4-4m0-2a6 6 0 1 0 6 6a6 6 0 0 0-6-6z" fill="currentColor"></path><path d="M5.394 6.813l1.414-1.415l3.506 3.506L8.9 10.318z" fill="currentColor"></path><path d="M2 15.005h5v2H2z" fill="currentColor"></path><path d="M5.394 25.197L8.9 21.691l1.414 1.415l-3.506 3.505z" fill="currentColor"></path><path d="M15 25.005h2v5h-2z" fill="currentColor"></path><path d="M21.687 23.106l1.414-1.415l3.506 3.506l-1.414 1.414z" fill="currentColor"></path><path d="M25 15.005h5v2h-5z" fill="currentColor"></path><path d="M21.687 8.904l3.506-3.506l1.414 1.415l-3.506 3.505z" fill="currentColor"></path><path d="M15 2.005h2v5h-2z" fill="currentColor"></path></svg><svg class="dark-icon" viewbox="0 0 32 32" style="display:none;"><path d="M13.502 5.414a15.075 15.075 0 0 0 11.594 18.194a11.113 11.113 0 0 1-7.975 3.39c-.138 0-.278.005-.418 0a11.094 11.094 0 0 1-3.2-21.584M14.98 3a1.002 1.002 0 0 0-.175.016a13.096 13.096 0 0 0 1.825 25.981c.164.006.328 0 .49 0a13.072 13.072 0 0 0 10.703-5.555a1.01 1.01 0 0 0-.783-1.565A13.08 13.08 0 0 1 15.89 4.38A1.015 1.015 0 0 0 14.98 3z" fill="currentColor"></path></svg></button><!----></div></header><!--]--><div class="vp-sidebar-mask"></div><!--[--><aside class="vp-sidebar" vp-sidebar><nav class="vp-navbar-items" aria-label="site navigation"><!--[--><div class="vp-navbar-item"><a class="route-link auto-link" href="/zxcvbn/guide/" aria-label="Guide"><!--[--><!--[--><!--]--><!--]-->Guide<!--[--><!--[--><!--]--><!--]--></a></div><div class="vp-navbar-item"><a class="route-link auto-link" href="/zxcvbn/demo/" aria-label="Demo"><!--[--><!--[--><!--]--><!--]-->Demo<!--[--><!--[--><!--]--><!--]--></a></div><div class="vp-navbar-item"><a class="auto-link external-link" href="https://github.com/zxcvbn-ts/zxcvbn/blob/master/packages/libraries/main/CHANGELOG.md" aria-label="Changelog" rel="noopener noreferrer" target="_blank"><!--[--><!--[--><!--]--><!--]-->Changelog<!--[--><!--[--><!--]--><!--]--></a></div><div class="vp-navbar-item"><a class="auto-link external-link" href="https://github.com/zxcvbn-ts/zxcvbn" aria-label="GitHub" rel="noopener noreferrer" target="_blank"><!--[--><!--[--><!--]--><!--]-->GitHub<!--[--><!--[--><!--]--><!--]--></a></div><!--]--></nav><!--[--><!--]--><!----><!--[--><!--]--></aside><!--]--><!--[--><main class="vp-home"><header class="vp-hero"><!----><h1 id="main-title">zxcvbn-ts</h1><p class="vp-hero-description">Realistic password strength estimation written in typescript</p><p class="vp-hero-actions"><!--[--><a class="route-link auto-link vp-hero-action-button primary" href="/zxcvbn/guide/getting-started/" aria-label="Get Started"><!--[--><!--[--><!--]--><!--]-->Get Started<!--[--><!--[--><!--]--><!--]--></a><a class="route-link auto-link vp-hero-action-button secondary" href="/zxcvbn/guide/" aria-label="Introduction"><!--[--><!--[--><!--]--><!--]-->Introduction<!--[--><!--[--><!--]--><!--]--></a><!--]--></p></header><div class="vp-features"><!--[--><div class="vp-feature"><h2>Password strength</h2><p>Estimate your password strength</p></div><div class="vp-feature"><h2>Password scoring</h2><p>Get a score for a password from 0-4</p></div><div class="vp-feature"><h2>I18n</h2><p>Choose your language for feedback translations and dictionaries</p></div><div class="vp-feature"><h2>Customizable</h2><p>You can customize dictionaries, l33t table and the keyboard layout</p></div><div class="vp-feature"><h2>Typescript</h2><p>Completely written in Typescript to get your types rolling</p></div><!--]--></div><div vp-content><div></div></div><!--[--><div class="vp-footer" vp-footer>zxcvbn-ts</div><!--]--></main><!--]--></div><!--[--><!----><!--]--><!--]--></div>
+    <script type="module" src="/zxcvbn/assets/app-B4tzcj7h.js" defer></script>
+  </body>
+</html>
