@@ -3,6 +3,38 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.1.0](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/core@3.0.4...@zxcvbn-ts/core@4.1.0) (2026-06-11)
+
+### Bug Fixes
+
+- **dictionary:** do not add userInputs on the fly to the options dictionary ([f1c2af7](https://github.com/zxcvbn-ts/zxcvbn/commit/f1c2af7d032a73e4829340c98a65035d3a53b120))
+- **feedback:** set feedback for "name" dictionary ([062aa4a](https://github.com/zxcvbn-ts/zxcvbn/commit/062aa4a9e3e392bddc84906294603653788517ef))
+- **l33t:** make sure all full subs use levenshtein ([846794e](https://github.com/zxcvbn-ts/zxcvbn/commit/846794e771be4b6b624770fba32d26439a74f5da))
+
+- feat!(scoring): merge crackTime types into one ([53f4e73](https://github.com/zxcvbn-ts/zxcvbn/commit/53f4e731f02ff147bb3eda7e9cd1d4e6f3f2331e))
+- feat!(scoring): make scoring thresholds configurable ([6738eb6](https://github.com/zxcvbn-ts/zxcvbn/commit/6738eb61900824d7470025191e22a9989912eade))
+
+### Features
+
+- Add word sequence matcher ([#301](https://github.com/zxcvbn-ts/zxcvbn/issues/301)) ([8aba38e](https://github.com/zxcvbn-ts/zxcvbn/commit/8aba38eeabeb5b7eaed8d37330b024e66d34dc1e))
+- **package:** cleanup package json with publint ([a433cd1](https://github.com/zxcvbn-ts/zxcvbn/commit/a433cd15b380036fcbba9bcefdb158acd28d5fff))
+- **package:** cleanup package json with publint ([c949d2f](https://github.com/zxcvbn-ts/zxcvbn/commit/c949d2f23eaf429d8ee90aba37243cdd7bff5d4e))
+- **package:** cleanup package json with publint ([74f6fff](https://github.com/zxcvbn-ts/zxcvbn/commit/74f6ffffcc93c90591523fe7047ed843cb25c3ac))
+- **package:** revert cleanup package json with publint ([360ce9e](https://github.com/zxcvbn-ts/zxcvbn/commit/360ce9e28b464a573e5f92294027518a995b06c0))
+- **package:** revert cleanup package json with publint ([0eca875](https://github.com/zxcvbn-ts/zxcvbn/commit/0eca875d6de5265278666299c0a06fc4a8c453a7))
+- **packages:** modernize packages ([c2a6313](https://github.com/zxcvbn-ts/zxcvbn/commit/c2a6313ca0ca61de875f45338df3147c050549fe))
+- **packages:** update packages ([706ad9d](https://github.com/zxcvbn-ts/zxcvbn/commit/706ad9dfab235fef1b738d3700cd1c8f4731176a))
+- **packages:** update packages and node ([5f8cc57](https://github.com/zxcvbn-ts/zxcvbn/commit/5f8cc575b69502241415016b7a92268e89d15a3d))
+- **times:** add base output to result ([cd6f4ea](https://github.com/zxcvbn-ts/zxcvbn/commit/cd6f4ea53a94a0ac76de4bd3faef7c44842af433))
+- **translation:** add function based pluralization in translation ([#312](https://github.com/zxcvbn-ts/zxcvbn/issues/312)) ([01ece9e](https://github.com/zxcvbn-ts/zxcvbn/commit/01ece9e8ad7bf356637c82451fedae8816c20930))
+- Update to new common words list ([#314](https://github.com/zxcvbn-ts/zxcvbn/issues/314)) ([1bbd9db](https://github.com/zxcvbn-ts/zxcvbn/commit/1bbd9db5ed225b9aaa50781b5fa6348bf1852e74))
+- use wordSequences correctly as dictionary ([e88226d](https://github.com/zxcvbn-ts/zxcvbn/commit/e88226df7aa17b6302d86aeb443089b442c60e66))
+
+### BREAKING CHANGES
+
+- merge the three crackTime types into one
+- rename scoring thresholds
+
 ## [3.0.4](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/core@3.0.3...@zxcvbn-ts/core@3.0.4) (2023-09-17)
 
 ### Bug Fixes

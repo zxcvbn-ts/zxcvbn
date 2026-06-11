@@ -3,6 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.1.0](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/matcher-pwned@3.0.4...@zxcvbn-ts/matcher-pwned@4.1.0) (2026-06-11)
+
+### Bug Fixes
+
+- **dictionary:** do not add userInputs on the fly to the options dictionary ([f1c2af7](https://github.com/zxcvbn-ts/zxcvbn/commit/f1c2af7d032a73e4829340c98a65035d3a53b120))
+- **matcher-pwned:** use Web Crypto in HIBP digest, drop Node-specific branch ([#316](https://github.com/zxcvbn-ts/zxcvbn/issues/316)) ([f3ff059](https://github.com/zxcvbn-ts/zxcvbn/commit/f3ff059a5278922cfee043d70e8578b61e033056))
+- split fix and cache for ci ([#317](https://github.com/zxcvbn-ts/zxcvbn/issues/317)) ([07f0f84](https://github.com/zxcvbn-ts/zxcvbn/commit/07f0f847f4b055627b5883038977b9bef146c354))
+
+- feat!(scoring): merge crackTime types into one ([53f4e73](https://github.com/zxcvbn-ts/zxcvbn/commit/53f4e731f02ff147bb3eda7e9cd1d4e6f3f2331e))
+- feat!(scoring): make scoring thresholds configurable ([6738eb6](https://github.com/zxcvbn-ts/zxcvbn/commit/6738eb61900824d7470025191e22a9989912eade))
+
+### Features
+
+- Add word sequence matcher ([#301](https://github.com/zxcvbn-ts/zxcvbn/issues/301)) ([8aba38e](https://github.com/zxcvbn-ts/zxcvbn/commit/8aba38eeabeb5b7eaed8d37330b024e66d34dc1e))
+- **package:** cleanup package json with publint ([74f6fff](https://github.com/zxcvbn-ts/zxcvbn/commit/74f6ffffcc93c90591523fe7047ed843cb25c3ac))
+- **package:** revert cleanup package json with publint ([360ce9e](https://github.com/zxcvbn-ts/zxcvbn/commit/360ce9e28b464a573e5f92294027518a995b06c0))
+- **package:** revert cleanup package json with publint ([0eca875](https://github.com/zxcvbn-ts/zxcvbn/commit/0eca875d6de5265278666299c0a06fc4a8c453a7))
+- **packages:** modernize packages ([c2a6313](https://github.com/zxcvbn-ts/zxcvbn/commit/c2a6313ca0ca61de875f45338df3147c050549fe))
+- use wordSequences correctly as dictionary ([e88226d](https://github.com/zxcvbn-ts/zxcvbn/commit/e88226df7aa17b6302d86aeb443089b442c60e66))
+
+### BREAKING CHANGES
+
+- merge the three crackTime types into one
+- rename scoring thresholds
+
 ## [3.0.4](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/matcher-pwned@3.0.3...@zxcvbn-ts/matcher-pwned@3.0.4) (2023-09-17)
 
 **Note:** Version bump only for package @zxcvbn-ts/matcher-pwned
