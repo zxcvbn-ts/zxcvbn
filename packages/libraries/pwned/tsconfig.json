@@ -3,9 +3,8 @@
   "compilerOptions": {
     "lib": ["es2018", "dom"],
     "types": ["node", "jest"],
-    "baseUrl": ".",
     "paths": {
-      "@zxcvbn-ts/core/*": ["../main/src/index.ts"],
+      "@zxcvbn-ts/core/*": ["../main/src/index.ts"]
     }
   }
 }
