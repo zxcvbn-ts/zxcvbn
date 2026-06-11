@@ -1,5 +1,5 @@
 {
-  "cardinalNumbers": [
+  "cardinalNumbers-fr": [
     "un",
     "deux",
     "trois",
@@ -21,7 +21,7 @@
     "dix-neuf",
     "vingt"
   ],
-  "ordinalNumbers": [
+  "ordinalNumbers-fr": [
     "premier",
     "deuxième",
     "troisième",
@@ -43,7 +43,7 @@
     "dix-neuvième",
     "vingtième"
   ],
-  "daysOfWeek": [
+  "daysOfWeek-fr": [
     "lundi",
     "mardi",
     "mercredi",
@@ -52,7 +52,7 @@
     "samedi",
     "dimanche"
   ],
-  "months": [
+  "months-fr": [
     "janvier",
     "février",
     "mars",
@@ -66,9 +66,21 @@
     "novembre",
     "décembre"
   ],
-  "seasons": ["printemps", "été", "automne", "hiver"],
-  "timePeriods": ["matin", "après-midi", "soir", "nuit", "minuit", "midi"],
-  "rainbowColors": [
+  "seasons-fr": [
+    "printemps",
+    "été",
+    "automne",
+    "hiver"
+  ],
+  "timePeriods-fr": [
+    "matin",
+    "après-midi",
+    "soir",
+    "nuit",
+    "minuit",
+    "midi"
+  ],
+  "rainbowColors-fr": [
     "rouge",
     "orange",
     "jaune",
@@ -77,9 +89,19 @@
     "indigo",
     "violet"
   ],
-  "directions": ["nord", "sud", "est", "ouest"],
-  "intermediateDirections": ["nord-est", "nord-ouest", "sud-est", "sud-ouest"],
-  "sizeProgression": [
+  "directions-fr": [
+    "nord",
+    "sud",
+    "est",
+    "ouest"
+  ],
+  "intermediateDirections-fr": [
+    "nord-est",
+    "nord-ouest",
+    "sud-est",
+    "sud-ouest"
+  ],
+  "sizeProgression-fr": [
     "minuscule",
     "petit",
     "moyen",
@@ -87,7 +109,7 @@
     "énorme",
     "géant"
   ],
-  "militaryAlphabet": [
+  "militaryAlphabet-fr": [
     "alpha",
     "bravo",
     "charlie",
@@ -115,7 +137,7 @@
     "yankee",
     "zulu"
   ],
-  "planets": [
+  "planets-fr": [
     "mercure",
     "vénus",
     "terre",
@@ -126,7 +148,7 @@
     "neptune",
     "pluton"
   ],
-  "zodiacSigns": [
+  "zodiacSigns-fr": [
     "bélier",
     "taureau",
     "gémeaux",
@@ -140,7 +162,7 @@
     "verseau",
     "poissons"
   ],
-  "chineseZodiac": [
+  "chineseZodiac-fr": [
     "rat",
     "bœuf",
     "tigre",

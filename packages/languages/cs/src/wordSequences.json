@@ -1,5 +1,5 @@
 {
-  "cardinalNumbers": [
+  "cardinalNumbers-cs": [
     "jedna",
     "dvě",
     "tři",
@@ -21,7 +21,7 @@
     "devatenáct",
     "dvacet"
   ],
-  "ordinalNumbers": [
+  "ordinalNumbers-cs": [
     "první",
     "druhý",
     "třetí",
@@ -43,7 +43,7 @@
     "devatenáctý",
     "dvacátý"
   ],
-  "daysOfWeek": [
+  "daysOfWeek-cs": [
     "pondělí",
     "úterý",
     "středa",
@@ -52,7 +52,7 @@
     "sobota",
     "neděle"
   ],
-  "months": [
+  "months-cs": [
     "leden",
     "únor",
     "březen",
@@ -66,8 +66,13 @@
     "listopad",
     "prosinec"
   ],
-  "seasons": ["jaro", "léto", "podzim", "zima"],
-  "timePeriods": [
+  "seasons-cs": [
+    "jaro",
+    "léto",
+    "podzim",
+    "zima"
+  ],
+  "timePeriods-cs": [
     "ráno",
     "dopoledne",
     "odpoledne",
@@ -76,7 +81,7 @@
     "půlnoc",
     "poledne"
   ],
-  "rainbowColors": [
+  "rainbowColors-cs": [
     "červená",
     "oranžová",
     "žlutá",
@@ -85,14 +90,19 @@
     "indigo",
     "fialová"
   ],
-  "directions": ["sever", "jih", "východ", "západ"],
-  "intermediateDirections": [
+  "directions-cs": [
+    "sever",
+    "jih",
+    "východ",
+    "západ"
+  ],
+  "intermediateDirections-cs": [
     "severovýchod",
     "severozápad",
     "jihovýchod",
     "jihozápad"
   ],
-  "sizeProgression": [
+  "sizeProgression-cs": [
     "maličký",
     "malý",
     "střední",
@@ -100,7 +110,7 @@
     "obrovský",
     "gigantický"
   ],
-  "militaryAlphabet": [
+  "militaryAlphabet-cs": [
     "alpha",
     "bravo",
     "charlie",
@@ -128,7 +138,7 @@
     "yankee",
     "zulu"
   ],
-  "planets": [
+  "planets-cs": [
     "merkur",
     "venuše",
     "země",
@@ -139,7 +149,7 @@
     "neptun",
     "pluto"
   ],
-  "zodiacSigns": [
+  "zodiacSigns-cs": [
     "beran",
     "býk",
     "blíženci",
@@ -153,7 +163,7 @@
     "vodnář",
     "ryby"
   ],
-  "chineseZodiac": [
+  "chineseZodiac-cs": [
     "krysa",
     "buvol",
     "tygr",

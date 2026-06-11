@@ -1,5 +1,5 @@
 {
-  "cardinalNumbers": [
+  "cardinalNumbers-nl-be": [
     "één",
     "twee",
     "drie",
@@ -21,7 +21,7 @@
     "negentien",
     "twintig"
   ],
-  "ordinalNumbers": [
+  "ordinalNumbers-nl-be": [
     "eerste",
     "tweede",
     "derde",
@@ -43,7 +43,7 @@
     "negentiende",
     "twintigste"
   ],
-  "daysOfWeek": [
+  "daysOfWeek-nl-be": [
     "maandag",
     "dinsdag",
     "woensdag",
@@ -52,7 +52,7 @@
     "zaterdag",
     "zondag"
   ],
-  "months": [
+  "months-nl-be": [
     "januari",
     "februari",
     "maart",
@@ -66,8 +66,13 @@
     "november",
     "december"
   ],
-  "seasons": ["lente", "zomer", "herfst", "winter"],
-  "timePeriods": [
+  "seasons-nl-be": [
+    "lente",
+    "zomer",
+    "herfst",
+    "winter"
+  ],
+  "timePeriods-nl-be": [
     "ochtend",
     "middag",
     "avond",
@@ -75,7 +80,7 @@
     "middernacht",
     "middag"
   ],
-  "rainbowColors": [
+  "rainbowColors-nl-be": [
     "rood",
     "oranje",
     "geel",
@@ -84,9 +89,19 @@
     "indigo",
     "violet"
   ],
-  "directions": ["noord", "zuid", "oost", "west"],
-  "intermediateDirections": ["noordoost", "noordwest", "zuidoost", "zuidwest"],
-  "sizeProgression": [
+  "directions-nl-be": [
+    "noord",
+    "zuid",
+    "oost",
+    "west"
+  ],
+  "intermediateDirections-nl-be": [
+    "noordoost",
+    "noordwest",
+    "zuidoost",
+    "zuidwest"
+  ],
+  "sizeProgression-nl-be": [
     "piepklein",
     "klein",
     "middelgroot",
@@ -94,7 +109,7 @@
     "enorm",
     "gigantisch"
   ],
-  "militaryAlphabet": [
+  "militaryAlphabet-nl-be": [
     "alpha",
     "bravo",
     "charlie",
@@ -122,7 +137,7 @@
     "yankee",
     "zulu"
   ],
-  "planets": [
+  "planets-nl-be": [
     "mercurius",
     "venus",
     "aarde",
@@ -133,7 +148,7 @@
     "neptunus",
     "pluto"
   ],
-  "zodiacSigns": [
+  "zodiacSigns-nl-be": [
     "ram",
     "stier",
     "tweelingen",
@@ -147,7 +162,7 @@
     "waterman",
     "vissen"
   ],
-  "chineseZodiac": [
+  "chineseZodiac-nl-be": [
     "rat",
     "os",
     "tijger",

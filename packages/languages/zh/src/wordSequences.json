@@ -1,5 +1,5 @@
 {
-  "cardinalNumbers": [
+  "cardinalNumbers-zh": [
     "yi",
     "er",
     "san",
@@ -21,7 +21,7 @@
     "shijiu",
     "ershi"
   ],
-  "ordinalNumbers": [
+  "ordinalNumbers-zh": [
     "diyige",
     "dierge",
     "disange",
@@ -33,7 +33,7 @@
     "dijiuge",
     "dishige"
   ],
-  "daysOfWeek": [
+  "daysOfWeek-zh": [
     "xingqiyi",
     "xingqier",
     "xingqisan",
@@ -49,7 +49,7 @@
     "zhouliu",
     "zhouri"
   ],
-  "months": [
+  "months-zh": [
     "yiyue",
     "eryue",
     "sanyue",
@@ -63,8 +63,13 @@
     "shiyiyue",
     "shier-yue"
   ],
-  "seasons": ["chuntian", "xiatian", "qiutian", "dongtian"],
-  "timePeriods": [
+  "seasons-zh": [
+    "chuntian",
+    "xiatian",
+    "qiutian",
+    "dongtian"
+  ],
+  "timePeriods-zh": [
     "zaoshang",
     "shangwu",
     "zhongwu",
@@ -72,11 +77,34 @@
     "wanshang",
     "banye"
   ],
-  "rainbowColors": ["hong", "cheng", "huang", "lv", "qing", "lan", "zi"],
-  "directions": ["dong", "nan", "xi", "bei"],
-  "intermediateDirections": ["dongbei", "dongnan", "xibei", "xinan"],
-  "sizeProgression": ["xiao", "zhong", "da", "te-da"],
-  "militaryAlphabet": [
+  "rainbowColors-zh": [
+    "hong",
+    "cheng",
+    "huang",
+    "lv",
+    "qing",
+    "lan",
+    "zi"
+  ],
+  "directions-zh": [
+    "dong",
+    "nan",
+    "xi",
+    "bei"
+  ],
+  "intermediateDirections-zh": [
+    "dongbei",
+    "dongnan",
+    "xibei",
+    "xinan"
+  ],
+  "sizeProgression-zh": [
+    "xiao",
+    "zhong",
+    "da",
+    "te-da"
+  ],
+  "militaryAlphabet-zh": [
     "alpha",
     "bravo",
     "charlie",
@@ -104,7 +132,7 @@
     "yankee",
     "zulu"
   ],
-  "planets": [
+  "planets-zh": [
     "shuixing",
     "jinxing",
     "diqiu",
@@ -115,7 +143,7 @@
     "haiwangxing",
     "mingwangxing"
   ],
-  "zodiacSigns": [
+  "zodiacSigns-zh": [
     "baiyangzuo",
     "jinniuzuo",
     "shuangzizuo",
@@ -129,7 +157,7 @@
     "shuipingzuo",
     "shuangyu-zuo"
   ],
-  "chineseZodiac": [
+  "chineseZodiac-zh": [
     "shu",
     "niu",
     "hu",

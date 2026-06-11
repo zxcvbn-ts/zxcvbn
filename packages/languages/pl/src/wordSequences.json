@@ -1,5 +1,5 @@
 {
-  "cardinalNumbers": [
+  "cardinalNumbers-pl": [
     "jeden",
     "dwa",
     "trzy",
@@ -21,7 +21,7 @@
     "dziewiętnaście",
     "dwadzieścia"
   ],
-  "ordinalNumbers": [
+  "ordinalNumbers-pl": [
     "pierwszy",
     "drugi",
     "trzeci",
@@ -43,7 +43,7 @@
     "dziewiętnasty",
     "dwudziesty"
   ],
-  "daysOfWeek": [
+  "daysOfWeek-pl": [
     "poniedziałek",
     "wtorek",
     "środa",
@@ -52,7 +52,7 @@
     "sobota",
     "niedziela"
   ],
-  "months": [
+  "months-pl": [
     "styczeń",
     "luty",
     "marzec",
@@ -66,9 +66,21 @@
     "listopad",
     "grudzień"
   ],
-  "seasons": ["wiosna", "lato", "jesień", "zima"],
-  "timePeriods": ["rano", "popołudnie", "wieczór", "noc", "północ", "południe"],
-  "rainbowColors": [
+  "seasons-pl": [
+    "wiosna",
+    "lato",
+    "jesień",
+    "zima"
+  ],
+  "timePeriods-pl": [
+    "rano",
+    "popołudnie",
+    "wieczór",
+    "noc",
+    "północ",
+    "południe"
+  ],
+  "rainbowColors-pl": [
     "czerwony",
     "pomarańczowy",
     "żółty",
@@ -77,14 +89,19 @@
     "indygo",
     "fioletowy"
   ],
-  "directions": ["północ", "południe", "wschód", "zachód"],
-  "intermediateDirections": [
+  "directions-pl": [
+    "północ",
+    "południe",
+    "wschód",
+    "zachód"
+  ],
+  "intermediateDirections-pl": [
     "północny wschód",
     "północny zachód",
     "południowy wschód",
     "południowy zachód"
   ],
-  "sizeProgression": [
+  "sizeProgression-pl": [
     "malutki",
     "mały",
     "średni",
@@ -92,7 +109,7 @@
     "ogromny",
     "gigantyczny"
   ],
-  "militaryAlphabet": [
+  "militaryAlphabet-pl": [
     "alpha",
     "bravo",
     "charlie",
@@ -120,7 +137,7 @@
     "yankee",
     "zulu"
   ],
-  "planets": [
+  "planets-pl": [
     "merkury",
     "wenus",
     "ziemia",
@@ -131,7 +148,7 @@
     "neptun",
     "pluton"
   ],
-  "zodiacSigns": [
+  "zodiacSigns-pl": [
     "baran",
     "byk",
     "bliźnięta",
@@ -145,7 +162,7 @@
     "wodnik",
     "ryby"
   ],
-  "chineseZodiac": [
+  "chineseZodiac-pl": [
     "szczur",
     "wół",
     "tygrys",

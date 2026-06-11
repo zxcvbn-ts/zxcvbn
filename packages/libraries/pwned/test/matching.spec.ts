@@ -14,7 +14,11 @@ describe('pwned matching', () => {
   const matcherPwned = matcherPwnedFactory(fetch)
   it('should return a match', async () => {
     const matchPwned = new matcherPwned.Matching(options)
-    const match = await matchPwned.match({ password: 'P4$$w0rd' })
+    const match = await matchPwned.match({
+      password: 'P4$$w0rd',
+      // @ts-expect-error doesn't matter for pwnd matcher
+      omniMatch: jest.fn,
+    })
     expect(match).toEqual([
       {
         i: 0,
@@ -26,11 +30,17 @@ describe('pwned matching', () => {
     ])
   })
 
-  it('should return a scoring', async () => {
-    const match = await matcherPwned.scoring({
-      pattern: 'pwned',
-      pwnedAmount: 244,
-    })
+  it('should return a scoring', () => {
+    const match = matcherPwned.scoring(
+      {
+        pattern: 'pwned',
+        pwnedAmount: 244,
+        i: 0,
+        j: 10,
+        token: 'qwertzuiop',
+      },
+      options,
+    )
     expect(match).toEqual(1)
   })
 })

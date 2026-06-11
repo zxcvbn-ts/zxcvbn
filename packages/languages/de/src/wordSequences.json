@@ -1,5 +1,5 @@
 {
-  "cardinalNumbers": [
+  "cardinalNumbers-de": [
     "eins",
     "zwei",
     "drei",
@@ -21,7 +21,7 @@
     "neunzehn",
     "zwanzig"
   ],
-  "ordinalNumbers": [
+  "ordinalNumbers-de": [
     "erste",
     "zweite",
     "dritte",
@@ -43,7 +43,7 @@
     "neunzehnte",
     "zwanzigste"
   ],
-  "daysOfWeek": [
+  "daysOfWeek-de": [
     "montag",
     "dienstag",
     "mittwoch",
@@ -52,7 +52,7 @@
     "samstag",
     "sonntag"
   ],
-  "months": [
+  "months-de": [
     "januar",
     "februar",
     "märz",
@@ -66,13 +66,13 @@
     "november",
     "dezember"
   ],
-  "seasons": [
+  "seasons-de": [
     "frühling",
     "sommer",
     "herbst",
     "winter"
   ],
-  "timePeriods": [
+  "timePeriods-de": [
     "morgen",
     "vormittag",
     "mittag",
@@ -81,7 +81,7 @@
     "nacht",
     "mitternacht"
   ],
-  "rainbowColors": [
+  "rainbowColors-de": [
     "rot",
     "orange",
     "gelb",
@@ -90,19 +90,19 @@
     "indigo",
     "violett"
   ],
-  "directions": [
+  "directions-de": [
     "norden",
     "süden",
     "osten",
     "westen"
   ],
-  "intermediateDirections": [
+  "intermediateDirections-de": [
     "nordosten",
     "nordwesten",
     "südosten",
     "südwesten"
   ],
-  "sizeProgression": [
+  "sizeProgression-de": [
     "winzig",
     "klein",
     "mittel",
@@ -110,7 +110,7 @@
     "riesig",
     "gigantisch"
   ],
-  "militaryAlphabet": [
+  "militaryAlphabet-de": [
     "alpha",
     "bravo",
     "charlie",
@@ -138,7 +138,7 @@
     "yankee",
     "zulu"
   ],
-  "planets": [
+  "planets-de": [
     "merkur",
     "venus",
     "erde",
@@ -149,7 +149,7 @@
     "neptun",
     "pluto"
   ],
-  "zodiacSigns": [
+  "zodiacSigns-de": [
     "widder",
     "stier",
     "zwillinge",
@@ -163,7 +163,7 @@
     "wassermann",
     "fische"
   ],
-  "chineseZodiac": [
+  "chineseZodiac-de": [
     "ratte",
     "ochse",
     "tiger",
@@ -177,4 +177,4 @@
     "hund",
     "schwein"
   ]
-} 
+}

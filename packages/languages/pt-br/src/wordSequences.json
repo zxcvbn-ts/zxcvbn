@@ -1,5 +1,5 @@
 {
-  "cardinalNumbers": [
+  "cardinalNumbers-pt-br": [
     "um",
     "dois",
     "três",
@@ -21,7 +21,7 @@
     "dezenove",
     "vinte"
   ],
-  "ordinalNumbers": [
+  "ordinalNumbers-pt-br": [
     "primeiro",
     "segundo",
     "terceiro",
@@ -43,7 +43,7 @@
     "décimo nono",
     "vigésimo"
   ],
-  "daysOfWeek": [
+  "daysOfWeek-pt-br": [
     "segunda-feira",
     "terça-feira",
     "quarta-feira",
@@ -52,7 +52,7 @@
     "sábado",
     "domingo"
   ],
-  "months": [
+  "months-pt-br": [
     "janeiro",
     "fevereiro",
     "março",
@@ -66,8 +66,13 @@
     "novembro",
     "dezembro"
   ],
-  "seasons": ["primavera", "verão", "outono", "inverno"],
-  "timePeriods": [
+  "seasons-pt-br": [
+    "primavera",
+    "verão",
+    "outono",
+    "inverno"
+  ],
+  "timePeriods-pt-br": [
     "manhã",
     "tarde",
     "noite",
@@ -75,7 +80,7 @@
     "meia-noite",
     "meio-dia"
   ],
-  "rainbowColors": [
+  "rainbowColors-pt-br": [
     "vermelho",
     "laranja",
     "amarelo",
@@ -84,9 +89,19 @@
     "anil",
     "violeta"
   ],
-  "directions": ["norte", "sul", "leste", "oeste"],
-  "intermediateDirections": ["nordeste", "noroeste", "sudeste", "sudoeste"],
-  "sizeProgression": [
+  "directions-pt-br": [
+    "norte",
+    "sul",
+    "leste",
+    "oeste"
+  ],
+  "intermediateDirections-pt-br": [
+    "nordeste",
+    "noroeste",
+    "sudeste",
+    "sudoeste"
+  ],
+  "sizeProgression-pt-br": [
     "minúsculo",
     "pequeno",
     "médio",
@@ -94,7 +109,7 @@
     "enorme",
     "gigante"
   ],
-  "militaryAlphabet": [
+  "militaryAlphabet-pt-br": [
     "alpha",
     "bravo",
     "charlie",
@@ -122,7 +137,7 @@
     "yankee",
     "zulu"
   ],
-  "planets": [
+  "planets-pt-br": [
     "mercúrio",
     "vênus",
     "terra",
@@ -133,7 +148,7 @@
     "netuno",
     "plutão"
   ],
-  "zodiacSigns": [
+  "zodiacSigns-pt-br": [
     "áries",
     "touro",
     "gêmeos",
@@ -147,7 +162,7 @@
     "aquário",
     "peixes"
   ],
-  "chineseZodiac": [
+  "chineseZodiac-pt-br": [
     "rato",
     "boi",
     "tigre",

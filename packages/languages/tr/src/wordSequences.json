@@ -1,5 +1,5 @@
 {
-  "cardinalNumbers": [
+  "cardinalNumbers-tr": [
     "bir",
     "iki",
     "üç",
@@ -21,7 +21,7 @@
     "ondokuz",
     "yirmi"
   ],
-  "ordinalNumbers": [
+  "ordinalNumbers-tr": [
     "birinci",
     "ikinci",
     "üçüncü",
@@ -43,7 +43,7 @@
     "ondokuzuncu",
     "yirminci"
   ],
-  "daysOfWeek": [
+  "daysOfWeek-tr": [
     "pazartesi",
     "salı",
     "çarşamba",
@@ -52,7 +52,7 @@
     "cumartesi",
     "pazar"
   ],
-  "months": [
+  "months-tr": [
     "ocak",
     "şubat",
     "mart",
@@ -66,13 +66,13 @@
     "kasım",
     "aralık"
   ],
-  "seasons": [
+  "seasons-tr": [
     "ilkbahar",
     "yaz",
     "sonbahar",
     "kış"
   ],
-  "timePeriods": [
+  "timePeriods-tr": [
     "sabah",
     "öğle",
     "ikindi",
@@ -81,7 +81,7 @@
     "gece yarısı",
     "öğlen"
   ],
-  "rainbowColors": [
+  "rainbowColors-tr": [
     "kırmızı",
     "turuncu",
     "sarı",
@@ -90,19 +90,19 @@
     "çivit",
     "mor"
   ],
-  "directions": [
+  "directions-tr": [
     "kuzey",
     "güney",
     "doğu",
     "batı"
   ],
-  "intermediateDirections": [
+  "intermediateDirections-tr": [
     "kuzeydoğu",
     "kuzeybatı",
     "güneydoğu",
     "güneybatı"
   ],
-  "sizeProgression": [
+  "sizeProgression-tr": [
     "minicik",
     "küçük",
     "orta",
@@ -110,7 +110,7 @@
     "kocaman",
     "devasa"
   ],
-  "militaryAlphabet": [
+  "militaryAlphabet-tr": [
     "alpha",
     "bravo",
     "charlie",
@@ -138,7 +138,7 @@
     "yankee",
     "zulu"
   ],
-  "planets": [
+  "planets-tr": [
     "merkür",
     "venüs",
     "dünya",
@@ -149,7 +149,7 @@
     "neptün",
     "plüton"
   ],
-  "zodiacSigns": [
+  "zodiacSigns-tr": [
     "koç",
     "boğa",
     "ikizler",
@@ -163,7 +163,7 @@
     "kova",
     "balık"
   ],
-  "chineseZodiac": [
+  "chineseZodiac-tr": [
     "fare",
     "öküz",
     "kaplan",

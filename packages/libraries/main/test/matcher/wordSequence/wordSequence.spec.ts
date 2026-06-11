@@ -30,7 +30,7 @@ describe('WordSequence Matcher', () => {
       if (wordSequenceMatch?.pattern === 'wordSequence') {
         expect(wordSequenceMatch.words).toEqual(['one', 'two', 'three'])
         expect(wordSequenceMatch.wordCount).toBe(3)
-        expect(wordSequenceMatch.dictionaryName).toBe('cardinalNumbers')
+        expect(wordSequenceMatch.dictionaryName).toBe('cardinalNumbers-en')
       }
     })
 
@@ -59,7 +59,7 @@ describe('WordSequence Matcher', () => {
       if (wordSequenceMatch?.pattern === 'wordSequence') {
         expect(wordSequenceMatch.words).toEqual(['three', 'two', 'one'])
         expect(wordSequenceMatch.wordCount).toBe(3)
-        expect(wordSequenceMatch.dictionaryName).toBe('cardinalNumbers')
+        expect(wordSequenceMatch.dictionaryName).toBe('cardinalNumbers-en')
       }
     })
 
@@ -74,7 +74,7 @@ describe('WordSequence Matcher', () => {
       if (wordSequenceMatch?.pattern === 'wordSequence') {
         expect(wordSequenceMatch.words).toEqual(['three', 'two', 'one'])
         expect(wordSequenceMatch.wordCount).toBe(3)
-        expect(wordSequenceMatch.dictionaryName).toBe('cardinalNumbers')
+        expect(wordSequenceMatch.dictionaryName).toBe('cardinalNumbers-en')
       }
     })
 
@@ -281,7 +281,7 @@ describe('WordSequence Matcher', () => {
       const match = result.sequence.find(
         (m) => m.pattern === 'wordSequence',
       ) as any
-      expect(match.dictionaryName).toBe('cardinalNumbers')
+      expect(match.dictionaryName).toBe('cardinalNumbers-en')
     })
 
     it('should handle tie in dictionary names by using the first one', () => {
@@ -290,7 +290,7 @@ describe('WordSequence Matcher', () => {
       const match = result.sequence.find(
         (m) => m.pattern === 'wordSequence',
       ) as any
-      expect(match.dictionaryName).toBe('cardinalNumbers')
+      expect(match.dictionaryName).toBe('cardinalNumbers-en')
     })
 
     it('should detect sequences with custom separators', () => {

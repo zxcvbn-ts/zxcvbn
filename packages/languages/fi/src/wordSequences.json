@@ -1,5 +1,5 @@
 {
-  "cardinalNumbers": [
+  "cardinalNumbers-fi": [
     "yksi",
     "kaksi",
     "kolme",
@@ -21,7 +21,7 @@
     "yhdeksäntoista",
     "kaksikymmentä"
   ],
-  "ordinalNumbers": [
+  "ordinalNumbers-fi": [
     "ensimmäinen",
     "toinen",
     "kolmas",
@@ -43,7 +43,7 @@
     "yhdeksästoista",
     "kahdeskymmenes"
   ],
-  "daysOfWeek": [
+  "daysOfWeek-fi": [
     "maanantai",
     "tiistai",
     "keskiviikko",
@@ -52,7 +52,7 @@
     "lauantai",
     "sunnuntai"
   ],
-  "months": [
+  "months-fi": [
     "tammikuu",
     "helmikuu",
     "maaliskuu",
@@ -66,9 +66,21 @@
     "marraskuu",
     "joulukuu"
   ],
-  "seasons": ["kevät", "kesä", "syksy", "talvi"],
-  "timePeriods": ["aamu", "iltapäivä", "ilta", "yö", "keskiyö", "keskipäivä"],
-  "rainbowColors": [
+  "seasons-fi": [
+    "kevät",
+    "kesä",
+    "syksy",
+    "talvi"
+  ],
+  "timePeriods-fi": [
+    "aamu",
+    "iltapäivä",
+    "ilta",
+    "yö",
+    "keskiyö",
+    "keskipäivä"
+  ],
+  "rainbowColors-fi": [
     "punainen",
     "oranssi",
     "keltainen",
@@ -77,9 +89,19 @@
     "indigo",
     "violetti"
   ],
-  "directions": ["pohjoinen", "etelä", "itä", "länsi"],
-  "intermediateDirections": ["koillinen", "luode", "kaakko", "lounas"],
-  "sizeProgression": [
+  "directions-fi": [
+    "pohjoinen",
+    "etelä",
+    "itä",
+    "länsi"
+  ],
+  "intermediateDirections-fi": [
+    "koillinen",
+    "luode",
+    "kaakko",
+    "lounas"
+  ],
+  "sizeProgression-fi": [
     "pikkuruinen",
     "pieni",
     "keskikokoinen",
@@ -87,7 +109,7 @@
     "valtava",
     "jättiläinen"
   ],
-  "militaryAlphabet": [
+  "militaryAlphabet-fi": [
     "alpha",
     "bravo",
     "charlie",
@@ -115,7 +137,7 @@
     "yankee",
     "zulu"
   ],
-  "planets": [
+  "planets-fi": [
     "merkurius",
     "venus",
     "maa",
@@ -126,7 +148,7 @@
     "neptunus",
     "pluto"
   ],
-  "zodiacSigns": [
+  "zodiacSigns-fi": [
     "oinas",
     "härkä",
     "kaksoset",
@@ -140,7 +162,7 @@
     "vesimies",
     "kalat"
   ],
-  "chineseZodiac": [
+  "chineseZodiac-fi": [
     "rotta",
     "härkä",
     "tiikeri",

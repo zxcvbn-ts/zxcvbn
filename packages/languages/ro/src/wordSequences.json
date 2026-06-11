@@ -1,5 +1,5 @@
 {
-  "cardinalNumbers": [
+  "cardinalNumbers-ro": [
     "unu",
     "doi",
     "trei",
@@ -21,7 +21,7 @@
     "nouasprezece",
     "douazeci"
   ],
-  "ordinalNumbers": [
+  "ordinalNumbers-ro": [
     "primul",
     "doilea",
     "treilea",
@@ -33,7 +33,7 @@
     "noualea",
     "zecelea"
   ],
-  "daysOfWeek": [
+  "daysOfWeek-ro": [
     "luni",
     "marti",
     "miercuri",
@@ -42,7 +42,7 @@
     "sambata",
     "duminica"
   ],
-  "months": [
+  "months-ro": [
     "ianuarie",
     "februarie",
     "martie",
@@ -56,8 +56,13 @@
     "noiembrie",
     "decembrie"
   ],
-  "seasons": ["primavara", "vara", "toamna", "iarna"],
-  "timePeriods": [
+  "seasons-ro": [
+    "primavara",
+    "vara",
+    "toamna",
+    "iarna"
+  ],
+  "timePeriods-ro": [
     "dimineata",
     "amiaza",
     "dupa-amiaza",
@@ -65,7 +70,7 @@
     "noapte",
     "miezul-noptii"
   ],
-  "rainbowColors": [
+  "rainbowColors-ro": [
     "rosu",
     "portocaliu",
     "galben",
@@ -74,10 +79,25 @@
     "indigo",
     "violet"
   ],
-  "directions": ["nord", "sud", "est", "vest"],
-  "intermediateDirections": ["nord-est", "nord-vest", "sud-est", "sud-vest"],
-  "sizeProgression": ["mic", "mediu", "mare", "urias"],
-  "militaryAlphabet": [
+  "directions-ro": [
+    "nord",
+    "sud",
+    "est",
+    "vest"
+  ],
+  "intermediateDirections-ro": [
+    "nord-est",
+    "nord-vest",
+    "sud-est",
+    "sud-vest"
+  ],
+  "sizeProgression-ro": [
+    "mic",
+    "mediu",
+    "mare",
+    "urias"
+  ],
+  "militaryAlphabet-ro": [
     "alpha",
     "bravo",
     "charlie",
@@ -105,7 +125,7 @@
     "yankee",
     "zulu"
   ],
-  "planets": [
+  "planets-ro": [
     "mercur",
     "venus",
     "pamant",
@@ -116,7 +136,7 @@
     "neptun",
     "pluto"
   ],
-  "zodiacSigns": [
+  "zodiacSigns-ro": [
     "berbec",
     "taur",
     "gemeni",
@@ -130,7 +150,7 @@
     "varsator",
     "pesti"
   ],
-  "chineseZodiac": [
+  "chineseZodiac-ro": [
     "sobolan",
     "bou",
     "tigru",

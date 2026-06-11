@@ -1,5 +1,5 @@
 {
-  "cardinalNumbers": [
+  "cardinalNumbers-hr": [
     "jedan",
     "dva",
     "tri",
@@ -21,7 +21,7 @@
     "devetnaest",
     "dvadeset"
   ],
-  "ordinalNumbers": [
+  "ordinalNumbers-hr": [
     "prvi",
     "drugi",
     "treći",
@@ -43,7 +43,7 @@
     "devetnaesti",
     "dvadeseti"
   ],
-  "daysOfWeek": [
+  "daysOfWeek-hr": [
     "ponedjeljak",
     "utorak",
     "srijeda",
@@ -52,7 +52,7 @@
     "subota",
     "nedjelja"
   ],
-  "months": [
+  "months-hr": [
     "siječanj",
     "veljača",
     "ožujak",
@@ -66,13 +66,13 @@
     "studeni",
     "prosinac"
   ],
-  "seasons": [
-    "proljeće", 
-    "ljeto", 
-    "jesen", 
+  "seasons-hr": [
+    "proljeće",
+    "ljeto",
+    "jesen",
     "zima"
   ],
-  "timePeriods": [
+  "timePeriods-hr": [
     "jutro",
     "prijepodne",
     "poslijepodne",
@@ -81,7 +81,7 @@
     "ponoć",
     "podne"
   ],
-  "rainbowColors": [
+  "rainbowColors-hr": [
     "crvena",
     "narančasta",
     "žuta",
@@ -90,19 +90,19 @@
     "indigo",
     "ljubičasta"
   ],
-  "directions": [
-    "sjever", 
-    "jug", 
-    "istok", 
+  "directions-hr": [
+    "sjever",
+    "jug",
+    "istok",
     "zapad"
   ],
-  "intermediateDirections": [
+  "intermediateDirections-hr": [
     "sjeveroistok",
     "sjeverozapad",
     "jugoistok",
     "jugozapad"
   ],
-  "sizeProgression": [
+  "sizeProgression-hr": [
     "sićušan",
     "malen",
     "srednji",
@@ -110,7 +110,7 @@
     "ogroman",
     "golem"
   ],
-  "militaryAlphabet": [
+  "militaryAlphabet-hr": [
     "alpha",
     "bravo",
     "charlie",
@@ -138,7 +138,7 @@
     "yankee",
     "zulu"
   ],
-  "planets": [
+  "planets-hr": [
     "merkur",
     "venera",
     "zemlja",
@@ -149,7 +149,7 @@
     "neptun",
     "pluto"
   ],
-  "zodiacSigns": [
+  "zodiacSigns-hr": [
     "ovan",
     "bik",
     "blizanci",
@@ -163,7 +163,7 @@
     "vodenjak",
     "ribe"
   ],
-  "chineseZodiac": [
+  "chineseZodiac-hr": [
     "štakor",
     "vol",
     "tigar",

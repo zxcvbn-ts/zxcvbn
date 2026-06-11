@@ -73,7 +73,6 @@ export default class Options {
       ...timeEstimationValuesDefaults.attackTime,
     },
   }
-
   constructor(
     options: OptionsType = {},
     customMatchers: Record<string, Matcher> = {},
@@ -82,6 +81,11 @@ export default class Options {
     Object.entries(customMatchers).forEach(([name, matcher]) => {
       this.addMatcher(name, matcher)
     })
+  }
+  public isWordSequence(key: string) {
+    return this.wordSequenceNames.some(
+      (name) => key === name || key.startsWith(`${name}-`),
+    )
   }
 
   // eslint-disable-next-line max-statements,complexity

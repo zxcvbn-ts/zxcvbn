@@ -1,5 +1,5 @@
 {
-  "cardinalNumbers": [
+  "cardinalNumbers-it": [
     "uno",
     "due",
     "tre",
@@ -21,7 +21,7 @@
     "diciannove",
     "venti"
   ],
-  "ordinalNumbers": [
+  "ordinalNumbers-it": [
     "primo",
     "secondo",
     "terzo",
@@ -43,7 +43,7 @@
     "diciannovesimo",
     "ventesimo"
   ],
-  "daysOfWeek": [
+  "daysOfWeek-it": [
     "lunedì",
     "martedì",
     "mercoledì",
@@ -52,7 +52,7 @@
     "sabato",
     "domenica"
   ],
-  "months": [
+  "months-it": [
     "gennaio",
     "febbraio",
     "marzo",
@@ -66,8 +66,13 @@
     "novembre",
     "dicembre"
   ],
-  "seasons": ["primavera", "estate", "autunno", "inverno"],
-  "timePeriods": [
+  "seasons-it": [
+    "primavera",
+    "estate",
+    "autunno",
+    "inverno"
+  ],
+  "timePeriods-it": [
     "mattina",
     "pomeriggio",
     "sera",
@@ -75,7 +80,7 @@
     "mezzanotte",
     "mezzogiorno"
   ],
-  "rainbowColors": [
+  "rainbowColors-it": [
     "rosso",
     "arancione",
     "giallo",
@@ -84,9 +89,19 @@
     "indaco",
     "violetto"
   ],
-  "directions": ["nord", "sud", "est", "ovest"],
-  "intermediateDirections": ["nord-est", "nord-ovest", "sud-est", "sud-ovest"],
-  "sizeProgression": [
+  "directions-it": [
+    "nord",
+    "sud",
+    "est",
+    "ovest"
+  ],
+  "intermediateDirections-it": [
+    "nord-est",
+    "nord-ovest",
+    "sud-est",
+    "sud-ovest"
+  ],
+  "sizeProgression-it": [
     "minuscolo",
     "piccolo",
     "medio",
@@ -94,7 +109,7 @@
     "enorme",
     "gigante"
   ],
-  "militaryAlphabet": [
+  "militaryAlphabet-it": [
     "alpha",
     "bravo",
     "charlie",
@@ -122,7 +137,7 @@
     "yankee",
     "zulu"
   ],
-  "planets": [
+  "planets-it": [
     "mercurio",
     "venere",
     "terra",
@@ -133,7 +148,7 @@
     "nettuno",
     "plutone"
   ],
-  "zodiacSigns": [
+  "zodiacSigns-it": [
     "ariete",
     "toro",
     "gemelli",
@@ -147,7 +162,7 @@
     "acquario",
     "pesci"
   ],
-  "chineseZodiac": [
+  "chineseZodiac-it": [
     "topo",
     "bue",
     "tigre",

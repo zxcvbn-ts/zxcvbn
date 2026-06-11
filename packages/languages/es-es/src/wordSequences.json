@@ -1,5 +1,5 @@
 {
-  "cardinalNumbers": [
+  "cardinalNumbers-es-es": [
     "uno",
     "dos",
     "tres",
@@ -21,7 +21,7 @@
     "diecinueve",
     "veinte"
   ],
-  "ordinalNumbers": [
+  "ordinalNumbers-es-es": [
     "primero",
     "segundo",
     "tercero",
@@ -43,7 +43,7 @@
     "decimonoveno",
     "vigésimo"
   ],
-  "daysOfWeek": [
+  "daysOfWeek-es-es": [
     "lunes",
     "martes",
     "miércoles",
@@ -52,7 +52,7 @@
     "sábado",
     "domingo"
   ],
-  "months": [
+  "months-es-es": [
     "enero",
     "febrero",
     "marzo",
@@ -66,9 +66,20 @@
     "noviembre",
     "diciembre"
   ],
-  "seasons": ["primavera", "verano", "otoño", "invierno"],
-  "timePeriods": ["mañana", "tarde", "noche", "medianoche", "mediodía"],
-  "rainbowColors": [
+  "seasons-es-es": [
+    "primavera",
+    "verano",
+    "otoño",
+    "invierno"
+  ],
+  "timePeriods-es-es": [
+    "mañana",
+    "tarde",
+    "noche",
+    "medianoche",
+    "mediodía"
+  ],
+  "rainbowColors-es-es": [
     "rojo",
     "naranja",
     "amarillo",
@@ -77,9 +88,19 @@
     "índigo",
     "violeta"
   ],
-  "directions": ["norte", "sur", "este", "oeste"],
-  "intermediateDirections": ["noreste", "noroeste", "sureste", "suroeste"],
-  "sizeProgression": [
+  "directions-es-es": [
+    "norte",
+    "sur",
+    "este",
+    "oeste"
+  ],
+  "intermediateDirections-es-es": [
+    "noreste",
+    "noroeste",
+    "sureste",
+    "suroeste"
+  ],
+  "sizeProgression-es-es": [
     "diminuto",
     "pequeño",
     "mediano",
@@ -87,7 +108,7 @@
     "enorme",
     "gigante"
   ],
-  "militaryAlphabet": [
+  "militaryAlphabet-es-es": [
     "alpha",
     "bravo",
     "charlie",
@@ -115,7 +136,7 @@
     "yankee",
     "zulu"
   ],
-  "planets": [
+  "planets-es-es": [
     "mercurio",
     "venus",
     "tierra",
@@ -126,7 +147,7 @@
     "neptuno",
     "plutón"
   ],
-  "zodiacSigns": [
+  "zodiacSigns-es-es": [
     "aries",
     "tauro",
     "géminis",
@@ -140,7 +161,7 @@
     "acuario",
     "piscis"
   ],
-  "chineseZodiac": [
+  "chineseZodiac-es-es": [
     "rata",
     "buey",
     "tigre",

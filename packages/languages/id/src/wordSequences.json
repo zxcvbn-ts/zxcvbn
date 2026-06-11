@@ -1,5 +1,5 @@
 {
-  "cardinalNumbers": [
+  "cardinalNumbers-id": [
     "satu",
     "dua",
     "tiga",
@@ -21,7 +21,7 @@
     "sembilan belas",
     "dua puluh"
   ],
-  "ordinalNumbers": [
+  "ordinalNumbers-id": [
     "pertama",
     "kedua",
     "ketiga",
@@ -43,7 +43,7 @@
     "kesembilan belas",
     "kedua puluh"
   ],
-  "daysOfWeek": [
+  "daysOfWeek-id": [
     "senin",
     "selasa",
     "rabu",
@@ -52,7 +52,7 @@
     "sabtu",
     "minggu"
   ],
-  "months": [
+  "months-id": [
     "januari",
     "februari",
     "maret",
@@ -66,8 +66,13 @@
     "november",
     "desember"
   ],
-  "seasons": ["semi", "panas", "gugur", "dingin"],
-  "timePeriods": [
+  "seasons-id": [
+    "semi",
+    "panas",
+    "gugur",
+    "dingin"
+  ],
+  "timePeriods-id": [
     "pagi",
     "siang",
     "sore",
@@ -75,7 +80,7 @@
     "tengah malam",
     "tengah hari"
   ],
-  "rainbowColors": [
+  "rainbowColors-id": [
     "merah",
     "jingga",
     "kuning",
@@ -84,14 +89,19 @@
     "nila",
     "ungu"
   ],
-  "directions": ["utara", "selatan", "timur", "barat"],
-  "intermediateDirections": [
+  "directions-id": [
+    "utara",
+    "selatan",
+    "timur",
+    "barat"
+  ],
+  "intermediateDirections-id": [
     "timur laut",
     "barat laut",
     "tenggara",
     "barat daya"
   ],
-  "sizeProgression": [
+  "sizeProgression-id": [
     "sangat kecil",
     "kecil",
     "sedang",
@@ -99,7 +109,7 @@
     "sangat besar",
     "raksasa"
   ],
-  "militaryAlphabet": [
+  "militaryAlphabet-id": [
     "alpha",
     "bravo",
     "charlie",
@@ -127,7 +137,7 @@
     "yankee",
     "zulu"
   ],
-  "planets": [
+  "planets-id": [
     "merkurius",
     "venus",
     "bumi",
@@ -138,7 +148,7 @@
     "neptunus",
     "pluto"
   ],
-  "zodiacSigns": [
+  "zodiacSigns-id": [
     "aries",
     "taurus",
     "gemini",
@@ -152,7 +162,7 @@
     "aquarius",
     "pisces"
   ],
-  "chineseZodiac": [
+  "chineseZodiac-id": [
     "tikus",
     "kerbau",
     "macan",

@@ -1,5 +1,5 @@
 {
-  "cardinalNumbers": [
+  "cardinalNumbers-da-dk": [
     "en",
     "to",
     "tre",
@@ -21,7 +21,7 @@
     "nitten",
     "tyve"
   ],
-  "ordinalNumbers": [
+  "ordinalNumbers-da-dk": [
     "første",
     "anden",
     "tredje",
@@ -43,7 +43,7 @@
     "nittende",
     "tyvende"
   ],
-  "daysOfWeek": [
+  "daysOfWeek-da-dk": [
     "mandag",
     "tirsdag",
     "onsdag",
@@ -52,7 +52,7 @@
     "lørdag",
     "søndag"
   ],
-  "months": [
+  "months-da-dk": [
     "januar",
     "februar",
     "marts",
@@ -66,8 +66,13 @@
     "november",
     "december"
   ],
-  "seasons": ["forår", "sommer", "efterår", "vinter"],
-  "timePeriods": [
+  "seasons-da-dk": [
+    "forår",
+    "sommer",
+    "efterår",
+    "vinter"
+  ],
+  "timePeriods-da-dk": [
     "morgen",
     "formiddag",
     "eftermiddag",
@@ -76,10 +81,28 @@
     "midnat",
     "middag"
   ],
-  "rainbowColors": ["rød", "orange", "gul", "grøn", "blå", "indigo", "violet"],
-  "directions": ["nord", "syd", "øst", "vest"],
-  "intermediateDirections": ["nordøst", "nordvest", "sydøst", "sydvest"],
-  "sizeProgression": [
+  "rainbowColors-da-dk": [
+    "rød",
+    "orange",
+    "gul",
+    "grøn",
+    "blå",
+    "indigo",
+    "violet"
+  ],
+  "directions-da-dk": [
+    "nord",
+    "syd",
+    "øst",
+    "vest"
+  ],
+  "intermediateDirections-da-dk": [
+    "nordøst",
+    "nordvest",
+    "sydøst",
+    "sydvest"
+  ],
+  "sizeProgression-da-dk": [
     "lillebitte",
     "lille",
     "mellem",
@@ -87,7 +110,7 @@
     "enorm",
     "gigantisk"
   ],
-  "militaryAlphabet": [
+  "militaryAlphabet-da-dk": [
     "alpha",
     "bravo",
     "charlie",
@@ -115,7 +138,7 @@
     "yankee",
     "zulu"
   ],
-  "planets": [
+  "planets-da-dk": [
     "merkur",
     "venus",
     "jorden",
@@ -126,7 +149,7 @@
     "neptun",
     "pluto"
   ],
-  "zodiacSigns": [
+  "zodiacSigns-da-dk": [
     "vædderen",
     "tyren",
     "tvillingerne",
@@ -140,7 +163,7 @@
     "vandmanden",
     "fiskene"
   ],
-  "chineseZodiac": [
+  "chineseZodiac-da-dk": [
     "rotten",
     "oksen",
     "tigeren",

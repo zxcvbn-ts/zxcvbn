@@ -1,5 +1,5 @@
 {
-  "cardinalNumbers": [
+  "cardinalNumbers-th": [
     "nueng",
     "song",
     "sam",
@@ -21,7 +21,7 @@
     "sip-kao",
     "yi-sip"
   ],
-  "ordinalNumbers": [
+  "ordinalNumbers-th": [
     "thi-nueng",
     "thi-song",
     "thi-sam",
@@ -33,7 +33,7 @@
     "thi-kao",
     "thi-sip"
   ],
-  "daysOfWeek": [
+  "daysOfWeek-th": [
     "wan-chan",
     "wan-angkhan",
     "wan-phut",
@@ -42,7 +42,7 @@
     "wan-sao",
     "wan-athit"
   ],
-  "months": [
+  "months-th": [
     "mokkarakhom",
     "kumphaphan",
     "minakhom",
@@ -56,8 +56,12 @@
     "phruetsachikayon",
     "thanwakhom"
   ],
-  "seasons": ["rฤdu-ron", "rฤdu-fon", "rฤdu-nao"],
-  "timePeriods": [
+  "seasons-th": [
+    "rฤdu-ron",
+    "rฤdu-fon",
+    "rฤdu-nao"
+  ],
+  "timePeriods-th": [
     "ton-chao",
     "ton-sai",
     "tiang",
@@ -65,7 +69,7 @@
     "ton-yen",
     "klang-khuen"
   ],
-  "rainbowColors": [
+  "rainbowColors-th": [
     "si-daeng",
     "si-som",
     "si-lueng",
@@ -74,15 +78,24 @@
     "si-namngoen",
     "si-muang"
   ],
-  "directions": ["thit-nuea", "thit-tai", "thit-tawan-ok", "thit-tawan-tok"],
-  "intermediateDirections": [
+  "directions-th": [
+    "thit-nuea",
+    "thit-tai",
+    "thit-tawan-ok",
+    "thit-tawan-tok"
+  ],
+  "intermediateDirections-th": [
     "thit-tawan-ok-chiang-nuea",
     "thit-tawan-tok-chiang-nuea",
     "thit-tawan-ok-chiang-tai",
     "thit-tawan-tok-chiang-tai"
   ],
-  "sizeProgression": ["lek", "klang", "yai"],
-  "militaryAlphabet": [
+  "sizeProgression-th": [
+    "lek",
+    "klang",
+    "yai"
+  ],
+  "militaryAlphabet-th": [
     "alpha",
     "bravo",
     "charlie",
@@ -110,7 +123,7 @@
     "yankee",
     "zulu"
   ],
-  "planets": [
+  "planets-th": [
     "dao-phut",
     "dao-suk",
     "lok",
@@ -121,7 +134,7 @@
     "dao-neptun",
     "dao-phluto"
   ],
-  "zodiacSigns": [
+  "zodiacSigns-th": [
     "rasi-met",
     "rasi-phrusop",
     "rasi-methun",
@@ -135,7 +148,7 @@
     "rasi-kum",
     "rasi-min"
   ],
-  "chineseZodiac": [
+  "chineseZodiac-th": [
     "pi-chuat",
     "pi-chalฉ",
     "pi-khan",

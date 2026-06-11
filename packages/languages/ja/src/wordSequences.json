@@ -1,5 +1,5 @@
 {
-  "cardinalNumbers": [
+  "cardinalNumbers-ja": [
     "ichi",
     "ni",
     "san",
@@ -21,7 +21,7 @@
     "juukyuu",
     "nijuu"
   ],
-  "ordinalNumbers": [
+  "ordinalNumbers-ja": [
     "daiichi",
     "daini",
     "daisan",
@@ -43,7 +43,7 @@
     "daijuukyuu",
     "dainijuu"
   ],
-  "daysOfWeek": [
+  "daysOfWeek-ja": [
     "getsuyoubi",
     "kayoubi",
     "suiyoubi",
@@ -52,7 +52,7 @@
     "doyoubi",
     "nichiyoubi"
   ],
-  "months": [
+  "months-ja": [
     "ichigatsu",
     "nigatsu",
     "sangatsu",
@@ -66,12 +66,42 @@
     "juuichigatsu",
     "juunigatsu"
   ],
-  "seasons": ["haru", "natsu", "aki", "fuyu"],
-  "timePeriods": ["asa", "hiru", "yuugata", "yoru", "mayonaka", "shougo"],
-  "rainbowColors": ["aka", "daidai", "kiiro", "midori", "ao", "ai", "murasaki"],
-  "directions": ["kita", "minami", "higashi", "nishi"],
-  "intermediateDirections": ["hokutou", "hokusei", "nantou", "nansei"],
-  "sizeProgression": [
+  "seasons-ja": [
+    "haru",
+    "natsu",
+    "aki",
+    "fuyu"
+  ],
+  "timePeriods-ja": [
+    "asa",
+    "hiru",
+    "yuugata",
+    "yoru",
+    "mayonaka",
+    "shougo"
+  ],
+  "rainbowColors-ja": [
+    "aka",
+    "daidai",
+    "kiiro",
+    "midori",
+    "ao",
+    "ai",
+    "murasaki"
+  ],
+  "directions-ja": [
+    "kita",
+    "minami",
+    "higashi",
+    "nishi"
+  ],
+  "intermediateDirections-ja": [
+    "hokutou",
+    "hokusei",
+    "nantou",
+    "nansei"
+  ],
+  "sizeProgression-ja": [
     "kyokushou",
     "shou",
     "chuu",
@@ -79,7 +109,7 @@
     "kyodai",
     "choukyodai"
   ],
-  "militaryAlphabet": [
+  "militaryAlphabet-ja": [
     "alpha",
     "bravo",
     "charlie",
@@ -107,7 +137,7 @@
     "yankee",
     "zulu"
   ],
-  "planets": [
+  "planets-ja": [
     "suisei",
     "kinsei",
     "chikyuu",
@@ -118,7 +148,7 @@
     "kaivousei",
     "meivousei"
   ],
-  "zodiacSigns": [
+  "zodiacSigns-ja": [
     "ohitsujiza",
     "oushuza",
     "futagaza",
@@ -132,7 +162,7 @@
     "mizugameza",
     "uoniza"
   ],
-  "chineseZodiac": [
+  "chineseZodiac-ja": [
     "nezumi",
     "ushi",
     "tora",
