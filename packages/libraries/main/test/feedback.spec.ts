@@ -42,7 +42,7 @@ describe('feedback', () => {
       const options = {
         pattern: 'dictionary',
         token: 'tests',
-        dictionaryName: 'passwords',
+        dictionaryName: 'passwords-common',
         reversed: false,
         l33t: false,
         rank: 10,
