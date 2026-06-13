@@ -1,7 +1,13 @@
 {
   "name": "@zxcvbn-ts/language-en",
   "version": "4.1.0",
-  "main": "dist/index.cjs",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs"
+    }
+  },
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "sideEffects": false,
