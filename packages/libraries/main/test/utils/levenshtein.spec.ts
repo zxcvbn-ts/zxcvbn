@@ -118,7 +118,7 @@ describe('levenshtein', () => {
       sequence: [
         {
           baseGuesses: 344,
-          dictionaryName: 'passwords',
+          dictionaryName: 'passwords-common',
           guesses: 344,
           guessesLog10: 2.53655844257153,
           i: 0,
