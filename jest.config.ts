@@ -13,8 +13,25 @@ export default function jestConfig() {
       '^~/(.*)$': '<rootDir>/$1',
     },
     transform: {
-      '^.+\\.(ts|js|mjs)$': '@swc/jest',
+      '^.+\\.(ts|js|mjs)$': [
+        '@swc/jest',
+        {
+          jsc: {
+            parser: {
+              syntax: 'typescript',
+              tsx: true,
+              decorators: true,
+            },
+            keepClassNames: true,
+            target: 'es2022',
+          },
+          module: {
+            type: 'es6',
+          },
+        },
+      ],
     },
+    extensionsToTreatAsEsm: ['.ts'],
     moduleFileExtensions: ['ts', 'json', 'js'],
     collectCoverageFrom: ['packages/libraries/main/**/*.{js,ts}'],
     coveragePathIgnorePatterns: ['dist', 'test'],
