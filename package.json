@@ -22,6 +22,7 @@
     "lint:fix": "yarn run lint --fix --cache",
     "typecheck": "tsc --noEmit",
     "test": "jest --coverage",
+    "test:types": "lerna exec --parallel -- attw --pack .",
     "changed": "lerna changed",
     "lerna-publish": "yarn build && lerna publish --conventional-commits -y",
     "lerna-publish:beta": "yarn build && lerna publish premajor --preid beta --dist-tag beta -y",
@@ -33,6 +34,7 @@
     "docs:build": "vuepress build docs"
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "0.18.3",
     "@babel/cli": "7.28.6",
     "@babel/core": "7.29.0",
     "@babel/preset-env": "7.29.2",
