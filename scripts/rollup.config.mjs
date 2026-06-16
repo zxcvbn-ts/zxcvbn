@@ -66,6 +66,7 @@ export default [
         sourcemap: true,
         preserveModules: true,
         exports: 'auto',
+        interop: 'auto',
       },
     ],
   },
