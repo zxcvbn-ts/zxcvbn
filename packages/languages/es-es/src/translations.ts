@@ -20,7 +20,7 @@ export default {
     pwned: 'Su contraseña fue expuesta por una violación de datos en Internet.',
   },
   suggestions: {
-    l33t: "Evita sustituciones predecibles como '@' por 'a'."
+    l33t: "Evita sustituciones predecibles como '@' por 'a'.",
     reverseWords: 'Evita palabras comunes escritas al revés',
     allUppercase: 'Escribe en mayúsculas algunas, pero no todas las letras.',
     capitalization:
