@@ -86,7 +86,7 @@ export default {
 </script>
 ```
 
-## nuxt
+## Nuxt
 
 Use a module to define the options on the server side or/and a client only plugin for the client.
 Most of the time you don't need to add the module because the user works only on the client and doesn't type passwords for the server renderer.
