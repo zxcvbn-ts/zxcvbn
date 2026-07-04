@@ -261,7 +261,8 @@ Create a service that initializes the library once.
 ```typescript
 import { Injectable } from '@angular/core';
 
-import { ZxcvbnFactory, ZxcvbnResult } from '@zxcvbn-ts/core';
+import { ZxcvbnFactory } from '@zxcvbn-ts/core';
+import type { ZxcvbnResult } from '@zxcvbn-ts/core';
 
 import * as common from '@zxcvbn-ts/language-common';
 import * as en from '@zxcvbn-ts/language-en';
@@ -299,6 +300,7 @@ export class PasswordStrengthService {
 ```typescript
 import { Component } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, Validators } from '@angular/forms';
 import {
   debounceTime,
@@ -314,6 +316,7 @@ import { ZxcvbnResult } from '@zxcvbn-ts/core';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
+  standalone: true,
   imports: [ReactiveFormsModule],
 })
 export class RegisterComponent {
@@ -334,7 +337,8 @@ export class RegisterComponent {
         distinctUntilChanged(),
         switchMap((password) =>
           from(this.passwordStrength.checkAsync(password))
-        )
+        ),
+        takeUntilDestroyed()
       )
       .subscribe((result) => {
         this.passwordResult = result;
