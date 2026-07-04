@@ -299,9 +299,8 @@ export class PasswordStrengthService {
 
 ```typescript
 import { Component } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
   debounceTime,
   distinctUntilChanged,
