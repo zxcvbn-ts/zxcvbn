@@ -310,7 +310,7 @@ import {
 } from 'rxjs';
 
 import { PasswordStrengthService } from './password-strength.service';
-import { ZxcvbnResult } from '@zxcvbn-ts/core';
+import type { ZxcvbnResult } from '@zxcvbn-ts/core';
 
 @Component({
   selector: 'app-register',
