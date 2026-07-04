@@ -429,6 +429,48 @@ export class RegisterComponent {
 </form>
 ```
 
+---
+
+### 5. Styles
+
+`src/styles.css`
+
+```css
+.strength {
+  margin-top: 1rem;
+}
+
+.strength-bar {
+  height: 8px;
+  border-radius: 4px;
+  margin-bottom: 12px;
+  transition: all 0.3s ease;
+}
+
+.score0 {
+  background: #d32f2f;
+}
+
+.score1 {
+  background: #f57c00;
+}
+
+.score2 {
+  background: #fbc02d;
+}
+
+.score3 {
+  background: #7cb342;
+}
+
+.score4 {
+  background: #2e7d32;
+}
+
+.warning {
+  color: #d32f2f;
+}
+```
 
 ## Fastify
 
