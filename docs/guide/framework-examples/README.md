@@ -242,7 +242,193 @@ export default function PasswordStrength() {
 
 ## Angular
 
-tbd.
+We are using reactive forms in this example.
+
+### 1. Install the packages
+
+```bash
+npm install @zxcvbn-ts/core @zxcvbn-ts/language-common @zxcvbn-ts/language-en
+```
+
+---
+
+### 2. Configure zxcvbn
+
+Create a service that initializes the library once.
+
+`src/password-strength.service.ts`
+
+```typescript
+import { Injectable } from '@angular/core';
+
+import { ZxcvbnFactory, ZxcvbnResult } from '@zxcvbn-ts/core';
+
+import * as common from '@zxcvbn-ts/language-common';
+import * as en from '@zxcvbn-ts/language-en';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class PasswordStrengthService {
+  private readonly zxcvbn = new ZxcvbnFactory({
+    dictionary: {
+      ...common.dictionary,
+      ...en.dictionary,
+    },
+    graphs: common.adjacencyGraphs,
+    translations: en.translations,
+    useLevenshteinDistance: true,
+  });
+
+  check(password: string): ZxcvbnResult {
+    return this.zxcvbn.check(password);
+  }
+
+  checkAsync(password: string): Promise<ZxcvbnResult> {
+    return this.zxcvbn.checkAsync(password);
+  }
+}
+```
+
+---
+
+### 3. Create a reactive form
+
+`src/register.component.ts`
+
+```typescript
+import { Component } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  switchMap,
+  from,
+} from 'rxjs';
+
+import { PasswordStrengthService } from './password-strength.service';
+import { ZxcvbnResult } from '@zxcvbn-ts/core';
+
+@Component({
+  selector: 'app-register',
+  templateUrl: './register.component.html',
+  imports: [ReactiveFormsModule],
+})
+export class RegisterComponent {
+  passwordResult?: ZxcvbnResult;
+
+  form = this.fb.group({
+    password: ['', Validators.required],
+  });
+
+  constructor(
+    private fb: FormBuilder,
+    private passwordStrength: PasswordStrengthService
+  ) {
+    this.form.controls.password.valueChanges
+      .pipe(
+        filter((value): value is string => value != null),
+        debounceTime(200),
+        distinctUntilChanged(),
+        switchMap((password) =>
+          from(this.passwordStrength.checkAsync(password))
+        )
+      )
+      .subscribe((result) => {
+        this.passwordResult = result;
+      });
+  }
+
+  get strengthLabel(): string {
+    switch (this.passwordResult?.score) {
+      case 0:
+        return 'Very Weak';
+      case 1:
+        return 'Weak';
+      case 2:
+        return 'Fair';
+      case 3:
+        return 'Strong';
+      case 4:
+        return 'Very Strong';
+      default:
+        return '';
+    }
+  }
+}
+```
+
+---
+
+### 4. Component template
+
+> This example uses Angular's new control flow syntax (`@if` and
+> `@for`) available in Angular 17+.
+
+`src/register.component.html`
+
+```html
+<form [formGroup]="form">
+  <label for="password">Password</label>
+
+  <input
+    id="password"
+    type="password"
+    formControlName="password"
+    placeholder="Enter password"
+  />
+
+  @if (passwordResult) {
+  <div class="strength">
+    <div
+      class="strength-bar"
+      [style.width.%]="(passwordResult.score + 1) * 20"
+      [class.score0]="passwordResult.score === 0"
+      [class.score1]="passwordResult.score === 1"
+      [class.score2]="passwordResult.score === 2"
+      [class.score3]="passwordResult.score === 3"
+      [class.score4]="passwordResult.score === 4"
+    ></div>
+
+    <p>
+      Strength:
+      <strong>{{ strengthLabel }}</strong>
+    </p>
+
+    <p>
+      Score:
+      <strong>{{ passwordResult.score }}/4</strong>
+    </p>
+
+    <p>
+      Estimated guesses:
+      <strong>{{ passwordResult.guesses }}</strong>
+    </p>
+
+    <p>
+      Calculation time:
+      <strong>{{ passwordResult.calcTime }} ms</strong>
+    </p>
+
+    @if (passwordResult.feedback.warning) {
+    <p class="warning">
+      {{ passwordResult.feedback.warning }}
+    </p>
+    } @if (passwordResult.feedback.suggestions.length) {
+    <ul>
+      @for (suggestion of passwordResult.feedback.suggestions; track suggestion)
+      {
+      <li>{{ suggestion }}</li>
+      }
+    </ul>
+    }
+  </div>
+  }
+</form>
+```
+
 
 ## Fastify
 
