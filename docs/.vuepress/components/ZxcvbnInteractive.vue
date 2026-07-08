@@ -118,6 +118,7 @@ export default {
         'id',
         'it',
         'ja',
+        'ko',
         'ku',
         'nl-be',
         'pl',
