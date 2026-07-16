@@ -89,7 +89,7 @@ export default class ListHandler {
         // this is a typescript import fix because otherwise typescript just rexports the json file on build
         .replace(
           "import adjacencyGraphs from './adjacencyGraphs.json'",
-          "import * as tempAdjacencyGraphs from './adjacencyGraphs.json'",
+          "import tempAdjacencyGraphs from './adjacencyGraphs.json'",
         )
       const hasAdjacencyGraphs = files.includes('adjacencyGraphs.json')
       const hasWordSequences = files.includes('wordSequences.json')
