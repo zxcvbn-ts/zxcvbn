@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.1.3](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/language-common@4.1.2...@zxcvbn-ts/language-common@4.1.3) (2026-07-16)
+
+### Bug Fixes
+
+- **common:** resolve broken adjacency graph import ([#330](https://github.com/zxcvbn-ts/zxcvbn/issues/330)) ([7d4712c](https://github.com/zxcvbn-ts/zxcvbn/commit/7d4712c2566d799d1378148416c5e4a04744c323))
+
 ## [4.1.1](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/language-common@4.1.0...@zxcvbn-ts/language-common@4.1.1) (2026-06-13)
 
 ### Bug Fixes

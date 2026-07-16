@@ -1,6 +1,6 @@
 {
   "name": "@zxcvbn-ts/language-ko",
-  "version": "4.1.1",
+  "version": "4.2.0",
   "main": "dist/index.cjs",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
