@@ -1,0 +1,33 @@
+{
+  "name": "@zxcvbn-ts/language-ko",
+  "version": "4.1.1",
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "sideEffects": false,
+  "description": "The Korean language package for zxcvbn-ts",
+  "license": "MIT",
+  "homepage": "https://github.com/zxcvbn-ts/zxcvbn",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zxcvbn-ts/zxcvbn.git"
+  },
+  "author": "zxcvbn-ts",
+  "files": [
+    "dist",
+    "src",
+    "CHANGELOG.md"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "zxcvbn",
+    "language",
+    "translation",
+    "korean"
+  ],
+  "scripts": {
+    "build": "rollup -c ../../../scripts/rollup.config.mjs"
+  }
+}
