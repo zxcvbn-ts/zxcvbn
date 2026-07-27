@@ -1,4 +1,4 @@
-import { DictionaryMatch, MatchOptions } from '../../types'
+import { DictionaryMatch, MatchOptions } from '../../types.ts'
 
 export interface DictionaryMatchOptionsLevenshtein extends MatchOptions {
   useLevenshtein?: boolean

@@ -1,5 +1,5 @@
-import utils from '../../../../scoring/utils'
-import { PasswordChanges } from '../matching/unmunger/getCleanPasswords'
+import utils from '../../../../scoring/utils.ts'
+import { PasswordChanges } from '../matching/unmunger/getCleanPasswords.ts'
 
 export interface L33tOptions {
   l33t: string

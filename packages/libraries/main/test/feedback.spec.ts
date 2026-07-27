@@ -1,6 +1,6 @@
-import translations from '../../../languages/en/src/translations'
-import Options from '../src/Options'
-import Feedback from '../src/Feedback'
+import translations from '../../../languages/en/src/translations.ts'
+import Options from '../src/Options.ts'
+import Feedback from '../src/Feedback.ts'
 
 const zxcvbnOptions = new Options({
   translations,

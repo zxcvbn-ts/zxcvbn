@@ -1,7 +1,7 @@
-import MatchSequence from '../../../src/matcher/sequence/matching'
-import checkMatches from '../../helper/checkMatches'
-import genpws from '../../helper/genpws'
-import Options from '../../../src/Options'
+import MatchSequence from '../../../src/matcher/sequence/matching.ts'
+import checkMatches from '../../helper/checkMatches.ts'
+import genpws from '../../helper/genpws.ts'
+import Options from '../../../src/Options.ts'
 
 describe('sequence matching', () => {
   const zxcvbnOptions = new Options()

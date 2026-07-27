@@ -1,6 +1,6 @@
-import Options from '../../Options'
-import { MatchEstimated } from '../../types'
-import { ALL_UPPER_INVERTED, START_UPPER } from '../../data/const'
+import Options from '../../Options.ts'
+import { MatchEstimated } from '../../types.ts'
+import { ALL_UPPER_INVERTED, START_UPPER } from '../../data/const.ts'
 
 const getDictionaryWarningPassword = (
   options: Options,

@@ -119,15 +119,6 @@ export default defineConfig([
         },
       ],
 
-      'import/extensions': [
-        'error',
-        'always',
-        {
-          js: 'never',
-          ts: 'never',
-        },
-      ],
-
       'no-unused-vars': 'off',
 
       '@typescript-eslint/no-unused-vars': [

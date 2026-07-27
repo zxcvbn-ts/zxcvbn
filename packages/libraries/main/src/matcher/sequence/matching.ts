@@ -1,5 +1,5 @@
-import { ALL_UPPER, ALL_LOWER, ALL_DIGIT } from '../../data/const'
-import { MatcherBaseClass, MatchOptions, SequenceMatch } from '../../types'
+import { ALL_UPPER, ALL_LOWER, ALL_DIGIT } from '../../data/const.ts'
+import { MatcherBaseClass, MatchOptions, SequenceMatch } from '../../types.ts'
 
 interface UpdateParams {
   i: number

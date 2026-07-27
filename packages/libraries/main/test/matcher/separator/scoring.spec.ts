@@ -1,5 +1,8 @@
-import { SEPERATOR_CHARS, SEPERATOR_CHAR_COUNT } from '../../../src/data/const'
-import separatorGuesses from '../../../src/matcher/separator/scoring'
+import {
+  SEPERATOR_CHARS,
+  SEPERATOR_CHAR_COUNT,
+} from '../../../src/data/const.ts'
+import separatorGuesses from '../../../src/matcher/separator/scoring.ts'
 
 describe('scoring: guesses separator', () => {
   const data = SEPERATOR_CHARS.map((s) => [s, SEPERATOR_CHAR_COUNT])

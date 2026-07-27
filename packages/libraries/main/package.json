@@ -13,6 +13,7 @@
   "description": "Realistic password strength estimation written in typescript",
   "license": "MIT",
   "homepage": "https://github.com/zxcvbn-ts/zxcvbn",
+  "sideEffects": false,
   "repository": {
     "type": "git",
     "url": "https://github.com/zxcvbn-ts/zxcvbn.git"

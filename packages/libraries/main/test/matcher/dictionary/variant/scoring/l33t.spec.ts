@@ -1,7 +1,7 @@
-import l33t from '../../../../../src/matcher/dictionary/variants/scoring/l33t'
-import utils from '../../../../../src/scoring/utils'
-import { empty } from '../../../../../src/utils/helper'
-import { LooseObject } from '../../../../../src/types'
+import l33t from '../../../../../src/matcher/dictionary/variants/scoring/l33t.ts'
+import utils from '../../../../../src/scoring/utils.ts'
+import { empty } from '../../../../../src/utils/helper.ts'
+import { LooseObject } from '../../../../../src/types.ts'
 
 const { nCk } = utils
 

@@ -1,14 +1,14 @@
-import DictionaryL33tMatcher from '../dictionary/variants/matching/l33t'
-import DictionaryReverseMatcher from '../dictionary/variants/matching/reverse'
-import DictionaryMatcher from '../dictionary/matching'
-import Options from '../../Options'
+import DictionaryL33tMatcher from '../dictionary/variants/matching/l33t.ts'
+import DictionaryReverseMatcher from '../dictionary/variants/matching/reverse.ts'
+import DictionaryMatcher from '../dictionary/matching.ts'
+import Options from '../../Options.ts'
 import {
   MatchOptions,
   WordSequenceMatch,
   DictionaryMatch,
   MatcherBaseClass,
   L33tMatch,
-} from '../../types'
+} from '../../types.ts'
 
 interface WordMatch {
   word: string

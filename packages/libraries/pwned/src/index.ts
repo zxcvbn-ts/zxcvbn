@@ -1,9 +1,9 @@
 import { Matcher } from '@zxcvbn-ts/core'
-import MatchPwned from './matching'
-import scoring from './scoring'
-import FeedbackFactory from './feedback'
-import haveIBeenPwned from './haveIBeenPwned'
-import { FetchApi, MatcherPwnedFactoryConfig } from './types'
+import MatchPwned from './matching.ts'
+import scoring from './scoring.ts'
+import FeedbackFactory from './feedback.ts'
+import haveIBeenPwned from './haveIBeenPwned.ts'
+import { FetchApi, MatcherPwnedFactoryConfig } from './types.ts'
 
 export const matcherPwnedFactory = (
   universalFetch: FetchApi,

@@ -2,7 +2,7 @@
 import Kuroshiro from 'kuroshiro'
 // @ts-expect-error for testing purposes
 import KuromojiAnalyzer from 'kuroshiro-analyzer-kuromoji'
-import CommonWordsGenerator from './CommonWordsGenerator'
+import CommonWordsGenerator from './CommonWordsGenerator.ts'
 
 export default class SimpleJapaneseListGenerator extends CommonWordsGenerator {
   async convertJapanese() {

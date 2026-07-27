@@ -1,10 +1,10 @@
-import Options from './Options'
-import { PasswordChanges } from './matcher/dictionary/variants/matching/unmunger/getCleanPasswords'
-import Matching from './Matching'
-import { DictionaryReturn } from './matcher/dictionary/scoring'
-import { REGEXEN } from './data/const'
-import l33tTableDefault from './data/l33tTable'
-import translationKeys from './data/translationKeys'
+import Options from './Options.ts'
+import { PasswordChanges } from './matcher/dictionary/variants/matching/unmunger/getCleanPasswords.ts'
+import Matching from './Matching.ts'
+import { DictionaryReturn } from './matcher/dictionary/scoring.ts'
+import { REGEXEN } from './data/const.ts'
+import l33tTableDefault from './data/l33tTable.ts'
+import translationKeys from './data/translationKeys.ts'
 
 export type PluralizationFunction = (value: number) => string
 

@@ -1,8 +1,8 @@
-import repeatGuesses from '../../../src/matcher/repeat/scoring'
-import Scoring from '../../../src/scoring'
-import MatchOmni from '../../../src/Matching'
-import Options from '../../../src/Options'
-import { MatchExtended } from '../../../src/types'
+import repeatGuesses from '../../../src/matcher/repeat/scoring.ts'
+import Scoring from '../../../src/scoring/index.ts'
+import MatchOmni from '../../../src/Matching.ts'
+import Options from '../../../src/Options.ts'
+import { MatchExtended } from '../../../src/types.ts'
 
 const zxcvbnOptions = new Options()
 const omniMatch = new MatchOmni(zxcvbnOptions)

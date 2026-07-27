@@ -1,6 +1,6 @@
-import { TimeEstimates } from '../src/TimeEstimates'
-import Options from '../src/Options'
-import translationKeys from '../src/data/translationKeys'
+import { TimeEstimates } from '../src/TimeEstimates.ts'
+import Options from '../src/Options.ts'
+import translationKeys from '../src/data/translationKeys.ts'
 
 describe('TimeEstimates Pluralization Function', () => {
   it('should use pluralization function when provided', () => {

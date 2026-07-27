@@ -1,5 +1,5 @@
-import { matcherPwnedFactory } from '../src'
-import Options from '../../main/src/Options'
+import { matcherPwnedFactory } from '../src/index.ts'
+import Options from '../../main/src/Options.ts'
 
 // eslint-disable-next-line @typescript-eslint/require-await
 const fetch = jest.fn(async () => ({
@@ -10,14 +10,12 @@ const fetch = jest.fn(async () => ({
 
 describe('pwned matching', () => {
   const options = new Options()
-  // @ts-expect-error for testing purposes
-  const matcherPwned = matcherPwnedFactory(fetch)
+  const matcherPwned = matcherPwnedFactory(fetch as any)
   it('should return a match', async () => {
     const matchPwned = new matcherPwned.Matching(options)
     const match = await matchPwned.match({
       password: 'P4$$w0rd',
-      // @ts-expect-error doesn't matter for pwnd matcher
-      omniMatch: jest.fn,
+      omniMatch: jest.fn as any,
     })
     expect(match).toEqual([
       {

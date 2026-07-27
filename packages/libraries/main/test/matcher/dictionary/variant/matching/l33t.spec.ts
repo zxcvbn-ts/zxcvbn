@@ -1,7 +1,7 @@
-import MatchL33t from '../../../../../src/matcher/dictionary/variants/matching/l33t'
-import checkMatches from '../../../../helper/checkMatches'
-import Options from '../../../../../src/Options'
-import { sorted } from '../../../../../src/utils/helper'
+import MatchL33t from '../../../../../src/matcher/dictionary/variants/matching/l33t.ts'
+import checkMatches from '../../../../helper/checkMatches.ts'
+import Options from '../../../../../src/Options.ts'
+import { sorted } from '../../../../../src/utils/helper.ts'
 
 describe('l33t matching', () => {
   let msg

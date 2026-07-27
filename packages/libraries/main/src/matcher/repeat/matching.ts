@@ -1,7 +1,7 @@
-import { MatcherBaseClass, MatchOptions, RepeatMatch } from '../../types'
-import Scoring from '../../scoring'
-import Matching from '../../Matching'
-import Options from '../../Options'
+import { MatcherBaseClass, MatchOptions, RepeatMatch } from '../../types.ts'
+import Scoring from '../../scoring/index.ts'
+import Matching from '../../Matching.ts'
+import Options from '../../Options.ts'
 import { MaybePromise } from 'rollup'
 
 /*

@@ -1,6 +1,9 @@
-import translations from '../../../languages/en/src/translations'
-import { TimeEstimates, checkTimeEstimationValues } from '../src/TimeEstimates'
-import Options from '../src/Options'
+import translations from '../../../languages/en/src/translations.ts'
+import {
+  TimeEstimates,
+  checkTimeEstimationValues,
+} from '../src/TimeEstimates.ts'
+import Options from '../src/Options.ts'
 
 const zxcvbnOptions = new Options({
   translations,

@@ -1,5 +1,5 @@
-import Options from '../src/Options'
-import translationKeys from '../src/data/translationKeys'
+import Options from '../src/Options.ts'
+import translationKeys from '../src/data/translationKeys.ts'
 
 describe('Options', () => {
   describe('translations', () => {

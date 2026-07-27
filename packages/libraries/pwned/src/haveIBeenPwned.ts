@@ -1,4 +1,4 @@
-import { HaveIBeenPwnedConfig } from './types'
+import { HaveIBeenPwnedConfig } from './types.ts'
 
 const textEncode = (text: string) => {
   try {

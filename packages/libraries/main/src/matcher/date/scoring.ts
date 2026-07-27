@@ -1,5 +1,5 @@
-import { MIN_YEAR_SPACE, REFERENCE_YEAR } from '../../data/const'
-import { MatchEstimated, MatchExtended } from '../../types'
+import { MIN_YEAR_SPACE, REFERENCE_YEAR } from '../../data/const.ts'
+import { MatchEstimated, MatchExtended } from '../../types.ts'
 
 export default ({ year, separator }: MatchExtended | MatchEstimated) => {
   // base guesses: (year distance from REFERENCE_YEAR) * num_days * num_years

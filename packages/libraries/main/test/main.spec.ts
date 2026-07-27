@@ -1,7 +1,7 @@
-import * as zxcvbnCommonPackage from '../../../languages/common/src'
-import * as zxcvbnEnPackage from '../../../languages/en/src'
-import { ZxcvbnFactory } from '../src'
-import passwordTests from './helper/passwordTests'
+import * as zxcvbnCommonPackage from '../../../languages/common/src/index.ts'
+import * as zxcvbnEnPackage from '../../../languages/en/src/index.ts'
+import { ZxcvbnFactory } from '../src/index.ts'
+import passwordTests from './helper/passwordTests.ts'
 
 describe('main', () => {
   let zxcvbn: ZxcvbnFactory

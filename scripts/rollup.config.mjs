@@ -1,8 +1,5 @@
-import { readFileSync } from 'fs'
-import { builtinModules } from 'module'
-import process from 'process'
-import babel from '@rollup/plugin-babel'
-import commonjs from '@rollup/plugin-commonjs'
+import { readFileSync } from 'node:fs'
+import process from 'node:process'
 import typescript from '@rollup/plugin-typescript'
 import del from 'rollup-plugin-delete'
 import terser from '@rollup/plugin-terser'
@@ -11,11 +8,10 @@ import json from './jsonPlugin.mjs'
 const pkg = JSON.parse(readFileSync('./package.json', 'utf8'))
 
 const external = [
-  ...builtinModules,
   ...Object.keys(pkg.dependencies || {}),
   ...Object.keys(pkg.peerDependencies || {}),
 ].map((id) => new RegExp(`^${id}($|/)`))
-
+console.log(external)
 export default [
   {
     input: ['./src/index.ts'],
@@ -31,12 +27,10 @@ export default [
         exclude: ['test/**/*', 'dist/**/*'],
         module: 'ESNext',
         moduleResolution: 'Bundler',
-      }),
-      commonjs(),
-      babel({
-        extensions: ['.ts'],
-        babelHelpers: 'bundled',
-        babelrc: false,
+        compilerOptions: {
+          paths: {},
+          rewriteRelativeImportExtensions: true,
+        },
       }),
       process.env.NODE_ENV === 'production' ? terser() : null,
     ],

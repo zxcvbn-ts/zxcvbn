@@ -1,10 +1,10 @@
-import { DictionaryMatch, L33tMatch } from '../../../../types'
-import { DictionaryMatchOptions } from '../../types'
+import { DictionaryMatch, L33tMatch } from '../../../../types.ts'
+import { DictionaryMatchOptions } from '../../types.ts'
 import getCleanPasswords, {
   PasswordChanges,
   PasswordWithSubs,
-} from './unmunger/getCleanPasswords'
-import MatchDictionary from '../../matching'
+} from './unmunger/getCleanPasswords.ts'
+import MatchDictionary from '../../matching.ts'
 
 const getExtras = (
   passwordWithSubs: PasswordWithSubs,

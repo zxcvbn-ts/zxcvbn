@@ -11,6 +11,7 @@ export default function jestConfig() {
     moduleNameMapper: {
       '^@/(.*)$': '<rootDir>/src/$1',
       '^~/(.*)$': '<rootDir>/$1',
+      '^@zxcvbn-ts/core$': '<rootDir>/packages/libraries/main/src/index.ts',
     },
     transform: {
       '^.+\\.(ts|js|mjs)$': [
