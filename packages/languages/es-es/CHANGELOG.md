@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.1.2](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/language-es-es@4.1.1...@zxcvbn-ts/language-es-es@4.1.2) (2026-07-16)
+
+### Bug Fixes
+
+- message for `l33t` suggestion in translation ([#325](https://github.com/zxcvbn-ts/zxcvbn/issues/325)) ([dcca1e3](https://github.com/zxcvbn-ts/zxcvbn/commit/dcca1e38652bf76d2e43600c21ee455f78cb4f10))
+
 # [4.1.0](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/language-es-es@3.0.2...@zxcvbn-ts/language-es-es@4.1.0) (2026-06-11)
 
 ### Bug Fixes

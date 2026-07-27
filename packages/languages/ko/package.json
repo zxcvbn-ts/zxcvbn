@@ -1,17 +1,11 @@
 {
-  "name": "@zxcvbn-ts/language-tr",
-  "version": "4.1.1",
-  "type": "module",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs"
-    }
-  },
+  "name": "@zxcvbn-ts/language-ko",
+  "version": "4.2.0",
+  "main": "dist/index.cjs",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "sideEffects": false,
-  "description": "The Turkish language package for zxcvbn-ts",
+  "description": "The Korean language package for zxcvbn-ts",
   "license": "MIT",
   "homepage": "https://github.com/zxcvbn-ts/zxcvbn",
   "repository": {
@@ -22,9 +16,7 @@
   "files": [
     "dist",
     "src",
-    "CHANGELOG.md",
-    "NOTICE.md",
-    "THIRD_PARTY_LICENSES.md"
+    "CHANGELOG.md"
   ],
   "publishConfig": {
     "access": "public"
@@ -33,12 +25,9 @@
     "zxcvbn",
     "language",
     "translation",
-    "turkish"
+    "korean"
   ],
   "scripts": {
     "build": "rollup -c ../../../scripts/rollup.config.mjs"
-  },
-  "dependencies": {
-    "@zxcvbn-ts/dictionary-compression": "^3.0.1"
   }
 }

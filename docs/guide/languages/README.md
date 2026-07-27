@@ -17,6 +17,7 @@ Current supported languages:
 - Indonesia
 - Italian
 - Japanese
+- Korean
 - Kurmanjî (Kurdish)
 - Dutch (Belgium)
 - Polish

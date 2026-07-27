@@ -21,7 +21,7 @@ export default {
       'Parola ta a fost expusă de o încălcare a securității datelor pe internet.',
   },
   suggestions: {
-    l33t: 'Evită substituțiile previzibile, cum ar fi "@" pentru "@".',
+    l33t: 'Evită substituțiile previzibile, cum ar fi "@" pentru "a".',
     reverseWords: 'Evită cuvintele comune scrise invers',
     allUppercase: 'Scrie cu majuscule unele litere, dar nu toate literele.',
     capitalization:
