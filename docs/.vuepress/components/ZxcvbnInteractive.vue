@@ -124,6 +124,7 @@ export default {
         'pl',
         'pl-br',
         'ro',
+        'ru',
         'th',
         'zh',
       ],
