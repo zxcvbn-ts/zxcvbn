@@ -43,6 +43,7 @@ class MatchDictionary extends MatcherBaseClass {
     )
   }
 
+  // eslint-disable-next-line complexity,max-statements
   public match({
     password,
     userInputsOptions,
@@ -54,22 +55,38 @@ class MatchDictionary extends MatcherBaseClass {
     const { rankedDictionaries, rankedDictionariesMaxWordSize } =
       this.getRangedDictionaries(userInputsOptions)
 
-    // eslint-disable-next-line complexity,max-statements
-    Object.keys(rankedDictionaries).forEach((dictionaryName) => {
-      const rankedDict = rankedDictionaries[dictionaryName as DictionaryNames]
-      const longestDictionaryWordSize =
-        rankedDictionariesMaxWordSize[dictionaryName]
-      const searchWidth = Math.min(longestDictionaryWordSize, passwordLength)
-      for (let i = 0; i < passwordLength; i += 1) {
-        const searchEnd = Math.min(i + searchWidth, passwordLength)
-        for (let j = i; j < searchEnd; j += 1) {
-          const usedPassword = passwordLower.slice(i, j + 1 || 9e9)
-          const isInDictionary = usedPassword in rankedDict
+    const dictionaryNames = Object.keys(rankedDictionaries) as DictionaryNames[]
+    const maxSearchWidth = Math.max(
+      0,
+      ...Object.values(rankedDictionariesMaxWordSize),
+    )
+
+    for (let i = 0; i < passwordLength; i += 1) {
+      for (let j = i; j < passwordLength; j += 1) {
+        const isFullPassword = i === 0 && j === passwordLength - 1
+        // if the word is longer than the longest word in any dictionary and it is not the full password
+        // we can skip it. For the full password we still need to check for levenshtein distance
+        if (j - i + 1 > maxSearchWidth && !isFullPassword) {
+          break
+        }
+        const usedPassword = passwordLower.slice(i, j + 1)
+
+        for (let k = 0; k < dictionaryNames.length; k += 1) {
+          const dictionaryName = dictionaryNames[k]
+          const rankedDict = rankedDictionaries[dictionaryName]
+          if (
+            j - i + 1 > rankedDictionariesMaxWordSize[dictionaryName] &&
+            !isFullPassword
+          ) {
+            continue
+          }
+
+          const rank = rankedDict[usedPassword]
+          const isInDictionary = rank !== undefined
           let foundLevenshteinDistance: Partial<FindLevenshteinDistanceResult> =
             {}
           // only use levenshtein distance on full password to minimize the performance drop
           // and because otherwise there would be to many false positives
-          const isFullPassword = i === 0 && j === passwordLength - 1
           if (
             this.options.useLevenshteinDistance &&
             isFullPassword &&
@@ -83,22 +100,24 @@ class MatchDictionary extends MatcherBaseClass {
             )
           }
           const isLevenshteinMatch =
-            Object.keys(foundLevenshteinDistance).length !== 0
+            foundLevenshteinDistance.levenshteinDistance !== undefined
 
           if (isInDictionary || isLevenshteinMatch) {
             const usedRankPassword = isLevenshteinMatch
               ? foundLevenshteinDistance.levenshteinDistanceEntry!
               : usedPassword
 
-            const rank = rankedDict[usedRankPassword]
+            const rankValue = isInDictionary
+              ? rank
+              : rankedDict[usedRankPassword]
             matches.push({
               pattern: 'dictionary',
               i,
               j,
-              token: password.slice(i, j + 1 || 9e9),
+              token: password.slice(i, j + 1),
               matchedWord: usedPassword,
-              rank,
-              dictionaryName: dictionaryName,
+              rank: rankValue,
+              dictionaryName,
               reversed: false,
               l33t: false,
               ...foundLevenshteinDistance,
@@ -106,7 +125,7 @@ class MatchDictionary extends MatcherBaseClass {
           }
         }
       }
-    })
+    }
     return matches
   }
 }
