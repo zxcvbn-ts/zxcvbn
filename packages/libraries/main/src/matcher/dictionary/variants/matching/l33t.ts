@@ -11,33 +11,29 @@ const getExtras = (
   i: number,
   j: number,
 ) => {
-  const previousChanges = passwordWithSubs.changes.filter((changes) => {
-    return changes.i < i
-  })
-  const iUnsubbed = previousChanges.reduce((value, change) => {
-    return value - change.letter.length + change.substitution.length
-  }, i)
-  const usedChanges = passwordWithSubs.changes.filter((changes) => {
-    return changes.i >= i && changes.i <= j
-  })
-  const jUnsubbed = usedChanges.reduce(
-    (value, change) => {
-      return value - change.letter.length + change.substitution.length
-    },
-    j - i + iUnsubbed,
-  )
+  let iUnsubbed = i
+  let jUnsubbed = j
   const filtered: PasswordChanges[] = []
   const subDisplay: string[] = []
-  usedChanges.forEach((value) => {
-    const existingIndex = filtered.findIndex((t) => {
-      return t.letter === value.letter && t.substitution === value.substitution
-    })
-    if (existingIndex < 0) {
-      filtered.push({
-        letter: value.letter,
-        substitution: value.substitution,
-      })
-      subDisplay.push(`${value.substitution} -> ${value.letter}`)
+  const seenSubs = new Set<string>()
+
+  passwordWithSubs.changes.forEach((change) => {
+    if (change.i < i) {
+      const diff = change.substitution.length - change.letter.length
+      iUnsubbed += diff
+      jUnsubbed += diff
+    } else if (change.i <= j) {
+      jUnsubbed += change.substitution.length - change.letter.length
+
+      const subKey = `${change.letter}-${change.substitution}`
+      if (!seenSubs.has(subKey)) {
+        seenSubs.add(subKey)
+        filtered.push({
+          letter: change.letter,
+          substitution: change.substitution,
+        })
+        subDisplay.push(`${change.substitution} -> ${change.letter}`)
+      }
     }
   })
   return {
@@ -56,9 +52,12 @@ const getExtras = (
 class MatchL33t extends MatchDictionary {
   private isAlreadyIncluded(matches: L33tMatch[], newMatch: L33tMatch) {
     return matches.some((l33tMatch) => {
-      return Object.entries(l33tMatch).every(([key, value]) => {
-        return key === 'subs' || value === newMatch[key]
-      })
+      return (
+        l33tMatch.i === newMatch.i &&
+        l33tMatch.j === newMatch.j &&
+        l33tMatch.dictionaryName === newMatch.dictionaryName &&
+        l33tMatch.matchedWord === newMatch.matchedWord
+      )
     })
   }
 
@@ -80,12 +79,12 @@ class MatchL33t extends MatchDictionary {
         useLevenshtein: subbedPassword.isFullSubstitution,
       })
       matchedDictionary.forEach((match: DictionaryMatch) => {
+        const extras = getExtras(subbedPassword, match.i, match.j)
         if (!hasFullMatch) {
           hasFullMatch =
-            match.i === 0 && match.j === matchOptions.password.length - 1
+            extras.i === 0 && extras.j === matchOptions.password.length - 1
         }
-        const extras = getExtras(subbedPassword, match.i, match.j)
-        const token = matchOptions.password.slice(extras.i, extras.j + 1 || 9e9)
+        const token = matchOptions.password.slice(extras.i, extras.j + 1)
         const newMatch: L33tMatch = {
           ...match,
           l33t: true,
