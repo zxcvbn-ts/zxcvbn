@@ -71,8 +71,7 @@ class MatchDictionary extends MatcherBaseClass {
         }
         const usedPassword = passwordLower.slice(i, j + 1)
 
-        for (let k = 0; k < dictionaryNames.length; k += 1) {
-          const dictionaryName = dictionaryNames[k]
+        for (const dictionaryName of dictionaryNames) {
           const rankedDict = rankedDictionaries[dictionaryName]
           if (
             j - i + 1 > rankedDictionariesMaxWordSize[dictionaryName] &&
