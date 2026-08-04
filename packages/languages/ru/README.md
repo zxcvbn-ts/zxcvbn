@@ -34,8 +34,6 @@ zxcvbn.check(password)
 
 ## Sources
 
-This package currently only provides `translations` for the warning and
-suggestion messages. It does not yet ship a Russian dictionary
-(`firstnames`/`lastnames`/`commonWords`); contributions adding reliable
-sources for those lists are welcome per the
-[language guide](https://zxcvbn-ts.github.io/zxcvbn/guide/languages/#add-a-new-language-package).
+- `commonWords.json` is generated from OpenSubtitles 2024 frequency data provided via OPUS (https://opus.nlpl.eu/datasets/OpenSubtitles).
+- `firstnames.json` is generated from the first-name locale data in [FakerJS](https://github.com/faker-js/faker/blob/main/src/locales/tr/person/first_name.ts).
+- `lastnames.json` is generated from the surname locale data in [FakerJS](https://github.com/faker-js/faker/blob/main/src/locales/tr/person/last_name.ts).
