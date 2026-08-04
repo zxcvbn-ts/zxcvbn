@@ -122,7 +122,7 @@ export default {
         'ku',
         'nl-be',
         'pl',
-        'pl-br',
+        'pt-br',
         'ro',
         'ru',
         'th',
