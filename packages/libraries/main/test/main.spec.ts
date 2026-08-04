@@ -83,8 +83,7 @@ describe('main', () => {
       dictionary: {
         ...zxcvbnCommonPackage.dictionary,
         ...zxcvbnEnPackage.dictionary,
-        // @ts-expect-error for testing purposes
-        userInputs: ['test', 12, true, []],
+        userInputs: ['test', 12],
       },
       graphs: zxcvbnCommonPackage.adjacencyGraphs,
       translations: zxcvbnEnPackage.translations,
