@@ -29,7 +29,7 @@ import {
   checkTimeEstimationValues,
   checkUseLevenshteinDistance,
   checkLevenshteinThreshold,
-} from './RuntimeChecks'
+} from './runtimeChecks'
 
 export default class Options {
   public matchers: Matchers = {}
