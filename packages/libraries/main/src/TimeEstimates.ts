@@ -39,21 +39,6 @@ export const timeEstimationValuesDefaults: TimeEstimationValues = {
   },
 }
 
-export const checkTimeEstimationValues = (
-  timeEstimationValues: TimeEstimationValues,
-) => {
-  Object.entries(timeEstimationValues).forEach(([key, data]) => {
-    Object.entries(data).forEach(([subKey, value]) => {
-      // @ts-expect-error for testing purposes
-      if (value < timeEstimationValuesDefaults[key][subKey]) {
-        throw new Error(
-          'Time estimation values are not to be allowed to be less than default',
-        )
-      }
-    })
-  })
-}
-
 /*
  * -------------------------------------------------------------------------------
  *  Estimates time for an attacker ---------------------------------------------------------------
