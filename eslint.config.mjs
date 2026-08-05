@@ -36,7 +36,7 @@ export default defineConfig([
       },
       parser: tsParser,
       parserOptions: {
-        project: true,
+        project: false,
         __tsconfigRootDir: import.meta.dirname,
         warnOnUnsupportedTypeScriptVersion: false,
       },
