@@ -8,7 +8,6 @@
       "import": "./dist/index.mjs"
     }
   },
-  "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "sideEffects": false,
   "description": "The Japanese language package for zxcvbn-ts",
