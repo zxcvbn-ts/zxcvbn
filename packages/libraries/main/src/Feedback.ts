@@ -10,10 +10,12 @@ import spatialMatcher from './matcher/spatial/feedback'
 import separatorMatcher from './matcher/separator/feedback'
 import wordSequenceMatcher from './matcher/wordSequence/feedback'
 
-const defaultFeedback = {
+const createFeedback = (
+  suggestions?: FeedbackType['suggestions'],
+): FeedbackType => ({
   warning: null,
-  suggestions: [],
-}
+  suggestions: suggestions ?? [],
+})
 
 type Matchers = Record<string, DefaultFeedbackFunction>
 /*
@@ -24,13 +26,7 @@ type Matchers = Record<string, DefaultFeedbackFunction>
 class Feedback {
   private matchers: Matchers = {}
 
-  private defaultFeedback: FeedbackType = {
-    warning: null,
-    suggestions: [],
-  }
-
   constructor(private options: Options) {
-    this.setDefaultSuggestions()
     this.matchers = {
       bruteforce: bruteforceMatcher,
       date: dateMatcher,
@@ -50,19 +46,15 @@ class Feedback {
     })
   }
 
-  private setDefaultSuggestions() {
-    this.defaultFeedback.suggestions.push(
-      this.options.translations.suggestions.useWords,
-      this.options.translations.suggestions.noNeed,
-    )
-  }
-
   public getFeedback(score: number, sequence: MatchEstimated[]) {
     if (sequence.length === 0) {
-      return this.defaultFeedback
+      return createFeedback([
+        this.options.translations.suggestions.useWords,
+        this.options.translations.suggestions.noNeed,
+      ])
     }
     if (score > 2) {
-      return defaultFeedback
+      return createFeedback()
     }
     const extraFeedback = this.options.translations.suggestions.anotherWord
     const longestMatch = this.getLongestMatch(sequence)
@@ -70,10 +62,7 @@ class Feedback {
     if (feedback !== null && feedback !== undefined) {
       feedback.suggestions.unshift(extraFeedback)
     } else {
-      feedback = {
-        warning: null,
-        suggestions: [extraFeedback],
-      }
+      feedback = createFeedback([extraFeedback])
     }
     return feedback
   }
@@ -94,7 +83,7 @@ class Feedback {
     if (this.matchers[match.pattern]) {
       return this.matchers[match.pattern](this.options, match, isSoleMatch)
     }
-    return defaultFeedback
+    return createFeedback()
   }
 }
 
