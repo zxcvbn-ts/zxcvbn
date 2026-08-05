@@ -20,6 +20,7 @@ export default defineConfig([
     '**/coverage',
     'data-scripts/wikiExtractor/extracts',
     '**/dist_new',
+    '**/*.json',
   ]),
   js.configs.recommended,
   compatPlugin.configs['flat/recommended'],
