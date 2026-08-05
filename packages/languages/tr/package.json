@@ -8,7 +8,7 @@
       "import": "./dist/index.mjs"
     }
   },
-  "types": "dist/index.d.ts",
+  "types": "./dist/index.d.ts",
   "sideEffects": false,
   "description": "The Turkish language package for zxcvbn-ts",
   "license": "MIT",

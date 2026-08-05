@@ -8,7 +8,7 @@
       "import": "./dist/index.mjs"
     }
   },
-  "types": "dist/index.d.ts",
+  "types": "./dist/index.d.ts",
   "description": "HaveIBeenPwned Matcher for zxcvbn-ts",
   "license": "MIT",
   "homepage": "https://github.com/zxcvbn-ts/zxcvbn",

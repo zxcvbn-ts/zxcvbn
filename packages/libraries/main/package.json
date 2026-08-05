@@ -8,7 +8,7 @@
       "import": "./dist/index.mjs"
     }
   },
-  "types": "dist/index.d.ts",
+  "types": "./dist/index.d.ts",
   "description": "Realistic password strength estimation written in typescript",
   "license": "MIT",
   "homepage": "https://github.com/zxcvbn-ts/zxcvbn",
