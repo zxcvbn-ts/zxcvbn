@@ -18,7 +18,7 @@
   "prettier": "./prettier.mjs",
   "scripts": {
     "build": "lerna exec --parallel -- rollup -c ../../../scripts/rollup.config.mjs",
-    "lint": "eslint --debug --ext .js,.mjs,.ts . ",
+    "lint": "eslint --ext .js,.mjs,.ts . ",
     "lint:fix": "yarn run lint --fix --cache",
     "typecheck": "tsc --noEmit",
     "test": "jest --coverage",
