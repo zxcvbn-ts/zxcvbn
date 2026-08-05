@@ -167,7 +167,6 @@ export default class KeyboardAdjacencyGraph {
       const graphs: Record<string, Graph> = {}
       const files = getFiles(layouts)
       files.forEach((file) => {
-        // eslint-disable-next-line @typescript-eslint/no-require-imports
         const fileData = require(`${layouts}/${file}`)
         const layout = fileData.default
         const graph = buildGraph(layout.layout, layout.slanted)

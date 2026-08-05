@@ -5,9 +5,9 @@ import {
   Matcher,
   TranslationKeys,
   TimeEstimationValues,
-} from './types'
-import translationKeys from './data/translationKeys'
-import { timeEstimationValuesDefaults } from './TimeEstimates'
+} from './types.ts'
+import translationKeys from './data/translationKeys.ts'
+import { timeEstimationValuesDefaults } from './TimeEstimates.ts'
 
 export const checkL33tTable = (l33tTable: OptionsL33tTable) => {
   if (typeof l33tTable !== 'object' || l33tTable === null) {
