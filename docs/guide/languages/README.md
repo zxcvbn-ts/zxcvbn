@@ -5,26 +5,27 @@
 Current supported languages:
 
 - Arabic
-- Czech
+- Chinese
 - Croatian
+- Czech
 - Danish (Denmark)
-- German
+- Dutch (Belgium)
 - English
-- Spanish (Spain)
 - Farsi (Persian)
 - Finnish
 - French
+- German
 - Indonesia
 - Italian
 - Japanese
 - Korean
 - Kurmanjî (Kurdish)
-- Dutch (Belgium)
 - Polish
 - Portuguese (Brazil)
 - Romanian
+- Russian
+- Spanish (Spain)
 - Thai
-- Chinese
 - Turkish
 
 ## Feedback

@@ -395,5 +395,15 @@ describe('feedback', () => {
         ],
       })
     })
+
+    it('returns a fresh default feedback for empty sequences', () => {
+      const first = feedbackClass.getFeedback(0, [])
+      first.suggestions.push('mutated')
+
+      const second = feedbackClass.getFeedback(0, [])
+
+      expect(first).not.toBe(second)
+      expect(second.suggestions).not.toContain('mutated')
+    })
   })
 })

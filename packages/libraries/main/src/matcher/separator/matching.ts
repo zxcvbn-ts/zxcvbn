@@ -1,4 +1,4 @@
-import { SEPERATOR_CHARS } from '../../data/const.ts'
+import { ESCAPE_REGEX, SEPERATOR_CHARS } from '../../data/const.ts'
 import { MatcherBaseClass, MatchOptions, SeparatorMatch } from '../../types.ts'
 
 type SeparatorMatchOptions = Pick<MatchOptions, 'password'>
@@ -35,7 +35,8 @@ class MatchSeparator extends MatcherBaseClass {
   }
 
   static getSeparatorRegex(separator: string): RegExp {
-    return new RegExp(`([^${separator}\n])(${separator})(?!${separator})`, 'g')
+    const escaped = separator.replace(ESCAPE_REGEX, '\\$&')
+    return new RegExp(`([^${escaped}\n])(${escaped})(?!${escaped})`, 'g')
     // negative lookbehind can be added again in a few years when it is more supported by the browsers (currently 2023)
     // https://github.com/zxcvbn-ts/zxcvbn/issues/202
     // return new RegExp(`(?<!${separator})(${separator})(?!${separator})`, 'g')

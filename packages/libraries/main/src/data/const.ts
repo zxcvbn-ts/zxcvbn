@@ -36,3 +36,4 @@ export const SEPERATOR_CHARS = [
   '-',
 ]
 export const SEPERATOR_CHAR_COUNT = SEPERATOR_CHARS.length
+export const ESCAPE_REGEX = /[.*+?^${}()|[\]\\]/g
