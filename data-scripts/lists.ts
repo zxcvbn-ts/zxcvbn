@@ -551,6 +551,39 @@ export default {
         'https://object.pouta.csc.fi/OPUS-OpenSubtitles/v2024/freq/th.freq.gz',
     },
   },
+  'ru': {
+    commonWords: {
+      generator: CommonWordsGenerator,
+      source:
+        'https://object.pouta.csc.fi/OPUS-OpenSubtitles/v2024/freq/ru.freq.gz',
+    },
+    firstnames: {
+      generator: HTMLGenerator,
+      source:
+        'https://raw.githubusercontent.com/faker-js/faker/main/src/locales/ru/person/first_name.ts',
+      options: {
+        extractorFunction: (fileContent: Buffer) => {
+          return Array.from(
+            fileContent.toString('utf8').matchAll(/'((?:\\'|[^'])+)'/g),
+            (match: string[]) => match[1].replace(/\\'/g, "'"),
+          )
+        },
+      },
+    },
+    lastnames: {
+      generator: HTMLGenerator,
+      source:
+        'https://raw.githubusercontent.com/faker-js/faker/main/src/locales/ru/person/last_name.ts',
+      options: {
+        extractorFunction: (fileContent: Buffer) => {
+          return Array.from(
+            fileContent.toString('utf8').matchAll(/'((?:\\'|[^'])+)'/g),
+            (match: string[]) => match[1].replace(/\\'/g, "'"),
+          )
+        },
+      },
+    },
+  },
   'common': {
     passwords: {
       generator: PasswordGenerator,
