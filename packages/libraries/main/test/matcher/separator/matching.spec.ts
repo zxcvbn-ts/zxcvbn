@@ -42,4 +42,18 @@ describe('separator matching', () => {
     ],
     propsToCheck: {},
   })
+
+  matches = matchSeparator.match({ password: 'first.second.third' })
+  msg = 'matches with different potential separators'
+  checkMatches({
+    messagePrefix: msg,
+    matches,
+    patternNames: 'separator',
+    patterns: ['.', '.'],
+    ijs: [
+      [5, 5],
+      [12, 12],
+    ],
+    propsToCheck: {},
+  })
 })
