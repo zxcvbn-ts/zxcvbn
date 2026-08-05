@@ -22,5 +22,5 @@
     "strictNullChecks": true,
     "skipLibCheck": true
   },
-  "exclude": ["node_modules", "dist", "test"]
+  "exclude": ["node_modules", "dist", "test", "**/*.json"]
 }
