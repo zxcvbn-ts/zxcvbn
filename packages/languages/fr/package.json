@@ -16,7 +16,7 @@
   "homepage": "https://github.com/jeromes80/zxcvbn",
   "repository": {
     "type": "git",
-    "url": "https://github.com/jeromes80/zxcvbn.git"
+    "url": "https://github.com/zxcvbn-ts/zxcvbn.git"
   },
   "author": "jsalvat",
   "files": [

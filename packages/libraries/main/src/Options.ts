@@ -16,10 +16,20 @@ import l33tTable from './data/l33tTable.ts'
 import translationKeys from './data/translationKeys.ts'
 import TrieNode from './matcher/dictionary/variants/matching/unmunger/TrieNode.ts'
 import l33tTableToTrieNode from './matcher/dictionary/variants/matching/unmunger/l33tTableToTrieNode.ts'
+import { timeEstimationValuesDefaults } from './TimeEstimates.ts'
 import {
+  checkCustomMatchers,
+  checkCustomTranslations,
+  checkDictionary,
+  checkGraphs,
+  checkL33tMaxSubstitutions,
+  checkL33tTable,
+  checkMatcher,
+  checkMaxLength,
   checkTimeEstimationValues,
-  timeEstimationValuesDefaults,
-} from './TimeEstimates.ts'
+  checkUseLevenshteinDistance,
+  checkLevenshteinThreshold,
+} from './runtimeChecks.ts'
 
 export default class Options {
   public matchers: Matchers = {}
@@ -77,8 +87,10 @@ export default class Options {
     options: OptionsType = {},
     customMatchers: Record<string, Matcher> = {},
   ) {
+    checkCustomMatchers(customMatchers)
     this.setOptions(options)
     Object.entries(customMatchers).forEach(([name, matcher]) => {
+      checkMatcher(name, matcher)
       this.addMatcher(name, matcher)
     })
   }
@@ -91,11 +103,13 @@ export default class Options {
   // eslint-disable-next-line max-statements,complexity
   private setOptions(options: OptionsType = {}) {
     if (options.l33tTable) {
+      checkL33tTable(options.l33tTable)
       this.l33tTable = options.l33tTable
       this.trieNodeRoot = l33tTableToTrieNode(options.l33tTable, new TrieNode())
     }
 
     if (options.dictionary) {
+      checkDictionary(options.dictionary)
       this.dictionary = options.dictionary
 
       this.setRankedDictionaries()
@@ -106,22 +120,27 @@ export default class Options {
     }
 
     if (options.graphs) {
+      checkGraphs(options.graphs)
       this.graphs = options.graphs
     }
 
     if (options.useLevenshteinDistance !== undefined) {
+      checkUseLevenshteinDistance(options.useLevenshteinDistance)
       this.useLevenshteinDistance = options.useLevenshteinDistance
     }
 
     if (options.levenshteinThreshold !== undefined) {
+      checkLevenshteinThreshold(options.levenshteinThreshold)
       this.levenshteinThreshold = options.levenshteinThreshold
     }
 
     if (options.l33tMaxSubstitutions !== undefined) {
+      checkL33tMaxSubstitutions(options.l33tMaxSubstitutions)
       this.l33tMaxSubstitutions = options.l33tMaxSubstitutions
     }
 
     if (options.maxLength !== undefined) {
+      checkMaxLength(options.maxLength)
       this.maxLength = options.maxLength
     }
 
@@ -139,35 +158,11 @@ export default class Options {
   }
 
   private setTranslations(translations: TranslationKeys) {
-    if (this.checkCustomTranslations(translations)) {
+    if (checkCustomTranslations(translations)) {
       this.translations = translations
     } else {
       throw new Error('Invalid translations object fallback to keys')
     }
-  }
-
-  private checkCustomTranslations(translations: TranslationKeys) {
-    let valid = true
-    Object.keys(translationKeys).forEach((type) => {
-      if (type in translations) {
-        const translationType = type as keyof typeof translationKeys
-        Object.keys(translationKeys[translationType]).forEach((key) => {
-          if (!(key in translations[translationType])) {
-            valid = false
-          }
-          const translation = (translations[translationType] as any)[key]
-          if (
-            typeof translation !== 'string' &&
-            typeof translation !== 'function'
-          ) {
-            valid = false
-          }
-        })
-      } else {
-        valid = false
-      }
-    })
-    return valid
   }
 
   private setRankedDictionaries() {
