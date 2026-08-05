@@ -36,9 +36,8 @@ export default defineConfig([
       },
       parser: tsParser,
       parserOptions: {
-        project: false,
-        __tsconfigRootDir: import.meta.dirname,
-        warnOnUnsupportedTypeScriptVersion: false,
+        project: './tsconfig.eslint.json',
+        tsconfigRootDir: import.meta.dirname,
       },
     },
 
