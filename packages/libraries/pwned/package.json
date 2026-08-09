@@ -19,7 +19,7 @@
   "author": "zxcvbn-ts",
   "files": [
     "dist",
-    "src"
+    "CHANGELOG.md"
   ],
   "browser": {
     "crypto": false
