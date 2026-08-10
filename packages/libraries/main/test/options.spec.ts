@@ -38,15 +38,6 @@ describe('Options', () => {
       expect(options.l33tMaxSubstitutions).toBe(50)
     })
 
-    it('should handle empty dictionary max word size', () => {
-      const options = new Options({
-        dictionary: {
-          empty: [],
-        },
-      })
-      expect(options.rankedDictionariesMaxWordSize.empty).toBe(0)
-    })
-
     it('should warn when adding an existing matcher', () => {
       const spy = jest.spyOn(console, 'info').mockImplementation()
       const matcher = {

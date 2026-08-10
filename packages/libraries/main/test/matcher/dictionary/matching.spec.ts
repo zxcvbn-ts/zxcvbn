@@ -124,10 +124,11 @@ describe('dictionary matching', () => {
       })
     })
 
-    Object.keys(zxcvbnOptions.rankedDictionaries).forEach((name) => {
-      const dict = zxcvbnOptions.rankedDictionaries[name]
-      Object.keys(dict).forEach((word) => {
-        const rank = dict[word]
+    Object.keys(zxcvbnOptions.dictionary).forEach((name) => {
+      const list = zxcvbnOptions.dictionary[name]
+      list.forEach((wordOrNumber, index) => {
+        const word = wordOrNumber.toString().toLowerCase()
+        const rank = index + 1
         if (word !== 'motherboard') {
           matches = dm(word)
           msg = 'matches against all words in provided dictionaries'

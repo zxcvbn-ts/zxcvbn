@@ -1,21 +1,20 @@
-import { buildRankedDictionary } from './utils/helper'
 import {
   TranslationKeys,
   OptionsType,
   OptionsDictionary,
   OptionsL33tTable,
   OptionsGraph,
-  RankedDictionaries,
   Matchers,
   Matcher,
   UserInputsOptions,
-  RankedDictionary,
   TimeEstimationValues,
 } from './types'
 import l33tTable from './data/l33tTable'
 import translationKeys from './data/translationKeys'
 import TrieNode from './matcher/dictionary/variants/matching/unmunger/TrieNode'
 import l33tTableToTrieNode from './matcher/dictionary/variants/matching/unmunger/l33tTableToTrieNode'
+import { DictionaryTrie } from './matcher/dictionary/DictionaryTrie'
+import mergeUserInputDictionary from './utils/mergeUserInputDictionary'
 import { timeEstimationValuesDefaults } from './TimeEstimates'
 import {
   checkCustomMatchers,
@@ -42,11 +41,15 @@ export default class Options {
     userInputs: [],
   }
 
-  public rankedDictionaries: RankedDictionaries = {}
-
-  public rankedDictionariesMaxWordSize: Record<string, number> = {}
+  public dictionaryTrie: DictionaryTrie = new DictionaryTrie()
+  public dictionaryMaxWordSize: Record<string, number> = {}
+  public dictionaryMinWordSize: Record<string, number> = {}
 
   public translations: TranslationKeys = translationKeys
+
+  private cachedUserInputs: (string | number)[] | undefined
+
+  private cachedUserInputsOptions: UserInputsOptions | undefined
 
   public graphs: OptionsGraph = {}
 
@@ -112,7 +115,7 @@ export default class Options {
       checkDictionary(options.dictionary)
       this.dictionary = options.dictionary
 
-      this.setRankedDictionaries()
+      this.initDictionaryTrie()
     }
 
     if (options.translations) {
@@ -165,65 +168,100 @@ export default class Options {
     }
   }
 
-  private setRankedDictionaries() {
-    const rankedDictionaries: RankedDictionaries = {}
-    const rankedDictionariesMaxWorkSize: Record<string, number> = {}
+  private initDictionaryTrie() {
+    const dictionaryTrie = new DictionaryTrie()
+    const dictionaryMaxWordSize: Record<string, number> = {}
+    const dictionaryMinWordSize: Record<string, number> = {}
     Object.keys(this.dictionary).forEach((name) => {
-      rankedDictionaries[name] = buildRankedDictionary(this.dictionary[name])
-      rankedDictionariesMaxWorkSize[name] =
-        this.getRankedDictionariesMaxWordSize(this.dictionary[name])
-    })
-    this.rankedDictionaries = rankedDictionaries
-    this.rankedDictionariesMaxWordSize = rankedDictionariesMaxWorkSize
-  }
-
-  private getRankedDictionariesMaxWordSize(list: (string | number)[]) {
-    const data = list.map((el) => {
-      if (typeof el !== 'string') {
-        return el.toString().length
+      const list = this.dictionary[name]
+      let maxWordSize = 0
+      let minWordSize = Infinity
+      for (let i = 0; i < list.length; i += 1) {
+        const wordOrNumber = list[i]
+        const word = wordOrNumber.toString()
+        const rank = i + 1
+        const wordLength = word.length
+        if (wordLength > maxWordSize) {
+          maxWordSize = wordLength
+        }
+        if (wordLength < minWordSize) {
+          minWordSize = wordLength
+        }
+        dictionaryTrie.add(word, name, rank)
       }
-      return el.length
+      dictionaryMaxWordSize[name] = maxWordSize
+      dictionaryMinWordSize[name] = list.length > 0 ? minWordSize : 0
     })
-
-    // do not use Math.max(...data) because it can result in max stack size error because every entry will be used as an argument
-    if (data.length === 0) {
-      return 0
-    }
-    return data.reduce((a, b) => Math.max(a, b), -Infinity)
-  }
-
-  private buildSanitizedRankedDictionary(list: (string | number)[]) {
-    const sanitizedInputs: string[] = []
-
-    list.forEach((input: string | number | boolean) => {
-      const inputType = typeof input
-      if (
-        inputType === 'string' ||
-        inputType === 'number' ||
-        inputType === 'boolean'
-      ) {
-        sanitizedInputs.push(input.toString().toLowerCase())
-      }
-    })
-
-    return buildRankedDictionary(sanitizedInputs)
+    this.dictionaryTrie = dictionaryTrie
+    this.dictionaryMaxWordSize = dictionaryMaxWordSize
+    this.dictionaryMinWordSize = dictionaryMinWordSize
   }
 
   public getUserInputsOptions(
     dictionary?: (string | number)[],
   ): UserInputsOptions {
-    let rankedDictionary: RankedDictionary = {}
-    let rankedDictionaryMaxWordSize = 0
-    if (dictionary) {
-      rankedDictionary = this.buildSanitizedRankedDictionary(dictionary)
-      rankedDictionaryMaxWordSize =
-        this.getRankedDictionariesMaxWordSize(dictionary)
+    if (dictionary && dictionary === this.cachedUserInputs) {
+      return this.cachedUserInputsOptions!
     }
 
-    return {
-      rankedDictionary,
-      rankedDictionaryMaxWordSize,
+    const sanitizedDictionary: (string | number)[] = []
+    let dictionaryMaxWordSize = 0
+    let dictionaryMinWordSize = Infinity
+    const dictionaryTrie = new DictionaryTrie()
+    if (dictionary) {
+      const seenWords = new Set<string>()
+      for (let i = 0; i < dictionary.length; i += 1) {
+        const input = dictionary[i]
+        const inputType = typeof input
+        if (
+          inputType === 'string' ||
+          inputType === 'number' ||
+          inputType === 'boolean'
+        ) {
+          const word = input.toString().toLowerCase()
+          if (!seenWords.has(word)) {
+            seenWords.add(word)
+            sanitizedDictionary.push(word)
+            const rank = sanitizedDictionary.length
+            const wordLength = word.length
+            if (wordLength > dictionaryMaxWordSize) {
+              dictionaryMaxWordSize = wordLength
+            }
+            if (wordLength < dictionaryMinWordSize) {
+              dictionaryMinWordSize = wordLength
+            }
+            dictionaryTrie.add(word, 'userInputs', rank)
+          }
+        }
+      }
     }
+
+    const userInputsOptions: UserInputsOptions = {
+      dictionary: sanitizedDictionary,
+      dictionaryMaxWordSize,
+      dictionaryMinWordSize:
+        sanitizedDictionary.length > 0 ? dictionaryMinWordSize : 0,
+      dictionaryTrie,
+    }
+
+    const {
+      dictionaries,
+      dictionaryMaxWordSize: maxWordSize,
+      dictionaryMinWordSize: minWordSize,
+    } = mergeUserInputDictionary(
+      this.dictionary,
+      this.dictionaryMaxWordSize,
+      this.dictionaryMinWordSize,
+      userInputsOptions,
+    )
+    userInputsOptions.mergedDictionaries = dictionaries
+    userInputsOptions.mergedDictionaryMaxWordSize = maxWordSize
+    userInputsOptions.mergedDictionaryMinWordSize = minWordSize
+
+    this.cachedUserInputs = dictionary
+    this.cachedUserInputsOptions = userInputsOptions
+
+    return userInputsOptions
   }
 
   private addMatcher(name: string, matcher: Matcher) {

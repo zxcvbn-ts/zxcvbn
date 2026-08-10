@@ -1,13 +1,11 @@
-import findLevenshteinDistance, {
-  FindLevenshteinDistanceResult,
-} from '../../utils/levenshtein'
+import findLevenshteinDistance from '../../utils/levenshtein'
 import Options from '../../Options'
 import {
   DictionaryNames,
   DictionaryMatch,
   UserInputsOptions,
   MatcherBaseClass,
-  RankedDictionaries,
+  OptionsDictionary,
 } from '../../types'
 import { DictionaryMatchOptions } from './types'
 import mergeUserInputDictionary from '../../utils/mergeUserInputDictionary'
@@ -22,23 +20,37 @@ class MatchDictionary extends MatcherBaseClass {
 
   private getRangedDictionaries(userInputsOptions?: UserInputsOptions) {
     if (this.wordSequenceCheck) {
-      const rankedDictionaries: RankedDictionaries = {}
-      const rankedDictionariesMaxWordSize: Record<string, number> = {}
-      Object.keys(this.options.rankedDictionaries).forEach((key) => {
+      const dictionaries: OptionsDictionary = {}
+      const dictionaryMaxWordSize: Record<string, number> = {}
+      const dictionaryMinWordSize: Record<string, number> = {}
+      Object.keys(this.options.dictionary).forEach((key) => {
         if (this.options.isWordSequence(key)) {
-          rankedDictionaries[key] = this.options.rankedDictionaries[key]
-          rankedDictionariesMaxWordSize[key] =
-            this.options.rankedDictionariesMaxWordSize[key]
+          dictionaries[key] = this.options.dictionary[key]
+          dictionaryMaxWordSize[key] = this.options.dictionaryMaxWordSize[key]
+          dictionaryMinWordSize[key] = this.options.dictionaryMinWordSize[key]
         }
       })
       return {
-        rankedDictionaries,
-        rankedDictionariesMaxWordSize,
+        dictionaries,
+        dictionaryMaxWordSize,
+        dictionaryMinWordSize,
+      }
+    }
+    if (
+      userInputsOptions?.mergedDictionaries &&
+      userInputsOptions?.mergedDictionaryMaxWordSize &&
+      userInputsOptions?.mergedDictionaryMinWordSize
+    ) {
+      return {
+        dictionaries: userInputsOptions.mergedDictionaries,
+        dictionaryMaxWordSize: userInputsOptions.mergedDictionaryMaxWordSize,
+        dictionaryMinWordSize: userInputsOptions.mergedDictionaryMinWordSize,
       }
     }
     return mergeUserInputDictionary(
-      this.options.rankedDictionaries,
-      this.options.rankedDictionariesMaxWordSize,
+      this.options.dictionary,
+      this.options.dictionaryMaxWordSize,
+      this.options.dictionaryMinWordSize,
       userInputsOptions,
     )
   }
@@ -52,78 +64,102 @@ class MatchDictionary extends MatcherBaseClass {
     const matches: DictionaryMatch[] = []
     const passwordLength = password.length
     const passwordLower = password.toLowerCase()
-    const { rankedDictionaries, rankedDictionariesMaxWordSize } =
+    const { dictionaries, dictionaryMaxWordSize, dictionaryMinWordSize } =
       this.getRangedDictionaries(userInputsOptions)
 
-    const dictionaryNames = Object.keys(rankedDictionaries) as DictionaryNames[]
-    const maxSearchWidth = Math.max(
-      0,
-      ...Object.values(rankedDictionariesMaxWordSize),
-    )
+    const fullPasswordExactMatches = new Set<string>()
 
     for (let i = 0; i < passwordLength; i += 1) {
+      let staticNode = this.options.dictionaryTrie.root
+      let userInputNode = userInputsOptions?.dictionaryTrie?.root
       for (let j = i; j < passwordLength; j += 1) {
-        const isFullPassword = i === 0 && j === passwordLength - 1
-        // if the word is longer than the longest word in any dictionary and it is not the full password
-        // we can skip it. For the full password we still need to check for levenshtein distance
-        if (j - i + 1 > maxSearchWidth && !isFullPassword) {
+        const char = passwordLower[j]
+        staticNode = staticNode?.children?.get(char)
+        userInputNode = userInputNode?.children?.get(char)
+
+        if (!staticNode && !userInputNode) {
           break
         }
-        const usedPassword = passwordLower.slice(i, j + 1)
 
-        for (const dictionaryName of dictionaryNames) {
-          const rankedDict = rankedDictionaries[dictionaryName]
+        const isFullPassword = i === 0 && j === passwordLength - 1
+        const terminals = [
+          ...(staticNode?.terminals || []),
+          ...(userInputNode?.terminals || []),
+        ]
+
+        terminals.forEach(({ dictionaryName, rank }) => {
           if (
-            j - i + 1 > rankedDictionariesMaxWordSize[dictionaryName] &&
-            !isFullPassword
+            this.wordSequenceCheck &&
+            !this.options.isWordSequence(dictionaryName)
           ) {
-            continue
+            return
+          }
+          if (isFullPassword) {
+            fullPasswordExactMatches.add(dictionaryName)
+          }
+          matches.push({
+            pattern: 'dictionary',
+            i,
+            j,
+            token: password.slice(i, j + 1),
+            matchedWord: passwordLower.slice(i, j + 1),
+            rank,
+            dictionaryName,
+            reversed: false,
+            l33t: false,
+          })
+        })
+      }
+    }
+
+    if (
+      this.options.useLevenshteinDistance &&
+      useLevenshtein &&
+      passwordLength > 0
+    ) {
+      const dictionaryNames = Object.keys(dictionaries) as DictionaryNames[]
+      dictionaryNames.forEach((dictionaryName) => {
+        if (!fullPasswordExactMatches.has(dictionaryName)) {
+          const maxWordSize = dictionaryMaxWordSize[dictionaryName]
+          const minWordSize = dictionaryMinWordSize[dictionaryName]
+          const threshold = this.options.levenshteinThreshold
+          const relativeThreshold = Math.ceil(passwordLength / 4)
+          const thresholdForShortEntry =
+            passwordLength <= threshold ? relativeThreshold : threshold
+
+          if (
+            passwordLength - maxWordSize > thresholdForShortEntry ||
+            minWordSize - passwordLength > relativeThreshold
+          ) {
+            return
           }
 
-          const rank = rankedDict[usedPassword]
-          const isInDictionary = rank !== undefined
-          let foundLevenshteinDistance: Partial<FindLevenshteinDistanceResult> =
-            {}
-          // only use levenshtein distance on full password to minimize the performance drop
-          // and because otherwise there would be to many false positives
-          if (
-            this.options.useLevenshteinDistance &&
-            isFullPassword &&
-            !isInDictionary &&
-            useLevenshtein
-          ) {
-            foundLevenshteinDistance = findLevenshteinDistance(
-              usedPassword,
-              rankedDict,
-              this.options.levenshteinThreshold,
-            )
-          }
-          const isLevenshteinMatch =
-            foundLevenshteinDistance.levenshteinDistance !== undefined
-
-          if (isInDictionary || isLevenshteinMatch) {
-            const usedRankPassword = isLevenshteinMatch
-              ? foundLevenshteinDistance.levenshteinDistanceEntry!
-              : usedPassword
-
-            const rankValue = isInDictionary
-              ? rank
-              : rankedDict[usedRankPassword]
+          const dictionary = dictionaries[dictionaryName]
+          const foundLevenshteinDistance = findLevenshteinDistance(
+            passwordLower,
+            dictionary,
+            this.options.levenshteinThreshold,
+          )
+          if (foundLevenshteinDistance.levenshteinDistance !== undefined) {
+            const {
+              levenshteinDistanceRank,
+              ...foundLevenshteinDistanceWithoutRank
+            } = foundLevenshteinDistance
             matches.push({
               pattern: 'dictionary',
-              i,
-              j,
-              token: password.slice(i, j + 1),
-              matchedWord: usedPassword,
-              rank: rankValue,
+              i: 0,
+              j: passwordLength - 1,
+              token: password,
+              matchedWord: passwordLower,
+              rank: levenshteinDistanceRank!,
               dictionaryName,
               reversed: false,
               l33t: false,
-              ...foundLevenshteinDistance,
+              ...foundLevenshteinDistanceWithoutRank,
             })
           }
         }
-      }
+      })
     }
     return matches
   }

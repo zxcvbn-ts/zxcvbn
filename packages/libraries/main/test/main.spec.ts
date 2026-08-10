@@ -4,16 +4,13 @@ import { ZxcvbnFactory } from '../src'
 import passwordTests from './helper/passwordTests'
 
 describe('main', () => {
-  let zxcvbn: ZxcvbnFactory
-  beforeEach(() => {
-    zxcvbn = new ZxcvbnFactory({
-      dictionary: {
-        ...zxcvbnCommonPackage.dictionary,
-        ...zxcvbnEnPackage.dictionary,
-      },
-      graphs: zxcvbnCommonPackage.adjacencyGraphs,
-      translations: zxcvbnEnPackage.translations,
-    })
+  const zxcvbn = new ZxcvbnFactory({
+    dictionary: {
+      ...zxcvbnCommonPackage.dictionary,
+      ...zxcvbnEnPackage.dictionary,
+    },
+    graphs: zxcvbnCommonPackage.adjacencyGraphs,
+    translations: zxcvbnEnPackage.translations,
   })
 
   it('should allow creating factory with no arguments', () => {
@@ -227,16 +224,16 @@ describe('main', () => {
   })
 
   describe('password tests', () => {
+    const zxcvbnCustom = new ZxcvbnFactory({
+      dictionary: {
+        ...zxcvbnCommonPackage.dictionary,
+        ...zxcvbnEnPackage.dictionary,
+      },
+      graphs: zxcvbnCommonPackage.adjacencyGraphs,
+      translations: zxcvbnEnPackage.translations,
+    })
     passwordTests.forEach((data) => {
       it(`should resolve ${data.password}`, () => {
-        const zxcvbnCustom = new ZxcvbnFactory({
-          dictionary: {
-            ...zxcvbnCommonPackage.dictionary,
-            ...zxcvbnEnPackage.dictionary,
-          },
-          graphs: zxcvbnCommonPackage.adjacencyGraphs,
-          translations: zxcvbnEnPackage.translations,
-        })
         const result = zxcvbnCustom.check(data.password)
         result.calcTime = 0
         expect(JSON.stringify(result)).toEqual(JSON.stringify(data))
