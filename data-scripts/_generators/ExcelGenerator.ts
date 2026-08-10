@@ -3,7 +3,7 @@ import XLSX from 'xlsx'
 import SimpleListGenerator, {
   SimpleListGeneratorDefaultOptions,
   SimpleListGeneratorOptions,
-} from './SimpleListGenerator'
+} from './SimpleListGenerator.ts'
 
 export interface Options extends SimpleListGeneratorOptions {
   url: string

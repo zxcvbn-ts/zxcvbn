@@ -1,5 +1,5 @@
-import Options from '../../Options'
-import { MatchEstimated } from '../../types'
+import Options from '../../Options.ts'
+import { MatchEstimated } from '../../types.ts'
 
 export default (options: Options, match: MatchEstimated) => {
   if (match.pattern !== 'wordSequence') {

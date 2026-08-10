@@ -1,4 +1,4 @@
-import { MatchEstimated, MatchExtended } from '../../types'
+import { MatchEstimated, MatchExtended } from '../../types.ts'
 
 export default ({ token, ascending }: MatchExtended | MatchEstimated) => {
   const firstChr = token.charAt(0)

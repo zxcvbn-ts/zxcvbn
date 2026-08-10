@@ -1,24 +1,24 @@
 import {
   MIN_SUBMATCH_GUESSES_SINGLE_CHAR,
   MIN_SUBMATCH_GUESSES_MULTI_CHAR,
-} from '../data/const'
-import utils from './utils'
-import Options from '../Options'
+} from '../data/const.ts'
+import utils from './utils.ts'
+import Options from '../Options.ts'
 import {
   DefaultScoringFunction,
   DictionaryScoringExtras,
   MatchEstimated,
   MatchExtended,
-} from '../types'
-import bruteforceMatcher from '../matcher/bruteforce/scoring'
-import dateMatcher from '../matcher/date/scoring'
-import dictionaryMatcher from '../matcher/dictionary/scoring'
-import regexMatcher from '../matcher/regex/scoring'
-import repeatMatcher from '../matcher/repeat/scoring'
-import sequenceMatcher from '../matcher/sequence/scoring'
-import spatialMatcher from '../matcher/spatial/scoring'
-import separatorMatcher from '../matcher/separator/scoring'
-import wordSequenceMatcher from '../matcher/wordSequence/scoring'
+} from '../types.ts'
+import bruteforceMatcher from '../matcher/bruteforce/scoring.ts'
+import dateMatcher from '../matcher/date/scoring.ts'
+import dictionaryMatcher from '../matcher/dictionary/scoring.ts'
+import regexMatcher from '../matcher/regex/scoring.ts'
+import repeatMatcher from '../matcher/repeat/scoring.ts'
+import sequenceMatcher from '../matcher/sequence/scoring.ts'
+import spatialMatcher from '../matcher/spatial/scoring.ts'
+import separatorMatcher from '../matcher/separator/scoring.ts'
+import wordSequenceMatcher from '../matcher/wordSequence/scoring.ts'
 
 const getMinGuesses = (
   match: MatchExtended | MatchEstimated,

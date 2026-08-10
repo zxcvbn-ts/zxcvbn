@@ -1,4 +1,4 @@
-import utils from '../../../../scoring/utils'
+import utils from '../../../../scoring/utils.ts'
 import {
   START_UPPER,
   END_UPPER,
@@ -7,7 +7,7 @@ import {
   ONE_LOWER,
   ONE_UPPER,
   ALPHA_INVERTED,
-} from '../../../../data/const'
+} from '../../../../data/const.ts'
 
 const getVariations = (cleanedWord: string) => {
   const wordArray = cleanedWord.split('')

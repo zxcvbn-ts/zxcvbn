@@ -1,9 +1,14 @@
 {
   "name": "@zxcvbn-ts/language-en",
   "version": "4.1.1",
-  "main": "dist/index.cjs",
-  "module": "dist/index.mjs",
-  "types": "dist/index.d.ts",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs"
+    }
+  },
+  "types": "./dist/index.d.ts",
   "sideEffects": false,
   "description": "The English language package for zxcvbn-ts",
   "license": "MIT",

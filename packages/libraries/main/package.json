@@ -1,12 +1,18 @@
 {
   "name": "@zxcvbn-ts/core",
   "version": "4.1.2",
-  "main": "dist/index.cjs",
-  "module": "dist/index.mjs",
-  "types": "dist/index.d.ts",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs"
+    }
+  },
+  "types": "./dist/index.d.ts",
   "description": "Realistic password strength estimation written in typescript",
   "license": "MIT",
   "homepage": "https://github.com/zxcvbn-ts/zxcvbn",
+  "sideEffects": false,
   "repository": {
     "type": "git",
     "url": "https://github.com/zxcvbn-ts/zxcvbn.git"
@@ -14,7 +20,7 @@
   "author": "zxcvbn-ts",
   "files": [
     "dist",
-    "src"
+    "CHANGELOG.md"
   ],
   "publishConfig": {
     "access": "public"

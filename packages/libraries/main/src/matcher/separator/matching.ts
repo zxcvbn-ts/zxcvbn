@@ -1,5 +1,5 @@
-import { ESCAPE_REGEX, SEPERATOR_CHARS } from '../../data/const'
-import { MatcherBaseClass, MatchOptions, SeparatorMatch } from '../../types'
+import { ESCAPE_REGEX, SEPERATOR_CHARS } from '../../data/const.ts'
+import { MatcherBaseClass, MatchOptions, SeparatorMatch } from '../../types.ts'
 
 type SeparatorMatchOptions = Pick<MatchOptions, 'password'>
 

@@ -1,16 +1,16 @@
 import findLevenshteinDistance, {
   FindLevenshteinDistanceResult,
-} from '../../utils/levenshtein'
-import Options from '../../Options'
+} from '../../utils/levenshtein.ts'
+import Options from '../../Options.ts'
 import {
   DictionaryNames,
   DictionaryMatch,
   UserInputsOptions,
   MatcherBaseClass,
   RankedDictionaries,
-} from '../../types'
-import { DictionaryMatchOptions } from './types'
-import mergeUserInputDictionary from '../../utils/mergeUserInputDictionary'
+} from '../../types.ts'
+import { DictionaryMatchOptions } from './types.ts'
+import mergeUserInputDictionary from '../../utils/mergeUserInputDictionary.ts'
 
 class MatchDictionary extends MatcherBaseClass {
   constructor(

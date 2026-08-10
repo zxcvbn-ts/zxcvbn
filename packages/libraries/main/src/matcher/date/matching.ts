@@ -3,9 +3,9 @@ import {
   DATE_MIN_YEAR,
   DATE_SPLITS,
   REFERENCE_YEAR,
-} from '../../data/const'
-import { sorted } from '../../utils/helper'
-import { MatcherBaseClass, DateMatch, MatchOptions } from '../../types'
+} from '../../data/const.ts'
+import { sorted } from '../../utils/helper.ts'
+import { MatcherBaseClass, DateMatch, MatchOptions } from '../../types.ts'
 
 type DateMatchOptions = Pick<MatchOptions, 'password'>
 

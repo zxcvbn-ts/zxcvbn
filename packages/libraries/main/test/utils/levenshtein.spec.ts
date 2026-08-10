@@ -1,6 +1,6 @@
-import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common/src'
-import * as zxcvbnEnPackage from '@zxcvbn-ts/language-en/src'
-import { ZxcvbnFactory } from '../../src'
+import * as zxcvbnCommonPackage from '../../../../languages/common/src/index.ts'
+import * as zxcvbnEnPackage from '../../../../languages/en/src/index.ts'
+import { ZxcvbnFactory } from '../../src/index.ts'
 
 describe('levenshtein', () => {
   const zxcvbn = new ZxcvbnFactory({

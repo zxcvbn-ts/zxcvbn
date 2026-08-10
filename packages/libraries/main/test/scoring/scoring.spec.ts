@@ -1,5 +1,5 @@
-import Scoring from '../../src/scoring'
-import Options from '../../src/Options'
+import Scoring from '../../src/scoring/index.ts'
+import Options from '../../src/Options.ts'
 
 const getMatch = (
   i: number,

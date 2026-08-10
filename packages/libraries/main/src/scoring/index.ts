@@ -1,13 +1,13 @@
-import utils from './utils'
-import estimateGuesses from './estimate'
-import { MIN_GUESSES_BEFORE_GROWING_SEQUENCE } from '../data/const'
+import utils from './utils.ts'
+import estimateGuesses from './estimate.ts'
+import { MIN_GUESSES_BEFORE_GROWING_SEQUENCE } from '../data/const.ts'
 import {
   MatchExtended,
   BruteForceMatch,
   MatchEstimated,
   Optimal,
-} from '../types'
-import Options from '../Options'
+} from '../types.ts'
+import Options from '../Options.ts'
 
 export default class Scoring {
   private password = ''

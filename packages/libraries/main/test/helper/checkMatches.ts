@@ -1,4 +1,4 @@
-import { MatchExtended } from '../../src/types'
+import { MatchExtended } from '../../src/types.ts'
 
 export interface CheckMatchesOptions {
   messagePrefix: string

@@ -1,4 +1,4 @@
-import utils from '../../src/scoring/utils'
+import utils from '../../src/scoring/utils.ts'
 
 const { log2 } = utils
 const { log10 } = utils

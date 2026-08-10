@@ -1,8 +1,8 @@
-import MatchSpatial from '../../../src/matcher/spatial/matching'
-import checkMatches from '../../helper/checkMatches'
-import * as zxcvbnCommonPackage from '../../../../../languages/common/src'
-import Options from '../../../src/Options'
-import { OptionsGraph } from '../../../src/types'
+import MatchSpatial from '../../../src/matcher/spatial/matching.ts'
+import checkMatches from '../../helper/checkMatches.ts'
+import * as zxcvbnCommonPackage from '../../../../../languages/common/src/index.ts'
+import Options from '../../../src/Options.ts'
+import { OptionsGraph } from '../../../src/types.ts'
 
 const { adjacencyGraphs } = zxcvbnCommonPackage
 

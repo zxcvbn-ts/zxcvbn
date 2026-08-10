@@ -1,9 +1,9 @@
-import * as zxcvbnCommonPackage from '../../../../../languages/common/src'
-import * as zxcvbnEnPackage from '../../../../../languages/en/src'
-import MatchDictionary from '../../../src/matcher/dictionary/matching'
-import checkMatches from '../../helper/checkMatches'
-import genpws from '../../helper/genpws'
-import Options from '../../../src/Options'
+import * as zxcvbnCommonPackage from '../../../../../languages/common/src/index.ts'
+import * as zxcvbnEnPackage from '../../../../../languages/en/src/index.ts'
+import MatchDictionary from '../../../src/matcher/dictionary/matching.ts'
+import checkMatches from '../../helper/checkMatches.ts'
+import genpws from '../../helper/genpws.ts'
+import Options from '../../../src/Options.ts'
 
 describe('dictionary matching', () => {
   describe('Default dictionary', () => {

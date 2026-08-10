@@ -1,8 +1,8 @@
-import * as zxcvbnCommonPackage from '../../../languages/common/src'
-import * as zxcvbnEnPackage from '../../../languages/en/src'
-import { MatcherBaseClass, ZxcvbnFactory } from '../src'
-import { Match, Matcher } from '../src/types'
-import { sorted } from '../src/utils/helper'
+import * as zxcvbnCommonPackage from '../../../languages/common/src/index.ts'
+import * as zxcvbnEnPackage from '../../../languages/en/src/index.ts'
+import { MatcherBaseClass, ZxcvbnFactory } from '../src/index.ts'
+import { Match, Matcher } from '../src/types.ts'
+import { sorted } from '../src/utils/helper.ts'
 
 const minLengthMatcher: Matcher = {
   Matching: class MatchMinLength extends MatcherBaseClass {

@@ -1,6 +1,6 @@
-import Options from '../src/Options'
-import translationKeys from '../src/data/translationKeys'
-import { timeEstimationValuesDefaults } from '../src/TimeEstimates'
+import Options from '../src/Options.ts'
+import translationKeys from '../src/data/translationKeys.ts'
+import { timeEstimationValuesDefaults } from '../src/TimeEstimates.ts'
 
 describe('Options', () => {
   describe('translations', () => {

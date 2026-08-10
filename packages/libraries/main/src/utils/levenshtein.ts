@@ -1,5 +1,5 @@
 import { distance } from 'fastest-levenshtein'
-import { RankedDictionary } from '../types'
+import { RankedDictionary } from '../types.ts'
 
 const getUsedThreshold = (
   password: string,

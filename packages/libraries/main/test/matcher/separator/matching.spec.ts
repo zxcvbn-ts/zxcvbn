@@ -1,6 +1,6 @@
-import MatchSeparator from '../../../src/matcher/separator/matching'
-import checkMatches from '../../helper/checkMatches'
-import Options from '../../../src/Options'
+import MatchSeparator from '../../../src/matcher/separator/matching.ts'
+import checkMatches from '../../helper/checkMatches.ts'
+import Options from '../../../src/Options.ts'
 
 describe('separator matching', () => {
   const zxcvbnOptions = new Options()

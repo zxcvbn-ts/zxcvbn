@@ -1,4 +1,4 @@
-import { RankedDictionaries, UserInputsOptions } from '../types'
+import { RankedDictionaries, UserInputsOptions } from '../types.ts'
 
 export default (
   optionsRankedDictionaries: RankedDictionaries,

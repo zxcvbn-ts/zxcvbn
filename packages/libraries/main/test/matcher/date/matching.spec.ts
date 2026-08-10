@@ -1,7 +1,7 @@
-import MatchDate from '../../../src/matcher/date/matching'
-import checkMatches from '../../helper/checkMatches'
-import genpws from '../../helper/genpws'
-import Options from '../../../src/Options'
+import MatchDate from '../../../src/matcher/date/matching.ts'
+import checkMatches from '../../helper/checkMatches.ts'
+import genpws from '../../helper/genpws.ts'
+import Options from '../../../src/Options.ts'
 
 describe('date matching', () => {
   const zxcvbnOptions = new Options()

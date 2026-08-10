@@ -1,9 +1,14 @@
 {
   "name": "@zxcvbn-ts/matcher-pwned",
   "version": "4.1.2",
-  "main": "dist/index.cjs",
-  "module": "dist/index.mjs",
-  "types": "dist/index.d.ts",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs"
+    }
+  },
+  "types": "./dist/index.d.ts",
   "description": "HaveIBeenPwned Matcher for zxcvbn-ts",
   "license": "MIT",
   "homepage": "https://github.com/zxcvbn-ts/zxcvbn",
@@ -14,7 +19,7 @@
   "author": "zxcvbn-ts",
   "files": [
     "dist",
-    "src"
+    "CHANGELOG.md"
   ],
   "browser": {
     "crypto": false

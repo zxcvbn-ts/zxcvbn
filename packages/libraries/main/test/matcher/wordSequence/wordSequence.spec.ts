@@ -1,8 +1,8 @@
-import { ZxcvbnFactory } from '../../../src'
-import wordSequences from '../../../../../languages/en/src/wordSequences.json'
-import scoring from '../../../src/matcher/wordSequence/scoring'
-import feedback from '../../../src/matcher/wordSequence/feedback'
-import Options from '../../../src/Options'
+import { ZxcvbnFactory } from '../../../src/index.ts'
+import wordSequences from '../../../../../languages/en/src/wordSequences.json' with { type: 'json' }
+import scoring from '../../../src/matcher/wordSequence/scoring.ts'
+import feedback from '../../../src/matcher/wordSequence/feedback.ts'
+import Options from '../../../src/Options.ts'
 
 describe('WordSequence Matcher', () => {
   let zxcvbn: ZxcvbnFactory

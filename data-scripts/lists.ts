@@ -1,13 +1,13 @@
-import PasswordGenerator from './_generators/PasswordGenerator'
-import KeyboardAdjacencyGraph from './_generators/KeyboardAdjacencyGraph'
-import { ExcelGenerator } from './_generators/ExcelGenerator'
-import { TxtGenerator } from './_generators/TxtGenerator'
-import ApiGenerator from './_generators/ApiGenerator'
-import HTMLGenerator from './_generators/HTMLGenerator'
-import SimpleJapaneseListGenerator from './_generators/SimpleJapaneseListGenerator'
-import SimpleChineseListGenerator from './_generators/SimpleChineseListGenerator'
-import latin2Decoder from './latin2Decoder'
-import CommonWordsGenerator from './_generators/CommonWordsGenerator'
+import PasswordGenerator from './_generators/PasswordGenerator.ts'
+import KeyboardAdjacencyGraph from './_generators/KeyboardAdjacencyGraph.ts'
+import { ExcelGenerator } from './_generators/ExcelGenerator.ts'
+import { TxtGenerator } from './_generators/TxtGenerator.ts'
+import ApiGenerator from './_generators/ApiGenerator.ts'
+import HTMLGenerator from './_generators/HTMLGenerator.ts'
+import SimpleJapaneseListGenerator from './_generators/SimpleJapaneseListGenerator.ts'
+import SimpleChineseListGenerator from './_generators/SimpleChineseListGenerator.ts'
+import latin2Decoder from './latin2Decoder.ts'
+import CommonWordsGenerator from './_generators/CommonWordsGenerator.ts'
 
 export interface LanguageListEntry {
   source?: string

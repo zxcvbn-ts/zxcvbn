@@ -1,6 +1,6 @@
-import { REGEXEN } from '../../data/const'
-import { sorted } from '../../utils/helper'
-import { MatcherBaseClass, MatchOptions, RegexMatch } from '../../types'
+import { REGEXEN } from '../../data/const.ts'
+import { sorted } from '../../utils/helper.ts'
+import { MatcherBaseClass, MatchOptions, RegexMatch } from '../../types.ts'
 
 type RegexMatchOptions = Pick<MatchOptions, 'password'>
 

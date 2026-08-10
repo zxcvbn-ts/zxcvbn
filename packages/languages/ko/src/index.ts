@@ -1,4 +1,4 @@
-import translations from './translations'
+import translations from './translations.ts'
 
 const dictionary = {}
 

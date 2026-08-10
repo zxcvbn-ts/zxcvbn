@@ -1,9 +1,9 @@
-import MatchRepeat from '../../../src/matcher/repeat/matching'
-import checkMatches from '../../helper/checkMatches'
-import genpws from '../../helper/genpws'
-import MatchOmni from '../../../src/Matching'
-import Options from '../../../src/Options'
-import { RepeatMatch } from '../../../src/types'
+import MatchRepeat from '../../../src/matcher/repeat/matching.ts'
+import checkMatches from '../../helper/checkMatches.ts'
+import genpws from '../../helper/genpws.ts'
+import MatchOmni from '../../../src/Matching.ts'
+import Options from '../../../src/Options.ts'
+import { RepeatMatch } from '../../../src/types.ts'
 
 const zxcvbnOptions = new Options()
 const omniMatch = new MatchOmni(zxcvbnOptions)

@@ -1,3 +1,5 @@
+import { Match } from '@zxcvbn-ts/core'
+
 export type FetchApi = WindowOrWorkerGlobalScope['fetch']
 
 export type NetworkErrorHandler = (error: Error | Response) => false
@@ -14,4 +16,9 @@ export interface MatcherPwnedFactoryConfig {
 }
 export interface HaveIBeenPwnedConfig extends MatcherPwnedFactoryConfig {
   universalFetch: FetchApi
+}
+
+export interface PwnedMatch extends Match {
+  pattern: 'pwned'
+  pwnedAmount: number
 }

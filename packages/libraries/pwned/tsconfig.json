@@ -2,9 +2,6 @@
   "extends": "../../../tsconfig.json",
   "compilerOptions": {
     "lib": ["es2018", "dom"],
-    "types": ["node", "jest"],
-    "paths": {
-      "@zxcvbn-ts/core/*": ["../main/src/index.ts"]
-    }
+    "types": ["node", "jest"]
   }
 }

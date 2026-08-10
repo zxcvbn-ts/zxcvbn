@@ -1,6 +1,6 @@
-import l33tTableToTrieNode from '../../../../../../src/matcher/dictionary/variants/matching/unmunger/l33tTableToTrieNode'
-import TrieNode from '../../../../../../src/matcher/dictionary/variants/matching/unmunger/TrieNode'
-import getCleanPasswords from '../../../../../../src/matcher/dictionary/variants/matching/unmunger/getCleanPasswords'
+import l33tTableToTrieNode from '../../../../../../src/matcher/dictionary/variants/matching/unmunger/l33tTableToTrieNode.ts'
+import TrieNode from '../../../../../../src/matcher/dictionary/variants/matching/unmunger/TrieNode.ts'
+import getCleanPasswords from '../../../../../../src/matcher/dictionary/variants/matching/unmunger/getCleanPasswords.ts'
 
 const trieNode = l33tTableToTrieNode(
   {

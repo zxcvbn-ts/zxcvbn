@@ -1,14 +1,18 @@
-import Options from './Options'
-import { DefaultFeedbackFunction, FeedbackType, MatchEstimated } from './types'
-import bruteforceMatcher from './matcher/bruteforce/feedback'
-import dateMatcher from './matcher/date/feedback'
-import dictionaryMatcher from './matcher/dictionary/feedback'
-import regexMatcher from './matcher/regex/feedback'
-import repeatMatcher from './matcher/repeat/feedback'
-import sequenceMatcher from './matcher/sequence/feedback'
-import spatialMatcher from './matcher/spatial/feedback'
-import separatorMatcher from './matcher/separator/feedback'
-import wordSequenceMatcher from './matcher/wordSequence/feedback'
+import Options from './Options.ts'
+import {
+  DefaultFeedbackFunction,
+  FeedbackType,
+  MatchEstimated,
+} from './types.ts'
+import bruteforceMatcher from './matcher/bruteforce/feedback.ts'
+import dateMatcher from './matcher/date/feedback.ts'
+import dictionaryMatcher from './matcher/dictionary/feedback.ts'
+import regexMatcher from './matcher/regex/feedback.ts'
+import repeatMatcher from './matcher/repeat/feedback.ts'
+import sequenceMatcher from './matcher/sequence/feedback.ts'
+import spatialMatcher from './matcher/spatial/feedback.ts'
+import separatorMatcher from './matcher/separator/feedback.ts'
+import wordSequenceMatcher from './matcher/wordSequence/feedback.ts'
 
 const createFeedback = (
   suggestions?: FeedbackType['suggestions'],

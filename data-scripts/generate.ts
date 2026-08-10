@@ -1,6 +1,6 @@
-import SimpleListGenerator from './_generators/SimpleListGenerator'
-import ListHandler from './_helpers/runtime'
-import lists from './lists'
+import SimpleListGenerator from './_generators/SimpleListGenerator.ts'
+import ListHandler from './_helpers/runtime.ts'
+import lists from './lists.ts'
 
 const main = async () => {
   const listHandler = new ListHandler()

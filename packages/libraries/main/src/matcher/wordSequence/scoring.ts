@@ -1,4 +1,4 @@
-import { MatchExtended, MatchEstimated } from '../../types'
+import { MatchExtended, MatchEstimated } from '../../types.ts'
 
 function factorial(n: number): number {
   if (n <= 1) return 1

@@ -1,4 +1,4 @@
-import { buildRankedDictionary } from './utils/helper'
+import { buildRankedDictionary } from './utils/helper.ts'
 import {
   TranslationKeys,
   OptionsType,
@@ -11,12 +11,12 @@ import {
   UserInputsOptions,
   RankedDictionary,
   TimeEstimationValues,
-} from './types'
-import l33tTable from './data/l33tTable'
-import translationKeys from './data/translationKeys'
-import TrieNode from './matcher/dictionary/variants/matching/unmunger/TrieNode'
-import l33tTableToTrieNode from './matcher/dictionary/variants/matching/unmunger/l33tTableToTrieNode'
-import { timeEstimationValuesDefaults } from './TimeEstimates'
+} from './types.ts'
+import l33tTable from './data/l33tTable.ts'
+import translationKeys from './data/translationKeys.ts'
+import TrieNode from './matcher/dictionary/variants/matching/unmunger/TrieNode.ts'
+import l33tTableToTrieNode from './matcher/dictionary/variants/matching/unmunger/l33tTableToTrieNode.ts'
+import { timeEstimationValuesDefaults } from './TimeEstimates.ts'
 import {
   checkCustomMatchers,
   checkCustomTranslations,
@@ -29,7 +29,7 @@ import {
   checkTimeEstimationValues,
   checkUseLevenshteinDistance,
   checkLevenshteinThreshold,
-} from './runtimeChecks'
+} from './runtimeChecks.ts'
 
 export default class Options {
   public matchers: Matchers = {}
