@@ -1,41 +1,15 @@
 import findLevenshteinDistance from '../../utils/levenshtein'
-import Options from '../../Options'
 import {
   DictionaryNames,
   DictionaryMatch,
   UserInputsOptions,
   MatcherBaseClass,
-  OptionsDictionary,
 } from '../../types'
 import { DictionaryMatchOptions } from './types'
 import mergeUserInputDictionary from '../../utils/mergeUserInputDictionary'
 
 class MatchDictionary extends MatcherBaseClass {
-  constructor(
-    options: Options,
-    protected wordSequenceCheck?: boolean,
-  ) {
-    super(options)
-  }
-
   private getRangedDictionaries(userInputsOptions?: UserInputsOptions) {
-    if (this.wordSequenceCheck) {
-      const dictionaries: OptionsDictionary = {}
-      const dictionaryMaxWordSize: Record<string, number> = {}
-      const dictionaryMinWordSize: Record<string, number> = {}
-      Object.keys(this.options.dictionary).forEach((key) => {
-        if (this.options.isWordSequence(key)) {
-          dictionaries[key] = this.options.dictionary[key]
-          dictionaryMaxWordSize[key] = this.options.dictionaryMaxWordSize[key]
-          dictionaryMinWordSize[key] = this.options.dictionaryMinWordSize[key]
-        }
-      })
-      return {
-        dictionaries,
-        dictionaryMaxWordSize,
-        dictionaryMinWordSize,
-      }
-    }
     if (
       userInputsOptions?.mergedDictionaries &&
       userInputsOptions?.mergedDictionaryMaxWordSize &&
@@ -88,12 +62,6 @@ class MatchDictionary extends MatcherBaseClass {
         ]
 
         terminals.forEach(({ dictionaryName, rank }) => {
-          if (
-            this.wordSequenceCheck &&
-            !this.options.isWordSequence(dictionaryName)
-          ) {
-            return
-          }
           if (isFullPassword) {
             fullPasswordExactMatches.add(dictionaryName)
           }

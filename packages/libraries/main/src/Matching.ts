@@ -87,6 +87,7 @@ class Matching {
         password,
         omniMatch: this,
         userInputsOptions,
+        matches,
       })
 
       // extends matches and promises by references
