@@ -169,33 +169,65 @@ export default class Options {
   }
 
   private initDictionaryTrie() {
-    const dictionaryTrie = new DictionaryTrie()
-    const dictionaryMaxWordSize: Record<string, number> = {}
-    const dictionaryMinWordSize: Record<string, number> = {}
-    Object.keys(this.dictionary).forEach((name) => {
-      const list = this.dictionary[name]
-      let maxWordSize = 0
-      let minWordSize = Infinity
-      for (let i = 0; i < list.length; i += 1) {
-        const wordOrNumber = list[i]
-        const word = wordOrNumber.toString()
-        const rank = i + 1
-        const wordLength = word.length
-        if (wordLength > maxWordSize) {
-          maxWordSize = wordLength
-        }
-        if (wordLength < minWordSize) {
-          minWordSize = wordLength
-        }
-        dictionaryTrie.add(word, name, rank, false)
-        dictionaryTrie.add(word.split('').reverse().join(''), name, rank, true)
-      }
-      dictionaryMaxWordSize[name] = maxWordSize
-      dictionaryMinWordSize[name] = list.length > 0 ? minWordSize : 0
+    this.dictionaryTrie = new DictionaryTrie()
+    this.dictionaryMaxWordSize = {}
+    this.dictionaryMinWordSize = {}
+
+    Object.entries(this.dictionary).forEach(([name, list]) => {
+      const { maxWordSize, minWordSize } = this.buildTrie(
+        name,
+        list,
+        this.dictionaryTrie,
+      )
+      this.dictionaryMaxWordSize[name] = maxWordSize
+      this.dictionaryMinWordSize[name] = minWordSize
     })
-    this.dictionaryTrie = dictionaryTrie
-    this.dictionaryMaxWordSize = dictionaryMaxWordSize
-    this.dictionaryMinWordSize = dictionaryMinWordSize
+  }
+
+  private buildTrie(
+    name: string,
+    list: (string | number | boolean)[],
+    trie: DictionaryTrie,
+    shouldSanitize = false,
+  ) {
+    let maxWordSize = 0
+    let minWordSize = Infinity
+    const seenWords = new Set<string>()
+    const sanitizedList: string[] = []
+
+    list.forEach((input, index) => {
+      let word = input.toString()
+      if (shouldSanitize) {
+        word = word.toLowerCase()
+      }
+
+      if (shouldSanitize) {
+        if (seenWords.has(word)) {
+          return
+        }
+        seenWords.add(word)
+      }
+
+      sanitizedList.push(word)
+      const rank = shouldSanitize ? sanitizedList.length : index + 1
+      const wordLength = word.length
+
+      if (wordLength > maxWordSize) {
+        maxWordSize = wordLength
+      }
+      if (wordLength < minWordSize) {
+        minWordSize = wordLength
+      }
+
+      trie.add(word, name, rank, false)
+      trie.add(word.split('').reverse().join(''), name, rank, true)
+    })
+
+    return {
+      maxWordSize,
+      minWordSize: sanitizedList.length > 0 ? minWordSize : 0,
+      sanitizedList,
+    }
   }
 
   public getUserInputsOptions(
@@ -205,49 +237,17 @@ export default class Options {
       return this.cachedUserInputsOptions!
     }
 
-    const sanitizedDictionary: (string | number)[] = []
-    let dictionaryMaxWordSize = 0
-    let dictionaryMinWordSize = Infinity
     const dictionaryTrie = new DictionaryTrie()
-    if (dictionary) {
-      const seenWords = new Set<string>()
-      for (let i = 0; i < dictionary.length; i += 1) {
-        const input = dictionary[i]
-        const inputType = typeof input
-        if (
-          inputType === 'string' ||
-          inputType === 'number' ||
-          inputType === 'boolean'
-        ) {
-          const word = input.toString().toLowerCase()
-          if (!seenWords.has(word)) {
-            seenWords.add(word)
-            sanitizedDictionary.push(word)
-            const rank = sanitizedDictionary.length
-            const wordLength = word.length
-            if (wordLength > dictionaryMaxWordSize) {
-              dictionaryMaxWordSize = wordLength
-            }
-            if (wordLength < dictionaryMinWordSize) {
-              dictionaryMinWordSize = wordLength
-            }
-            dictionaryTrie.add(word, 'userInputs', rank, false)
-            dictionaryTrie.add(
-              word.split('').reverse().join(''),
-              'userInputs',
-              rank,
-              true,
-            )
-          }
-        }
-      }
-    }
+    const {
+      maxWordSize: dictionaryMaxWordSize,
+      minWordSize: dictionaryMinWordSize,
+      sanitizedList: sanitizedDictionary,
+    } = this.buildTrie('userInputs', dictionary ?? [], dictionaryTrie, true)
 
     const userInputsOptions: UserInputsOptions = {
       dictionary: sanitizedDictionary,
       dictionaryMaxWordSize,
-      dictionaryMinWordSize:
-        sanitizedDictionary.length > 0 ? dictionaryMinWordSize : 0,
+      dictionaryMinWordSize,
       dictionaryTrie,
     }
 

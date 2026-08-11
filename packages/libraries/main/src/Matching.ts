@@ -40,48 +40,13 @@ class Matching {
     })
   }
 
-  private processResult(
-    matches: MatchExtended[],
-    promises: Promise<MatchExtended[]>[],
-    result: MatchExtended[] | Promise<MatchExtended[]>,
-  ) {
-    if (result instanceof Promise) {
-      const wrappedPromise = result.then((response) => {
-        extend(matches, response)
-        return response
-      })
-      promises.push(wrappedPromise)
-    } else {
-      extend(matches, result)
-    }
-  }
-
-  private handlePromises(
-    matches: MatchExtended[],
-    promises: Promise<MatchExtended[]>[],
-  ) {
-    if (promises.length > 0) {
-      return new Promise<MatchExtended[]>((resolve, reject) => {
-        Promise.all(promises)
-          .then(() => {
-            resolve(sorted(matches))
-          })
-          .catch((error: unknown) => {
-            // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
-            reject(error)
-          })
-      })
-    }
-    return sorted(matches)
-  }
-
   match(
     password: string,
     userInputsOptions?: UserInputsOptions,
   ): MatchExtended[] | Promise<MatchExtended[]> {
     const matches: MatchExtended[] = []
-
     const promises: Promise<MatchExtended[]>[] = []
+
     Object.values(this.matchers).forEach((matcher) => {
       const result = matcher.match({
         password,
@@ -90,11 +55,23 @@ class Matching {
         matches,
       })
 
-      // extends matches and promises by references
-      this.processResult(matches, promises, result)
+      if (result instanceof Promise) {
+        promises.push(
+          result.then((response) => {
+            extend(matches, response)
+            return response
+          }),
+        )
+      } else {
+        extend(matches, result)
+      }
     })
 
-    return this.handlePromises(matches, promises)
+    if (promises.length > 0) {
+      return Promise.all(promises).then(() => sorted(matches))
+    }
+
+    return sorted(matches)
   }
 }
 
