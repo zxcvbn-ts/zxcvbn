@@ -197,27 +197,26 @@ describe('main', () => {
   })
 
   describe('attack vectors', () => {
+    const maxCalcTime = 2000
     it('should not die while processing and have a appropriate calcTime for l33t attack', () => {
       const result = zxcvbn.check(
-        '4@8({[</369&#!1/|0$5+7%2/4@8({[</369&#!1/|0$5+7%2/"',
+        '4@8({[</369&#!1/|0$5+7%2/4@8({[</369&#!1/|0$5+7%2/"'.repeat(20),
       )
-      expect(result.calcTime).toBeLessThan(2100)
+      expect(result.calcTime).toBeLessThan(maxCalcTime)
     })
 
     it('should not die while processing and have a appropriate calcTime for l33t same value attack', () => {
-      const result = zxcvbn.check(
-        '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!',
-      )
-      expect(result.calcTime).toBeLessThan(2100)
+      const result = zxcvbn.check('!'.repeat(2000))
+      expect(result.calcTime).toBeLessThan(maxCalcTime)
     })
 
     it('should not die while processing and have a appropriate calcTime for regex attacks', () => {
-      const result = zxcvbn.check(`\x00\x00${'\x00'.repeat(100)}\n`)
-      expect(result.calcTime).toBeLessThan(2100)
+      const result = zxcvbn.check(`\x00\x00${'\x00'.repeat(2000)}\n`)
+      expect(result.calcTime).toBeLessThan(maxCalcTime)
     })
 
     it('should handle very long passwords by truncating them', () => {
-      const longPassword = 'a'.repeat(300)
+      const longPassword = 'a'.repeat(2000)
       const result = zxcvbn.check(longPassword)
       expect(result.password.length).toBe(256)
     })

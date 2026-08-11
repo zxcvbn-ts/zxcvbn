@@ -57,7 +57,7 @@ export default class Options {
 
   public levenshteinThreshold = 2
 
-  public l33tMaxSubstitutions = 100
+  public l33tMaxSubstitutions = 500
 
   public maxLength = 256
 
@@ -187,7 +187,8 @@ export default class Options {
         if (wordLength < minWordSize) {
           minWordSize = wordLength
         }
-        dictionaryTrie.add(word, name, rank)
+        dictionaryTrie.add(word, name, rank, false)
+        dictionaryTrie.add(word.split('').reverse().join(''), name, rank, true)
       }
       dictionaryMaxWordSize[name] = maxWordSize
       dictionaryMinWordSize[name] = list.length > 0 ? minWordSize : 0
@@ -230,7 +231,13 @@ export default class Options {
             if (wordLength < dictionaryMinWordSize) {
               dictionaryMinWordSize = wordLength
             }
-            dictionaryTrie.add(word, 'userInputs', rank)
+            dictionaryTrie.add(word, 'userInputs', rank, false)
+            dictionaryTrie.add(
+              word.split('').reverse().join(''),
+              'userInputs',
+              rank,
+              true,
+            )
           }
         }
       }
