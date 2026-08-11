@@ -1,4 +1,4 @@
-import { sorted, extend } from '../../utils/helper'
+import { extend } from '../../utils/helper'
 import {
   MatcherBaseClass,
   MatchOptions,
@@ -21,7 +21,7 @@ class MatchSpatial extends MatcherBaseClass {
       const graph = this.options.graphs[graphName]
       extend(matches, this.helper(password, graph, graphName))
     })
-    return sorted(matches)
+    return matches
   }
 
   checkIfShifted(graphName: string, password: string, index: number) {

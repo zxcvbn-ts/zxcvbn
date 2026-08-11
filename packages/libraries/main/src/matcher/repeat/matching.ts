@@ -10,6 +10,12 @@ import { MaybePromise } from 'rollup'
  *-------------------------------------------------------------------------------
  */
 class MatchRepeat extends MatcherBaseClass {
+  private static readonly GREEDY = /(.+)\1+/g
+
+  private static readonly LAZY = /(.+?)\1+/g
+
+  private static readonly LAZY_ANCHORED = /^(.+?)\1+$/
+
   private scoring: Scoring
 
   constructor(options: Options) {
@@ -79,22 +85,19 @@ class MatchRepeat extends MatcherBaseClass {
   }
 
   getGreedyMatch(password: string, lastIndex: number) {
-    const greedy = /(.+)\1+/g
-    greedy.lastIndex = lastIndex
-    return greedy.exec(password)
+    MatchRepeat.GREEDY.lastIndex = lastIndex
+    return MatchRepeat.GREEDY.exec(password)
   }
 
   getLazyMatch(password: string, lastIndex: number) {
-    const lazy = /(.+?)\1+/g
-    lazy.lastIndex = lastIndex
-    return lazy.exec(password)
+    MatchRepeat.LAZY.lastIndex = lastIndex
+    return MatchRepeat.LAZY.exec(password)
   }
 
   setMatchToken(
     greedyMatch: RegExpExecArray,
     lazyMatch: RegExpExecArray | null,
   ) {
-    const lazyAnchored = /^(.+?)\1+$/
     let match
     let baseToken = ''
     if (lazyMatch && greedyMatch[0].length > lazyMatch[0].length) {
@@ -106,7 +109,7 @@ class MatchRepeat extends MatcherBaseClass {
       // aabaab in aabaabaabaab.
       // run an anchored lazy match on greedy's repeated string
       // to find the shortest repeated string
-      const temp = lazyAnchored.exec(match[0])
+      const temp = MatchRepeat.LAZY_ANCHORED.exec(match[0])
       if (temp) {
         baseToken = temp[1]
       }

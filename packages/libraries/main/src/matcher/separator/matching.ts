@@ -12,26 +12,28 @@ const separatorRegex = new RegExp(`[${SEPERATOR_CHARS.join('')}]`)
  */
 class MatchSeparator extends MatcherBaseClass {
   static getMostUsedSeparatorChar(password: string): string | undefined {
-    const mostUsedSeperators = [
-      ...password
-        .split('')
-        .filter((c) => separatorRegex.test(c))
-        .reduce((memo, c) => {
-          const m = memo.get(c)
-          if (m) {
-            memo.set(c, parseInt(m, 10) + 1)
-          } else {
-            memo.set(c, 1)
-          }
-          return memo
-        }, new Map())
-        .entries(),
-    ].sort(([_a, a], [_b, b]) => b - a)
-    if (!mostUsedSeperators.length) return undefined
-    const match = mostUsedSeperators[0]
-    // If the special character is only used once, don't treat it like a separator
-    if (match[1] < 2) return undefined
-    return match[0]
+    const counts = new Map<string, number>()
+    for (const char of password) {
+      if (separatorRegex.test(char)) {
+        counts.set(char, (counts.get(char) || 0) + 1)
+      }
+    }
+
+    let maxChar: string | undefined
+    let maxCount = 0
+
+    for (const [char, count] of counts.entries()) {
+      if (count > maxCount) {
+        maxCount = count
+        maxChar = char
+      }
+    }
+
+    if (maxCount < 2) {
+      return undefined
+    }
+
+    return maxChar
   }
 
   static getSeparatorRegex(separator: string): RegExp {
