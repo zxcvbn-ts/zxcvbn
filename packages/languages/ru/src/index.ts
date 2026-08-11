@@ -2,12 +2,14 @@
 import commonWords from './commonWords.json'
 import firstnames from './firstnames.json'
 import lastnames from './lastnames.json'
+import wordSequences from './wordSequences.json'
 import translations from './translations'
 
 const dictionary = {
   'commonWords-ru': commonWords,
   'firstnames-ru': firstnames,
   'lastnames-ru': lastnames,
+  ...wordSequences,
 }
 
 export { dictionary, translations }
