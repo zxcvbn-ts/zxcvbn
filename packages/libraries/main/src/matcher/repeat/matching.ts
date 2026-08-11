@@ -18,6 +18,8 @@ class MatchRepeat extends MatcherBaseClass {
 
   private scoring: Scoring
 
+  private memoizedResults = new Map<string, number | Promise<number>>()
+
   constructor(options: Options) {
     super(options)
     this.scoring = new Scoring(options)
@@ -25,6 +27,7 @@ class MatchRepeat extends MatcherBaseClass {
 
   // eslint-disable-next-line max-statements
   match({ password, omniMatch }: MatchOptions) {
+    this.memoizedResults.clear()
     const matches: (RepeatMatch | Promise<RepeatMatch>)[] = []
     let lastIndex = 0
     while (lastIndex < password.length) {
@@ -129,21 +132,28 @@ class MatchRepeat extends MatcherBaseClass {
   }
 
   getBaseGuesses(baseToken: string, omniMatch: Matching) {
+    if (this.memoizedResults.has(baseToken)) {
+      return this.memoizedResults.get(baseToken)!
+    }
     const matches = omniMatch.match(baseToken)
+    let result: number | Promise<number>
     if (matches instanceof Promise) {
-      return matches.then((resolvedMatches) => {
+      result = matches.then((resolvedMatches) => {
         const baseAnalysis = this.scoring.mostGuessableMatchSequence(
           baseToken,
           resolvedMatches,
         )
         return baseAnalysis.guesses
       })
+    } else {
+      const baseAnalysis = this.scoring.mostGuessableMatchSequence(
+        baseToken,
+        matches,
+      )
+      result = baseAnalysis.guesses
     }
-    const baseAnalysis = this.scoring.mostGuessableMatchSequence(
-      baseToken,
-      matches,
-    )
-    return baseAnalysis.guesses
+    this.memoizedResults.set(baseToken, result)
+    return result
   }
 }
 

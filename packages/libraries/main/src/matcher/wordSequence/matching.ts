@@ -7,6 +7,8 @@ import {
   MatchExtended,
 } from '../../types'
 
+const VALID_SEPARATORS = new Set(['', ' ', '-', '_', '.', ''])
+
 /*
  *-------------------------------------------------------------------------------
  * word sequences (oneTwoThree, fourFiveSix) ------------------------------
@@ -41,12 +43,11 @@ class MatchWordSequence extends MatcherBaseClass {
       })
 
       // Remove used matches from the original matches array
-      usedMatches.forEach((usedMatch) => {
-        const index = matches.indexOf(usedMatch)
-        if (index > -1) {
-          matches.splice(index, 1)
-        }
-      })
+      const filteredMatches = matches.filter(
+        (match) => !usedMatches.has(match as DictionaryMatch | L33tMatch),
+      )
+      matches.length = 0
+      matches.push(...filteredMatches)
     }
 
     return sequences
@@ -55,7 +56,7 @@ class MatchWordSequence extends MatcherBaseClass {
   private filterDictionaryMatches(matches: (L33tMatch | DictionaryMatch)[]) {
     // sort by start index, then by end index
     return (
-      [...matches]
+      matches
         .sort((a, b) => {
           if (a.i !== b.i) return a.i - b.i
           if (a.j !== b.j) return a.j - b.j
@@ -90,13 +91,10 @@ class MatchWordSequence extends MatcherBaseClass {
       return sequences
     }
 
-    // Sort matches by start position
-    const sortedMatches = [...wordMatches].sort((a, b) => a.i - b.i)
-
     // Find all possible sequences
-    for (let startIdx = 0; startIdx < sortedMatches.length; startIdx += 1) {
+    for (let startIdx = 0; startIdx < wordMatches.length; startIdx += 1) {
       const sequencesFromStart = this.findSequencesFromStart(
-        sortedMatches,
+        wordMatches,
         startIdx,
         password,
       )
@@ -161,14 +159,11 @@ class MatchWordSequence extends MatcherBaseClass {
     const lastWord = currentSequence[currentSequence.length - 1]
     const textBetween = password.slice(lastWord.j + 1, nextMatch.i)
 
-    // Check for common word separators
-    const separators = ['', ' ', '-', '_', '.', '']
-
     // For simple concatenation (no separator)
     const isSimpleConcat = textBetween === ''
 
     // For snake_case or kebab-case, check for separators
-    const hasValidSeparator = separators.some((sep) => textBetween === sep)
+    const hasValidSeparator = VALID_SEPARATORS.has(textBetween)
 
     // For camelCase, we need to check if the next word starts with uppercase
     // and there's no separator (or just a single character that could be uppercase)

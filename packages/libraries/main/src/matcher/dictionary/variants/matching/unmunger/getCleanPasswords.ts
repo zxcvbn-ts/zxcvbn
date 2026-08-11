@@ -78,7 +78,7 @@ class CleanPasswords {
       if (onlyFullSub === isFullSub) {
         this.finalPasswords.push({
           password: this.buffer.join(''),
-          changes,
+          changes: [...changes],
           isFullSubstitution: onlyFullSub,
         })
       }
@@ -86,7 +86,7 @@ class CleanPasswords {
     }
 
     // first, exhaust all possible substitutions at this index
-    const nodes: TrieNode[] = [...this.getAllPossibleSubsAtIndex(index)]
+    const nodes = this.getAllPossibleSubsAtIndex(index)
 
     let hasSubs = false
     // iterate backward to get wider substitutions first
@@ -105,7 +105,7 @@ class CleanPasswords {
 
         for (const letter of letters) {
           this.buffer.push(letter)
-          const newSubs = changes.concat({
+          changes.push({
             i: subIndex,
             letter,
             substitution: sub,
@@ -117,12 +117,13 @@ class CleanPasswords {
             isFullSub,
             index: index + sub.length,
             subIndex: subIndex + letter.length,
-            changes: newSubs,
+            changes,
             lastSubLetter: sub,
             consecutiveSubCount:
               lastSubLetter === sub ? consecutiveSubCount + 1 : 1,
           })
           // backtrack by ignoring the added postfix
+          changes.pop()
           this.buffer.pop()
           if (this.finalPasswords.length >= this.limit) {
             return
