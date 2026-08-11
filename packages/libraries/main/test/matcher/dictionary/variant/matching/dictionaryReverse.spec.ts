@@ -18,16 +18,16 @@ describe('dictionary reverse matching', () => {
     messagePrefix: msg,
     matches,
     patternNames: 'dictionary',
-    patterns: ['456', '123'],
+    patterns: ['123', '456'],
     ijs: [
-      [4, 6],
       [1, 3],
+      [4, 6],
     ],
     propsToCheck: {
-      matchedWord: ['654', '321'],
+      matchedWord: ['321', '654'],
       reversed: [true, true],
       dictionaryName: ['d1', 'd1'],
-      rank: [4, 2],
+      rank: [2, 4],
     },
   })
 })
