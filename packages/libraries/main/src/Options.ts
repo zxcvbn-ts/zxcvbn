@@ -29,26 +29,6 @@ import {
   checkUseLevenshteinDistance,
   checkLevenshteinThreshold,
 } from './runtimeChecks'
-import fs from 'fs'
-function mapToObject(value: unknown): unknown {
-  if (value instanceof Map) {
-    return Object.fromEntries(
-      [...value.entries()].map(([key, val]) => [key, mapToObject(val)]),
-    )
-  }
-
-  if (Array.isArray(value)) {
-    return value.map(mapToObject)
-  }
-
-  if (value !== null && typeof value === 'object') {
-    return Object.fromEntries(
-      Object.entries(value).map(([key, val]) => [key, mapToObject(val)]),
-    )
-  }
-
-  return value
-}
 
 export default class Options {
   public matchers: Matchers = {}
@@ -198,7 +178,7 @@ export default class Options {
       let minWordSize = Infinity
       for (let i = 0; i < list.length; i += 1) {
         const wordOrNumber = list[i]
-        const word = wordOrNumber.toString().toLowerCase()
+        const word = wordOrNumber.toString()
         const rank = i + 1
         const wordLength = word.length
         if (wordLength > maxWordSize) {
@@ -207,8 +187,7 @@ export default class Options {
         if (wordLength < minWordSize) {
           minWordSize = wordLength
         }
-        dictionaryTrie.add(word, name, rank, false)
-        dictionaryTrie.add(word.split('').reverse().join(''), name, rank, true)
+        dictionaryTrie.add(word, name, rank)
       }
       dictionaryMaxWordSize[name] = maxWordSize
       dictionaryMinWordSize[name] = list.length > 0 ? minWordSize : 0
@@ -251,13 +230,7 @@ export default class Options {
             if (wordLength < dictionaryMinWordSize) {
               dictionaryMinWordSize = wordLength
             }
-            dictionaryTrie.add(word, 'userInputs', rank, false)
-            dictionaryTrie.add(
-              word.split('').reverse().join(''),
-              'userInputs',
-              rank,
-              true,
-            )
+            dictionaryTrie.add(word, 'userInputs', rank)
           }
         }
       }

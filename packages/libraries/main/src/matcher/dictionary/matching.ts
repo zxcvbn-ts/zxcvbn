@@ -6,13 +6,9 @@ import {
   UserInputsOptions,
   MatcherBaseClass,
   OptionsDictionary,
-  L33tMatch,
 } from '../../types'
 import { DictionaryMatchOptions } from './types'
 import mergeUserInputDictionary from '../../utils/mergeUserInputDictionary'
-import { DictionaryTrieNode } from './DictionaryTrie'
-import TrieNode from './variants/matching/unmunger/TrieNode'
-import { PasswordChanges } from './variants/matching/unmunger/getCleanPasswords'
 
 class MatchDictionary extends MatcherBaseClass {
   constructor(
@@ -59,35 +55,13 @@ class MatchDictionary extends MatcherBaseClass {
     )
   }
 
-  private getL33tNodes(password: string, index: number) {
-    const nodes: { letters: string[]; substitution: string; length: number }[] =
-      []
-    let cur: TrieNode | undefined = this.options.trieNodeRoot
-    for (let i = index; i < password.length; i += 1) {
-      const character = password.charAt(i)
-      cur = cur?.getChild(character)
-      if (!cur) {
-        break
-      }
-      if (cur.isTerminal()) {
-        nodes.push({
-          letters: cur.subs!,
-          substitution: password.slice(index, i + 1),
-          length: i - index + 1,
-        })
-      }
-    }
-    return nodes
-  }
-
   // eslint-disable-next-line complexity,max-statements
-  public match(
-    matchOptions: DictionaryMatchOptions,
-    includeL33t = false,
-    includeReverse = false,
-  ) {
-    const { password, userInputsOptions, useLevenshtein = true } = matchOptions
-    const matches: (DictionaryMatch | L33tMatch)[] = []
+  public match({
+    password,
+    userInputsOptions,
+    useLevenshtein = true,
+  }: DictionaryMatchOptions) {
+    const matches: DictionaryMatch[] = []
     const passwordLength = password.length
     const passwordLower = password.toLowerCase()
     const { dictionaries, dictionaryMaxWordSize, dictionaryMinWordSize } =
@@ -96,153 +70,52 @@ class MatchDictionary extends MatcherBaseClass {
     const fullPasswordExactMatches = new Set<string>()
 
     for (let i = 0; i < passwordLength; i += 1) {
-      const stack: {
-        j: number
-        staticNode: DictionaryTrieNode | undefined
-        userInputNode: DictionaryTrieNode | undefined
-        subs: PasswordChanges[]
-        path: string
-      }[] = [
-        {
-          j: i,
-          staticNode: this.options.dictionaryTrie.root,
-          userInputNode: userInputsOptions?.dictionaryTrie?.root,
-          subs: [],
-          path: '',
-        },
-      ]
-
-      while (stack.length > 0) {
-        const { j, staticNode, userInputNode, subs, path } = stack.pop()!
+      let staticNode = this.options.dictionaryTrie.root
+      let userInputNode = userInputsOptions?.dictionaryTrie?.root
+      for (let j = i; j < passwordLength; j += 1) {
+        const char = passwordLower[j]
+        staticNode = staticNode?.children?.get(char)
+        userInputNode = userInputNode?.children?.get(char)
 
         if (!staticNode && !userInputNode) {
-          continue
+          break
         }
 
+        const isFullPassword = i === 0 && j === passwordLength - 1
         const terminals = [
           ...(staticNode?.terminals || []),
           ...(userInputNode?.terminals || []),
         ]
 
-        terminals.forEach(({ dictionaryName, rank, reversed }) => {
-          if (reversed !== includeReverse) {
-            return
-          }
-          if (includeL33t && subs.length === 0) {
-            return
-          }
-
+        terminals.forEach(({ dictionaryName, rank }) => {
           if (
             this.wordSequenceCheck &&
             !this.options.isWordSequence(dictionaryName)
           ) {
             return
           }
-
-          const isFullPassword = i === 0 && j === passwordLength
-          if (isFullPassword && !includeReverse && !includeL33t) {
+          if (isFullPassword) {
             fullPasswordExactMatches.add(dictionaryName)
           }
-
-          const token = password.slice(i, j)
-          const matchedWord = includeReverse
-            ? path.split('').reverse().join('')
-            : path
-
-          const baseMatch: DictionaryMatch = {
+          matches.push({
             pattern: 'dictionary',
             i,
-            j: j - 1,
-            token,
-            matchedWord,
+            j,
+            token: password.slice(i, j + 1),
+            matchedWord: passwordLower.slice(i, j + 1),
             rank,
             dictionaryName,
-            reversed,
-            l33t: subs.length > 0,
-          }
-
-          if (subs.length > 0) {
-            const uniqueSubs: PasswordChanges[] = []
-            const seenSubs = new Set<string>()
-            subs.forEach((sub) => {
-              const key = `${sub.letter}-${sub.substitution}`
-              if (!seenSubs.has(key)) {
-                seenSubs.add(key)
-                uniqueSubs.push(sub)
-              }
-            })
-            const l33tMatch: L33tMatch = {
-              ...baseMatch,
-              subs: uniqueSubs,
-              subDisplay: uniqueSubs
-                .map((s) => `${s.substitution} -> ${s.letter}`)
-                .join(', '),
-            }
-            matches.push(l33tMatch)
-          } else {
-            matches.push(baseMatch)
-          }
+            reversed: false,
+            l33t: false,
+          })
         })
-
-        if (j < password.length) {
-          // Normal step
-          const char = passwordLower[j]
-          const nextStatic = staticNode?.children?.get(char)
-          const nextUserInput = userInputNode?.children?.get(char)
-          if (nextStatic || nextUserInput) {
-            stack.push({
-              j: j + 1,
-              staticNode: nextStatic,
-              userInputNode: nextUserInput,
-              subs,
-              path: path + char,
-            })
-          }
-
-          // L33t steps
-          if (includeL33t && subs.length < this.options.l33tMaxSubstitutions) {
-            const l33tNodes = this.getL33tNodes(password, j)
-            l33tNodes.forEach((l33tNode) => {
-              l33tNode.letters.forEach((letter) => {
-                let nextStaticL33t = staticNode
-                let nextUserInputL33t = userInputNode
-                let possible = true
-                for (let k = 0; k < letter.length; k += 1) {
-                  nextStaticL33t = nextStaticL33t?.children?.get(letter[k])
-                  nextUserInputL33t = nextUserInputL33t?.children?.get(
-                    letter[k],
-                  )
-                  if (!nextStaticL33t && !nextUserInputL33t) {
-                    possible = false
-                    break
-                  }
-                }
-                if (possible) {
-                  stack.push({
-                    j: j + l33tNode.length,
-                    staticNode: nextStaticL33t,
-                    userInputNode: nextUserInputL33t,
-                    subs: [
-                      ...subs,
-                      { letter, substitution: l33tNode.substitution },
-                    ],
-                    path: path + letter,
-                  })
-                }
-              })
-            })
-          }
-        }
       }
     }
-    matches.sort((m1, m2) => m1.i - m2.i || m1.j - m2.j)
 
     if (
       this.options.useLevenshteinDistance &&
       useLevenshtein &&
-      passwordLength > 0 &&
-      !includeL33t &&
-      !includeReverse
+      passwordLength > 0
     ) {
       const dictionaryNames = Object.keys(dictionaries) as DictionaryNames[]
       dictionaryNames.forEach((dictionaryName) => {

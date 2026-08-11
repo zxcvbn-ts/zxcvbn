@@ -1,7 +1,6 @@
 export interface TrieTerminalInfo {
   dictionaryName: string
   rank: number
-  reversed: boolean
 }
 
 export interface DictionaryTrieNode {
@@ -13,12 +12,7 @@ export interface DictionaryTrieNode {
 export class DictionaryTrie {
   root: DictionaryTrieNode = {}
 
-  add(
-    word: string,
-    dictionaryName: string,
-    rank: number,
-    reversed: boolean = false,
-  ) {
+  add(word: string, dictionaryName: string, rank: number) {
     let node = this.root
     for (let i = 0; i < word.length; i += 1) {
       const char = word[i]
@@ -35,6 +29,6 @@ export class DictionaryTrie {
     if (!node.terminals) {
       node.terminals = []
     }
-    node.terminals.push({ dictionaryName, rank, reversed })
+    node.terminals.push({ dictionaryName, rank })
   }
 }
