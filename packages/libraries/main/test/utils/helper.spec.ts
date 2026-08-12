@@ -4,7 +4,6 @@ import {
   extend,
   translate,
   mod,
-  buildRankedDictionary,
 } from '../../src/utils/helper'
 import { LooseObject } from '../../src/types'
 
@@ -132,15 +131,6 @@ describe('utils matching', () => {
     data.forEach(([[dividend, divisor], remainder]) => {
       it(`(${dividend}, ${divisor}) == ${remainder}`, () => {
         expect(mod(dividend, divisor)).toEqual(remainder)
-      })
-    })
-  })
-  describe('buildRankedDictionary', () => {
-    it('should build correctly', () => {
-      expect(buildRankedDictionary(['foo', 'bar', 'rofl'])).toEqual({
-        foo: 1,
-        bar: 2,
-        rofl: 3,
       })
     })
   })

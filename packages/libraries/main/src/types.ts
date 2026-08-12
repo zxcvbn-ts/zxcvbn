@@ -2,6 +2,7 @@ import Options from './Options'
 import { PasswordChanges } from './matcher/dictionary/variants/matching/unmunger/getCleanPasswords'
 import Matching from './Matching'
 import { DictionaryReturn } from './matcher/dictionary/scoring'
+import { DictionaryTrie } from './matcher/dictionary/DictionaryTrie'
 import { REGEXEN } from './data/const'
 import l33tTableDefault from './data/l33tTable'
 import translationKeys from './data/translationKeys'
@@ -257,10 +258,6 @@ export interface OptionsType {
   timeEstimationValues?: TimeEstimationValues
 }
 
-export type RankedDictionary = Record<string, number>
-
-export type RankedDictionaries = Record<string, RankedDictionary>
-
 export type DefaultFeedbackFunction = (
   options: Options,
   match: MatchEstimated,
@@ -273,8 +270,13 @@ export type DefaultScoringFunction = (
 ) => number | DictionaryReturn
 
 export interface UserInputsOptions {
-  rankedDictionary: RankedDictionary
-  rankedDictionaryMaxWordSize: number
+  dictionary: (string | number)[]
+  dictionaryMaxWordSize: number
+  dictionaryMinWordSize: number
+  dictionaryTrie?: DictionaryTrie
+  mergedDictionaries?: OptionsDictionary
+  mergedDictionaryMaxWordSize?: Record<string, number>
+  mergedDictionaryMinWordSize?: Record<string, number>
 }
 export interface MatchOptions {
   password: string
@@ -283,6 +285,7 @@ export interface MatchOptions {
    */
   omniMatch: Matching
   userInputsOptions?: UserInputsOptions
+  matches?: MatchExtended[]
 }
 
 export abstract class MatcherBaseClass {

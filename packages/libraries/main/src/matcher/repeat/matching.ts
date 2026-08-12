@@ -10,7 +10,15 @@ import { MaybePromise } from 'rollup'
  *-------------------------------------------------------------------------------
  */
 class MatchRepeat extends MatcherBaseClass {
+  private static readonly GREEDY = /(.+)\1+/g
+
+  private static readonly LAZY = /(.+?)\1+/g
+
+  private static readonly LAZY_ANCHORED = /^(.+?)\1+$/
+
   private scoring: Scoring
+
+  private memoizedResults = new Map<string, number | Promise<number>>()
 
   constructor(options: Options) {
     super(options)
@@ -19,6 +27,7 @@ class MatchRepeat extends MatcherBaseClass {
 
   // eslint-disable-next-line max-statements
   match({ password, omniMatch }: MatchOptions) {
+    this.memoizedResults.clear()
     const matches: (RepeatMatch | Promise<RepeatMatch>)[] = []
     let lastIndex = 0
     while (lastIndex < password.length) {
@@ -79,22 +88,19 @@ class MatchRepeat extends MatcherBaseClass {
   }
 
   getGreedyMatch(password: string, lastIndex: number) {
-    const greedy = /(.+)\1+/g
-    greedy.lastIndex = lastIndex
-    return greedy.exec(password)
+    MatchRepeat.GREEDY.lastIndex = lastIndex
+    return MatchRepeat.GREEDY.exec(password)
   }
 
   getLazyMatch(password: string, lastIndex: number) {
-    const lazy = /(.+?)\1+/g
-    lazy.lastIndex = lastIndex
-    return lazy.exec(password)
+    MatchRepeat.LAZY.lastIndex = lastIndex
+    return MatchRepeat.LAZY.exec(password)
   }
 
   setMatchToken(
     greedyMatch: RegExpExecArray,
     lazyMatch: RegExpExecArray | null,
   ) {
-    const lazyAnchored = /^(.+?)\1+$/
     let match
     let baseToken = ''
     if (lazyMatch && greedyMatch[0].length > lazyMatch[0].length) {
@@ -106,7 +112,7 @@ class MatchRepeat extends MatcherBaseClass {
       // aabaab in aabaabaabaab.
       // run an anchored lazy match on greedy's repeated string
       // to find the shortest repeated string
-      const temp = lazyAnchored.exec(match[0])
+      const temp = MatchRepeat.LAZY_ANCHORED.exec(match[0])
       if (temp) {
         baseToken = temp[1]
       }
@@ -126,21 +132,28 @@ class MatchRepeat extends MatcherBaseClass {
   }
 
   getBaseGuesses(baseToken: string, omniMatch: Matching) {
+    if (this.memoizedResults.has(baseToken)) {
+      return this.memoizedResults.get(baseToken)!
+    }
     const matches = omniMatch.match(baseToken)
+    let result: number | Promise<number>
     if (matches instanceof Promise) {
-      return matches.then((resolvedMatches) => {
+      result = matches.then((resolvedMatches) => {
         const baseAnalysis = this.scoring.mostGuessableMatchSequence(
           baseToken,
           resolvedMatches,
         )
         return baseAnalysis.guesses
       })
+    } else {
+      const baseAnalysis = this.scoring.mostGuessableMatchSequence(
+        baseToken,
+        matches,
+      )
+      result = baseAnalysis.guesses
     }
-    const baseAnalysis = this.scoring.mostGuessableMatchSequence(
-      baseToken,
-      matches,
-    )
-    return baseAnalysis.guesses
+    this.memoizedResults.set(baseToken, result)
+    return result
   }
 }
 

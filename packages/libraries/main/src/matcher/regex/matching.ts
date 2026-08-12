@@ -1,5 +1,4 @@
 import { REGEXEN } from '../../data/const'
-import { sorted } from '../../utils/helper'
 import { MatcherBaseClass, MatchOptions, RegexMatch } from '../../types'
 
 type RegexMatchOptions = Pick<MatchOptions, 'password'>
@@ -33,7 +32,7 @@ class MatchRegex extends MatcherBaseClass {
         }
       }
     })
-    return sorted(matches)
+    return matches
   }
 }
 

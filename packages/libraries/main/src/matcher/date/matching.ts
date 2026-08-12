@@ -4,7 +4,6 @@ import {
   DATE_SPLITS,
   REFERENCE_YEAR,
 } from '../../data/const'
-import { sorted } from '../../utils/helper'
 import { MatcherBaseClass, DateMatch, MatchOptions } from '../../types'
 
 type DateMatchOptions = Pick<MatchOptions, 'password'>
@@ -42,7 +41,7 @@ class MatchDate extends MatcherBaseClass {
     ]
 
     const filteredMatches = this.filterNoise(matches)
-    return sorted(filteredMatches)
+    return filteredMatches
   }
 
   getMatchesWithSeparator(password: string) {
@@ -153,20 +152,25 @@ class MatchDate extends MatcherBaseClass {
    * to reduce noise, remove date matches that are strict substrings of others
    */
   filterNoise(matches: DateMatch[]) {
-    return matches.filter((match) => {
-      let isSubmatch = false
-      const matchesLength = matches.length
-      for (let o = 0; o < matchesLength; o += 1) {
-        const otherMatch = matches[o]
-        if (match !== otherMatch) {
-          if (otherMatch.i <= match.i && otherMatch.j >= match.j) {
-            isSubmatch = true
-            break
-          }
-        }
+    if (matches.length === 0) {
+      return []
+    }
+    const sortedMatches = [...matches].sort((a, b) => {
+      if (a.i !== b.i) {
+        return a.i - b.i
       }
-      return !isSubmatch
+      return b.j - a.j
     })
+
+    const result: DateMatch[] = []
+    let maxJ = -1
+    for (const match of sortedMatches) {
+      if (match.j > maxJ) {
+        result.push(match)
+        maxJ = match.j
+      }
+    }
+    return result
   }
 
   /*

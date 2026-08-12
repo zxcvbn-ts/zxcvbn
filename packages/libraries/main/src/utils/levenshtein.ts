@@ -1,5 +1,4 @@
 import { distance } from 'fastest-levenshtein'
-import { RankedDictionary } from '../types'
 
 const getUsedThreshold = (
   password: string,
@@ -18,15 +17,18 @@ const getUsedThreshold = (
 export interface FindLevenshteinDistanceResult {
   levenshteinDistance: number
   levenshteinDistanceEntry: string
+  levenshteinDistanceRank: number
 }
 
 const findLevenshteinDistance = (
   password: string,
-  rankedDictionary: RankedDictionary,
+  words: (string | number)[],
   threshold: number,
 ): Partial<FindLevenshteinDistanceResult> => {
   let foundDistance = 0
-  const found = Object.keys(rankedDictionary).find((entry) => {
+  let foundRank = 0
+  const found = words.find((wordOrNumber, index) => {
+    const entry = wordOrNumber.toString()
     const usedThreshold = getUsedThreshold(password, entry, threshold)
     if (Math.abs(password.length - entry.length) > usedThreshold) {
       return false
@@ -36,13 +38,15 @@ const findLevenshteinDistance = (
 
     if (isInThreshold) {
       foundDistance = foundEntryDistance
+      foundRank = index + 1
     }
     return isInThreshold
   })
   if (found) {
     return {
       levenshteinDistance: foundDistance,
-      levenshteinDistanceEntry: found,
+      levenshteinDistanceEntry: found.toString(),
+      levenshteinDistanceRank: foundRank,
     }
   }
   return {}
