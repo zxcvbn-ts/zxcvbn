@@ -3,14 +3,9 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [4.3.0](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/language-ko@4.2.0...@zxcvbn-ts/language-ko@4.3.0) (2026-08-12)
+# 4.1.0 (2026-08-12)
 
 ### Features
 
+- improve language packages ([25f7aec](https://github.com/zxcvbn-ts/zxcvbn/commit/25f7aec41fd95e2b94389b1d27acf8ebb73e03c3))
 - Improve language packages ([#341](https://github.com/zxcvbn-ts/zxcvbn/issues/341)) ([ac0ef46](https://github.com/zxcvbn-ts/zxcvbn/commit/ac0ef464e8d8f6bac9dd6744cd71d8bcefba66fd))
-
-# 4.2.0 (2026-07-16)
-
-### Features
-
-- **i18n:** add Korean (ko) translation ([#328](https://github.com/zxcvbn-ts/zxcvbn/issues/328)) ([1a9da30](https://github.com/zxcvbn-ts/zxcvbn/commit/1a9da30fa2009576478fb5b348b3e60cc252e809))
