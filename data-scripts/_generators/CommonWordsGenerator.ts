@@ -10,9 +10,13 @@ export default class CommonWordsGenerator extends SimpleListGenerator {
     super({
       ...constructorOptions,
       options: {
-        ...constructorOptions.options,
+        // @ts-expect-error this is default value for commonWordsGenerator
+        useSimpleTransliterate: true,
+        // @ts-expect-error this is default value for commonWordsGenerator
         minOccurrences: 1000,
+        // @ts-expect-error this is default value for commonWordsGenerator
         hasOccurrences: true,
+        ...constructorOptions.options,
       },
     })
   }
