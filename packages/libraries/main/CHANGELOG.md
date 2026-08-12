@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.2.0](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/core@4.1.2...@zxcvbn-ts/core@4.2.0) (2026-08-12)
+
+### Bug Fixes
+
+- escape user input regex ([#339](https://github.com/zxcvbn-ts/zxcvbn/issues/339)) ([557b595](https://github.com/zxcvbn-ts/zxcvbn/commit/557b5957b22ee38e1578a5bc7982c38d4b80dd86))
+- remove shared reference from feedback ([#340](https://github.com/zxcvbn-ts/zxcvbn/issues/340)) ([6771284](https://github.com/zxcvbn-ts/zxcvbn/commit/6771284a33b8f42e883d0da5ea8f84810effe07d))
+
+### Features
+
+- Add runtime checks ([#334](https://github.com/zxcvbn-ts/zxcvbn/issues/334)) ([ac667c6](https://github.com/zxcvbn-ts/zxcvbn/commit/ac667c634fd00ce8ee22a5e368e14b496969eb94))
+- improve performance ([#335](https://github.com/zxcvbn-ts/zxcvbn/issues/335)) ([59333b6](https://github.com/zxcvbn-ts/zxcvbn/commit/59333b6697207ab63ff430fea8946be0e92cc15e))
+- **tests:** add more tests ([a57dbee](https://github.com/zxcvbn-ts/zxcvbn/commit/a57dbee630c284f6e43560f6bce3f7517f53ed46))
+
 ## [4.1.1](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/core@4.1.0...@zxcvbn-ts/core@4.1.1) (2026-06-13)
 
 ### Bug Fixes

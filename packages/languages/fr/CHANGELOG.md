@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.1.2](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/language-fr@4.1.1...@zxcvbn-ts/language-fr@4.1.2) (2026-08-12)
+
+### Bug Fixes
+
+- **package:** set correct repository url ([#336](https://github.com/zxcvbn-ts/zxcvbn/issues/336)) ([7e78d64](https://github.com/zxcvbn-ts/zxcvbn/commit/7e78d649d8716a5c7dd653d3b5a10e11f0dbf0c8))
+
 # [4.1.0](https://github.com/jeromes80/zxcvbn/compare/@zxcvbn-ts/language-fr@3.0.2...@zxcvbn-ts/language-fr@4.1.0) (2026-06-11)
 
 ### Bug Fixes

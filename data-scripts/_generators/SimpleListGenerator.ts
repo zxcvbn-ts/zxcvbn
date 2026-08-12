@@ -1,5 +1,6 @@
 import axios from 'axios'
 import iconv from 'iconv-lite'
+import transliterate from '@sindresorhus/transliterate'
 
 export interface SimpleListGeneratorOptions {
   splitter: string
@@ -16,6 +17,7 @@ export interface SimpleListGeneratorOptions {
   splitCompoundNames: boolean
   splitCompoundNamesSeparator: string
   normalizeDiacritics: boolean
+  useSimpleTransliterate: boolean
 }
 
 export const SimpleListGeneratorDefaultOptions: SimpleListGeneratorOptions = {
@@ -30,6 +32,7 @@ export const SimpleListGeneratorDefaultOptions: SimpleListGeneratorOptions = {
   splitCompoundNamesSeparator: ' ',
   minOccurrences: 500,
   minLength: 2,
+  useSimpleTransliterate: true,
   normalizeDiacritics: false,
   clearLine: (entry: string) => entry,
 }
@@ -164,6 +167,26 @@ export default class SimpleListGenerator<
     }
   }
 
+  protected removeUnicodeControlCharacters() {
+    console.info('Remove unicode control characters')
+    this.data = this.data.map((entry) => {
+      return entry.replace(
+        /[\u061C\u200c-\u200F\u202A-\u202E\u2066-\u2069]/g,
+        '',
+      )
+    })
+  }
+
+  protected simpleTransliterate() {
+    if (!this.options.useSimpleTransliterate) {
+      return
+    }
+    console.info('Transliterate simple non latin chars to latin chars')
+    this.data = this.data.map((entry) => {
+      return transliterate(entry)
+    })
+  }
+
   // eslint-disable-next-line max-statements
   public async run(): Promise<string[] | null> {
     console.info('Downloading')
@@ -182,6 +205,8 @@ export default class SimpleListGenerator<
     this.splitCompoundNames()
     this.normalizeDiacritics()
     this.removeDuplicates()
+    this.simpleTransliterate()
+    this.removeUnicodeControlCharacters()
     this.filterMinLength()
 
     return this.data

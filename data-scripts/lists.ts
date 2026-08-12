@@ -8,6 +8,7 @@ import SimpleJapaneseListGenerator from './_generators/SimpleJapaneseListGenerat
 import SimpleChineseListGenerator from './_generators/SimpleChineseListGenerator'
 import latin2Decoder from './latin2Decoder'
 import CommonWordsGenerator from './_generators/CommonWordsGenerator'
+import fakerJsExtractor from './_helpers/fakerjsExtractor'
 
 export interface LanguageListEntry {
   source?: string
@@ -309,12 +310,7 @@ export default {
         'https://raw.githubusercontent.com/faker-js/faker/main/src/locales/hr/person/first_name.ts',
       options: {
         normalizeDiacritics: true,
-        extractorFunction: (fileContent: Buffer) => {
-          return Array.from(
-            fileContent.toString('utf8').matchAll(/'((?:\\'|[^'])+)'/g),
-            (match: string[]) => match[1].replace(/\\'/g, "'"),
-          )
-        },
+        extractorFunction: fakerJsExtractor,
       },
     },
     lastnames: {
@@ -323,12 +319,7 @@ export default {
         'https://raw.githubusercontent.com/faker-js/faker/main/src/locales/hr/person/last_name.ts',
       options: {
         normalizeDiacritics: true,
-        extractorFunction: (fileContent: Buffer) => {
-          return Array.from(
-            fileContent.toString('utf8').matchAll(/'((?:\\'|[^'])+)'/g),
-            (match: string[]) => match[1].replace(/\\'/g, "'"),
-          )
-        },
+        extractorFunction: fakerJsExtractor,
       },
     },
   },
@@ -343,12 +334,7 @@ export default {
       source:
         'https://raw.githubusercontent.com/faker-js/faker/main/src/locales/tr/person/first_name.ts',
       options: {
-        extractorFunction: (fileContent: Buffer) => {
-          return Array.from(
-            fileContent.toString('utf8').matchAll(/'((?:\\'|[^'])+)'/g),
-            (match: string[]) => match[1].replace(/\\'/g, "'"),
-          )
-        },
+        extractorFunction: fakerJsExtractor,
       },
     },
     lastnames: {
@@ -356,12 +342,7 @@ export default {
       source:
         'https://raw.githubusercontent.com/faker-js/faker/main/src/locales/tr/person/last_name.ts',
       options: {
-        extractorFunction: (fileContent: Buffer) => {
-          return Array.from(
-            fileContent.toString('utf8').matchAll(/'((?:\\'|[^'])+)'/g),
-            (match: string[]) => match[1].replace(/\\'/g, "'"),
-          )
-        },
+        extractorFunction: fakerJsExtractor,
       },
     },
   },
@@ -411,14 +392,23 @@ export default {
       generator: SimpleChineseListGenerator,
       source:
         'https://object.pouta.csc.fi/OPUS-OpenSubtitles/v2024/freq/zh_CN.freq.gz',
+      options: {
+        useSimpleTransliterate: false,
+      },
     },
     firstnames: {
       source:
         'https://raw.githubusercontent.com/limzykenneth/chinese-wordlist/master/pinyin.txt',
+      options: {
+        useSimpleTransliterate: false,
+      },
     },
     lastnames: {
       source:
         'https://raw.githubusercontent.com/Greenwolf/Spray/master/name-lists/chinese-last-100.txt',
+      options: {
+        useSimpleTransliterate: false,
+      },
     },
   },
   'ja': {
@@ -426,14 +416,23 @@ export default {
       generator: SimpleJapaneseListGenerator,
       source:
         'https://object.pouta.csc.fi/OPUS-OpenSubtitles/v2024/freq/ja.freq.gz',
+      options: {
+        useSimpleTransliterate: false,
+      },
     },
     firstnames: {
       source:
         'https://raw.githubusercontent.com/tomoyukikashiro/zxcvbn-japanese-data/main/data/first-names.txt.txt',
+      options: {
+        useSimpleTransliterate: false,
+      },
     },
     lastnames: {
       source:
         'https://raw.githubusercontent.com/tomoyukikashiro/zxcvbn-japanese-data/main/data/last-names.txt.txt',
+      options: {
+        useSimpleTransliterate: false,
+      },
     },
   },
   'cs': {
@@ -490,17 +489,12 @@ export default {
     },
   },
   'ar': {
-    /**
-     * Exclusion of Common Words in Arabic Language for Passwords
-     * 1. **Arabic Letter Usage**: In practice, speakers of the Arabic language often do not use standard Arabic letters in their passwords. When they do, the passwords are generally more secure.
-     * 2. **Lack of Standardized Romanization**: Unlike languages such as Japanese, there is no widely-accepted method for converting Arabic letters into Roman letters. This makes it challenging to apply a common conversion algorithm for password security.
-     */
-    // commonWords: {
-    //   generator: CommonWordsGenerator,
-    //   source:
-    //     'https://object.pouta.csc.fi/OPUS-OpenSubtitles/v2024/freq/ar.freq.gz',
-    //   options: { normalizeDiacritics: true },
-    // },
+    commonWords: {
+      generator: CommonWordsGenerator,
+      source:
+        'https://object.pouta.csc.fi/OPUS-OpenSubtitles/v2024/freq/ar.freq.gz',
+      options: { normalizeDiacritics: true },
+    },
     firstnames: {
       source:
         'https://raw.githubusercontent.com/AKhateeb/arabic-names/master/Most-Popular-Arabic-FirstNames.txt',
@@ -511,16 +505,12 @@ export default {
     },
   },
   'fa': {
-    /**
-     * Exclusion of Common Words in Persian Language for Passwords
-     * 1. **Persian Letter Usage**: In practice, speakers of the Persian language often do not use standard Persian letters in their passwords. When they do, the passwords are generally more secure.
-     * 2. **Lack of Standardized Romanization**: Unlike languages such as Japanese, there is no widely-accepted method for converting Persian letters into Roman letters. This makes it challenging to apply a common conversion algorithm for password security.
-     */
-    // commonWords: {
-    //   generator: CommonWordsGenerator,
-    //   source:
-    //     'https://object.pouta.csc.fi/OPUS-OpenSubtitles/v2024/freq/fa.freq.gz',
-    // },
+    commonWords: {
+      generator: CommonWordsGenerator,
+      source:
+        'https://object.pouta.csc.fi/OPUS-OpenSubtitles/v2024/freq/fa.freq.gz',
+      options: { normalizeDiacritics: true },
+    },
     firstnames: {
       source:
         'https://raw.githubusercontent.com/winkcor/persian-first-names/refs/heads/main/persian-first-names.txt',
@@ -549,6 +539,27 @@ export default {
       generator: CommonWordsGenerator,
       source:
         'https://object.pouta.csc.fi/OPUS-OpenSubtitles/v2024/freq/th.freq.gz',
+      options: {
+        useSimpleTransliterate: false,
+      },
+    },
+    firstnames: {
+      generator: HTMLGenerator,
+      source:
+        'https://raw.githubusercontent.com/faker-js/faker/main/src/locales/th/person/first_name.ts',
+      options: {
+        extractorFunction: fakerJsExtractor,
+        useSimpleTransliterate: false,
+      },
+    },
+    lastnames: {
+      generator: HTMLGenerator,
+      source:
+        'https://raw.githubusercontent.com/faker-js/faker/main/src/locales/th/person/last_name.ts',
+      options: {
+        extractorFunction: fakerJsExtractor,
+        useSimpleTransliterate: false,
+      },
     },
   },
   'ru': {
@@ -562,12 +573,7 @@ export default {
       source:
         'https://raw.githubusercontent.com/faker-js/faker/main/src/locales/ru/person/first_name.ts',
       options: {
-        extractorFunction: (fileContent: Buffer) => {
-          return Array.from(
-            fileContent.toString('utf8').matchAll(/'((?:\\'|[^'])+)'/g),
-            (match: string[]) => match[1].replace(/\\'/g, "'"),
-          )
-        },
+        extractorFunction: fakerJsExtractor,
       },
     },
     lastnames: {
@@ -575,12 +581,37 @@ export default {
       source:
         'https://raw.githubusercontent.com/faker-js/faker/main/src/locales/ru/person/last_name.ts',
       options: {
-        extractorFunction: (fileContent: Buffer) => {
-          return Array.from(
-            fileContent.toString('utf8').matchAll(/'((?:\\'|[^'])+)'/g),
-            (match: string[]) => match[1].replace(/\\'/g, "'"),
-          )
-        },
+        extractorFunction: fakerJsExtractor,
+      },
+    },
+  },
+  'ko': {
+    commonWords: {
+      generator: CommonWordsGenerator,
+      source:
+        'https://object.pouta.csc.fi/OPUS-OpenSubtitles/v2024/freq/ko.freq.gz',
+      options: {
+        useSimpleTransliterate: false,
+      },
+    },
+    firstnames: {
+      generator: HTMLGenerator,
+      source:
+        'https://raw.githubusercontent.com/faker-js/faker/main/src/locales/ko/person/first_name.ts',
+      options: {
+        minLength: null,
+        extractorFunction: fakerJsExtractor,
+        useSimpleTransliterate: false,
+      },
+    },
+    lastnames: {
+      generator: HTMLGenerator,
+      source:
+        'https://raw.githubusercontent.com/faker-js/faker/main/src/locales/ko/person/last_name.ts',
+      options: {
+        minLength: null,
+        useSimpleTransliterate: false,
+        extractorFunction: fakerJsExtractor,
       },
     },
   },
