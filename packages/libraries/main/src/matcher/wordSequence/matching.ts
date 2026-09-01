@@ -104,7 +104,6 @@ class MatchWordSequence extends MatcherBaseClass {
     return sequences
   }
 
-  // eslint-disable-next-line max-statements
   private findSequencesFromStart(
     sortedMatches: MatchExtended[],
     startIdx: number,
@@ -115,7 +114,6 @@ class MatchWordSequence extends MatcherBaseClass {
 
     // Start with single word sequence
     let currentSequence = [startMatch]
-    let currentEnd = startMatch.j
 
     // Try to extend the sequence
     for (
@@ -128,18 +126,17 @@ class MatchWordSequence extends MatcherBaseClass {
       // Only extend if the next word can form a valid sequence
       if (this.isValidWordSequence(currentSequence, nextMatch, password)) {
         currentSequence.push(nextMatch)
-        currentEnd = nextMatch.j
-      } else if (nextMatch.i > currentEnd) {
-        // Gap found, save current sequence and start new one
+      } else {
+        // sortedMatches always comes from filterDictionaryMatches, which already
+        // guarantees each entry starts after the previous one ends, so a
+        // non-extending match is always a gap, never an overlap to skip.
         if (currentSequence.length > 1) {
           sequences.push(
             this.createWordSequenceMatch(currentSequence, password),
           )
         }
         currentSequence = [nextMatch]
-        currentEnd = nextMatch.j
       }
-      // If nextMatch.i <= currentEnd, it overlaps, so we skip it
     }
 
     // Don't forget the last sequence
@@ -187,10 +184,10 @@ class MatchWordSequence extends MatcherBaseClass {
     const ranks = sequence.map((match) => match.rank)
     const ascending = ranks.every((rank, i) => i === 0 || rank >= ranks[i - 1])
 
-    // Use the most common dictionary name, or the first one
+    // Use the most common dictionary name. createWordSequenceMatch is only
+    // ever called with 2+ matches, so getMostCommon never returns null here.
     const dictionaryNames = sequence.map((match) => match.dictionaryName)
-    const dictionaryName =
-      this.getMostCommon(dictionaryNames) || firstMatch.dictionaryName
+    const dictionaryName = this.getMostCommon(dictionaryNames)!
 
     return {
       pattern: 'wordSequence',

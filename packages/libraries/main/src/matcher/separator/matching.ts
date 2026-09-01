@@ -55,11 +55,10 @@ class MatchSeparator extends MatcherBaseClass {
     const isSeparator = MatchSeparator.getSeparatorRegex(mostUsedSpecial)
 
     for (const match of password.matchAll(isSeparator)) {
-      if (match.index === undefined) continue
-
       // add one to the index because we changed the regex from negative lookbehind to something simple.
       // this simple approach uses the first character before the separater too but we only need the index of the separater
       // https://github.com/zxcvbn-ts/zxcvbn/issues/202
+      // matchAll always yields a defined index for a successful match; only `groups` is optional.
       const i = match.index + 1
       result.push({
         pattern: 'separator',

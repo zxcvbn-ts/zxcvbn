@@ -104,7 +104,7 @@ export default class Options {
   }
 
   // eslint-disable-next-line max-statements,complexity
-  private setOptions(options: OptionsType = {}) {
+  private setOptions(options: OptionsType) {
     if (options.l33tTable) {
       checkL33tTable(options.l33tTable)
       this.l33tTable = options.l33tTable
@@ -190,26 +190,23 @@ export default class Options {
     trie: DictionaryTrie,
     shouldSanitize = false,
   ) {
+    // A word listed more than once collapses to a single entry, keeping the
+    // rank of its last occurrence - matching the pre-trie `result[word] = counter`
+    // ranked-dictionary behavior this replaced.
+    const rankByWord = new Map<string, number>()
+    list.forEach((input, index) => {
+      const word = shouldSanitize
+        ? input.toString().toLowerCase()
+        : input.toString()
+      rankByWord.set(word, index + 1)
+    })
+
     let maxWordSize = 0
     let minWordSize = Infinity
-    const seenWords = new Set<string>()
     const sanitizedList: string[] = []
 
-    list.forEach((input, index) => {
-      let word = input.toString()
-      if (shouldSanitize) {
-        word = word.toLowerCase()
-      }
-
-      if (shouldSanitize) {
-        if (seenWords.has(word)) {
-          return
-        }
-        seenWords.add(word)
-      }
-
+    rankByWord.forEach((rank, word) => {
       sanitizedList.push(word)
-      const rank = shouldSanitize ? sanitizedList.length : index + 1
       const wordLength = word.length
 
       if (wordLength > maxWordSize) {
@@ -233,7 +230,13 @@ export default class Options {
   public getUserInputsOptions(
     dictionary?: (string | number)[],
   ): UserInputsOptions {
-    if (dictionary && dictionary === this.cachedUserInputs) {
+    const { cachedUserInputs } = this
+    const isCacheHit =
+      dictionary !== undefined &&
+      cachedUserInputs?.length === dictionary.length &&
+      cachedUserInputs.every((value, index) => value === dictionary[index])
+
+    if (isCacheHit) {
       return this.cachedUserInputsOptions!
     }
 
@@ -265,7 +268,9 @@ export default class Options {
     userInputsOptions.mergedDictionaryMaxWordSize = maxWordSize
     userInputsOptions.mergedDictionaryMinWordSize = minWordSize
 
-    this.cachedUserInputs = dictionary
+    // Snapshot the contents rather than keeping the caller's array reference,
+    // so a later mutate-and-reuse of the same array is detected as a cache miss.
+    this.cachedUserInputs = dictionary ? [...dictionary] : undefined
     this.cachedUserInputsOptions = userInputsOptions
 
     return userInputsOptions

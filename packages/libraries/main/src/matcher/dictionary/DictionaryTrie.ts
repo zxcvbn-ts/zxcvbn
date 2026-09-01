@@ -13,8 +13,9 @@ export interface DictionaryTrieNode {
 export class DictionaryTrie {
   root: DictionaryTrieNode = {}
 
-  add(word: string, dictionaryName: string, rank: number, reversed = false) {
+  add(word: string, dictionaryName: string, rank: number, reversed: boolean) {
     let node = this.root
+    // eslint-disable-next-line @typescript-eslint/prefer-for-of
     for (let i = 0; i < word.length; i += 1) {
       const char = word[i]
       if (!node.children) {

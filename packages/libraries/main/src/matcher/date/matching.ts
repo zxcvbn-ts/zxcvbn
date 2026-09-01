@@ -53,7 +53,7 @@ class MatchDate extends MatcherBaseClass {
         if (j >= password.length) {
           break
         }
-        const token = password.slice(i, j + 1 || 9e9)
+        const token = password.slice(i, j + 1)
         const regexMatch = maybeDateWithSeparator.exec(token)
         if (regexMatch != null) {
           const dmy = this.mapIntegersToDayMonthYear([
@@ -91,7 +91,7 @@ class MatchDate extends MatcherBaseClass {
         if (j >= password.length) {
           break
         }
-        const token = password.slice(i, j + 1 || 9e9)
+        const token = password.slice(i, j + 1)
         if (maybeDateNoSeparator.exec(token)) {
           const candidates: any[] = []
           const index = token.length
@@ -273,9 +273,6 @@ class MatchDate extends MatcherBaseClass {
   }
 
   twoToFourDigitYear(year: number) {
-    if (year > 99) {
-      return year
-    }
     if (year > 50) {
       // 87 -> 1987
       return year + 1900

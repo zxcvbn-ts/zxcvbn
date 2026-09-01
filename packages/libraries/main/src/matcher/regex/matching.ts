@@ -19,17 +19,15 @@ class MatchRegex extends MatcherBaseClass {
       let regexMatch: RegExpExecArray | null
 
       while ((regexMatch = regex.exec(password))) {
-        if (regexMatch) {
-          const token = regexMatch[0]
-          matches.push({
-            pattern: 'regex',
-            token,
-            i: regexMatch.index,
-            j: regexMatch.index + regexMatch[0].length - 1,
-            regexName: name as RegexesKeys,
-            regexMatch,
-          })
-        }
+        const token = regexMatch[0]
+        matches.push({
+          pattern: 'regex',
+          token,
+          i: regexMatch.index,
+          j: regexMatch.index + regexMatch[0].length - 1,
+          regexName: name as RegexesKeys,
+          regexMatch,
+        })
       }
     })
     return matches

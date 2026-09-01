@@ -5,12 +5,25 @@ import {
   UserInputsOptions,
   MatcherBaseClass,
   L33tMatch,
+  PasswordChanges,
 } from '../../types'
 import { DictionaryMatchOptions } from './types'
 import mergeUserInputDictionary from '../../utils/mergeUserInputDictionary'
 import { DictionaryTrieNode } from './DictionaryTrie'
 import TrieNode from './variants/matching/unmunger/TrieNode'
-import { PasswordChanges } from './variants/matching/unmunger/getCleanPasswords'
+
+interface L33tCandidateNode {
+  letters: string[]
+  substitution: string
+  length: number
+}
+
+// Defensive bound on total l33t branch expansion within a single match() call.
+// The per-path depth limit (l33tMaxSubstitutions) and trie-guided pruning keep
+// this a no-op for any realistic dictionary/l33t table, but nothing else stops
+// a pathological custom table (e.g. many ambiguous short substitutions) from
+// blowing up the DFS, so this acts as a last-resort backstop.
+const MAX_L33T_STEPS = 100_000
 
 class MatchDictionary extends MatcherBaseClass {
   private getRangedDictionaries(userInputsOptions?: UserInputsOptions) {
@@ -33,9 +46,8 @@ class MatchDictionary extends MatcherBaseClass {
     )
   }
 
-  private getL33tNodes(password: string, index: number) {
-    const nodes: { letters: string[]; substitution: string; length: number }[] =
-      []
+  private getL33tNodes(password: string, index: number): L33tCandidateNode[] {
+    const nodes: L33tCandidateNode[] = []
     let cur: TrieNode | undefined = this.options.trieNodeRoot
     for (let i = index; i < password.length; i += 1) {
       const character = password.charAt(i)
@@ -50,6 +62,19 @@ class MatchDictionary extends MatcherBaseClass {
           length: i - index + 1,
         })
       }
+    }
+    return nodes
+  }
+
+  private getCachedL33tNodes(
+    password: string,
+    index: number,
+    cache: Map<number, L33tCandidateNode[]>,
+  ): L33tCandidateNode[] {
+    let nodes = cache.get(index)
+    if (!nodes) {
+      nodes = this.getL33tNodes(password, index)
+      cache.set(index, nodes)
     }
     return nodes
   }
@@ -107,6 +132,12 @@ class MatchDictionary extends MatcherBaseClass {
   ) {
     const matches: (DictionaryMatch | L33tMatch)[] = []
     const passwordLength = password.length
+    // getL33tNodes(password, j) only depends on j, but many DFS branches
+    // (different starting i, different substitution histories) can revisit
+    // the same j - cache it once per match() call instead of re-walking the
+    // l33t trie from scratch on every visit.
+    const l33tNodesByIndex = new Map<number, L33tCandidateNode[]>()
+    const l33tStepBudget = { remaining: MAX_L33T_STEPS }
 
     for (let i = 0; i < passwordLength; i += 1) {
       const stack: {
@@ -176,6 +207,8 @@ class MatchDictionary extends MatcherBaseClass {
             path,
             includeL33t,
             stack,
+            l33tNodesByIndex,
+            l33tStepBudget,
           )
         }
       }
@@ -230,6 +263,7 @@ class MatchDictionary extends MatcherBaseClass {
     return baseMatch
   }
 
+  // eslint-disable-next-line max-params
   private processNextSteps(
     password: string,
     passwordLower: string,
@@ -240,6 +274,8 @@ class MatchDictionary extends MatcherBaseClass {
     path: string,
     includeL33t: boolean,
     stack: any[],
+    l33tNodesByIndex: Map<number, L33tCandidateNode[]>,
+    l33tStepBudget: { remaining: number },
   ) {
     // Normal step
     const char = passwordLower[j]
@@ -256,10 +292,17 @@ class MatchDictionary extends MatcherBaseClass {
     }
 
     // L33t steps
-    if (includeL33t && subs.length < this.options.l33tMaxSubstitutions) {
-      const l33tNodes = this.getL33tNodes(password, j)
+    if (
+      includeL33t &&
+      subs.length < this.options.l33tMaxSubstitutions &&
+      l33tStepBudget.remaining > 0
+    ) {
+      const l33tNodes = this.getCachedL33tNodes(password, j, l33tNodesByIndex)
       l33tNodes.forEach((l33tNode) => {
         l33tNode.letters.forEach((letter) => {
+          if (l33tStepBudget.remaining <= 0) {
+            return
+          }
           let nextStaticL33t = staticNode
           let nextUserInputL33t = userInputNode
           let possible = true
@@ -272,6 +315,7 @@ class MatchDictionary extends MatcherBaseClass {
             }
           }
           if (possible) {
+            l33tStepBudget.remaining -= 1
             stack.push({
               j: j + l33tNode.length,
               staticNode: nextStaticL33t,

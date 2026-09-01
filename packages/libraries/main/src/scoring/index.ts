@@ -26,7 +26,7 @@ export default class Scoring {
   private makeBruteforceMatch(i: number, j: number): BruteForceMatch {
     return {
       pattern: 'bruteforce',
-      token: this.password.slice(i, j + 1 || 9e9),
+      token: this.password.slice(i, j + 1),
       i,
       j,
     }

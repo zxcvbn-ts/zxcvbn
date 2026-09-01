@@ -46,8 +46,13 @@ class Matching {
   ): MatchExtended[] | Promise<MatchExtended[]> {
     const matches: MatchExtended[] = []
     const promises: Promise<MatchExtended[]>[] = []
+    // wordSequence reads the shared `matches` array to find sequences of
+    // dictionary matches, so it must run once every other matcher's results
+    // (sync or async) have already landed in `matches` - it can't just be
+    // one more entry in the same iteration order.
+    const { wordSequence, ...otherMatchers } = this.matchers
 
-    Object.values(this.matchers).forEach((matcher) => {
+    Object.values(otherMatchers).forEach((matcher) => {
       const result = matcher.match({
         password,
         omniMatch: this,
@@ -67,10 +72,39 @@ class Matching {
       }
     })
 
-    if (promises.length > 0) {
-      return Promise.all(promises).then(() => sorted(matches))
+    const runWordSequence = (): void | Promise<void> => {
+      if (!wordSequence) {
+        return undefined
+      }
+      const result = wordSequence.match({
+        password,
+        omniMatch: this,
+        userInputsOptions,
+        matches,
+      })
+      if (result instanceof Promise) {
+        return result.then((response) => {
+          extend(matches, response)
+        })
+      }
+      extend(matches, result)
+      return undefined
     }
 
+    if (promises.length > 0) {
+      return Promise.all(promises).then(() => {
+        const wordSequenceResult = runWordSequence()
+        if (wordSequenceResult instanceof Promise) {
+          return wordSequenceResult.then(() => sorted(matches))
+        }
+        return sorted(matches)
+      })
+    }
+
+    const wordSequenceResult = runWordSequence()
+    if (wordSequenceResult instanceof Promise) {
+      return wordSequenceResult.then(() => sorted(matches))
+    }
     return sorted(matches)
   }
 }

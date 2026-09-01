@@ -1,5 +1,4 @@
 import Options from './Options'
-import { PasswordChanges } from './matcher/dictionary/variants/matching/unmunger/getCleanPasswords'
 import Matching from './Matching'
 import { DictionaryReturn } from './matcher/dictionary/scoring'
 import { DictionaryTrie } from './matcher/dictionary/DictionaryTrie'
@@ -81,6 +80,11 @@ export interface DictionaryMatch extends Match {
   dictionaryName: DictionaryNames | string
   reversed: boolean
   l33t: boolean
+}
+
+export interface PasswordChanges {
+  letter: string
+  substitution: string
 }
 
 export interface L33tMatch extends DictionaryMatch {

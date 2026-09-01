@@ -149,6 +149,42 @@ describe('dictionary matching', () => {
     })
   })
 
+  describe('duplicate words in a dictionary', () => {
+    const zxcvbnOptions = new Options({
+      dictionary: { commonWords: ['dupe', 'other', 'dupe'] },
+      translations: zxcvbnEnPackage.translations,
+    })
+    const matchDictionary = new MatchDictionary(zxcvbnOptions)
+    const matches = matchDictionary
+      .match({ password: 'dupe' })
+      .filter((match) => !match.reversed)
+
+    it('should collapse a word listed twice in the same dictionary into a single match', () => {
+      expect(matches).toHaveLength(1)
+    })
+
+    it('should keep the rank of the last occurrence', () => {
+      expect(matches[0].rank).toBe(3)
+    })
+  })
+
+  describe('levenshtein skip for an already-exact-matched dictionary', () => {
+    const zxcvbnOptions = new Options({
+      dictionary: { words: ['cat'] },
+      translations: zxcvbnEnPackage.translations,
+      useLevenshteinDistance: true,
+    })
+    const matchDictionary = new MatchDictionary(zxcvbnOptions)
+    const matches = matchDictionary
+      .match({ password: 'cat' })
+      .filter((match) => !match.reversed)
+
+    it('should not add a duplicate levenshtein match for a dictionary already matched exactly', () => {
+      expect(matches).toHaveLength(1)
+      expect(matches[0].matchedWord).toBe('cat')
+    })
+  })
+
   describe('with user input', () => {
     const zxcvbnOptions = new Options({
       dictionary: {

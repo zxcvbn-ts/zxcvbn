@@ -1,5 +1,5 @@
 import utils from '../../../../scoring/utils'
-import { PasswordChanges } from '../matching/unmunger/getCleanPasswords'
+import { PasswordChanges } from '../../../../types'
 
 export interface L33tOptions {
   l33t: string

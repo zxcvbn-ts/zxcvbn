@@ -1,6 +1,7 @@
 import Options from '../src/Options'
 import translationKeys from '../src/data/translationKeys'
 import { timeEstimationValuesDefaults } from '../src/TimeEstimates'
+import { checkMatcher } from '../src/runtimeChecks'
 
 describe('Options', () => {
   describe('translations', () => {
@@ -165,6 +166,13 @@ describe('Options', () => {
       }).toThrow('dictionary entries must be strings or numbers')
     })
 
+    it('should throw error for a non-string matcher name', () => {
+      expect(() => {
+        // @ts-expect-error test runtime checks
+        checkMatcher(123, {})
+      }).toThrow('matcher name must be a string')
+    })
+
     it('should throw error for invalid graph content', () => {
       expect(() => {
         // @ts-expect-error test runtime checks
@@ -256,6 +264,36 @@ describe('Options', () => {
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         new Options({}, { test: { feedback: () => {}, scoring: () => 0 } })
       }).toThrow('matcher test.Matching must be a constructor')
+    })
+  })
+
+  describe('getUserInputsOptions caching', () => {
+    it('should pick up new entries when the same userInputs array is mutated and reused', () => {
+      const options = new Options({ dictionary: { commonWords: ['foo'] } })
+      const userInputs: (string | number)[] = ['first']
+      options.getUserInputsOptions(userInputs)
+
+      userInputs.push('second')
+      const result = options.getUserInputsOptions(userInputs)
+
+      expect(result.dictionary).toContain('second')
+    })
+
+    it('should reuse the cached result for an equal but different array reference', () => {
+      const options = new Options({ dictionary: { commonWords: ['foo'] } })
+      const first = options.getUserInputsOptions(['a', 'b'])
+      const second = options.getUserInputsOptions(['a', 'b'])
+
+      expect(second).toBe(first)
+    })
+
+    it('should rebuild when a same-length array has different content', () => {
+      const options = new Options({ dictionary: { commonWords: ['foo'] } })
+      const first = options.getUserInputsOptions(['a', 'b'])
+      const second = options.getUserInputsOptions(['a', 'c'])
+
+      expect(second).not.toBe(first)
+      expect(second.dictionary).toContain('c')
     })
   })
 })

@@ -1,4 +1,5 @@
 import MatchL33t from '../../../../../src/matcher/dictionary/variants/matching/l33t'
+import MatchDictionary from '../../../../../src/matcher/dictionary/matching'
 import checkMatches from '../../../../helper/checkMatches'
 import Options from '../../../../../src/Options'
 import { sorted } from '../../../../../src/utils/helper'
@@ -189,6 +190,45 @@ describe('l33t matching', () => {
         })
       },
     )
+    it('should not recompute l33t candidate nodes for the same password index more than once per match() call', () => {
+      const memoOptions = new Options({
+        dictionary: { words: ['a', 'aa', 'aaa', 'aaaa'] },
+        l33tTable: { a: ['4'] },
+      })
+      const memoMatchL33t = new MatchL33t(memoOptions)
+      const getL33tNodesSpy = jest.spyOn(
+        MatchDictionary.prototype as any,
+        'getL33tNodes',
+      )
+
+      memoMatchL33t.match({ password: '4444' })
+
+      const visitedIndices = getL33tNodesSpy.mock.calls.map(
+        ([, index]) => index,
+      )
+      expect(new Set(visitedIndices).size).toBe(visitedIndices.length)
+
+      getL33tNodesSpy.mockRestore()
+    })
+
+    it('should not produce a match when the l33t table substitution is a no-op', () => {
+      const noopOptions = new Options({
+        dictionary: { words: ['cat'] },
+        l33tTable: { a: ['a'] },
+      })
+      const noopMatchL33t = new MatchL33t(noopOptions)
+      expect(noopMatchL33t.match({ password: 'cat' })).toEqual([])
+    })
+
+    it('should collapse duplicate substitution strings in a custom l33t table into a single match', () => {
+      const duplicateSubOptions = new Options({
+        dictionary: { words: ['cat'] },
+        l33tTable: { a: ['4', '4'] },
+      })
+      const duplicateSubMatchL33t = new MatchL33t(duplicateSubOptions)
+      expect(duplicateSubMatchL33t.match({ password: 'c4t' })).toHaveLength(1)
+    })
+
     const matches = matchL33t.match({ password: '@a(go{G0' })
     msg = 'matches against overlapping l33t patterns'
     checkMatches({
