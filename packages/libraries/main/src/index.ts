@@ -64,16 +64,15 @@ class ZxcvbnFactory {
     }
   }
 
-  private main(password: string, userInputs?: (string | number)[]) {
+  private getMatches(password: string, userInputs?: (string | number)[]) {
     const userInputsOptions = this.options.getUserInputsOptions(userInputs)
 
     return this.matching.match(password, userInputsOptions)
   }
 
   public check(password: string, userInputs?: (string | number)[]) {
-    const reducedPassword = password.substring(0, this.options.maxLength)
-    const start = time()
-    const matches = this.main(reducedPassword, userInputs)
+    const { reducedPassword, start } = this.prepareCheck(password)
+    const matches = this.getMatches(reducedPassword, userInputs)
 
     if (matches instanceof Promise) {
       throw new Error(
@@ -84,11 +83,17 @@ class ZxcvbnFactory {
   }
 
   public async checkAsync(password: string, userInputs?: (string | number)[]) {
-    const reducedPassword = password.substring(0, this.options.maxLength)
-    const start = time()
-    const matches = await this.main(reducedPassword, userInputs)
+    const { reducedPassword, start } = this.prepareCheck(password)
+    const matches = await this.getMatches(reducedPassword, userInputs)
 
     return this.createReturnValue(matches, reducedPassword, start)
+  }
+
+  private prepareCheck(password: string) {
+    return {
+      reducedPassword: password.substring(0, this.options.maxLength),
+      start: time(),
+    }
   }
 }
 

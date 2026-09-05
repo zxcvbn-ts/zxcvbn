@@ -13,21 +13,61 @@ describe('dictionary reverse matching', () => {
   const password = '0123456789'
   const matches = matchDictionaryReverse.match({ password })
   const msg = 'matches against reversed words'
-
   checkMatches({
     messagePrefix: msg,
     matches,
     patternNames: 'dictionary',
-    patterns: ['456', '123'],
+    patterns: ['123', '456'],
     ijs: [
-      [4, 6],
       [1, 3],
+      [4, 6],
     ],
     propsToCheck: {
-      matchedWord: ['654', '321'],
+      matchedWord: ['321', '654'],
       reversed: [true, true],
       dictionaryName: ['d1', 'd1'],
-      rank: [4, 2],
+      rank: [2, 4],
     },
+  })
+
+  it('finds a Levenshtein fuzzy match against a reversed dictionary word', () => {
+    const levenshteinOptions = new Options({
+      dictionary: { words: ['elephant'] },
+      useLevenshteinDistance: true,
+    })
+    const levenshteinMatchReverse = new MatchDictionaryReverse(
+      levenshteinOptions,
+    )
+    // 'tnahpala' is 'alaphant' (a typo of 'elephant') spelled backward.
+    const matches = levenshteinMatchReverse.match({ password: 'tnahpala' })
+    expect(matches).toEqual([
+      expect.objectContaining({
+        dictionaryName: 'words',
+        reversed: true,
+        matchedWord: 'tnahpala',
+        levenshteinDistance: 2,
+        levenshteinDistanceEntry: 'elephant',
+      }),
+    ])
+  })
+
+  it('matches a reversed dictionary word containing an astral (surrogate-pair) character', () => {
+    const astralOptions = new Options({
+      dictionary: { words: ['𝕒bc'] },
+    })
+    const astralMatchReverse = new MatchDictionaryReverse(astralOptions)
+    expect(astralMatchReverse.match({ password: 'cb𝕒' })).toEqual([
+      {
+        dictionaryName: 'words',
+        i: 0,
+        j: 3,
+        l33t: false,
+        matchedWord: '𝕒bc',
+        pattern: 'dictionary',
+        rank: 1,
+        reversed: true,
+        token: 'cb𝕒',
+      },
+    ])
   })
 })
