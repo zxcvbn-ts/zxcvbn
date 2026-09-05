@@ -9,13 +9,56 @@ import {
 } from '../../types'
 import { DictionaryMatchOptions } from './types'
 import mergeUserInputDictionary from '../../utils/mergeUserInputDictionary'
-import { DictionaryTrieNode } from './DictionaryTrie'
+import { DictionaryTrieNode, TrieTerminalInfo } from './DictionaryTrie'
 import TrieNode from './variants/matching/unmunger/TrieNode'
 
 interface L33tCandidateNode {
   letters: string[]
   substitution: string
   length: number
+}
+
+// Shared, read-only state for a single match() call - threaded through the
+// trie walk instead of passed as a growing list of individual arguments.
+interface MatchContext {
+  password: string
+  passwordLower: string
+  includeL33t: boolean
+  includeReverse: boolean
+  userInputsOptions?: UserInputsOptions
+  fullPasswordExactMatches: Set<string>
+}
+
+// One frame of the depth-first trie walk. `i` is the token's start index -
+// fixed for every frame descended from the same outer-loop iteration - and
+// travels with the frame so callees don't need it as a separate argument.
+interface DfsFrame {
+  i: number
+  j: number
+  staticNode: DictionaryTrieNode | undefined
+  userInputNode: DictionaryTrieNode | undefined
+  subs: PasswordChanges[]
+  path: string
+}
+
+// Mutable, per-match() bookkeeping for the l33t branch of the walk.
+interface L33tSearchState {
+  nodesByIndex: Map<number, L33tCandidateNode[]>
+  stepBudget: { remaining: number }
+}
+
+// Everything processNextSteps needs to extend the walk: the DFS stack for the
+// current outer-loop iteration, and the l33t bookkeeping shared across all of
+// them.
+interface WalkState {
+  stack: DfsFrame[]
+  l33t: L33tSearchState
+}
+
+interface RangedDictionaries {
+  dictionaries: Record<string, (string | number)[]>
+  dictionaryMaxWordSize: Record<string, number>
+  dictionaryMinWordSize: Record<string, number>
 }
 
 // Defensive bound on total l33t branch expansion within a single match() call.
@@ -26,7 +69,9 @@ interface L33tCandidateNode {
 const MAX_L33T_STEPS = 100_000
 
 class MatchDictionary extends MatcherBaseClass {
-  private getRangedDictionaries(userInputsOptions?: UserInputsOptions) {
+  private getRangedDictionaries(
+    userInputsOptions?: UserInputsOptions,
+  ): RangedDictionaries {
     if (
       userInputsOptions?.mergedDictionaries &&
       userInputsOptions?.mergedDictionaryMaxWordSize &&
@@ -79,42 +124,32 @@ class MatchDictionary extends MatcherBaseClass {
     return nodes
   }
 
-  // eslint-disable-next-line complexity,max-statements
   public match(
     matchOptions: DictionaryMatchOptions,
     includeL33t = false,
     includeReverse = false,
   ) {
     const { password, userInputsOptions, useLevenshtein = true } = matchOptions
-    const passwordLower = password.toLowerCase()
-    const fullPasswordExactMatches = new Set<string>()
-
-    const matches = this.getTrieMatches(
+    const context: MatchContext = {
       password,
-      passwordLower,
-      userInputsOptions,
+      passwordLower: password.toLowerCase(),
       includeL33t,
       includeReverse,
-      fullPasswordExactMatches,
-    )
+      userInputsOptions,
+      fullPasswordExactMatches: new Set<string>(),
+    }
+
+    const matches = this.getTrieMatches(context)
 
     if (
       this.options.useLevenshteinDistance &&
       useLevenshtein &&
       password.length > 0 &&
-      !includeL33t &&
-      !includeReverse
+      !includeL33t
     ) {
-      const { dictionaries, dictionaryMaxWordSize, dictionaryMinWordSize } =
-        this.getRangedDictionaries(userInputsOptions)
-
       this.addLevenshteinMatches(
-        password,
-        passwordLower,
-        dictionaries,
-        dictionaryMaxWordSize,
-        dictionaryMinWordSize,
-        fullPasswordExactMatches,
+        context,
+        this.getRangedDictionaries(userInputsOptions),
         matches,
       )
     }
@@ -122,113 +157,116 @@ class MatchDictionary extends MatcherBaseClass {
     return matches
   }
 
-  private getTrieMatches(
-    password: string,
-    passwordLower: string,
-    userInputsOptions: UserInputsOptions | undefined,
-    includeL33t: boolean,
-    includeReverse: boolean,
-    fullPasswordExactMatches: Set<string>,
-  ) {
+  // eslint-disable-next-line complexity,max-statements
+  private getTrieMatches(context: MatchContext) {
+    const {
+      password,
+      userInputsOptions,
+      includeL33t,
+      includeReverse,
+      fullPasswordExactMatches,
+    } = context
     const matches: (DictionaryMatch | L33tMatch)[] = []
     const passwordLength = password.length
     // getL33tNodes(password, j) only depends on j, but many DFS branches
     // (different starting i, different substitution histories) can revisit
     // the same j - cache it once per match() call instead of re-walking the
     // l33t trie from scratch on every visit.
-    const l33tNodesByIndex = new Map<number, L33tCandidateNode[]>()
-    const l33tStepBudget = { remaining: MAX_L33T_STEPS }
+    const l33t: L33tSearchState = {
+      nodesByIndex: new Map(),
+      stepBudget: { remaining: MAX_L33T_STEPS },
+    }
 
     for (let i = 0; i < passwordLength; i += 1) {
-      const stack: {
-        j: number
-        staticNode: DictionaryTrieNode | undefined
-        userInputNode: DictionaryTrieNode | undefined
-        subs: PasswordChanges[]
-        path: string
-      }[] = [
-        {
-          j: i,
-          staticNode: this.options.dictionaryTrie.root,
-          userInputNode: userInputsOptions?.dictionaryTrie?.root,
-          subs: [],
-          path: '',
-        },
-      ]
+      const walkState: WalkState = {
+        stack: [
+          {
+            i,
+            j: i,
+            staticNode: this.options.dictionaryTrie.root,
+            userInputNode: userInputsOptions?.dictionaryTrie?.root,
+            subs: [],
+            path: '',
+          },
+        ],
+        l33t,
+      }
 
-      while (stack.length > 0) {
-        const { j, staticNode, userInputNode, subs, path } = stack.pop()!
+      while (walkState.stack.length > 0) {
+        const frame = walkState.stack.pop()!
+        const { j, staticNode, userInputNode, subs } = frame
 
         if (!staticNode && !userInputNode) {
           continue
         }
 
-        const terminals = [
+        const rawTerminals = [
           ...(staticNode?.terminals || []),
           ...(userInputNode?.terminals || []),
         ]
+        // Only dedupe when both sides actually contributed something -
+        // rawTerminals is empty on the overwhelming majority of frames, so
+        // skip the allocation there.
+        const terminals =
+          rawTerminals.length > 1
+            ? this.dedupeTerminals(rawTerminals)
+            : rawTerminals
 
-        terminals.forEach(({ dictionaryName, rank, reversed }) => {
-          if (reversed !== includeReverse) {
+        terminals.forEach((terminal) => {
+          if (terminal.reversed !== includeReverse) {
             return
           }
           if (includeL33t && subs.length === 0) {
             return
           }
 
-          const isFullPassword = i === 0 && j === passwordLength
+          const isFullPassword = frame.i === 0 && j === passwordLength
           if (isFullPassword && !includeReverse && !includeL33t) {
-            fullPasswordExactMatches.add(dictionaryName)
+            fullPasswordExactMatches.add(terminal.dictionaryName)
           }
 
-          matches.push(
-            this.createMatch(
-              password,
-              i,
-              j,
-              path,
-              rank,
-              dictionaryName,
-              reversed,
-              subs,
-              includeReverse,
-            ),
-          )
+          matches.push(this.createMatch(context, frame, terminal))
         })
 
         if (j < password.length) {
-          this.processNextSteps(
-            password,
-            passwordLower,
-            j,
-            staticNode,
-            userInputNode,
-            subs,
-            path,
-            includeL33t,
-            stack,
-            l33tNodesByIndex,
-            l33tStepBudget,
-          )
+          this.processNextSteps(context, frame, walkState)
         }
       }
     }
     return matches
   }
 
+  // A word present in both the static dictionary.userInputs list and the
+  // per-check userInputs array produces one terminal from each trie for the
+  // same (dictionaryName, reversed) pair - collapse those into a single
+  // terminal, keeping the lower (more conservative) rank.
+  private dedupeTerminals(terminals: TrieTerminalInfo[]): TrieTerminalInfo[] {
+    const byKey = new Map<string, TrieTerminalInfo>()
+    terminals.forEach((terminal) => {
+      const key = `${terminal.dictionaryName}-${terminal.reversed}`
+      const existing = byKey.get(key)
+      if (!existing || terminal.rank < existing.rank) {
+        byKey.set(key, terminal)
+      }
+    })
+    return [...byKey.values()]
+  }
+
   private createMatch(
-    password: string,
-    i: number,
-    j: number,
-    path: string,
-    rank: number,
-    dictionaryName: string,
-    reversed: boolean,
-    subs: PasswordChanges[],
-    includeReverse: boolean,
+    context: MatchContext,
+    frame: DfsFrame,
+    terminal: TrieTerminalInfo,
   ): DictionaryMatch | L33tMatch {
+    const { password, includeReverse } = context
+    const { i, j, path, subs } = frame
+    const { dictionaryName, rank, reversed } = terminal
     const token = password.slice(i, j)
-    const matchedWord = includeReverse ? path.split('').reverse().join('') : path
+    // Array.from (code-point aware) undoes the same code-point-aware reversal
+    // Options.buildTrie applied when building the reverse-dictionary trie key,
+    // so an astral character in `path` round-trips back to the original word.
+    const matchedWord = includeReverse
+      ? Array.from(path).reverse().join('')
+      : path
 
     const baseMatch: DictionaryMatch = {
       pattern: 'dictionary',
@@ -263,26 +301,22 @@ class MatchDictionary extends MatcherBaseClass {
     return baseMatch
   }
 
-  // eslint-disable-next-line max-params
   private processNextSteps(
-    password: string,
-    passwordLower: string,
-    j: number,
-    staticNode: DictionaryTrieNode | undefined,
-    userInputNode: DictionaryTrieNode | undefined,
-    subs: PasswordChanges[],
-    path: string,
-    includeL33t: boolean,
-    stack: any[],
-    l33tNodesByIndex: Map<number, L33tCandidateNode[]>,
-    l33tStepBudget: { remaining: number },
+    context: MatchContext,
+    frame: DfsFrame,
+    walkState: WalkState,
   ) {
+    const { password, passwordLower, includeL33t } = context
+    const { i, j, staticNode, userInputNode, subs, path } = frame
+    const { stack, l33t } = walkState
+
     // Normal step
     const char = passwordLower[j]
     const nextStatic = staticNode?.children?.get(char)
     const nextUserInput = userInputNode?.children?.get(char)
     if (nextStatic || nextUserInput) {
       stack.push({
+        i,
         j: j + 1,
         staticNode: nextStatic,
         userInputNode: nextUserInput,
@@ -295,17 +329,22 @@ class MatchDictionary extends MatcherBaseClass {
     if (
       includeL33t &&
       subs.length < this.options.l33tMaxSubstitutions &&
-      l33tStepBudget.remaining > 0
+      l33t.stepBudget.remaining > 0
     ) {
-      const l33tNodes = this.getCachedL33tNodes(password, j, l33tNodesByIndex)
+      const l33tNodes = this.getCachedL33tNodes(password, j, l33t.nodesByIndex)
       l33tNodes.forEach((l33tNode) => {
         l33tNode.letters.forEach((letter) => {
-          if (l33tStepBudget.remaining <= 0) {
+          if (l33t.stepBudget.remaining <= 0) {
             return
           }
           let nextStaticL33t = staticNode
           let nextUserInputL33t = userInputNode
           let possible = true
+          // Indexed by UTF-16 code unit (not `for...of`, which iterates by
+          // code point) to match how DictionaryTrie.add/TrieNode.addSub walk
+          // words - one code unit per level - so a `letter` containing an
+          // astral character still resolves to the right trie nodes.
+          // eslint-disable-next-line @typescript-eslint/prefer-for-of
           for (let k = 0; k < letter.length; k += 1) {
             nextStaticL33t = nextStaticL33t?.children?.get(letter[k])
             nextUserInputL33t = nextUserInputL33t?.children?.get(letter[k])
@@ -315,8 +354,9 @@ class MatchDictionary extends MatcherBaseClass {
             }
           }
           if (possible) {
-            l33tStepBudget.remaining -= 1
+            l33t.stepBudget.remaining -= 1
             stack.push({
+              i,
               j: j + l33tNode.length,
               staticNode: nextStaticL33t,
               userInputNode: nextUserInputL33t,
@@ -330,15 +370,26 @@ class MatchDictionary extends MatcherBaseClass {
   }
 
   private addLevenshteinMatches(
-    password: string,
-    passwordLower: string,
-    dictionaries: Record<string, (string | number)[]>,
-    dictionaryMaxWordSize: Record<string, number>,
-    dictionaryMinWordSize: Record<string, number>,
-    fullPasswordExactMatches: Set<string>,
+    context: MatchContext,
+    rangedDictionaries: RangedDictionaries,
     matches: (DictionaryMatch | L33tMatch)[],
-  ) {
+  ): void {
+    const {
+      password,
+      passwordLower,
+      includeReverse,
+      fullPasswordExactMatches,
+    } = context
+    const { dictionaries, dictionaryMaxWordSize, dictionaryMinWordSize } =
+      rangedDictionaries
     const passwordLength = password.length
+    // Reversing one side of a Levenshtein comparison is equivalent to
+    // reversing the other, so searching the reversed password against the
+    // forward dictionary yields the same distance and entry as searching
+    // the forward password against a reversed dictionary would.
+    const searchPassword = includeReverse
+      ? Array.from(passwordLower).reverse().join('')
+      : passwordLower
     const dictionaryNames = Object.keys(dictionaries) as DictionaryNames[]
     dictionaryNames.forEach((dictionaryName) => {
       if (fullPasswordExactMatches.has(dictionaryName)) {
@@ -360,7 +411,7 @@ class MatchDictionary extends MatcherBaseClass {
 
       const dictionary = dictionaries[dictionaryName]
       const foundLevenshteinDistance = findLevenshteinDistance(
-        passwordLower,
+        searchPassword,
         dictionary,
         this.options.levenshteinThreshold,
       )
@@ -377,7 +428,7 @@ class MatchDictionary extends MatcherBaseClass {
           matchedWord: passwordLower,
           rank: levenshteinDistanceRank!,
           dictionaryName,
-          reversed: false,
+          reversed: includeReverse,
           l33t: false,
           ...foundLevenshteinDistanceWithoutRank,
         })

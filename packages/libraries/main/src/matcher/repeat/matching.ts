@@ -18,8 +18,6 @@ class MatchRepeat extends MatcherBaseClass {
 
   private scoring: Scoring
 
-  private memoizedResults = new Map<string, number | Promise<number>>()
-
   constructor(options: Options) {
     super(options)
     this.scoring = new Scoring(options)
@@ -27,7 +25,11 @@ class MatchRepeat extends MatcherBaseClass {
 
   // eslint-disable-next-line max-statements
   match({ password, omniMatch }: MatchOptions) {
-    this.memoizedResults.clear()
+    // Scoped to this call rather than an instance field: getBaseGuesses
+    // recurses back into this same instance via omniMatch.match(baseToken),
+    // and a shared field would get cleared by that nested call before the
+    // outer loop's later iterations could reuse it.
+    const memoizedResults = new Map<string, number | Promise<number>>()
     const matches: (RepeatMatch | Promise<RepeatMatch>)[] = []
     let lastIndex = 0
     while (lastIndex < password.length) {
@@ -40,7 +42,11 @@ class MatchRepeat extends MatcherBaseClass {
 
       if (match) {
         const j = match.index + match[0].length - 1
-        const baseGuesses = this.getBaseGuesses(baseToken, omniMatch)
+        const baseGuesses = this.getBaseGuesses(
+          baseToken,
+          omniMatch,
+          memoizedResults,
+        )
         matches.push(this.normalizeMatch(baseToken, j, match, baseGuesses))
 
         lastIndex = j + 1
@@ -131,9 +137,13 @@ class MatchRepeat extends MatcherBaseClass {
     }
   }
 
-  getBaseGuesses(baseToken: string, omniMatch: Matching) {
-    if (this.memoizedResults.has(baseToken)) {
-      return this.memoizedResults.get(baseToken)!
+  getBaseGuesses(
+    baseToken: string,
+    omniMatch: Matching,
+    memoizedResults: Map<string, number | Promise<number>>,
+  ) {
+    if (memoizedResults.has(baseToken)) {
+      return memoizedResults.get(baseToken)!
     }
     const matches = omniMatch.match(baseToken)
     let result: number | Promise<number>
@@ -152,7 +162,7 @@ class MatchRepeat extends MatcherBaseClass {
       )
       result = baseAnalysis.guesses
     }
-    this.memoizedResults.set(baseToken, result)
+    memoizedResults.set(baseToken, result)
     return result
   }
 }

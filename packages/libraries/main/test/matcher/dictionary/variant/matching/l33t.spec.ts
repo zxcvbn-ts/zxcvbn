@@ -74,6 +74,29 @@ describe('l33t matching', () => {
     it("doesn't match with subsets of possible l33t substitution", () => {
       expect(matchL33t.match({ password: 'P4$$w0rd' })).toEqual([])
     })
+
+    it('matches l33t substitutions for dictionary words containing astral (surrogate-pair) characters', () => {
+      const astralOptions = new Options({
+        dictionary: { words: ['𝕒bc'] },
+        l33tTable: { '𝕒': ['4'] },
+      })
+      const astralMatchL33t = new MatchL33t(astralOptions)
+      expect(astralMatchL33t.match({ password: '4bc' })).toEqual([
+        {
+          dictionaryName: 'words',
+          i: 0,
+          j: 2,
+          l33t: true,
+          matchedWord: '𝕒bc',
+          pattern: 'dictionary',
+          rank: 1,
+          reversed: false,
+          subs: [{ letter: '𝕒', substitution: '4' }],
+          subDisplay: '4 -> 𝕒',
+          token: '4bc',
+        },
+      ])
+    })
     const data = [
       [
         'p4ssword',

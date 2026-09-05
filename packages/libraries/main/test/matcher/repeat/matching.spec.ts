@@ -140,4 +140,27 @@ describe('repeat matching', () => {
       baseToken: ['ab'],
     },
   })
+
+  it('memoizes base token guesses across separated repeat groups within one match() call', () => {
+    // Use the repeat matcher exactly as production code does: the single
+    // instance registered inside its own omniMatch (Matching), since
+    // getBaseGuesses recurses back into that same instance via
+    // omniMatch.match(baseToken) - a standalone MatchRepeat/omniMatch pair
+    // (like the rest of this file uses) never re-enters itself and so can't
+    // exercise the memoization bug at all.
+    const sharedOmniMatch = new MatchOmni(zxcvbnOptions)
+    const sharedMatchRepeat = sharedOmniMatch.matchers.repeat as MatchRepeat
+    const matchSpy = jest.spyOn(sharedOmniMatch, 'match')
+
+    sharedMatchRepeat.match({
+      password: 'aaaaaaXXXbbbbbbYYYaaaaaa',
+      omniMatch: sharedOmniMatch,
+    })
+
+    const baseTokenACalls = matchSpy.mock.calls.filter(
+      ([password]) => password === 'a',
+    ).length
+    matchSpy.mockRestore()
+    expect(baseTokenACalls).toBe(1)
+  })
 })

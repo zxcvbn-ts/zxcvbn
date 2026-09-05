@@ -27,7 +27,14 @@ const findLevenshteinDistance = (
 ): Partial<FindLevenshteinDistanceResult> => {
   let foundDistance = 0
   let foundRank = 0
-  const found = words.find((wordOrNumber, index) => {
+  // Options.buildTrie collapses a word listed more than once to the rank of
+  // its LAST occurrence - match that here so a fuzzy match doesn't disagree
+  // with the exact-match trie's rank for the same word.
+  const rankByEntry = new Map<string, number>()
+  words.forEach((wordOrNumber, index) => {
+    rankByEntry.set(wordOrNumber.toString(), index + 1)
+  })
+  const found = words.find((wordOrNumber) => {
     const entry = wordOrNumber.toString()
     const usedThreshold = getUsedThreshold(password, entry, threshold)
     if (Math.abs(password.length - entry.length) > usedThreshold) {
@@ -38,11 +45,11 @@ const findLevenshteinDistance = (
 
     if (isInThreshold) {
       foundDistance = foundEntryDistance
-      foundRank = index + 1
+      foundRank = rankByEntry.get(entry)!
     }
     return isInThreshold
   })
-  if (found) {
+  if (found !== undefined) {
     return {
       levenshteinDistance: foundDistance,
       levenshteinDistanceEntry: found.toString(),

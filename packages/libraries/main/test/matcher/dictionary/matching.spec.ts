@@ -213,4 +213,26 @@ describe('dictionary matching', () => {
       },
     })
   })
+
+  describe('word present in both static and per-check user input dictionaries', () => {
+    const zxcvbnOptions = new Options({
+      dictionary: {
+        userInputs: ['secretword'],
+      },
+      translations: zxcvbnEnPackage.translations,
+    })
+    const matchDictionary = new MatchDictionary(zxcvbnOptions)
+    const userInputsOptions = zxcvbnOptions.getUserInputsOptions([
+      'secretword',
+    ])
+    const matches = matchDictionary
+      .match({ password: 'secretword', userInputsOptions })
+      .filter(
+        (match) => !match.reversed && match.dictionaryName === 'userInputs',
+      )
+
+    it('should produce a single match instead of one per source dictionary', () => {
+      expect(matches).toHaveLength(1)
+    })
+  })
 })

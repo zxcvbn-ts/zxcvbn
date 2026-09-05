@@ -29,4 +29,45 @@ describe('dictionary reverse matching', () => {
       rank: [2, 4],
     },
   })
+
+  it('finds a Levenshtein fuzzy match against a reversed dictionary word', () => {
+    const levenshteinOptions = new Options({
+      dictionary: { words: ['elephant'] },
+      useLevenshteinDistance: true,
+    })
+    const levenshteinMatchReverse = new MatchDictionaryReverse(
+      levenshteinOptions,
+    )
+    // 'tnahpala' is 'alaphant' (a typo of 'elephant') spelled backward.
+    const matches = levenshteinMatchReverse.match({ password: 'tnahpala' })
+    expect(matches).toEqual([
+      expect.objectContaining({
+        dictionaryName: 'words',
+        reversed: true,
+        matchedWord: 'tnahpala',
+        levenshteinDistance: 2,
+        levenshteinDistanceEntry: 'elephant',
+      }),
+    ])
+  })
+
+  it('matches a reversed dictionary word containing an astral (surrogate-pair) character', () => {
+    const astralOptions = new Options({
+      dictionary: { words: ['𝕒bc'] },
+    })
+    const astralMatchReverse = new MatchDictionaryReverse(astralOptions)
+    expect(astralMatchReverse.match({ password: 'cb𝕒' })).toEqual([
+      {
+        dictionaryName: 'words',
+        i: 0,
+        j: 3,
+        l33t: false,
+        matchedWord: '𝕒bc',
+        pattern: 'dictionary',
+        rank: 1,
+        reversed: true,
+        token: 'cb𝕒',
+      },
+    ])
+  })
 })

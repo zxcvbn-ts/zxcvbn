@@ -13,7 +13,10 @@ export interface DictionaryTrieNode {
 export class DictionaryTrie {
   root: DictionaryTrieNode = {}
 
-  add(word: string, dictionaryName: string, rank: number, reversed: boolean) {
+  add(word: string, terminal: TrieTerminalInfo) {
+    if (word.length === 0) {
+      return
+    }
     let node = this.root
     // eslint-disable-next-line @typescript-eslint/prefer-for-of
     for (let i = 0; i < word.length; i += 1) {
@@ -31,6 +34,6 @@ export class DictionaryTrie {
     if (!node.terminals) {
       node.terminals = []
     }
-    node.terminals.push({ dictionaryName, rank, reversed })
+    node.terminals.push(terminal)
   }
 }

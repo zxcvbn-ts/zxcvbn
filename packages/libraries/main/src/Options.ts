@@ -216,8 +216,15 @@ export default class Options {
         minWordSize = wordLength
       }
 
-      trie.add(word, name, rank, false)
-      trie.add(word.split('').reverse().join(''), name, rank, true)
+      trie.add(word, { dictionaryName: name, rank, reversed: false })
+      // Array.from splits by code point (not by UTF-16 code unit like
+      // split('')), so an astral character is kept intact as one element and
+      // stays validly-encoded after reversing.
+      trie.add(Array.from(word).reverse().join(''), {
+        dictionaryName: name,
+        rank,
+        reversed: true,
+      })
     })
 
     return {
@@ -232,9 +239,11 @@ export default class Options {
   ): UserInputsOptions {
     const { cachedUserInputs } = this
     const isCacheHit =
-      dictionary !== undefined &&
-      cachedUserInputs?.length === dictionary.length &&
-      cachedUserInputs.every((value, index) => value === dictionary[index])
+      this.cachedUserInputsOptions !== undefined &&
+      (dictionary === undefined
+        ? cachedUserInputs === undefined
+        : cachedUserInputs?.length === dictionary.length &&
+          cachedUserInputs.every((value, index) => value === dictionary[index]))
 
     if (isCacheHit) {
       return this.cachedUserInputsOptions!

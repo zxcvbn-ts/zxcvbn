@@ -7,7 +7,7 @@ import {
   MatchExtended,
 } from '../../types'
 
-const VALID_SEPARATORS = new Set(['', ' ', '-', '_', '.', ''])
+const VALID_SEPARATORS = new Set(['', ' ', '-', '_', '.'])
 
 /*
  *-------------------------------------------------------------------------------
@@ -156,10 +156,8 @@ class MatchWordSequence extends MatcherBaseClass {
     const lastWord = currentSequence[currentSequence.length - 1]
     const textBetween = password.slice(lastWord.j + 1, nextMatch.i)
 
-    // For simple concatenation (no separator)
-    const isSimpleConcat = textBetween === ''
-
-    // For snake_case or kebab-case, check for separators
+    // For snake_case, kebab-case, or simple concatenation (VALID_SEPARATORS
+    // includes '', which covers the no-separator case too)
     const hasValidSeparator = VALID_SEPARATORS.has(textBetween)
 
     // For camelCase, we need to check if the next word starts with uppercase
@@ -169,7 +167,7 @@ class MatchWordSequence extends MatcherBaseClass {
       textBetween === textBetween.toUpperCase() &&
       textBetween !== textBetween.toLowerCase()
 
-    return hasValidSeparator || isSimpleConcat || isCamelCase
+    return hasValidSeparator || isCamelCase
   }
 
   private createWordSequenceMatch(

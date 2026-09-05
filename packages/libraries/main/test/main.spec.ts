@@ -220,6 +220,12 @@ describe('main', () => {
       const result = zxcvbn.check(longPassword)
       expect(result.password.length).toBe(256)
     })
+
+    it('should not throw when userInputs contains an empty string', () => {
+      expect(() =>
+        zxcvbn.check('anypassword', ['someuser', '', 'lastname']),
+      ).not.toThrow()
+    })
   })
 
   describe('password tests', () => {

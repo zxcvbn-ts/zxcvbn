@@ -295,5 +295,13 @@ describe('Options', () => {
       expect(second).not.toBe(first)
       expect(second.dictionary).toContain('c')
     })
+
+    it('should reuse the cached result across repeated calls with no userInputs argument at all', () => {
+      const options = new Options({ dictionary: { commonWords: ['foo'] } })
+      const first = options.getUserInputsOptions()
+      const second = options.getUserInputsOptions()
+
+      expect(second).toBe(first)
+    })
   })
 })
