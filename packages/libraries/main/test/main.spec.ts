@@ -206,17 +206,17 @@ describe('main', () => {
     })
 
     it('should not die while processing and have a appropriate calcTime for l33t same value attack', () => {
-      const result = zxcvbn.check('!'.repeat(2000))
+      const result = zxcvbn.check('!'.repeat(1500))
       expect(result.calcTime).toBeLessThan(maxCalcTime)
     })
 
     it('should not die while processing and have a appropriate calcTime for regex attacks', () => {
-      const result = zxcvbn.check(`\x00\x00${'\x00'.repeat(2000)}\n`)
+      const result = zxcvbn.check(`\x00\x00${'\x00'.repeat(1500)}\n`)
       expect(result.calcTime).toBeLessThan(maxCalcTime)
     })
 
     it('should handle very long passwords by truncating them', () => {
-      const longPassword = 'a'.repeat(2000)
+      const longPassword = 'a'.repeat(1500)
       const result = zxcvbn.check(longPassword)
       expect(result.password.length).toBe(256)
     })

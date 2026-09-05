@@ -141,7 +141,7 @@ describe('repeat matching', () => {
     },
   })
 
-  it('memoizes base token guesses across separated repeat groups within one match() call', () => {
+  it('memoizes base token guesses across separated repeat groups within one match() call', async () => {
     // Use the repeat matcher exactly as production code does: the single
     // instance registered inside its own omniMatch (Matching), since
     // getBaseGuesses recurses back into that same instance via
@@ -152,7 +152,7 @@ describe('repeat matching', () => {
     const sharedMatchRepeat = sharedOmniMatch.matchers.repeat as MatchRepeat
     const matchSpy = jest.spyOn(sharedOmniMatch, 'match')
 
-    sharedMatchRepeat.match({
+    await sharedMatchRepeat.match({
       password: 'aaaaaaXXXbbbbbbYYYaaaaaa',
       omniMatch: sharedOmniMatch,
     })

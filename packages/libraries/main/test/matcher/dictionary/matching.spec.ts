@@ -222,9 +222,7 @@ describe('dictionary matching', () => {
       translations: zxcvbnEnPackage.translations,
     })
     const matchDictionary = new MatchDictionary(zxcvbnOptions)
-    const userInputsOptions = zxcvbnOptions.getUserInputsOptions([
-      'secretword',
-    ])
+    const userInputsOptions = zxcvbnOptions.getUserInputsOptions(['secretword'])
     const matches = matchDictionary
       .match({ password: 'secretword', userInputsOptions })
       .filter(

@@ -1,10 +1,4 @@
-import {
-  empty,
-  sorted,
-  extend,
-  translate,
-  mod,
-} from '../../src/utils/helper'
+import { empty, sorted, extend, translate, mod } from '../../src/utils/helper'
 import { LooseObject } from '../../src/types'
 
 describe('utils matching', () => {
