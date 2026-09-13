@@ -9,6 +9,7 @@ import sequenceMatcher from './matcher/sequence/feedback'
 import spatialMatcher from './matcher/spatial/feedback'
 import separatorMatcher from './matcher/separator/feedback'
 import wordSequenceMatcher from './matcher/wordSequence/feedback'
+import userInputSequenceMatcher from './matcher/userInputSequence/feedback'
 
 const createFeedback = (
   suggestions?: FeedbackType['suggestions'],
@@ -37,6 +38,7 @@ class Feedback {
       spatial: spatialMatcher,
       separator: separatorMatcher,
       wordSequence: wordSequenceMatcher,
+      userInputSequence: userInputSequenceMatcher,
     }
 
     Object.entries(this.options.matchers).forEach(([key, matcher]) => {

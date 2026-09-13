@@ -19,6 +19,7 @@ import sequenceMatcher from '../matcher/sequence/scoring'
 import spatialMatcher from '../matcher/spatial/scoring'
 import separatorMatcher from '../matcher/separator/scoring'
 import wordSequenceMatcher from '../matcher/wordSequence/scoring'
+import userInputSequenceMatcher from '../matcher/userInputSequence/scoring'
 
 const getMinGuesses = (
   match: MatchExtended | MatchEstimated,
@@ -47,6 +48,7 @@ const matchers: Matchers = {
   spatial: spatialMatcher,
   separator: separatorMatcher,
   wordSequence: wordSequenceMatcher,
+  userInputSequence: userInputSequenceMatcher,
 }
 
 const getScoring = (
