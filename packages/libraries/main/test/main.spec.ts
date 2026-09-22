@@ -4,16 +4,13 @@ import { ZxcvbnFactory } from '../src'
 import passwordTests from './helper/passwordTests'
 
 describe('main', () => {
-  let zxcvbn: ZxcvbnFactory
-  beforeEach(() => {
-    zxcvbn = new ZxcvbnFactory({
-      dictionary: {
-        ...zxcvbnCommonPackage.dictionary,
-        ...zxcvbnEnPackage.dictionary,
-      },
-      graphs: zxcvbnCommonPackage.adjacencyGraphs,
-      translations: zxcvbnEnPackage.translations,
-    })
+  const zxcvbn = new ZxcvbnFactory({
+    dictionary: {
+      ...zxcvbnCommonPackage.dictionary,
+      ...zxcvbnEnPackage.dictionary,
+    },
+    graphs: zxcvbnCommonPackage.adjacencyGraphs,
+    translations: zxcvbnEnPackage.translations,
   })
 
   it('should allow creating factory with no arguments', () => {
@@ -200,43 +197,48 @@ describe('main', () => {
   })
 
   describe('attack vectors', () => {
+    const maxCalcTime = 2000
     it('should not die while processing and have a appropriate calcTime for l33t attack', () => {
       const result = zxcvbn.check(
-        '4@8({[</369&#!1/|0$5+7%2/4@8({[</369&#!1/|0$5+7%2/"',
+        '4@8({[</369&#!1/|0$5+7%2/4@8({[</369&#!1/|0$5+7%2/"'.repeat(20),
       )
-      expect(result.calcTime).toBeLessThan(2100)
+      expect(result.calcTime).toBeLessThan(maxCalcTime)
     })
 
     it('should not die while processing and have a appropriate calcTime for l33t same value attack', () => {
-      const result = zxcvbn.check(
-        '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!',
-      )
-      expect(result.calcTime).toBeLessThan(2100)
+      const result = zxcvbn.check('!'.repeat(1500))
+      expect(result.calcTime).toBeLessThan(maxCalcTime)
     })
 
     it('should not die while processing and have a appropriate calcTime for regex attacks', () => {
-      const result = zxcvbn.check(`\x00\x00${'\x00'.repeat(100)}\n`)
-      expect(result.calcTime).toBeLessThan(2100)
+      const result = zxcvbn.check(`\x00\x00${'\x00'.repeat(1500)}\n`)
+      expect(result.calcTime).toBeLessThan(maxCalcTime)
     })
 
     it('should handle very long passwords by truncating them', () => {
-      const longPassword = 'a'.repeat(300)
+      const longPassword = 'a'.repeat(1500)
       const result = zxcvbn.check(longPassword)
       expect(result.password.length).toBe(256)
+    })
+
+    it('should not throw when userInputs contains an empty string', () => {
+      expect(() =>
+        zxcvbn.check('anypassword', ['someuser', '', 'lastname']),
+      ).not.toThrow()
     })
   })
 
   describe('password tests', () => {
+    const zxcvbnCustom = new ZxcvbnFactory({
+      dictionary: {
+        ...zxcvbnCommonPackage.dictionary,
+        ...zxcvbnEnPackage.dictionary,
+      },
+      graphs: zxcvbnCommonPackage.adjacencyGraphs,
+      translations: zxcvbnEnPackage.translations,
+    })
     passwordTests.forEach((data) => {
       it(`should resolve ${data.password}`, () => {
-        const zxcvbnCustom = new ZxcvbnFactory({
-          dictionary: {
-            ...zxcvbnCommonPackage.dictionary,
-            ...zxcvbnEnPackage.dictionary,
-          },
-          graphs: zxcvbnCommonPackage.adjacencyGraphs,
-          translations: zxcvbnEnPackage.translations,
-        })
         const result = zxcvbnCustom.check(data.password)
         result.calcTime = 0
         expect(JSON.stringify(result)).toEqual(JSON.stringify(data))
