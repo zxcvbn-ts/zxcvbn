@@ -2,9 +2,12 @@ import { LooseObject, MatchExtended } from '../types'
 
 export const empty = (obj: LooseObject) => Object.keys(obj).length === 0
 
-export const extend = (listToExtend: any[], list: any[]) =>
-  // eslint-disable-next-line prefer-spread
-  listToExtend.push.apply(listToExtend, list)
+export const extend = (listToExtend: any[], list: any[]) => {
+  // eslint-disable-next-line @typescript-eslint/prefer-for-of
+  for (let i = 0; i < list.length; i += 1) {
+    listToExtend.push(list[i])
+  }
+}
 
 export const translate = (string: string, chrMap: LooseObject) => {
   const keys = Object.keys(chrMap)
