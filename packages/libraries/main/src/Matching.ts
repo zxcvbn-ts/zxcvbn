@@ -40,60 +40,72 @@ class Matching {
     })
   }
 
-  private processResult(
-    matches: MatchExtended[],
-    promises: Promise<MatchExtended[]>[],
-    result: MatchExtended[] | Promise<MatchExtended[]>,
-  ) {
-    if (result instanceof Promise) {
-      const wrappedPromise = result.then((response) => {
-        extend(matches, response)
-        return response
-      })
-      promises.push(wrappedPromise)
-    } else {
-      extend(matches, result)
-    }
-  }
-
-  private handlePromises(
-    matches: MatchExtended[],
-    promises: Promise<MatchExtended[]>[],
-  ) {
-    if (promises.length > 0) {
-      return new Promise<MatchExtended[]>((resolve, reject) => {
-        Promise.all(promises)
-          .then(() => {
-            resolve(sorted(matches))
-          })
-          .catch((error: unknown) => {
-            // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
-            reject(error)
-          })
-      })
-    }
-    return sorted(matches)
-  }
-
   match(
     password: string,
     userInputsOptions?: UserInputsOptions,
   ): MatchExtended[] | Promise<MatchExtended[]> {
     const matches: MatchExtended[] = []
-
     const promises: Promise<MatchExtended[]>[] = []
-    Object.values(this.matchers).forEach((matcher) => {
+    // wordSequence reads the shared `matches` array to find sequences of
+    // dictionary matches, so it must run once every other matcher's results
+    // (sync or async) have already landed in `matches` - it can't just be
+    // one more entry in the same iteration order.
+    const { wordSequence, ...otherMatchers } = this.matchers
+
+    Object.values(otherMatchers).forEach((matcher) => {
       const result = matcher.match({
         password,
         omniMatch: this,
         userInputsOptions,
+        matches,
       })
 
-      // extends matches and promises by references
-      this.processResult(matches, promises, result)
+      if (result instanceof Promise) {
+        promises.push(
+          result.then((response) => {
+            extend(matches, response)
+            return response
+          }),
+        )
+      } else {
+        extend(matches, result)
+      }
     })
 
-    return this.handlePromises(matches, promises)
+    const runWordSequence = (): void | Promise<void> => {
+      if (!wordSequence) {
+        return undefined
+      }
+      const result = wordSequence.match({
+        password,
+        omniMatch: this,
+        userInputsOptions,
+        matches,
+      })
+      if (result instanceof Promise) {
+        return result.then((response) => {
+          extend(matches, response)
+        })
+      }
+      extend(matches, result)
+      return undefined
+    }
+
+    if (promises.length > 0) {
+      return Promise.all(promises).then(() => {
+        const wordSequenceResult = runWordSequence()
+        if (wordSequenceResult instanceof Promise) {
+          return wordSequenceResult.then(() => sorted(matches))
+        }
+        return sorted(matches)
+      })
+    }
+
+    const wordSequenceResult = runWordSequence()
+    if (wordSequenceResult instanceof Promise) {
+      return wordSequenceResult.then(() => sorted(matches))
+    }
+    return sorted(matches)
   }
 }
 
