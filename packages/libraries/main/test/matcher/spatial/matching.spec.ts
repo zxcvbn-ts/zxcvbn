@@ -55,6 +55,9 @@ describe('spatial matching specific patterns vs keyboards', () => {
     ['*-632.0214', 'keypadMac', 9, 0],
     ['aoEP%yIxkjq:', 'dvorak', 4, 5],
     [';qoaOQ:Aoq;a', 'dvorak', 11, 4],
+    ['фыва', 'russian', 1, 0],
+    ['йцукен', 'russian', 1, 0],
+    ['ячсм', 'russian', 1, 0],
   ]
   data.forEach(([pattern, keyboard, turns, shifts]) => {
     const graphs: any = {}

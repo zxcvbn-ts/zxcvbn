@@ -32,6 +32,12 @@ const zxcvbn = new ZxcvbnFactory(options)
 zxcvbn.check(password)
 ```
 
+The common language package also exports the Russian ЙЦУКЕН keyboard graph as
+`adjacencyGraphs.russian`. The graph covers the standard Russian letter layout,
+including `ё` and shifted characters, so sequences such as `фыва`, `йцукен`,
+and `ячсм` can be matched as keyboard patterns when the common package is
+configured as shown above.
+
 ## Sources
 
 - `commonWords.json` is generated from OpenSubtitles 2024 frequency data provided via OPUS (https://opus.nlpl.eu/datasets/OpenSubtitles).
