@@ -1,6 +1,6 @@
 passwords.json:
 - Mark Burnett, ten million passwords release
-  License: not stated on the source page that could be checked
+  License: public domain, as stated by the source author in the release article (legal effect may vary by jurisdiction)
   Source: https://medium.com/xato-security/today-i-am-releasing-ten-million-passwords-b6278bbe7495
 
 diceware.json:

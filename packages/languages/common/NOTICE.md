@@ -5,7 +5,9 @@ Source: Mark Burnett's ten million passwords release
 (https://medium.com/xato-security/today-i-am-releasing-ten-million-passwords-b6278bbe7495)
 As in the original zxcvbn (https://github.com/dropbox/zxcvbn#acknowledgments):
 Mark Burnett for releasing his 10M password corpus and for his 2005 book, Perfect Passwords: Selection, Protection, Authentication.
-License: not stated on the source page that could be checked.
+License: the source author states that he is releasing the data set to the public domain
+(see the source article above). No position is taken here on the legal effect of that
+dedication in every jurisdiction.
 
 diceware.json
 Source: Electronic Frontier Foundation, "New Wordlists for Random Passphrases" (2016)
