@@ -35,5 +35,5 @@ zxcvbn.check(password)
 ## Sources
 
 - `commonWords.json` is generated from OpenSubtitles 2024 frequency data provided via OPUS (https://opus.nlpl.eu/datasets/OpenSubtitles).
-- `firstnames.json` is generated from the first-name locale data in [FakerJS](https://github.com/faker-js/faker/blob/main/src/locales/tr/person/first_name.ts).
-- `lastnames.json` is generated from the surname locale data in [FakerJS](https://github.com/faker-js/faker/blob/main/src/locales/tr/person/last_name.ts).
+- `firstnames.json` is generated from the first-name locale data in [FakerJS](https://github.com/faker-js/faker/blob/3b184d6e52a721c227c6e9c58731bdf008f43532/src/locales/ru/person/first_name.ts).
+- `lastnames.json` is generated from the surname locale data in [FakerJS](https://github.com/faker-js/faker/blob/3b184d6e52a721c227c6e9c58731bdf008f43532/src/locales/ru/person/last_name.ts).
