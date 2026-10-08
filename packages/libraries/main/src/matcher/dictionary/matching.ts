@@ -1,48 +1,11 @@
 import findLevenshteinDistance, {
   FindLevenshteinDistanceResult,
 } from '../../utils/levenshtein'
-import Options from '../../Options'
-import {
-  DictionaryNames,
-  DictionaryMatch,
-  UserInputsOptions,
-  MatcherBaseClass,
-  RankedDictionaries,
-} from '../../types'
+import { DictionaryNames, DictionaryMatch, MatcherBaseClass } from '../../types'
 import { DictionaryMatchOptions } from './types'
 import mergeUserInputDictionary from '../../utils/mergeUserInputDictionary'
 
 class MatchDictionary extends MatcherBaseClass {
-  constructor(
-    options: Options,
-    protected wordSequenceCheck?: boolean,
-  ) {
-    super(options)
-  }
-
-  private getRangedDictionaries(userInputsOptions?: UserInputsOptions) {
-    if (this.wordSequenceCheck) {
-      const rankedDictionaries: RankedDictionaries = {}
-      const rankedDictionariesMaxWordSize: Record<string, number> = {}
-      Object.keys(this.options.rankedDictionaries).forEach((key) => {
-        if (this.options.isWordSequence(key)) {
-          rankedDictionaries[key] = this.options.rankedDictionaries[key]
-          rankedDictionariesMaxWordSize[key] =
-            this.options.rankedDictionariesMaxWordSize[key]
-        }
-      })
-      return {
-        rankedDictionaries,
-        rankedDictionariesMaxWordSize,
-      }
-    }
-    return mergeUserInputDictionary(
-      this.options.rankedDictionaries,
-      this.options.rankedDictionariesMaxWordSize,
-      userInputsOptions,
-    )
-  }
-
   // eslint-disable-next-line complexity,max-statements
   public match({
     password,
@@ -53,7 +16,11 @@ class MatchDictionary extends MatcherBaseClass {
     const passwordLength = password.length
     const passwordLower = password.toLowerCase()
     const { rankedDictionaries, rankedDictionariesMaxWordSize } =
-      this.getRangedDictionaries(userInputsOptions)
+      mergeUserInputDictionary(
+        this.options.rankedDictionaries,
+        this.options.rankedDictionariesMaxWordSize,
+        userInputsOptions,
+      )
 
     const dictionaryNames = Object.keys(rankedDictionaries) as DictionaryNames[]
     const maxSearchWidth = Math.max(

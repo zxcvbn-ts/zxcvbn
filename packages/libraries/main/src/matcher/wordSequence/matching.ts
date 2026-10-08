@@ -27,30 +27,11 @@ class MatchWordSequence extends MatcherBaseClass {
     const filteredDictionaryMatches =
       this.filterDictionaryMatches(dictionaryMatches)
 
-    // Find sequences of consecutive words
-    const sequences = this.findWordSequences(
-      filteredDictionaryMatches,
-      password,
-    )
-
-    if (sequences.length > 0) {
-      const usedMatches = new Set<DictionaryMatch | L33tMatch>()
-      sequences.forEach((sequence) => {
-        const sequenceMatches = filteredDictionaryMatches.filter(
-          (match) => match.i >= sequence.i && match.j <= sequence.j,
-        )
-        sequenceMatches.forEach((match) => usedMatches.add(match))
-      })
-
-      // Remove used matches from the original matches array
-      const filteredMatches = matches.filter(
-        (match) => !usedMatches.has(match as DictionaryMatch | L33tMatch),
-      )
-      matches.length = 0
-      matches.push(...filteredMatches)
-    }
-
-    return sequences
+    // Find sequences of consecutive words. These are added as additional
+    // candidates alongside the dictionary/l33t matches they're built from -
+    // Scoring's DP picks whichever is cheaper, so the component matches must
+    // stay in `matches` rather than being removed here.
+    return this.findWordSequences(filteredDictionaryMatches, password)
   }
 
   private filterDictionaryMatches(matches: (L33tMatch | DictionaryMatch)[]) {
@@ -182,10 +163,10 @@ class MatchWordSequence extends MatcherBaseClass {
     const ranks = sequence.map((match) => match.rank)
     const ascending = ranks.every((rank, i) => i === 0 || rank >= ranks[i - 1])
 
-    // Use the most common dictionary name. createWordSequenceMatch is only
-    // ever called with 2+ matches, so getMostCommon never returns null here.
+    // Use the most common dictionary name, or the first one
     const dictionaryNames = sequence.map((match) => match.dictionaryName)
-    const dictionaryName = this.getMostCommon(dictionaryNames)!
+    const dictionaryName =
+      this.getMostCommon(dictionaryNames) || firstMatch.dictionaryName
 
     return {
       pattern: 'wordSequence',

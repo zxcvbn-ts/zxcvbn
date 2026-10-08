@@ -72,9 +72,11 @@ class Matching {
       }
     })
 
-    const runWordSequence = (): void | Promise<void> => {
+    const runWordSequenceAndSort = ():
+      | MatchExtended[]
+      | Promise<MatchExtended[]> => {
       if (!wordSequence) {
-        return undefined
+        return sorted(matches)
       }
       const result = wordSequence.match({
         password,
@@ -85,27 +87,18 @@ class Matching {
       if (result instanceof Promise) {
         return result.then((response) => {
           extend(matches, response)
+          return sorted(matches)
         })
       }
       extend(matches, result)
-      return undefined
+      return sorted(matches)
     }
 
     if (promises.length > 0) {
-      return Promise.all(promises).then(() => {
-        const wordSequenceResult = runWordSequence()
-        if (wordSequenceResult instanceof Promise) {
-          return wordSequenceResult.then(() => sorted(matches))
-        }
-        return sorted(matches)
-      })
+      return Promise.all(promises).then(runWordSequenceAndSort)
     }
 
-    const wordSequenceResult = runWordSequence()
-    if (wordSequenceResult instanceof Promise) {
-      return wordSequenceResult.then(() => sorted(matches))
-    }
-    return sorted(matches)
+    return runWordSequenceAndSort()
   }
 }
 

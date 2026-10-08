@@ -95,9 +95,17 @@ describe('MatchWordSequence', () => {
     })
 
     it('accepts camelCase (single uppercase letter, no separator)', () => {
+      // gap of exactly one char ('X') between matches, so this only passes
+      // via the isCamelCase branch, not the empty-string separator case
       const first = baseMatch({ i: 0, j: 2, token: 'one' })
-      const second = baseMatch({ i: 3, j: 5, token: 'Two' })
-      expect(isValid([first], second, 'oneTwo')).toBe(true)
+      const second = baseMatch({ i: 4, j: 6, token: 'two' })
+      expect(isValid([first], second, 'oneXtwo')).toBe(true)
+    })
+
+    it('rejects a single lowercase letter gap (not camelCase, not a separator)', () => {
+      const first = baseMatch({ i: 0, j: 2, token: 'one' })
+      const second = baseMatch({ i: 4, j: 6, token: 'two' })
+      expect(isValid([first], second, 'onextwo')).toBe(false)
     })
   })
 })
