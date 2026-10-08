@@ -1,7 +1,17 @@
+// In Romanian, numbers ending in 00 or in 20 to 99 take "de" before the noun:
+// "15 secunde" but "25 de secunde", "101 ani" but "120 de ani".
+const withDe = (unit: string) => (value: number) => {
+  const lastTwoDigits = value % 100
+  if (value !== 0 && (lastTwoDigits === 0 || lastTwoDigits >= 20)) {
+    return `${value} de ${unit}`
+  }
+  return `${value} ${unit}`
+}
+
 export default {
   warnings: {
     straightRow: 'Tastele consecutive de pe tastatură sunt ușor de ghicit.',
-    keyPattern: 'Parolele scurte sunt ușor de ghicit.',
+    keyPattern: 'Combinațiile scurte de taste sunt ușor de ghicit.',
     simpleRepeat: 'Caracterele repetate, cum ar fi "aaa", sunt ușor de ghicit.',
     extendedRepeat: 'Modele repetate precum "abcabcabc" sunt ușor de ghicit.',
     sequences:
@@ -22,13 +32,13 @@ export default {
   },
   suggestions: {
     l33t: 'Evită substituțiile previzibile, cum ar fi "@" pentru "a".',
-    reverseWords: 'Evită cuvintele comune scrise invers',
+    reverseWords: 'Evită cuvintele comune scrise invers.',
     allUppercase: 'Scrie cu majuscule unele litere, dar nu toate literele.',
     capitalization:
       'Scrie cu majusculă unele litere în plus față de prima literă.',
     dates: 'Evită datele calendaristice care îți sunt asociate.',
     recentYears: 'Evită anii recenți.',
-    associatedYears: 'Evită anii asociați cu dumneavoastră.',
+    associatedYears: 'Evită anii asociați cu tine.',
     sequences: 'Evită secvențele comune de litere.',
     repeated: 'Evită cuvintele și literele care se repetă.',
     longerKeyboardPattern:
@@ -43,17 +53,17 @@ export default {
   timeEstimation: {
     ltSecond: 'mai puțin de o secundă',
     second: '{base} secundă',
-    seconds: '{base} secunde',
+    seconds: withDe('secunde'),
     minute: '{base} minut',
-    minutes: '{base} minute',
+    minutes: withDe('minute'),
     hour: '{base} oră',
-    hours: '{base} ore',
+    hours: withDe('ore'),
     day: '{base} zi',
-    days: '{base} zile',
+    days: withDe('zile'),
     month: '{base} lună',
-    months: '{base} luni',
+    months: withDe('luni'),
     year: '{base} an',
-    years: '{base} ani',
+    years: withDe('ani'),
     centuries: 'secole',
   },
 }

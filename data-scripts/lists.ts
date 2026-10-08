@@ -571,7 +571,7 @@ export default {
     firstnames: {
       generator: HTMLGenerator,
       source:
-        'https://raw.githubusercontent.com/faker-js/faker/main/src/locales/ru/person/first_name.ts',
+        'https://raw.githubusercontent.com/faker-js/faker/3b184d6e52a721c227c6e9c58731bdf008f43532/src/locales/ru/person/first_name.ts',
       options: {
         extractorFunction: fakerJsExtractor,
       },
@@ -579,7 +579,7 @@ export default {
     lastnames: {
       generator: HTMLGenerator,
       source:
-        'https://raw.githubusercontent.com/faker-js/faker/main/src/locales/ru/person/last_name.ts',
+        'https://raw.githubusercontent.com/faker-js/faker/3b184d6e52a721c227c6e9c58731bdf008f43532/src/locales/ru/person/last_name.ts',
       options: {
         extractorFunction: fakerJsExtractor,
       },
