@@ -35,22 +35,38 @@ class MatchSequence extends MatcherBaseClass {
      * [(i, j, delta), ...] = [(0, 3, 1), (5, 7, -2), (8, 9, 1)]
      */
     const result: SequenceMatch[] = []
-    if (password.length === 1) {
+    // split by Unicode code point rather than UTF-16 code unit, so a
+    // surrogate pair (eg. an astral-plane character) is treated as one
+    // character with one codepoint delta instead of two meaningless ones
+    const characters = Array.from(password)
+    if (characters.length <= 1) {
       return []
     }
+    // [i, j] are reported in UTF-16 code units (like every other matcher), so
+    // track the code-unit offset each character starts at
+    const unitOffsets: number[] = []
+    let unitOffset = 0
+    characters.forEach((character) => {
+      unitOffsets.push(unitOffset)
+      unitOffset += character.length
+    })
+    const lastUnitIndex = (charIndex: number) =>
+      unitOffsets[charIndex] + characters[charIndex].length - 1
+
     let i = 0
     let lastDelta: number | null = null
-    const passwordLength = password.length
-    for (let k = 1; k < passwordLength; k += 1) {
-      const delta = password.charCodeAt(k) - password.charCodeAt(k - 1)
+    const charactersLength = characters.length
+    for (let k = 1; k < charactersLength; k += 1) {
+      const delta =
+        characters[k].codePointAt(0)! - characters[k - 1].codePointAt(0)!
       if (lastDelta === null) {
         lastDelta = delta
       }
       if (delta !== lastDelta) {
         const j = k - 1
         this.update({
-          i,
-          j,
+          i: unitOffsets[i],
+          j: lastUnitIndex(j),
           delta: lastDelta,
           password,
           result,
@@ -60,8 +76,8 @@ class MatchSequence extends MatcherBaseClass {
       }
     }
     this.update({
-      i,
-      j: passwordLength - 1,
+      i: unitOffsets[i],
+      j: lastUnitIndex(charactersLength - 1),
       delta: lastDelta!,
       password,
       result,

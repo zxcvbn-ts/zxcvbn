@@ -48,6 +48,19 @@ describe('omnimatch matching', () => {
 
     expect(() => bareOmniMatch.match('password')).not.toThrow()
   })
+
+  it('keeps match tokens aligned with their [i, j] span for passwords containing surrogate pairs', () => {
+    // 😀 and 🔥 are each encoded as a UTF-16 surrogate pair - every matcher
+    // indexes passwords by code unit, so this guards against any matcher
+    // splitting/reversing such a password and corrupting the pair.
+    const password = '😀correcthorsebatterystaple🔥'
+    const multiByteMatches = omniMatch.match(password) as MatchExtended[]
+
+    expect(multiByteMatches.length).toBeGreaterThan(0)
+    multiByteMatches.forEach((match) => {
+      expect(match.token).toEqual(password.slice(match.i, match.j + 1))
+    })
+  })
 })
 
 describe('wordSequence ordering with async matchers', () => {

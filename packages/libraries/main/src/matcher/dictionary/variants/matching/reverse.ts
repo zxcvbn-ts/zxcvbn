@@ -9,7 +9,11 @@ import { DictionaryMatchOptions } from '../../types'
  */
 class MatchReverse extends MatchDictionary {
   public match(matchOptions: DictionaryMatchOptions) {
-    const passwordReversed = matchOptions.password.split('').reverse().join('')
+    // Array.from splits by Unicode code point rather than UTF-16 code unit,
+    // so surrogate pairs (eg. emoji) survive the reversal intact.
+    const passwordReversed = Array.from(matchOptions.password)
+      .reverse()
+      .join('')
     return super
       .match({
         ...matchOptions,
@@ -17,7 +21,7 @@ class MatchReverse extends MatchDictionary {
       })
       .map((match: DictionaryMatch) => ({
         ...match,
-        token: match.token.split('').reverse().join(''), // reverse back
+        token: Array.from(match.token).reverse().join(''), // reverse back
         reversed: true,
         // map coordinates back to original string
         i: matchOptions.password.length - 1 - match.j,
