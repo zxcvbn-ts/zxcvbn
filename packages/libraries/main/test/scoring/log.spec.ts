@@ -21,6 +21,7 @@ describe('scoring: utils log', () => {
 
   it('log10 should calculate correctly', () => {
     const data = [
+      [0, 0],
       [1, 0],
       [10, 1],
       [100, 2],

@@ -40,9 +40,7 @@ class Feedback {
     }
 
     Object.entries(this.options.matchers).forEach(([key, matcher]) => {
-      if (matcher.feedback) {
-        this.matchers[key] = matcher.feedback
-      }
+      this.matchers[key] = matcher.feedback
     })
   }
 
@@ -68,15 +66,11 @@ class Feedback {
   }
 
   private getLongestMatch(sequence: MatchEstimated[]) {
-    let longestMatch = sequence[0]
-    // ignore first entry
-    for (let i = 1; i < sequence.length; i += 1) {
-      const match = sequence[i]
-      if (match.token.length > longestMatch.token.length) {
-        longestMatch = match
-      }
-    }
-    return longestMatch
+    return sequence.reduce(
+      (longest, match) =>
+        match.token.length > longest.token.length ? match : longest,
+      sequence[0],
+    )
   }
 
   private getMatchFeedback(match: MatchEstimated, isSoleMatch: boolean) {

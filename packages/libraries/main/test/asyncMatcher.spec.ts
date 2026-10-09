@@ -7,16 +7,14 @@ const asyncMatcher: Matcher = {
   Matching: class MatchAsync extends MatcherBaseClass {
     match({ password }: { password: string }): Promise<MatchExtended[]> {
       return new Promise((resolve) => {
-        setTimeout(() => {
-          resolve([
-            {
-              pattern: 'asyncMatch',
-              token: password,
-              i: 0,
-              j: password.length - 1,
-            },
-          ])
-        }, 2000)
+        resolve([
+          {
+            pattern: 'asyncMatch',
+            token: password,
+            i: 0,
+            j: password.length - 1,
+          },
+        ])
       })
     }
   },

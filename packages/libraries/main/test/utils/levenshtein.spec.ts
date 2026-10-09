@@ -1,6 +1,30 @@
 import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common/src'
 import * as zxcvbnEnPackage from '@zxcvbn-ts/language-en/src'
 import { ZxcvbnFactory } from '../../src'
+import findLevenshteinDistance from '../../src/utils/levenshtein'
+
+describe('findLevenshteinDistance', () => {
+  it('finds a match against a literal number 0 dictionary entry', () => {
+    const result = findLevenshteinDistance('00', [0], 2)
+    expect(result.levenshteinDistance).toBe(1)
+    expect(result.levenshteinDistanceEntry).toBe('0')
+    expect(result.levenshteinDistanceRank).toBe(1)
+  })
+
+  it('finds a match against an empty-string dictionary entry', () => {
+    const result = findLevenshteinDistance('a', [''], 2)
+    expect(result.levenshteinDistance).toBe(1)
+    expect(result.levenshteinDistanceEntry).toBe('')
+    expect(result.levenshteinDistanceRank).toBe(1)
+  })
+
+  it('uses the same last-occurrence-wins rank as the exact-match trie for a duplicated word', () => {
+    // Options.buildTrie collapses a word listed twice to the rank of its LAST
+    // occurrence, so a fuzzy match of the same word must agree with that rank.
+    const result = findLevenshteinDistance('cats', ['cat', 'other', 'cat'], 2)
+    expect(result.levenshteinDistanceRank).toBe(3)
+  })
+})
 
 describe('levenshtein', () => {
   const zxcvbn = new ZxcvbnFactory({

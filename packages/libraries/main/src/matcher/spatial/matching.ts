@@ -1,4 +1,4 @@
-import { sorted, extend } from '../../utils/helper'
+import { extend } from '../../utils/helper'
 import {
   MatcherBaseClass,
   MatchOptions,
@@ -13,7 +13,8 @@ type SpatialMatchOptions = Pick<MatchOptions, 'password'>
  * ------------------------------------------------------------------------------
  */
 class MatchSpatial extends MatcherBaseClass {
-  SHIFTED_RX = /[~!@#$%^&*()_+QWERTYUIOP{}|ASDFGHJKL:"ZXCVBNM<>?]/
+  private static readonly SHIFTED_RX =
+    /[~!@#$%^&*()_+QWERTYUIOP{}|ASDFGHJKL:"ZXCVBNM<>?]/
 
   match({ password }: SpatialMatchOptions) {
     const matches: SpatialMatch[] = []
@@ -21,14 +22,14 @@ class MatchSpatial extends MatcherBaseClass {
       const graph = this.options.graphs[graphName]
       extend(matches, this.helper(password, graph, graphName))
     })
-    return sorted(matches)
+    return matches
   }
 
   checkIfShifted(graphName: string, password: string, index: number) {
     if (
       !graphName.includes('keypad') &&
       // initial character is shifted
-      this.SHIFTED_RX.test(password.charAt(index))
+      MatchSpatial.SHIFTED_RX.test(password.charAt(index))
     ) {
       return 1
     }
@@ -46,18 +47,17 @@ class MatchSpatial extends MatcherBaseClass {
       let lastDirection: number | null = null
       let turns = 0
       shiftedCount = this.checkIfShifted(graphName, password, i)
+      let prevCharAdjacents = graph[password.charAt(i)] || []
 
       while (true) {
-        const prevChar = password.charAt(j - 1)
-        const adjacents = graph[prevChar] || []
         let found = false
         let curDirection = -1
         // consider growing pattern by one character if j hasn't gone over the edge.
         if (j < passwordLength) {
           const curChar = password.charAt(j)
-          const adjacentsLength = adjacents.length
+          const adjacentsLength = prevCharAdjacents.length
           for (let k = 0; k < adjacentsLength; k += 1) {
-            const adjacent = adjacents[k]
+            const adjacent = prevCharAdjacents[k]
             curDirection += 1
             // eslint-disable-next-line max-depth
             if (adjacent) {
@@ -89,6 +89,7 @@ class MatchSpatial extends MatcherBaseClass {
         }
         // if the current pattern continued, extend j and try to grow again
         if (found) {
+          prevCharAdjacents = graph[password.charAt(j)] || []
           j += 1
           // otherwise push the pattern discovered so far, if any...
         } else {

@@ -1,35 +1,58 @@
-import { RankedDictionaries, UserInputsOptions } from '../types'
+import { OptionsDictionary, UserInputsOptions } from '../types'
+
+const mergeMinWordSize = (
+  staticList: (string | number)[],
+  staticMinWordSize: number,
+  dynamicList: (string | number)[],
+  dynamicMinWordSize: number,
+) => {
+  if (staticList.length === 0) {
+    return dynamicMinWordSize
+  }
+  if (dynamicList.length === 0) {
+    return staticMinWordSize
+  }
+  return Math.min(staticMinWordSize, dynamicMinWordSize)
+}
 
 export default (
-  optionsRankedDictionaries: RankedDictionaries,
-  optionsRankedDictionariesMaxWordSize: Record<string, number>,
+  optionsDictionaries: OptionsDictionary,
+  optionsDictionaryMaxWordSize: Record<string, number>,
+  optionsDictionaryMinWordSize: Record<string, number>,
   userInputsOptions?: UserInputsOptions,
 ) => {
   if (!userInputsOptions) {
     return {
-      rankedDictionaries: optionsRankedDictionaries,
-      rankedDictionariesMaxWordSize: optionsRankedDictionariesMaxWordSize,
+      dictionaries: optionsDictionaries,
+      dictionaryMaxWordSize: optionsDictionaryMaxWordSize,
+      dictionaryMinWordSize: optionsDictionaryMinWordSize,
     }
   }
-  const rankedDictionaries = {
-    ...optionsRankedDictionaries,
-  }
-  const rankedDictionariesMaxWordSize = {
-    ...optionsRankedDictionariesMaxWordSize,
-  }
 
-  rankedDictionaries.userInputs = {
-    ...(rankedDictionaries.userInputs || {}),
-    ...userInputsOptions.rankedDictionary,
-  }
-
-  rankedDictionariesMaxWordSize.userInputs = Math.max(
-    userInputsOptions.rankedDictionaryMaxWordSize,
-    rankedDictionariesMaxWordSize.userInputs || 0,
-  )
+  const staticUserInputs = optionsDictionaries.userInputs ?? []
 
   return {
-    rankedDictionaries,
-    rankedDictionariesMaxWordSize,
+    dictionaries: {
+      ...optionsDictionaries,
+      userInputs: [
+        ...new Set([...staticUserInputs, ...userInputsOptions.dictionary]),
+      ],
+    },
+    dictionaryMaxWordSize: {
+      ...optionsDictionaryMaxWordSize,
+      userInputs: Math.max(
+        userInputsOptions.dictionaryMaxWordSize,
+        optionsDictionaryMaxWordSize.userInputs ?? 0,
+      ),
+    },
+    dictionaryMinWordSize: {
+      ...optionsDictionaryMinWordSize,
+      userInputs: mergeMinWordSize(
+        staticUserInputs,
+        optionsDictionaryMinWordSize.userInputs ?? 0,
+        userInputsOptions.dictionary,
+        userInputsOptions.dictionaryMinWordSize,
+      ),
+    },
   }
 }

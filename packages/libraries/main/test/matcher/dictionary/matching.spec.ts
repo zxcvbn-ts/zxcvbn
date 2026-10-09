@@ -124,10 +124,11 @@ describe('dictionary matching', () => {
       })
     })
 
-    Object.keys(zxcvbnOptions.rankedDictionaries).forEach((name) => {
-      const dict = zxcvbnOptions.rankedDictionaries[name]
-      Object.keys(dict).forEach((word) => {
-        const rank = dict[word]
+    Object.keys(zxcvbnOptions.dictionary).forEach((name) => {
+      const list = zxcvbnOptions.dictionary[name]
+      list.forEach((wordOrNumber, index) => {
+        const word = wordOrNumber.toString().toLowerCase()
+        const rank = index + 1
         if (word !== 'motherboard') {
           matches = dm(word)
           msg = 'matches against all words in provided dictionaries'
@@ -145,6 +146,42 @@ describe('dictionary matching', () => {
           })
         }
       })
+    })
+  })
+
+  describe('duplicate words in a dictionary', () => {
+    const zxcvbnOptions = new Options({
+      dictionary: { commonWords: ['dupe', 'other', 'dupe'] },
+      translations: zxcvbnEnPackage.translations,
+    })
+    const matchDictionary = new MatchDictionary(zxcvbnOptions)
+    const matches = matchDictionary
+      .match({ password: 'dupe' })
+      .filter((match) => !match.reversed)
+
+    it('should collapse a word listed twice in the same dictionary into a single match', () => {
+      expect(matches).toHaveLength(1)
+    })
+
+    it('should keep the rank of the last occurrence', () => {
+      expect(matches[0].rank).toBe(3)
+    })
+  })
+
+  describe('levenshtein skip for an already-exact-matched dictionary', () => {
+    const zxcvbnOptions = new Options({
+      dictionary: { words: ['cat'] },
+      translations: zxcvbnEnPackage.translations,
+      useLevenshteinDistance: true,
+    })
+    const matchDictionary = new MatchDictionary(zxcvbnOptions)
+    const matches = matchDictionary
+      .match({ password: 'cat' })
+      .filter((match) => !match.reversed)
+
+    it('should not add a duplicate levenshtein match for a dictionary already matched exactly', () => {
+      expect(matches).toHaveLength(1)
+      expect(matches[0].matchedWord).toBe('cat')
     })
   })
 
@@ -174,6 +211,26 @@ describe('dictionary matching', () => {
         matchedWord: ['foo', 'bar'],
         rank: [1, 2],
       },
+    })
+  })
+
+  describe('word present in both static and per-check user input dictionaries', () => {
+    const zxcvbnOptions = new Options({
+      dictionary: {
+        userInputs: ['secretword'],
+      },
+      translations: zxcvbnEnPackage.translations,
+    })
+    const matchDictionary = new MatchDictionary(zxcvbnOptions)
+    const userInputsOptions = zxcvbnOptions.getUserInputsOptions(['secretword'])
+    const matches = matchDictionary
+      .match({ password: 'secretword', userInputsOptions })
+      .filter(
+        (match) => !match.reversed && match.dictionaryName === 'userInputs',
+      )
+
+    it('should produce a single match instead of one per source dictionary', () => {
+      expect(matches).toHaveLength(1)
     })
   })
 })

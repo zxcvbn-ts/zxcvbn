@@ -1,8 +1,10 @@
 import { matcherPwnedFactory } from '../src'
+import matchingFactory from '../src/matching'
 import Options from '../../main/src/Options'
 
 // eslint-disable-next-line @typescript-eslint/require-await
 const fetch = jest.fn(async () => ({
+  status: 200,
   text() {
     return `008A205652858375D71117A63004CC75167:5\r\n3EA386688A0147AB736AABCEDE496610382:244`
   },
@@ -42,5 +44,54 @@ describe('pwned matching', () => {
       options,
     )
     expect(match).toEqual(1)
+  })
+
+  it('should default pwnedAmount to 0 when the count segment is missing', async () => {
+    // eslint-disable-next-line @typescript-eslint/require-await
+    const fetchMissingCount = jest.fn(async () => ({
+      status: 200,
+      text() {
+        return `3EA386688A0147AB736AABCEDE496610382`
+      },
+    }))
+    // @ts-expect-error for testing purposes
+    const matcherPwnedMissingCount = matcherPwnedFactory(fetchMissingCount)
+    const matchPwnedMissingCount = new matcherPwnedMissingCount.Matching(
+      options,
+    )
+    const match = await matchPwnedMissingCount.match({
+      password: 'P4$$w0rd',
+      // @ts-expect-error doesn't matter for pwnd matcher
+      omniMatch: jest.fn,
+    })
+    expect(match).toEqual([
+      {
+        i: 0,
+        j: 7,
+        pattern: 'pwned',
+        pwnedAmount: 0,
+        token: 'P4$$w0rd',
+      },
+    ])
+  })
+
+  it('should not throw when called without a config object', async () => {
+    // @ts-expect-error for testing purposes
+    const MatchPwned = matchingFactory(fetch)
+    const matchPwned = new MatchPwned(options)
+    const match = await matchPwned.match({
+      password: 'P4$$w0rd',
+      // @ts-expect-error doesn't matter for pwnd matcher
+      omniMatch: jest.fn,
+    })
+    expect(match).toEqual([
+      {
+        i: 0,
+        j: 7,
+        pattern: 'pwned',
+        pwnedAmount: 244,
+        token: 'P4$$w0rd',
+      },
+    ])
   })
 })

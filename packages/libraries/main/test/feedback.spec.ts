@@ -31,7 +31,7 @@ describe('feedback', () => {
 
     it('should return some basic feedback if no feedback could be generated', () => {
       // @ts-expect-error for testing purposes
-      const data = feedbackClass.getFeedback(1, [{}])
+      const data = feedbackClass.getFeedback(1, [{ token: '' }])
       expect(data).toEqual({
         warning: null,
         suggestions: [translations.suggestions.anotherWord],

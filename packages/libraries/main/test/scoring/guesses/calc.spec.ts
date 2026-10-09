@@ -1,6 +1,7 @@
 import estimate from '../../../src/scoring/estimate'
 import dateGuesses from '../../../src/matcher/date/scoring'
 import Options from '../../../src/Options'
+import { MatcherBaseClass } from '../../../src/types'
 
 describe('scoring', () => {
   const zxcvbnOptions = new Options()
@@ -12,6 +13,27 @@ describe('scoring', () => {
     expect(estimate(zxcvbnOptions, match, '')).toEqual({
       guesses: 1,
     })
+  })
+
+  it('falls back to zero base guesses for a custom pattern with a non-numeric scoring result', () => {
+    const customOptions = new Options(
+      {},
+      {
+        custom: {
+          Matching: class extends MatcherBaseClass {
+            match() {
+              return []
+            }
+          },
+          feedback: () => ({ warning: null, suggestions: [] }),
+          scoring: () => ({ notANumber: true }) as unknown as number,
+        },
+      },
+    )
+    const match = { pattern: 'custom', token: 'abcdefgh' }
+    // @ts-expect-error for testing purposes
+    const result = estimate(customOptions, match, 'abcdefgh')
+    expect(result.guesses).toEqual(1)
   })
 
   it('estimate_guesses delegates based on pattern', () => {
