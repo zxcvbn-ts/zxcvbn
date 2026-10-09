@@ -40,9 +40,7 @@ class Feedback {
     }
 
     Object.entries(this.options.matchers).forEach(([key, matcher]) => {
-      if (matcher.feedback) {
-        this.matchers[key] = matcher.feedback
-      }
+      this.matchers[key] = matcher.feedback
     })
   }
 

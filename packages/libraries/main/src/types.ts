@@ -283,6 +283,7 @@ export interface MatchOptions {
    */
   omniMatch: Matching
   userInputsOptions?: UserInputsOptions
+  matches?: MatchExtended[]
 }
 
 export abstract class MatcherBaseClass {

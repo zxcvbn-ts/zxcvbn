@@ -85,4 +85,80 @@ describe('sequence matching', () => {
       },
     })
   })
+
+  // the file header comment claims codepoint deltas "also match some extended
+  // unicode sequences such as Greek and Cyrillic alphabets" - verify that for
+  // characters outside the Roman alphabet (still within the BMP, so no
+  // surrogate pairs are involved).
+  const extendedUnicodeData: [string, boolean][] = [
+    ['абвг', true], // Cyrillic, ascending
+    ['гвба', false], // Cyrillic, descending
+    ['αβγδ', true], // Greek, ascending
+    ['δγβα', false], // Greek, descending
+  ]
+
+  extendedUnicodeData.forEach(([dataPattern, isAscending]) => {
+    matches = matchSequence.match({ password: dataPattern })
+    msg = `matches '${dataPattern}' as a 'unicode' sequence`
+    checkMatches({
+      messagePrefix: msg,
+      matches,
+      patternNames: 'sequence',
+      patterns: [dataPattern],
+      ijs: [[0, dataPattern.length - 1]],
+      propsToCheck: {
+        sequenceName: ['unicode'],
+        ascending: [isAscending],
+      },
+    })
+  })
+
+  // Mathematical Bold Capital A-D (U+1D400..U+1D403): each character is a
+  // surrogate pair, so this only reads as a sequence if deltas are computed
+  // on code points rather than UTF-16 code units.
+  const astralAscending = '𝐀𝐁𝐂𝐃'
+  const astralDescending = '𝐃𝐂𝐁𝐀'
+
+  ;[
+    [astralAscending, true],
+    [astralDescending, false],
+  ].forEach(([dataPattern, isAscending]) => {
+    matches = matchSequence.match({ password: dataPattern as string })
+    msg = `matches '${dataPattern}' (surrogate pairs) as a 'unicode' sequence`
+    checkMatches({
+      messagePrefix: msg,
+      matches,
+      patternNames: 'sequence',
+      patterns: [dataPattern as string],
+      ijs: [[0, (dataPattern as string).length - 1]],
+      propsToCheck: {
+        sequenceName: ['unicode'],
+        ascending: [isAscending],
+      },
+    })
+  })
+
+  const astralPrefixes = ['!', '22']
+  const astralSuffixes = ['!', '22']
+  const generatedAstralGenPws = genpws(
+    astralAscending,
+    astralPrefixes,
+    astralSuffixes,
+  )
+
+  generatedAstralGenPws.forEach(([password, i, j]) => {
+    matches = matchSequence.match({ password })
+    msg = `matches embedded surrogate-pair sequence patterns ${password}`
+    checkMatches({
+      messagePrefix: msg,
+      matches,
+      patternNames: 'sequence',
+      patterns: [astralAscending],
+      ijs: [[i, j]],
+      propsToCheck: {
+        sequenceName: ['unicode'],
+        ascending: [true],
+      },
+    })
+  })
 })

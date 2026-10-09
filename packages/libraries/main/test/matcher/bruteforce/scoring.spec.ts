@@ -50,6 +50,14 @@ describe('scoring: guesses bruteforce', () => {
     expect(bruteforce(match)).toEqual(11)
   })
 
+  it('counts a single surrogate-pair character (eg. emoji) as one character, not two', () => {
+    const match = {
+      token: '😀',
+    }
+    // @ts-expect-error for testing purposes
+    expect(bruteforce(match)).toEqual(11)
+  })
+
   // TODO this can't be reached because min guesses is 51 and with a password length of 2 you get 100 already
 
   it.skip(`should be ${MIN_SUBMATCH_GUESSES_MULTI_CHAR} from MIN_SUBMATCH_GUESSES_MULTI_CHAR`, () => {

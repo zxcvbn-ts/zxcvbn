@@ -8,6 +8,17 @@ describe('debounce', () => {
     expect(testFn).toHaveBeenCalledTimes(1)
   })
 
+  it('should not call handler again once the timeout elapses in immediate mode', () => {
+    jest.useFakeTimers()
+    const testFn = jest.fn()
+    const temp = debounce(testFn, 100, true)
+    temp()
+    expect(testFn).toHaveBeenCalledTimes(1)
+
+    jest.runAllTimers()
+    expect(testFn).toHaveBeenCalledTimes(1)
+  })
+
   it('should debounce after timeout', () => {
     jest.useFakeTimers()
     const testFn = jest.fn()
