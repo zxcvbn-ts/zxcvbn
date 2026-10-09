@@ -39,6 +39,7 @@ export type Pattern =
   | 'repeat'
   | 'sequence'
   | 'wordSequence'
+  | 'userInputSequence'
   | 'regex'
   | 'date'
   | 'bruteforce'
@@ -137,6 +138,23 @@ export interface WordSequenceMatch extends Match {
   ascending: boolean
 }
 
+export interface UserInputSequenceMatch extends Match {
+  pattern: 'userInputSequence'
+  /**
+   * @description The user inputs found in the password, as they appear in it
+   */
+  words: string[]
+  wordCount: number
+  /**
+   * @description The separators found between the user inputs, empty when they are concatenated
+   */
+  separators: string[]
+  /**
+   * @description The amount of user inputs the sequence could have been built from
+   */
+  userInputCount: number
+}
+
 export type MatchExtended =
   | DictionaryMatch
   | L33tMatch
@@ -144,6 +162,7 @@ export type MatchExtended =
   | RepeatMatch
   | SequenceMatch
   | WordSequenceMatch
+  | UserInputSequenceMatch
   | RegexMatch
   | DateMatch
   | BruteForceMatch

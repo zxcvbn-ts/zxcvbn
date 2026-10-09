@@ -49,6 +49,10 @@ The separator matcher searches for common separators like a space or a hyphen
 
 The word sequence matcher is a combination of the sequence matcher and the dictionary matcher. It searches for sequences of words in a specific topic like months.
 
+### User input sequence matcher
+
+The user input sequence matcher searches for runs of user inputs that were glued together, like `HansFlorianZimmer` or `hans.zimmer` for a user named Hans Florian Zimmer. Such a run is reported as a single match, so it is scored as a permutation of the data that is already known about the user instead of as a sequence of independent dictionary words. Only the run itself is matched, the rest of the password is still handled by the other matchers.
+
 ## Custom Matcher
 
 Custom matchers can be created if needed, including asynchronous matchers. If creating an asynchronous matcher, the function should be debounced using the included debounce function.

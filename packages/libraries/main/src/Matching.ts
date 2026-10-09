@@ -10,6 +10,7 @@ import SequenceMatcher from './matcher/sequence/matching'
 import SpatialMatcher from './matcher/spatial/matching'
 import SeparatorMatcher from './matcher/separator/matching'
 import WordSequenceMatcher from './matcher/wordSequence/matching'
+import UserInputSequenceMatcher from './matcher/userInputSequence/matching'
 import Options from './Options'
 
 /*
@@ -33,6 +34,7 @@ class Matching {
       spatial: new SpatialMatcher(this.options),
       separator: new SeparatorMatcher(this.options),
       wordSequence: new WordSequenceMatcher(this.options),
+      userInputSequence: new UserInputSequenceMatcher(this.options),
     }
 
     Object.entries(this.options.matchers).forEach(([key, Matcher]) => {
