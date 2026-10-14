@@ -86,7 +86,8 @@ export default (
   } else if (word.match(ALL_UPPER_INVERTED) && word.toLowerCase() !== word) {
     suggestions.push(options.translations.suggestions.allUppercase)
   }
-  if (match.reversed && match.token.length >= 4) {
+  // count code points, so an emoji counts as one character instead of two
+  if (match.reversed && Array.from(match.token).length >= 4) {
     suggestions.push(options.translations.suggestions.reverseWords)
   }
   if (match.l33t) {

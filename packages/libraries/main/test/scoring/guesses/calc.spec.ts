@@ -57,4 +57,11 @@ describe('scoring', () => {
       guessesLog10: 4.225050696138048,
     })
   })
+
+  it('applies the single-character minimum to a lone emoji submatch', () => {
+    const match = { pattern: 'bruteforce', token: '😀', i: 6, j: 7 }
+    const result = estimate(zxcvbnOptions, match, 'abcdef😀')
+    // bruteforce: 10 ** 1 = 10, raised to MIN_SUBMATCH_GUESSES_SINGLE_CHAR + 1
+    expect(result.guesses).toEqual(11)
+  })
 })

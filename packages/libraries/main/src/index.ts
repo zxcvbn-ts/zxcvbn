@@ -90,8 +90,14 @@ class ZxcvbnFactory {
   }
 
   private prepareCheck(password: string) {
+    let end = this.options.maxLength
+    // maxLength counts UTF-16 code units. If the cut lands inside a surrogate
+    // pair (eg. an emoji), drop that whole character instead of half of it.
+    if ((password.codePointAt(end - 1) ?? 0) > 0xffff) {
+      end -= 1
+    }
     return {
-      reducedPassword: password.substring(0, this.options.maxLength),
+      reducedPassword: password.substring(0, end),
       start: time(),
     }
   }

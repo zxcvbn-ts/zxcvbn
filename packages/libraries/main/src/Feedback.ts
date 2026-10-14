@@ -66,11 +66,13 @@ class Feedback {
   }
 
   private getLongestMatch(sequence: MatchEstimated[]) {
+    // count code points, so an emoji counts as one character instead of two
+    const getLength = (match: MatchEstimated) => Array.from(match.token).length
     let longestMatch = sequence[0]
     // ignore first entry
     for (let i = 1; i < sequence.length; i += 1) {
       const match = sequence[i]
-      if (match.token.length > longestMatch.token.length) {
+      if (getLength(match) > getLength(longestMatch)) {
         longestMatch = match
       }
     }

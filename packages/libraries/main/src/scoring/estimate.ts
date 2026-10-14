@@ -20,13 +20,18 @@ import spatialMatcher from '../matcher/spatial/scoring'
 import separatorMatcher from '../matcher/separator/scoring'
 import wordSequenceMatcher from '../matcher/wordSequence/scoring'
 
+// a surrogate pair (eg. an emoji) is one character but two UTF-16 code units.
+// Checked in O(1) because this runs for every bruteforce candidate.
+const isSingleCharacter = (token: string) =>
+  token.length === 1 || (token.length === 2 && token.codePointAt(0)! > 0xffff)
+
 const getMinGuesses = (
   match: MatchExtended | MatchEstimated,
   password: string,
 ) => {
   let minGuesses = 1
   if (match.token.length < password.length) {
-    if (match.token.length === 1) {
+    if (isSingleCharacter(match.token)) {
       minGuesses = MIN_SUBMATCH_GUESSES_SINGLE_CHAR
     } else {
       minGuesses = MIN_SUBMATCH_GUESSES_MULTI_CHAR

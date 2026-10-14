@@ -67,6 +67,8 @@ The l33t matcher will check how many characters can be exchanged with the l33t t
 
 Defines how many character of the password are checked. A password longer than the default are considered strong anyway, but it can be increased as pleased. Be aware that this could open some attack vectors.
 
+The length is counted in UTF-16 code units, like JavaScript's `string.length`, so an emoji or another character outside the Basic Multilingual Plane counts as two. A character is never cut in half: if the limit falls inside one, the whole character is left out.
+
 
 ## timeEstimationValues
 

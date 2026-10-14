@@ -196,6 +196,13 @@ describe('main', () => {
     })
   })
 
+  it('should not cut an emoji in half at maxLength', () => {
+    // maxLength counts UTF-16 code units and '😀' is two of them, so a limit
+    // of 3 lands inside the second emoji, which is dropped as a whole
+    const factory = new ZxcvbnFactory({ maxLength: 3 })
+    expect(factory.check('😀😀').password).toEqual('😀')
+  })
+
   describe('attack vectors', () => {
     const maxCalcTime = 2000
     it('should not die while processing and have a appropriate calcTime for l33t attack', () => {
