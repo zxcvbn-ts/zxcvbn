@@ -163,4 +163,18 @@ describe('repeat matching', () => {
     matchSpy.mockRestore()
     expect(baseTokenACalls).toBe(1)
   })
+
+  it('scores a repeated user input using the user input dictionary', () => {
+    const userInputsOptions = zxcvbnOptions.getUserInputsOptions(['xqzvbnmk'])
+    const repeatMatches = matchRepeat.match({
+      password: 'xqzvbnmkxqzvbnmkxqzvbnmk',
+      omniMatch,
+      userInputsOptions,
+    }) as RepeatMatch[]
+
+    expect(repeatMatches.length).toEqual(1)
+    expect(repeatMatches[0].baseToken).toEqual('xqzvbnmk')
+    // rank 1 in userInputs is 1 guess, plus 1 for the single-match sequence
+    expect(repeatMatches[0].baseGuesses).toEqual(2)
+  })
 })

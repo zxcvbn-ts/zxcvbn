@@ -15,6 +15,11 @@ describe('sequence matching', () => {
     })
   })
 
+  it("doesn't match two surrogate-pair characters more than one apart", () => {
+    // U+1F600 and U+1F602: 2 characters with a delta of 2, like 'ac'
+    expect(matchSequence.match({ password: '😀😂' })).toEqual([])
+  })
+
   let matches = matchSequence.match({ password: 'abcbabc' })
   let msg = 'matches overlapping patterns'
 

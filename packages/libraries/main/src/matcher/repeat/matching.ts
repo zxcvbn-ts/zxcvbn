@@ -1,4 +1,9 @@
-import { MatcherBaseClass, MatchOptions, RepeatMatch } from '../../types'
+import {
+  MatcherBaseClass,
+  MatchOptions,
+  RepeatMatch,
+  UserInputsOptions,
+} from '../../types'
 import Scoring from '../../scoring'
 import Matching from '../../Matching'
 import Options from '../../Options'
@@ -24,7 +29,7 @@ class MatchRepeat extends MatcherBaseClass {
   }
 
   // eslint-disable-next-line max-statements
-  match({ password, omniMatch }: MatchOptions) {
+  match({ password, omniMatch, userInputsOptions }: MatchOptions) {
     // Scoped to this call rather than an instance field: getBaseGuesses
     // recurses back into this same instance via omniMatch.match(baseToken),
     // and a shared field would get cleared by that nested call before the
@@ -46,6 +51,7 @@ class MatchRepeat extends MatcherBaseClass {
           baseToken,
           omniMatch,
           memoizedResults,
+          userInputsOptions,
         )
         matches.push(this.normalizeMatch(baseToken, j, match, baseGuesses))
 
@@ -137,15 +143,19 @@ class MatchRepeat extends MatcherBaseClass {
     }
   }
 
+  // eslint-disable-next-line max-params
   getBaseGuesses(
     baseToken: string,
     omniMatch: Matching,
     memoizedResults: Map<string, number | Promise<number>>,
+    userInputsOptions?: UserInputsOptions,
   ) {
+    // memoizedResults lives for one match() call, which has a single
+    // userInputsOptions, so baseToken alone is a safe key
     if (memoizedResults.has(baseToken)) {
       return memoizedResults.get(baseToken)!
     }
-    const matches = omniMatch.match(baseToken)
+    const matches = omniMatch.match(baseToken, userInputsOptions)
     let result: number | Promise<number>
     if (matches instanceof Promise) {
       result = matches.then((resolvedMatches) => {

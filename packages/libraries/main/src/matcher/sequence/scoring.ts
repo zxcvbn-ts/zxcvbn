@@ -19,5 +19,7 @@ export default ({ token, ascending }: MatchExtended | MatchEstimated) => {
   if (!ascending) {
     baseGuesses *= 2
   }
-  return baseGuesses * token.length
+  // count Unicode code points rather than UTF-16 code units, so a surrogate
+  // pair (eg. an astral-plane character) counts as one character instead of two
+  return baseGuesses * Array.from(token).length
 }

@@ -290,5 +290,17 @@ describe('scoring', () => {
       expect(result.guesses).toEqual(200)
       expect(result.sequence).toEqual([m2, m3])
     })
+
+    it('returns one bruteforce match when its guesses are capped at Number.MAX_VALUE', () => {
+      // 10 ** 400 overflows to Infinity, so bruteforce scoring caps it at
+      // Number.MAX_VALUE, and MAX_VALUE + 1 for the length penalty is still MAX_VALUE
+      const passwordLocal = 'x'.repeat(400)
+      const result = scoring.mostGuessableMatchSequence(passwordLocal, [])
+
+      expect(result.sequence.length).toEqual(1)
+      expect(result.sequence[0].pattern).toEqual('bruteforce')
+      expect([result.sequence[0].i, result.sequence[0].j]).toEqual([0, 399])
+      expect(result.guesses).toEqual(Number.MAX_VALUE)
+    })
   })
 })

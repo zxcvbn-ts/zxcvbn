@@ -86,16 +86,18 @@ class MatchSequence extends MatcherBaseClass {
   }
 
   update({ i, j, delta, password, result }: UpdateParams) {
-    if (j - i > 1 || Math.abs(delta) === 1) {
+    const token = password.slice(i, j + 1)
+    // [i, j] are UTF-16 code units, so count the token's characters by code
+    // point: a run of two surrogate pairs is 2 characters, not 4
+    if (Array.from(token).length > 2 || Math.abs(delta) === 1) {
       const absoluteDelta = Math.abs(delta)
       if (absoluteDelta > 0 && absoluteDelta <= this.MAX_DELTA) {
-        const token = password.slice(i, j + 1)
         const { sequenceName, sequenceSpace } = this.getSequence(token)
         return result.push({
           pattern: 'sequence',
           i,
           j,
-          token: password.slice(i, j + 1),
+          token,
           sequenceName,
           sequenceSpace,
           ascending: delta > 0,

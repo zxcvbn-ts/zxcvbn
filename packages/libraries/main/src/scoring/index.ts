@@ -111,7 +111,9 @@ export default class Scoring {
     let k = passwordLength - 1
     // find the final best sequence length and score
     let sequenceLength = 0
-    let g = Number.MAX_VALUE
+    // Infinity, not Number.MAX_VALUE: bruteforce guesses are capped at
+    // MAX_VALUE, so the only candidate can be exactly MAX_VALUE
+    let g = Number.POSITIVE_INFINITY
     const totalGuessesAtLastChar = this.optimal.totalGuesses[k]
 
     if (totalGuessesAtLastChar) {

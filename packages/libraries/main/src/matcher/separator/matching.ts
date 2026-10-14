@@ -3,7 +3,11 @@ import { MatcherBaseClass, MatchOptions, SeparatorMatch } from '../../types'
 
 type SeparatorMatchOptions = Pick<MatchOptions, 'password'>
 
-const separatorRegex = new RegExp(`[${SEPERATOR_CHARS.join('')}]`)
+// escape so that '\\' stays a literal backslash inside the character class
+// instead of escaping the character after it
+const separatorRegex = new RegExp(
+  `[${SEPERATOR_CHARS.join('').replace(ESCAPE_REGEX, '\\$&')}]`,
+)
 
 /*
  *-------------------------------------------------------------------------------
