@@ -3,7 +3,8 @@ import checkMatches from '../../helper/checkMatches'
 import genpws from '../../helper/genpws'
 import MatchOmni from '../../../src/Matching'
 import Options from '../../../src/Options'
-import { RepeatMatch } from '../../../src/types'
+import { RepeatMatch, ZxcvbnResult } from '../../../src/types'
+import { ZxcvbnFactory } from '../../../src'
 
 const zxcvbnOptions = new Options()
 const omniMatch = new MatchOmni(zxcvbnOptions)
@@ -162,5 +163,24 @@ describe('repeat matching', () => {
     ).length
     matchSpy.mockRestore()
     expect(baseTokenACalls).toBe(1)
+  })
+
+  it('uses user inputs passed to check() when scoring the base token', () => {
+    const password = 'xkqzvbtwxkqzvbtw'
+    const userInputs = ['xkqzvbtw']
+    const findRepeat = (result: ZxcvbnResult) =>
+      result.sequence.find((match) => match.pattern === 'repeat')
+
+    const setupResult = new ZxcvbnFactory({
+      dictionary: { userInputs },
+    }).check(password)
+    const perCallResult = new ZxcvbnFactory().check(password, userInputs)
+
+    expect(findRepeat(setupResult)).toMatchObject({
+      baseToken: 'xkqzvbtw',
+      baseGuesses: 2,
+    })
+    expect(findRepeat(perCallResult)).toEqual(findRepeat(setupResult))
+    expect(perCallResult.guesses).toBe(setupResult.guesses)
   })
 })
