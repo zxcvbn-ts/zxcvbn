@@ -176,4 +176,29 @@ describe('dictionary matching', () => {
       },
     })
   })
+
+  describe('with levenshtein distance', () => {
+    const zxcvbnOptions = new Options({
+      dictionary: { d1: ['password'] },
+      translations: zxcvbnEnPackage.translations,
+      useLevenshteinDistance: true,
+    })
+    const matchDictionary = new MatchDictionary(zxcvbnOptions)
+
+    // 10 characters, 2 more than the longest dictionary word: the search for
+    // substrings stops at 8, but the full password must still be compared
+    checkMatches({
+      messagePrefix:
+        'checks a full password longer than every dictionary word by 2',
+      matches: matchDictionary.match({ password: 'passsword1' }),
+      patternNames: 'dictionary',
+      patterns: ['passsword1'],
+      ijs: [[0, 9]],
+      propsToCheck: {
+        levenshteinDistance: [2],
+        levenshteinDistanceEntry: ['password'],
+        rank: [1],
+      },
+    })
+  })
 })

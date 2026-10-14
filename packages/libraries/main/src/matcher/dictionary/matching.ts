@@ -32,11 +32,21 @@ class MatchDictionary extends MatcherBaseClass {
       for (let j = i; j < passwordLength; j += 1) {
         const isFullPassword = i === 0 && j === passwordLength - 1
         // if the word is longer than the longest word in any dictionary and it is not the full password
-        // we can skip it. For the full password we still need to check for levenshtein distance
+        // we can skip it. For the full password we still need to check for levenshtein distance,
+        // so from i === 0 keep going until j reaches it instead of stopping here
         if (j - i + 1 > maxSearchWidth && !isFullPassword) {
+          if (i === 0) {
+            continue
+          }
           break
         }
         const usedPassword = passwordLower.slice(i, j + 1)
+        // only use levenshtein distance on full password to minimize the performance drop
+        // and because otherwise there would be to many false positives
+        const shouldCheckLevenshtein =
+          this.options.useLevenshteinDistance &&
+          isFullPassword &&
+          useLevenshtein
 
         for (const dictionaryName of dictionaryNames) {
           const rankedDict = rankedDictionaries[dictionaryName]
@@ -51,13 +61,16 @@ class MatchDictionary extends MatcherBaseClass {
           const isInDictionary = rank !== undefined
           let foundLevenshteinDistance: Partial<FindLevenshteinDistanceResult> =
             {}
-          // only use levenshtein distance on full password to minimize the performance drop
-          // and because otherwise there would be to many false positives
+          // a password longer than the dictionary's longest word by more than
+          // the threshold is at least that many edits away from every entry
+          const canBeWithinThreshold =
+            usedPassword.length -
+              rankedDictionariesMaxWordSize[dictionaryName] <=
+            this.options.levenshteinThreshold
           if (
-            this.options.useLevenshteinDistance &&
-            isFullPassword &&
+            shouldCheckLevenshtein &&
             !isInDictionary &&
-            useLevenshtein
+            canBeWithinThreshold
           ) {
             foundLevenshteinDistance = findLevenshteinDistance(
               usedPassword,
