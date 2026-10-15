@@ -15,11 +15,13 @@ import { MaybePromise } from 'rollup'
  *-------------------------------------------------------------------------------
  */
 class MatchRepeat extends MatcherBaseClass {
-  private static readonly GREEDY = /(.+)\1+/g
+  // the u flag makes '.' match a whole code point, so a repeat can't start or
+  // end in the middle of an emoji (surrogate pair)
+  private static readonly GREEDY = /(.+)\1+/gu
 
-  private static readonly LAZY = /(.+?)\1+/g
+  private static readonly LAZY = /(.+?)\1+/gu
 
-  private static readonly LAZY_ANCHORED = /^(.+?)\1+$/
+  private static readonly LAZY_ANCHORED = /^(.+?)\1+$/u
 
   private scoring: Scoring
 
