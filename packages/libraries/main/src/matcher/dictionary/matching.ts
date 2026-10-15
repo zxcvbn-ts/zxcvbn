@@ -27,32 +27,31 @@ class MatchDictionary extends MatcherBaseClass {
       0,
       ...Object.values(rankedDictionariesMaxWordSize),
     )
+    const isLevenshteinEnabled =
+      this.options.useLevenshteinDistance && useLevenshtein
 
     for (let i = 0; i < passwordLength; i += 1) {
       for (let j = i; j < passwordLength; j += 1) {
         const isFullPassword = i === 0 && j === passwordLength - 1
-        // if the word is longer than the longest word in any dictionary and it is not the full password
-        // we can skip it. For the full password we still need to check for levenshtein distance,
-        // so from i === 0 keep going until j reaches it instead of stopping here
-        if (j - i + 1 > maxSearchWidth && !isFullPassword) {
-          if (i === 0) {
+        // only use levenshtein distance on full password to minimize the performance drop
+        // and because otherwise there would be to many false positives
+        const shouldCheckLevenshtein = isLevenshteinEnabled && isFullPassword
+        // if the word is longer than the longest word in any dictionary we can skip it,
+        // unless it is the full password and we still need to check for levenshtein distance.
+        // In that case keep going from i === 0 until j reaches it instead of stopping here
+        if (j - i + 1 > maxSearchWidth && !shouldCheckLevenshtein) {
+          if (i === 0 && isLevenshteinEnabled) {
             continue
           }
           break
         }
         const usedPassword = passwordLower.slice(i, j + 1)
-        // only use levenshtein distance on full password to minimize the performance drop
-        // and because otherwise there would be to many false positives
-        const shouldCheckLevenshtein =
-          this.options.useLevenshteinDistance &&
-          isFullPassword &&
-          useLevenshtein
 
         for (const dictionaryName of dictionaryNames) {
           const rankedDict = rankedDictionaries[dictionaryName]
           if (
             j - i + 1 > rankedDictionariesMaxWordSize[dictionaryName] &&
-            !isFullPassword
+            !shouldCheckLevenshtein
           ) {
             continue
           }

@@ -5,6 +5,7 @@ import getCleanPasswords, {
   PasswordWithSubs,
 } from './unmunger/getCleanPasswords'
 import MatchDictionary from '../../matching'
+import { countCharacters } from '../../../../utils/helper'
 
 const getExtras = (
   passwordWithSubs: PasswordWithSubs,
@@ -103,7 +104,7 @@ class MatchL33t extends MatchDictionary {
     // filter single-character l33t matches to reduce noise.
     // otherwise '1' matches 'i', '4' matches 'a', both very common English words
     // with low dictionary rank.
-    return matches.filter((match) => match.token.length > 1)
+    return matches.filter((match) => countCharacters(match.token) > 1)
   }
 }
 

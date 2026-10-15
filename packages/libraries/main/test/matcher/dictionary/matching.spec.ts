@@ -177,6 +177,30 @@ describe('dictionary matching', () => {
     })
   })
 
+  describe('without levenshtein distance', () => {
+    it("doesn't look up a full password longer than every dictionary word", () => {
+      const zxcvbnOptions = new Options({
+        dictionary: { d1: ['password'] },
+        translations: zxcvbnEnPackage.translations,
+      })
+      const lookups: string[] = []
+      zxcvbnOptions.rankedDictionaries.d1 = new Proxy(
+        zxcvbnOptions.rankedDictionaries.d1,
+        {
+          get(target, key, receiver) {
+            if (typeof key === 'string') lookups.push(key)
+            return Reflect.get(target, key, receiver)
+          },
+        },
+      )
+      new MatchDictionary(zxcvbnOptions).match({ password: 'passsword1' })
+
+      // it can't be in a dictionary, only a Levenshtein check could match it
+      expect(lookups).not.toContain('passsword1')
+      expect(lookups).toContain('passswor')
+    })
+  })
+
   describe('with levenshtein distance', () => {
     const zxcvbnOptions = new Options({
       dictionary: { d1: ['password'] },

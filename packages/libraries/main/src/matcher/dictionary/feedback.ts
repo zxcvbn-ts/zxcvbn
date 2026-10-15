@@ -1,6 +1,7 @@
 import Options from '../../Options'
 import { MatchEstimated } from '../../types'
 import { ALL_UPPER_INVERTED, START_UPPER } from '../../data/const'
+import { countCharacters } from '../../utils/helper'
 
 const getDictionaryWarningPassword = (
   options: Options,
@@ -86,8 +87,7 @@ export default (
   } else if (word.match(ALL_UPPER_INVERTED) && word.toLowerCase() !== word) {
     suggestions.push(options.translations.suggestions.allUppercase)
   }
-  // count code points, so an emoji counts as one character instead of two
-  if (match.reversed && Array.from(match.token).length >= 4) {
+  if (match.reversed && countCharacters(match.token) >= 4) {
     suggestions.push(options.translations.suggestions.reverseWords)
   }
   if (match.l33t) {

@@ -5,6 +5,7 @@ import {
   translate,
   mod,
   buildRankedDictionary,
+  countCharacters,
 } from '../../src/utils/helper'
 import { LooseObject } from '../../src/types'
 
@@ -141,6 +142,23 @@ describe('utils matching', () => {
         foo: 1,
         bar: 2,
         rofl: 3,
+      })
+    })
+  })
+  describe('countCharacters', () => {
+    const data: [string, number][] = [
+      ['', 0],
+      ['abc', 3],
+      ['😀', 1],
+      ['a😀b😀', 4],
+      // a lone surrogate is still one character
+      ['\ud83d', 1],
+      ['\ud83da', 2],
+      ['\ude00\ud83d', 2],
+    ]
+    data.forEach(([string, count]) => {
+      it(`counts ${JSON.stringify(string)} as ${count} characters`, () => {
+        expect(countCharacters(string)).toEqual(count)
       })
     })
   })

@@ -1,4 +1,5 @@
 import { MatchEstimated, MatchExtended } from '../../types'
+import { countCharacters } from '../../utils/helper'
 
 export default ({ token, ascending }: MatchExtended | MatchEstimated) => {
   const firstChr = token.charAt(0)
@@ -19,7 +20,5 @@ export default ({ token, ascending }: MatchExtended | MatchEstimated) => {
   if (!ascending) {
     baseGuesses *= 2
   }
-  // count Unicode code points rather than UTF-16 code units, so a surrogate
-  // pair (eg. an astral-plane character) counts as one character instead of two
-  return baseGuesses * Array.from(token).length
+  return baseGuesses * countCharacters(token)
 }

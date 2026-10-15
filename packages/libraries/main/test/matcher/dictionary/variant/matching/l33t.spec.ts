@@ -25,6 +25,13 @@ describe('l33t matching', () => {
     it("doesn't match single-character l33ted words", () => {
       expect(matchL33t.match({ password: '4 1 @' })).toEqual([])
     })
+    it("doesn't match a single l33ted emoji", () => {
+      const emojiOptions = new Options({
+        dictionary: { words: ['a'] },
+        l33tTable: { a: ['😀'] },
+      })
+      expect(new MatchL33t(emojiOptions).match({ password: '😀' })).toEqual([])
+    })
   })
 
   const zxcvbnOptions = new Options({
