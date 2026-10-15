@@ -5,7 +5,7 @@ import getCleanPasswords, {
   PasswordWithSubs,
 } from './unmunger/getCleanPasswords'
 import MatchDictionary from '../../matching'
-import { countCharacters } from '../../../../utils/helper'
+import { countCharacters, toLowerCase } from '../../../../utils/helper'
 
 const getExtras = (
   passwordWithSubs: PasswordWithSubs,
@@ -95,7 +95,7 @@ class MatchL33t extends MatchDictionary {
         const alreadyIncluded = this.isAlreadyIncluded(matches, newMatch)
 
         // only return the matches that contain an actual substitution
-        if (token.toLowerCase() !== match.matchedWord && !alreadyIncluded) {
+        if (toLowerCase(token) !== match.matchedWord && !alreadyIncluded) {
           matches.push(newMatch)
         }
       })

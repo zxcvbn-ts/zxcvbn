@@ -32,6 +32,15 @@ describe('l33t matching', () => {
       })
       expect(new MatchL33t(emojiOptions).match({ password: '😀' })).toEqual([])
     })
+    it("doesn't match a word with 'İ' that has no substitution", () => {
+      // the '1' gets substituted, but the match on 'İstanbul' doesn't include it
+      const dottedIOptions = new Options({
+        dictionary: { words: ['istanbul'] },
+      })
+      expect(
+        new MatchL33t(dottedIOptions).match({ password: 'İstanbul1' }),
+      ).toEqual([])
+    })
   })
 
   const zxcvbnOptions = new Options({

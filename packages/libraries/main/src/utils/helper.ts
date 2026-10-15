@@ -31,6 +31,14 @@ const SURROGATE_PAIR = /[\ud800-\udbff][\udc00-\udfff]/g
 export const countCharacters = (string: string) =>
   string.length - (string.match(SURROGATE_PAIR)?.length ?? 0)
 
+// lowercase without changing the length, so match indices [i, j] point at the
+// same characters in the password and its lowercase form.
+// 'İ' (U+0130) is the only character whose lowercase form is longer ('i' plus
+// a combining dot), so map it to 'i' like the dictionaries spell it.
+// Use this everywhere text is lowercased to be compared with dictionary words.
+export const toLowerCase = (string: string) =>
+  string.replace(/İ/g, 'i').toLowerCase()
+
 // mod implementation that works for negative numbers
 export const mod = (n: number, m: number) => ((n % m) + m) % m
 

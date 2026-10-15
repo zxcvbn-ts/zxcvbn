@@ -225,4 +225,57 @@ describe('dictionary matching', () => {
       },
     })
   })
+
+  describe('with a character whose lowercase form is longer', () => {
+    // 'İ' (U+0130) lowercases to 'i' + U+0307, two code units instead of one
+    const zxcvbnOptions = new Options({
+      dictionary: { d1: ['mother', 'board', 'motherboard', 'istanbul'] },
+      translations: zxcvbnEnPackage.translations,
+    })
+    const matchDictionary = new MatchDictionary(zxcvbnOptions)
+    const dm = (pw: string) =>
+      matchDictionary.match({ password: pw }).filter((match) => !match.reversed)
+
+    checkMatches({
+      messagePrefix: 'keeps matches after it aligned with the password',
+      matches: dm('İmotherboard'),
+      patternNames: 'dictionary',
+      patterns: ['mother', 'motherboard', 'board'],
+      ijs: [
+        [1, 6],
+        [1, 11],
+        [7, 11],
+      ],
+      propsToCheck: {
+        matchedWord: ['mother', 'motherboard', 'board'],
+      },
+    })
+
+    checkMatches({
+      messagePrefix: "matches 'İ' as an uppercase 'i'",
+      matches: dm('İstanbul'),
+      patternNames: 'dictionary',
+      patterns: ['İstanbul'],
+      ijs: [[0, 7]],
+      propsToCheck: {
+        matchedWord: ['istanbul'],
+      },
+    })
+
+    checkMatches({
+      messagePrefix: "matches a user input containing 'İ'",
+      matches: matchDictionary
+        .match({
+          password: 'İxqzvbnw',
+          userInputsOptions: zxcvbnOptions.getUserInputsOptions(['İxqzvbnw']),
+        })
+        .filter((match) => match.dictionaryName === 'userInputs'),
+      patternNames: 'dictionary',
+      patterns: ['İxqzvbnw'],
+      ijs: [[0, 7]],
+      propsToCheck: {
+        matchedWord: ['ixqzvbnw'],
+      },
+    })
+  })
 })

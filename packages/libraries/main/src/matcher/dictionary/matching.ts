@@ -4,6 +4,7 @@ import findLevenshteinDistance, {
 import { DictionaryNames, DictionaryMatch, MatcherBaseClass } from '../../types'
 import { DictionaryMatchOptions } from './types'
 import mergeUserInputDictionary from '../../utils/mergeUserInputDictionary'
+import { toLowerCase } from '../../utils/helper'
 
 class MatchDictionary extends MatcherBaseClass {
   // eslint-disable-next-line complexity,max-statements
@@ -14,7 +15,7 @@ class MatchDictionary extends MatcherBaseClass {
   }: DictionaryMatchOptions) {
     const matches: DictionaryMatch[] = []
     const passwordLength = password.length
-    const passwordLower = password.toLowerCase()
+    const passwordLower = toLowerCase(password)
     const { rankedDictionaries, rankedDictionariesMaxWordSize } =
       mergeUserInputDictionary(
         this.options.rankedDictionaries,
