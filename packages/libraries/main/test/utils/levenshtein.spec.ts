@@ -196,4 +196,20 @@ describe('levenshtein', () => {
       objectKeysSpy.mockRestore()
     }
   })
+
+  it('should return the first entry within the threshold in dictionary order', () => {
+    // 'elephants' is one longer and 'elephan' one shorter, both are 1 edit away
+    expect(
+      findLevenshteinDistance('elephant', { elephants: 1, elephan: 2 }, 2),
+    ).toEqual({
+      levenshteinDistance: 1,
+      levenshteinDistanceEntry: 'elephants',
+    })
+    expect(
+      findLevenshteinDistance('elephant', { elephan: 1, elephants: 2 }, 2),
+    ).toEqual({
+      levenshteinDistance: 1,
+      levenshteinDistanceEntry: 'elephan',
+    })
+  })
 })
