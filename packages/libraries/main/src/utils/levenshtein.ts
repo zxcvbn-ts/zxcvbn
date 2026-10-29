@@ -15,6 +15,20 @@ const getUsedThreshold = (
   return shouldUsePasswordLength ? Math.ceil(password.length / 4) : threshold
 }
 
+// Object.keys() on a dictionary with tens of thousands of entries rebuilds the
+// whole key array on every call, which is expensive in V8 (Chrome, Node).
+// Dictionaries never change after they are built, so compute it once per object.
+const dictionaryKeysCache = new WeakMap<RankedDictionary, string[]>()
+
+const getDictionaryKeys = (rankedDictionary: RankedDictionary) => {
+  let keys = dictionaryKeysCache.get(rankedDictionary)
+  if (!keys) {
+    keys = Object.keys(rankedDictionary)
+    dictionaryKeysCache.set(rankedDictionary, keys)
+  }
+  return keys
+}
+
 export interface FindLevenshteinDistanceResult {
   levenshteinDistance: number
   levenshteinDistanceEntry: string
@@ -26,7 +40,7 @@ const findLevenshteinDistance = (
   threshold: number,
 ): Partial<FindLevenshteinDistanceResult> => {
   let foundDistance = 0
-  const found = Object.keys(rankedDictionary).find((entry) => {
+  const found = getDictionaryKeys(rankedDictionary).find((entry) => {
     const usedThreshold = getUsedThreshold(password, entry, threshold)
     if (Math.abs(password.length - entry.length) > usedThreshold) {
       return false

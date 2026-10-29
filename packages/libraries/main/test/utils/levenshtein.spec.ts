@@ -1,6 +1,7 @@
 import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common/src'
 import * as zxcvbnEnPackage from '@zxcvbn-ts/language-en/src'
 import { ZxcvbnFactory } from '../../src'
+import findLevenshteinDistance from '../../src/utils/levenshtein'
 
 describe('levenshtein', () => {
   const zxcvbn = new ZxcvbnFactory({
@@ -171,5 +172,28 @@ describe('levenshtein', () => {
     const result = customZxcvbn.check('eeleephaant')
     expect(result.sequence.length).toStrictEqual(1)
     expect(result.sequence[0].levenshteinDistance).toBeDefined()
+  })
+
+  // the l33t matcher runs this once per substituted password against the same
+  // dictionaries, and listing the keys of a large dictionary is slow in V8
+  it('should list the keys of a dictionary only once', () => {
+    const rankedDictionary = { elephant: 1, giraffe: 2 }
+    const objectKeysSpy = jest.spyOn(Object, 'keys')
+    try {
+      expect(findLevenshteinDistance('alaphant', rankedDictionary, 2)).toEqual({
+        levenshteinDistance: 2,
+        levenshteinDistanceEntry: 'elephant',
+      })
+      expect(findLevenshteinDistance('girafe', rankedDictionary, 2)).toEqual({
+        levenshteinDistance: 1,
+        levenshteinDistanceEntry: 'giraffe',
+      })
+      const dictionaryCalls = objectKeysSpy.mock.calls.filter(
+        ([object]) => object === rankedDictionary,
+      )
+      expect(dictionaryCalls).toHaveLength(1)
+    } finally {
+      objectKeysSpy.mockRestore()
+    }
   })
 })
