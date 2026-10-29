@@ -43,6 +43,34 @@ describe('l33t matching', () => {
     })
   })
 
+  describe('dictionary lookups', () => {
+    // up to l33tMaxSubstitutions substituted passwords get matched, so a
+    // lookup that is repeated or can't produce a l33t match adds up quickly
+    it('should only look up substrings with a substitution, each once', () => {
+      const lookupOptions = new Options({ dictionary: { words: ['pass'] } })
+      const lookups: string[] = []
+      lookupOptions.rankedDictionaries.words = new Proxy(
+        lookupOptions.rankedDictionaries.words,
+        {
+          get(target, key) {
+            lookups.push(String(key))
+            return Reflect.get(target, key)
+          },
+        },
+      )
+      const matches = new MatchL33t(lookupOptions).match({
+        password: 'p4ssw0rd',
+      })
+
+      expect(matches.map((match) => match.matchedWord)).toEqual(['pass'])
+      // 'a' and 'o' only come from substituting '4' and '0'
+      expect(lookups.filter((word) => !/[ao]/.test(word))).toEqual([])
+      expect(
+        lookups.filter((word, index) => lookups.indexOf(word) !== index),
+      ).toEqual([])
+    })
+  })
+
   const zxcvbnOptions = new Options({
     dictionary: dicts,
     l33tTable: testTable,

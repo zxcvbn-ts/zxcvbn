@@ -1,10 +1,17 @@
-import findLevenshteinDistance, {
-  FindLevenshteinDistanceResult,
-} from '../../utils/levenshtein'
-import { DictionaryNames, DictionaryMatch, MatcherBaseClass } from '../../types'
-import { DictionaryMatchOptions } from './types'
+import findLevenshteinDistance from '../../utils/levenshtein'
+import {
+  DictionaryNames,
+  DictionaryMatch,
+  MatcherBaseClass,
+  RankedDictionary,
+} from '../../types'
+import { DictionaryHit, DictionaryMatchOptions } from './types'
 import mergeUserInputDictionary from '../../utils/mergeUserInputDictionary'
 import { toLowerCase } from '../../utils/helper'
+
+type Dictionaries = ReturnType<typeof mergeUserInputDictionary> & {
+  dictionaryNames: DictionaryNames[]
+}
 
 class MatchDictionary extends MatcherBaseClass {
   // eslint-disable-next-line complexity,max-statements
@@ -12,6 +19,8 @@ class MatchDictionary extends MatcherBaseClass {
     password,
     userInputsOptions,
     useLevenshtein = true,
+    minWindowEnds,
+    lookupCache,
   }: DictionaryMatchOptions) {
     const matches: DictionaryMatch[] = []
     const passwordLength = password.length
@@ -22,8 +31,12 @@ class MatchDictionary extends MatcherBaseClass {
         this.options.rankedDictionariesMaxWordSize,
         userInputsOptions,
       )
+    const dictionaries: Dictionaries = {
+      rankedDictionaries,
+      rankedDictionariesMaxWordSize,
+      dictionaryNames: Object.keys(rankedDictionaries) as DictionaryNames[],
+    }
 
-    const dictionaryNames = Object.keys(rankedDictionaries) as DictionaryNames[]
     const maxSearchWidth = Math.max(
       0,
       ...Object.values(rankedDictionariesMaxWordSize),
@@ -46,66 +59,103 @@ class MatchDictionary extends MatcherBaseClass {
           }
           break
         }
+        if (minWindowEnds && j < minWindowEnds[i]) {
+          continue
+        }
         const usedPassword = passwordLower.slice(i, j + 1)
 
-        for (const dictionaryName of dictionaryNames) {
-          const rankedDict = rankedDictionaries[dictionaryName]
-          if (
-            j - i + 1 > rankedDictionariesMaxWordSize[dictionaryName] &&
-            !shouldCheckLevenshtein
-          ) {
-            continue
-          }
-
-          const rank = rankedDict[usedPassword]
-          const isInDictionary = rank !== undefined
-          let foundLevenshteinDistance: Partial<FindLevenshteinDistanceResult> =
-            {}
-          // a password longer than the dictionary's longest word by more than
-          // the threshold is at least that many edits away from every entry
-          const canBeWithinThreshold =
-            usedPassword.length -
-              rankedDictionariesMaxWordSize[dictionaryName] <=
-            this.options.levenshteinThreshold
-          if (
-            shouldCheckLevenshtein &&
-            !isInDictionary &&
-            canBeWithinThreshold
-          ) {
-            foundLevenshteinDistance = findLevenshteinDistance(
-              usedPassword,
-              rankedDict,
-              this.options.levenshteinThreshold,
-            )
-          }
-          const isLevenshteinMatch =
-            foundLevenshteinDistance.levenshteinDistance !== undefined
-
-          if (isInDictionary || isLevenshteinMatch) {
-            const usedRankPassword = isLevenshteinMatch
-              ? foundLevenshteinDistance.levenshteinDistanceEntry!
-              : usedPassword
-
-            const rankValue = isInDictionary
-              ? rank
-              : rankedDict[usedRankPassword]
-            matches.push({
-              pattern: 'dictionary',
-              i,
-              j,
-              token: password.slice(i, j + 1),
-              matchedWord: usedPassword,
-              rank: rankValue,
-              dictionaryName,
-              reversed: false,
-              l33t: false,
-              ...foundLevenshteinDistance,
-            })
+        // a levenshtein result is only valid for the full password, don't share it
+        let hits = shouldCheckLevenshtein
+          ? undefined
+          : lookupCache?.get(usedPassword)
+        if (!hits) {
+          hits = this.findInDictionaries(
+            usedPassword,
+            shouldCheckLevenshtein,
+            dictionaries,
+          )
+          if (!shouldCheckLevenshtein) {
+            lookupCache?.set(usedPassword, hits)
           }
         }
+
+        hits.forEach(({ dictionaryName, rank, ...levenshtein }) => {
+          matches.push({
+            pattern: 'dictionary',
+            i,
+            j,
+            token: password.slice(i, j + 1),
+            matchedWord: usedPassword,
+            rank,
+            dictionaryName,
+            reversed: false,
+            l33t: false,
+            ...levenshtein,
+          })
+        })
       }
     }
     return matches
+  }
+
+  private findInDictionaries(
+    usedPassword: string,
+    shouldCheckLevenshtein: boolean,
+    {
+      rankedDictionaries,
+      rankedDictionariesMaxWordSize,
+      dictionaryNames,
+    }: Dictionaries,
+  ) {
+    const hits: DictionaryHit[] = []
+    for (const dictionaryName of dictionaryNames) {
+      const rankedDict = rankedDictionaries[dictionaryName]
+      const maxWordSize = rankedDictionariesMaxWordSize[dictionaryName]
+      if (usedPassword.length > maxWordSize && !shouldCheckLevenshtein) {
+        continue
+      }
+
+      const rank = rankedDict[usedPassword]
+      if (rank !== undefined) {
+        hits.push({ dictionaryName, rank })
+      } else if (shouldCheckLevenshtein) {
+        const levenshteinHit = this.findLevenshteinHit(
+          usedPassword,
+          rankedDict,
+          maxWordSize,
+        )
+        if (levenshteinHit) {
+          hits.push({ dictionaryName, ...levenshteinHit })
+        }
+      }
+    }
+    return hits
+  }
+
+  private findLevenshteinHit(
+    usedPassword: string,
+    rankedDict: RankedDictionary,
+    maxWordSize: number,
+  ) {
+    const { levenshteinThreshold } = this.options
+    // a password longer than the dictionary's longest word by more than
+    // the threshold is at least that many edits away from every entry
+    if (usedPassword.length - maxWordSize > levenshteinThreshold) {
+      return undefined
+    }
+    const { levenshteinDistance, levenshteinDistanceEntry } =
+      findLevenshteinDistance(usedPassword, rankedDict, levenshteinThreshold)
+    if (
+      levenshteinDistance === undefined ||
+      levenshteinDistanceEntry === undefined
+    ) {
+      return undefined
+    }
+    return {
+      rank: rankedDict[levenshteinDistanceEntry],
+      levenshteinDistance,
+      levenshteinDistanceEntry,
+    }
   }
 }
 

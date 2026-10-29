@@ -1,5 +1,5 @@
 import { DictionaryMatch, L33tMatch } from '../../../../types'
-import { DictionaryMatchOptions } from '../../types'
+import { DictionaryHit, DictionaryMatchOptions } from '../../types'
 import getCleanPasswords, {
   PasswordChanges,
   PasswordWithSubs,
@@ -45,6 +45,28 @@ const getExtras = (
   }
 }
 
+// a window [i, j] without a substitution was already checked by the plain
+// dictionary matcher, so for each i find the first j that reaches one
+const getMinWindowEnds = ({ password, changes }: PasswordWithSubs) => {
+  const minWindowEnds: number[] = []
+  let changeIndex = 0
+  for (let i = 0; i < password.length; i += 1) {
+    // changes are ordered by position, skip the ones that end before i
+    while (
+      changeIndex < changes.length &&
+      changes[changeIndex].i + changes[changeIndex].letter.length <= i
+    ) {
+      changeIndex += 1
+    }
+    minWindowEnds.push(
+      changeIndex < changes.length
+        ? Math.max(i, changes[changeIndex].i)
+        : password.length,
+    )
+  }
+  return minWindowEnds
+}
+
 /*
  * -------------------------------------------------------------------------------
  *  Dictionary l33t matching -----------------------------------------------------
@@ -69,6 +91,8 @@ class MatchL33t extends MatchDictionary {
       this.options.l33tMaxSubstitutions,
       this.options.trieNodeRoot,
     )
+    // the substituted passwords share most of their substrings
+    const lookupCache = new Map<string, DictionaryHit[]>()
     let hasFullMatch = false
     subbedPasswords.forEach((subbedPassword) => {
       if (hasFullMatch) {
@@ -78,6 +102,8 @@ class MatchL33t extends MatchDictionary {
         ...matchOptions,
         password: subbedPassword.password,
         useLevenshtein: subbedPassword.isFullSubstitution,
+        minWindowEnds: getMinWindowEnds(subbedPassword),
+        lookupCache,
       })
       matchedDictionary.forEach((match: DictionaryMatch) => {
         const extras = getExtras(subbedPassword, match.i, match.j)
