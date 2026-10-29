@@ -7,7 +7,7 @@ import {
 } from '../../types'
 import { DictionaryHit, DictionaryMatchOptions } from './types'
 import mergeUserInputDictionary from '../../utils/mergeUserInputDictionary'
-import { toLowerCase } from '../../utils/helper'
+import { countCharacters, toLowerCase } from '../../utils/helper'
 
 type Dictionaries = ReturnType<typeof mergeUserInputDictionary> & {
   dictionaryNames: DictionaryNames[]
@@ -116,17 +116,15 @@ class MatchDictionary extends MatcherBaseClass {
       }
 
       const rank = rankedDict[usedPassword]
-      if (rank !== undefined) {
+      // a more common entry close to the full password beats the password
+      // itself, even if the dictionary contains it
+      const levenshteinHit = shouldCheckLevenshtein
+        ? this.findLevenshteinHit(usedPassword, rankedDict, maxWordSize)
+        : undefined
+      if (levenshteinHit) {
+        hits.push({ dictionaryName, ...levenshteinHit })
+      } else if (rank !== undefined) {
         hits.push({ dictionaryName, rank })
-      } else if (shouldCheckLevenshtein) {
-        const levenshteinHit = this.findLevenshteinHit(
-          usedPassword,
-          rankedDict,
-          maxWordSize,
-        )
-        if (levenshteinHit) {
-          hits.push({ dictionaryName, ...levenshteinHit })
-        }
       }
     }
     return hits
@@ -140,14 +138,16 @@ class MatchDictionary extends MatcherBaseClass {
     const { levenshteinThreshold } = this.options
     // a password longer than the dictionary's longest word by more than
     // the threshold is at least that many edits away from every entry
-    if (usedPassword.length - maxWordSize > levenshteinThreshold) {
+    if (countCharacters(usedPassword) - maxWordSize > levenshteinThreshold) {
       return undefined
     }
     const { levenshteinDistance, levenshteinDistanceEntry } =
       findLevenshteinDistance(usedPassword, rankedDict, levenshteinThreshold)
+    // finding the password itself is an exact match, not a levenshtein one
     if (
       levenshteinDistance === undefined ||
-      levenshteinDistanceEntry === undefined
+      levenshteinDistanceEntry === undefined ||
+      levenshteinDistanceEntry === usedPassword
     ) {
       return undefined
     }

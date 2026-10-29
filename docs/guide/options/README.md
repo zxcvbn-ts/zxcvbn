@@ -57,7 +57,8 @@ This variable is to activate the levenshtein distance check on the dictionary ma
 
 ### levenshteinThreshold
 
-This variable is to define the threshold of the levenshtein check
+This variable defines how many characters (insertions, deletions or substitutions) the full password can differ from a dictionary word to still match it, whatever the length of the password.
+An emoji counts as one character. If several dictionary words are close enough, the most common one is matched, even if the password itself is a less common word of the same dictionary.
 
 ### l33tMaxSubstitutions
 
