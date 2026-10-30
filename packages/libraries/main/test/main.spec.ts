@@ -233,6 +233,66 @@ describe('main', () => {
         zxcvbn.check('anypassword', ['someuser', '', 'lastname']),
       ).not.toThrow()
     })
+
+    describe('with levenshtein distance', () => {
+      const createZxcvbnLevenshtein = () =>
+        new ZxcvbnFactory({
+          dictionary: {
+            ...zxcvbnCommonPackage.dictionary,
+            ...zxcvbnEnPackage.dictionary,
+          },
+          graphs: zxcvbnCommonPackage.adjacencyGraphs,
+          translations: zxcvbnEnPackage.translations,
+          useLevenshteinDistance: true,
+        })
+      const zxcvbnLevenshtein = createZxcvbnLevenshtein()
+
+      it('should have a appropriate calcTime for the first check, which groups the dictionary entries by length', () => {
+        const result = createZxcvbnLevenshtein().check('xkqzvbnw')
+        expect(result.calcTime).toBeLessThan(maxCalcTime)
+      })
+
+      it.each([
+        [
+          'l33t attack',
+          '4@8({[</369&#!1/|0$5+7%2/4@8({[</369&#!1/|0$5+7%2/"'.repeat(2),
+        ],
+        ['l33t same value attack', '!'.repeat(1500)],
+        ['regex attacks', `\x00\x00${'\x00'.repeat(1500)}\n`],
+      ])(
+        'should not die while processing and have a appropriate calcTime for %s',
+        (_, password) => {
+          const result = zxcvbnLevenshtein.check(password)
+          expect(result.calcTime).toBeLessThan(maxCalcTime)
+        },
+      )
+
+      // every character can be substituted with several letters, so each of
+      // the l33tMaxSubstitutions full substitutions is searched for a close
+      // entry, and none is close enough to stop the search early
+      it('should not die while processing and have a appropriate calcTime for ambiguous l33t substitutions', () => {
+        const result = zxcvbnLevenshtein.check('<1x|<1q|<')
+        expect(result.calcTime).toBeLessThan(maxCalcTime)
+      })
+
+      // the user input is as long as the password, so the full password is
+      // searched for a close entry even at maxLength
+      it('should not die while processing and have a appropriate calcTime for long userInputs', () => {
+        const result = zxcvbnLevenshtein.check(
+          'qzvbnwjpfyxk'.repeat(22).slice(0, 256),
+          ['xkqzvbnwjpfy'.repeat(22).slice(0, 256)],
+        )
+        expect(result.calcTime).toBeLessThan(maxCalcTime)
+      })
+
+      // entries with characters outside the BMP are compared by code point
+      it('should not die while processing and have a appropriate calcTime for emoji userInputs', () => {
+        const result = zxcvbnLevenshtein.check('😀🎉🔥💯'.repeat(32), [
+          '🎉🔥💯😀'.repeat(32),
+        ])
+        expect(result.calcTime).toBeLessThan(maxCalcTime)
+      })
+    })
   })
 
   describe('password tests', () => {
