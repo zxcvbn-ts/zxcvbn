@@ -6,6 +6,13 @@ export default (options: Options, match: MatchEstimated) => {
     return null
   }
 
+  if (match.dictionaryName === 'userInputs') {
+    return {
+      warning: options.translations.warnings.userInputs,
+      suggestions: [options.translations.suggestions.useWords],
+    }
+  }
+
   let warning = null
   const suggestions: string[] = []
 

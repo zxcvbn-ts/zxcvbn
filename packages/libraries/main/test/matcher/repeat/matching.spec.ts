@@ -3,7 +3,8 @@ import checkMatches from '../../helper/checkMatches'
 import genpws from '../../helper/genpws'
 import MatchOmni from '../../../src/Matching'
 import Options from '../../../src/Options'
-import { RepeatMatch } from '../../../src/types'
+import { RepeatMatch, ZxcvbnResult } from '../../../src/types'
+import { ZxcvbnFactory } from '../../../src'
 
 const zxcvbnOptions = new Options()
 const omniMatch = new MatchOmni(zxcvbnOptions)
@@ -184,17 +185,22 @@ describe('repeat matching', () => {
     expect(baseTokenACalls).toBe(1)
   })
 
-  it('scores a repeated user input using the user input dictionary', () => {
-    const userInputsOptions = zxcvbnOptions.getUserInputsOptions(['xqzvbnmk'])
-    const repeatMatches = matchRepeat.match({
-      password: 'xqzvbnmkxqzvbnmkxqzvbnmk',
-      omniMatch,
-      userInputsOptions,
-    }) as RepeatMatch[]
+  it('uses user inputs passed to check() when scoring the base token', () => {
+    const password = 'xkqzvbtwxkqzvbtw'
+    const userInputs = ['xkqzvbtw']
+    const findRepeat = (result: ZxcvbnResult) =>
+      result.sequence.find((match) => match.pattern === 'repeat')
 
-    expect(repeatMatches.length).toEqual(1)
-    expect(repeatMatches[0].baseToken).toEqual('xqzvbnmk')
-    // rank 1 in userInputs is 1 guess, plus 1 for the single-match sequence
-    expect(repeatMatches[0].baseGuesses).toEqual(2)
+    const setupResult = new ZxcvbnFactory({
+      dictionary: { userInputs },
+    }).check(password)
+    const perCallResult = new ZxcvbnFactory().check(password, userInputs)
+
+    expect(findRepeat(setupResult)).toMatchObject({
+      baseToken: 'xkqzvbtw',
+      baseGuesses: 2,
+    })
+    expect(findRepeat(perCallResult)).toEqual(findRepeat(setupResult))
+    expect(perCallResult.guesses).toBe(setupResult.guesses)
   })
 })

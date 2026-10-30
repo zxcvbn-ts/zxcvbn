@@ -428,6 +428,44 @@ describe('WordSequence Matcher', () => {
     })
   })
 
+  describe('User Inputs', () => {
+    const userInputs = ['Hans', 'Florian', 'Zimmer']
+
+    it.each<[string, string[]]>([
+      ['HansFlorianZimmer', ['hans', 'florian', 'zimmer']],
+      ['hans.zimmer', ['hans', 'zimmer']],
+      ['ZimmerHans', ['zimmer', 'hans']],
+    ])('should detect %s as a user input sequence', (password, words) => {
+      const result = zxcvbn.check(password, userInputs)
+
+      const wordSequenceMatch = result.sequence.find(
+        (match) => match.pattern === 'wordSequence',
+      )
+
+      expect(wordSequenceMatch).toBeDefined()
+      if (wordSequenceMatch?.pattern === 'wordSequence') {
+        expect(wordSequenceMatch.token).toBe(password)
+        expect(wordSequenceMatch.words).toEqual(words)
+        expect(wordSequenceMatch.dictionaryName).toBe('userInputs')
+      }
+      expect(result.feedback.warning).toBe(
+        new Options().translations.warnings.userInputs,
+      )
+    })
+
+    it('should not detect a sequence without user inputs', () => {
+      const result = zxcvbn.check('HansFlorianZimmer')
+
+      const wordSequenceMatch = result.sequence.find(
+        (match) =>
+          match.pattern === 'wordSequence' &&
+          match.dictionaryName === 'userInputs',
+      )
+
+      expect(wordSequenceMatch).toBeUndefined()
+    })
+  })
+
   describe('Scoring and Feedback unit tests', () => {
     it('scoring should return 0 if pattern is not wordSequence', () => {
       expect(scoring({ pattern: 'dictionary' } as any)).toBe(0)
@@ -449,6 +487,21 @@ describe('WordSequence Matcher', () => {
       expect(result?.suggestions).toContain(
         options.translations.suggestions.anotherWord,
       )
+    })
+
+    it('feedback should return the user inputs warning for user input sequences', () => {
+      const options = new Options()
+      const match = {
+        pattern: 'wordSequence',
+        wordCount: 2,
+        ascending: true,
+        dictionaryName: 'userInputs',
+      } as any
+      const result = feedback(options, match)
+      expect(result?.warning).toBe(options.translations.warnings.userInputs)
+      expect(result?.suggestions).toEqual([
+        options.translations.suggestions.useWords,
+      ])
     })
   })
 })
