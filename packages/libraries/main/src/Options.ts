@@ -77,6 +77,7 @@ export default class Options {
     'planets',
     'zodiacSigns',
     'chineseZodiac',
+    'userInputs',
   ]
 
   timeEstimationValues: TimeEstimationValues = {

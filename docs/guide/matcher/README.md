@@ -47,7 +47,7 @@ The separator matcher searches for common separators like a space or a hyphen
 
 ### Word sequence matcher
 
-The word sequence matcher is a combination of the sequence matcher and the dictionary matcher. It searches for sequences of words in a specific topic like months.
+The word sequence matcher is a combination of the sequence matcher and the dictionary matcher. It searches for sequences of words in a specific topic like months. User inputs are treated as such a topic as well, so a password like `HansFlorianZimmer` or `hans.zimmer` for a user named Hans Florian Zimmer is matched as a single sequence.
 
 ## Custom Matcher
 
