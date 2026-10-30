@@ -550,6 +550,65 @@ describe('levenshtein', () => {
       })
     })
 
+    // an entry with more characters the password doesn't contain (or the
+    // other way around) than the threshold is skipped without the distance
+    describe('characters only one of them contains', () => {
+      it('finds an entry with as many different characters as the threshold', () => {
+        // x and y are only in the entry, g and h only in the password
+        expect(findLevenshteinDistance('abcdefgh', { abcdefxy: 1 }, 2)).toEqual(
+          {
+            levenshteinDistance: 2,
+            levenshteinDistanceEntry: 'abcdefxy',
+          },
+        )
+        expect(findLevenshteinDistance('abcdefgh', { abcdefxy: 1 }, 1)).toEqual(
+          {},
+        )
+      })
+
+      it('allows as many different characters as a threshold that is not a whole number', () => {
+        expect(
+          findLevenshteinDistance('abcdefgh', { abcdefxy: 1 }, 2.5),
+        ).toEqual({
+          levenshteinDistance: 2,
+          levenshteinDistanceEntry: 'abcdefxy',
+        })
+      })
+
+      it('allows any characters with a threshold of Infinity', () => {
+        expect(findLevenshteinDistance('abc', { xyz: 1 }, Infinity)).toEqual({
+          levenshteinDistance: 3,
+          levenshteinDistanceEntry: 'xyz',
+        })
+      })
+
+      it('counts an emoji the password lacks as one different character', () => {
+        expect(
+          findLevenshteinDistance('monkeys1', { 'monkeys😀': 1 }, 1),
+        ).toEqual({
+          levenshteinDistance: 1,
+          levenshteinDistanceEntry: 'monkeys😀',
+        })
+      })
+
+      it('compares an entry whose different characters are mistaken for the same', () => {
+        // l and 0 share a bit, so only the distance rules this entry out
+        expect(
+          findLevenshteinDistance('llllllll', { '00000000': 1 }, 2),
+        ).toEqual({})
+        expect(
+          findLevenshteinDistance(
+            'llllllll',
+            { '0lllllll': 2, '00000000': 1 },
+            2,
+          ),
+        ).toEqual({
+          levenshteinDistance: 1,
+          levenshteinDistanceEntry: '0lllllll',
+        })
+      })
+    })
+
     describe('dictionaries', () => {
       it('keeps the entries of different dictionaries apart', () => {
         const passwords = { password: 1 }

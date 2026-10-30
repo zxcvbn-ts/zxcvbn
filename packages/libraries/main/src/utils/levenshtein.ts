@@ -47,10 +47,39 @@ const createGetDistance = (password: string) => {
       : codePointDistance(passwordCharacters, Array.from(entry))
 }
 
+// A bit for each character (code point) a string contains, several characters
+// share a bit. Each character only one of two strings contains takes an edit,
+// so comparing their masks rules out most entries without the distance.
+// 30 bits keep the values small integers, with 32 V8 runs the bit operations
+// slower than the distance itself.
+const getCharacterMask = (string: string) => {
+  let mask = 0
+  for (let index = 0; index < string.length; index += 1) {
+    const code = string.charCodeAt(index)
+    // skip the high surrogate, so an emoji only sets the bit of its low one
+    if (code < 0xd800 || code > 0xdbff) {
+      mask |= 1 << (code % 30)
+    }
+  }
+  return mask
+}
+
+// more than limit bits of value are set
+const hasMoreBits = (value: number, limit: number) => {
+  let rest = value
+  for (let count = 0; count < limit; count += 1) {
+    // clear the lowest set bit
+    rest &= rest - 1
+  }
+  return rest !== 0
+}
+
 interface EntriesOfLength {
   // sorted by rank, the order they are checked in
   entries: string[]
   ranks: number[]
+  // the character mask of each entry
+  masks: Int32Array
 }
 
 // An entry can only be within the threshold if its length is close to the
@@ -92,13 +121,16 @@ const getEntriesByLength = (rankedDictionary: RankedDictionary) => {
     const length = countCharacters(entry)
     let group = entriesByLength.get(length)
     if (!group) {
-      group = { entries: [], ranks: [] }
+      group = { entries: [], ranks: [], masks: new Int32Array(0) }
       entriesByLength.set(length, group)
     }
     group.entries.push(entry)
     group.ranks.push(rankedDictionary[entry])
   })
-  entriesByLength.forEach(sortByRank)
+  entriesByLength.forEach((group) => {
+    sortByRank(group)
+    group.masks = Int32Array.from(group.entries, getCharacterMask)
+  })
   entriesByLengthCache.set(rankedDictionary, entriesByLength)
   return entriesByLength
 }
@@ -114,24 +146,35 @@ interface FindInGroupOptions {
   entryLength: number
   threshold: number
   getDistance: (entry: string, entryLength: number) => number
+  passwordMask: number
   found?: FoundEntry
 }
 
 // the most common entry wins, so only an entry ranked before the one already
 // found can replace it
 const findInGroup = ({
-  group: { entries, ranks },
+  group: { entries, ranks, masks },
   entryLength,
   threshold,
   getDistance,
+  passwordMask,
   found,
 }: FindInGroupOptions) => {
+  // a larger threshold than the bits of a mask can't rule out an entry
+  const maxDifferentCharacters = Math.min(Math.floor(threshold), 30)
   const foundRank = found ? found.rank : Infinity
   for (
     let index = 0;
     index < entries.length && ranks[index] < foundRank;
     index += 1
   ) {
+    const mask = masks[index]
+    if (
+      hasMoreBits(mask & ~passwordMask, maxDifferentCharacters) ||
+      hasMoreBits(passwordMask & ~mask, maxDifferentCharacters)
+    ) {
+      continue
+    }
     const entryDistance = getDistance(entries[index], entryLength)
     if (entryDistance <= threshold) {
       return {
@@ -157,6 +200,7 @@ const findLevenshteinDistance = (
   const entriesByLength = getEntriesByLength(rankedDictionary)
   const passwordLength = countCharacters(password)
   const getDistance = createGetDistance(password)
+  const passwordMask = getCharacterMask(password)
   // the password itself is the match, unless a more common entry is close to it
   let found: FoundEntry | undefined = Object.prototype.hasOwnProperty.call(
     rankedDictionary,
@@ -179,6 +223,7 @@ const findLevenshteinDistance = (
         entryLength,
         threshold,
         getDistance,
+        passwordMask,
         found,
       })
     })
