@@ -186,7 +186,7 @@ describe('repeat matching', () => {
   })
 
   it('uses user inputs passed to check() when scoring the base token', () => {
-    const password = 'xkqzvbtwxkqzvbtw'
+    const password = 'xkqzvbtwxkqzvbtwxkqzvbtw'
     const userInputs = ['xkqzvbtw']
     const findRepeat = (result: ZxcvbnResult) =>
       result.sequence.find((match) => match.pattern === 'repeat')
