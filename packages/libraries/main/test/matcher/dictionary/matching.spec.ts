@@ -176,4 +176,106 @@ describe('dictionary matching', () => {
       },
     })
   })
+
+  describe('without levenshtein distance', () => {
+    it("doesn't look up a full password longer than every dictionary word", () => {
+      const zxcvbnOptions = new Options({
+        dictionary: { d1: ['password'] },
+        translations: zxcvbnEnPackage.translations,
+      })
+      const lookups: string[] = []
+      zxcvbnOptions.rankedDictionaries.d1 = new Proxy(
+        zxcvbnOptions.rankedDictionaries.d1,
+        {
+          get(target, key, receiver) {
+            if (typeof key === 'string') lookups.push(key)
+            return Reflect.get(target, key, receiver)
+          },
+        },
+      )
+      new MatchDictionary(zxcvbnOptions).match({ password: 'passsword1' })
+
+      // it can't be in a dictionary, only a Levenshtein check could match it
+      expect(lookups).not.toContain('passsword1')
+      expect(lookups).toContain('passswor')
+    })
+  })
+
+  describe('with levenshtein distance', () => {
+    const zxcvbnOptions = new Options({
+      dictionary: { d1: ['password'] },
+      translations: zxcvbnEnPackage.translations,
+      useLevenshteinDistance: true,
+    })
+    const matchDictionary = new MatchDictionary(zxcvbnOptions)
+
+    // 10 characters, 2 more than the longest dictionary word: the search for
+    // substrings stops at 8, but the full password must still be compared
+    checkMatches({
+      messagePrefix:
+        'checks a full password longer than every dictionary word by 2',
+      matches: matchDictionary.match({ password: 'passsword1' }),
+      patternNames: 'dictionary',
+      patterns: ['passsword1'],
+      ijs: [[0, 9]],
+      propsToCheck: {
+        levenshteinDistance: [2],
+        levenshteinDistanceEntry: ['password'],
+        rank: [1],
+      },
+    })
+  })
+
+  describe('with a character whose lowercase form is longer', () => {
+    // 'İ' (U+0130) lowercases to 'i' + U+0307, two code units instead of one
+    const zxcvbnOptions = new Options({
+      dictionary: { d1: ['mother', 'board', 'motherboard', 'istanbul'] },
+      translations: zxcvbnEnPackage.translations,
+    })
+    const matchDictionary = new MatchDictionary(zxcvbnOptions)
+    const dm = (pw: string) =>
+      matchDictionary.match({ password: pw }).filter((match) => !match.reversed)
+
+    checkMatches({
+      messagePrefix: 'keeps matches after it aligned with the password',
+      matches: dm('İmotherboard'),
+      patternNames: 'dictionary',
+      patterns: ['mother', 'motherboard', 'board'],
+      ijs: [
+        [1, 6],
+        [1, 11],
+        [7, 11],
+      ],
+      propsToCheck: {
+        matchedWord: ['mother', 'motherboard', 'board'],
+      },
+    })
+
+    checkMatches({
+      messagePrefix: "matches 'İ' as an uppercase 'i'",
+      matches: dm('İstanbul'),
+      patternNames: 'dictionary',
+      patterns: ['İstanbul'],
+      ijs: [[0, 7]],
+      propsToCheck: {
+        matchedWord: ['istanbul'],
+      },
+    })
+
+    checkMatches({
+      messagePrefix: "matches a user input containing 'İ'",
+      matches: matchDictionary
+        .match({
+          password: 'İxqzvbnw',
+          userInputsOptions: zxcvbnOptions.getUserInputsOptions(['İxqzvbnw']),
+        })
+        .filter((match) => match.dictionaryName === 'userInputs'),
+      patternNames: 'dictionary',
+      patterns: ['İxqzvbnw'],
+      ijs: [[0, 7]],
+      propsToCheck: {
+        matchedWord: ['ixqzvbnw'],
+      },
+    })
+  })
 })

@@ -142,6 +142,26 @@ describe('repeat matching', () => {
     },
   })
 
+  // '𝐚' (𝐚) and '🐚' (🐚) share their second half, so
+  // without matching by code point a repeat starts in the middle of '𝐚'
+  pattern = '🐚'.repeat(10)
+  matches = matchRepeat.match({
+    password: `𝐚${pattern}`,
+    omniMatch,
+  }) as RepeatMatch[]
+  msg = "doesn't split an emoji to match a repeat"
+  checkMatches({
+    messagePrefix: msg,
+    matches,
+    patternNames: 'repeat',
+    patterns: [pattern],
+    ijs: [[2, 21]],
+    propsToCheck: {
+      baseToken: ['🐚'],
+      repeatCount: [10],
+    },
+  })
+
   it('memoizes base token guesses across separated repeat groups within one match() call', async () => {
     // Use the repeat matcher exactly as production code does: the single
     // instance registered inside its own omniMatch (Matching), since
@@ -166,7 +186,7 @@ describe('repeat matching', () => {
   })
 
   it('uses user inputs passed to check() when scoring the base token', () => {
-    const password = 'xkqzvbtwxkqzvbtw'
+    const password = 'xkqzvbtwxkqzvbtwxkqzvbtw'
     const userInputs = ['xkqzvbtw']
     const findRepeat = (result: ZxcvbnResult) =>
       result.sequence.find((match) => match.pattern === 'repeat')

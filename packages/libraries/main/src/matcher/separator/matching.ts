@@ -3,7 +3,9 @@ import { MatcherBaseClass, MatchOptions, SeparatorMatch } from '../../types'
 
 type SeparatorMatchOptions = Pick<MatchOptions, 'password'>
 
-const separatorRegex = new RegExp(`[${SEPERATOR_CHARS.join('')}]`)
+// a set instead of a regex character class, so no separator ('-', '\\', ']', '^')
+// can turn into a range or an escape depending on its position in the list
+const separatorChars = new Set(SEPERATOR_CHARS)
 
 /*
  *-------------------------------------------------------------------------------
@@ -14,7 +16,7 @@ class MatchSeparator extends MatcherBaseClass {
   static getMostUsedSeparatorChar(password: string): string | undefined {
     const counts = new Map<string, number>()
     for (const char of password) {
-      if (separatorRegex.test(char)) {
+      if (separatorChars.has(char)) {
         counts.set(char, (counts.get(char) || 0) + 1)
       }
     }

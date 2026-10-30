@@ -4,6 +4,7 @@ import { MatcherBaseClass, MatchOptions, SequenceMatch } from '../../types'
 interface UpdateParams {
   i: number
   j: number
+  characterCount: number
   delta: number
   password: string
   result: any[]
@@ -67,6 +68,7 @@ class MatchSequence extends MatcherBaseClass {
         this.update({
           i: unitOffsets[i],
           j: lastUnitIndex(j),
+          characterCount: j - i + 1,
           delta: lastDelta,
           password,
           result,
@@ -78,6 +80,7 @@ class MatchSequence extends MatcherBaseClass {
     this.update({
       i: unitOffsets[i],
       j: lastUnitIndex(charactersLength - 1),
+      characterCount: charactersLength - i,
       delta: lastDelta!,
       password,
       result,
@@ -85,8 +88,10 @@ class MatchSequence extends MatcherBaseClass {
     return result
   }
 
-  update({ i, j, delta, password, result }: UpdateParams) {
-    if (j - i > 1 || Math.abs(delta) === 1) {
+  // [i, j] are UTF-16 code units, characterCount is the number of code points
+  // between them: a run of two surrogate pairs is 2 characters, not 4
+  update({ i, j, characterCount, delta, password, result }: UpdateParams) {
+    if (characterCount > 2 || Math.abs(delta) === 1) {
       const absoluteDelta = Math.abs(delta)
       if (absoluteDelta > 0 && absoluteDelta <= this.MAX_DELTA) {
         const token = password.slice(i, j + 1)
@@ -95,7 +100,7 @@ class MatchSequence extends MatcherBaseClass {
           pattern: 'sequence',
           i,
           j,
-          token: password.slice(i, j + 1),
+          token,
           sequenceName,
           sequenceSpace,
           ascending: delta > 0,

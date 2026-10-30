@@ -1,4 +1,5 @@
 import { MatchEstimated, MatchExtended } from '../../types'
+import { countCharacters } from '../../utils/helper'
 
 export default ({ token, ascending }: MatchExtended | MatchEstimated) => {
   const firstChr = token.charAt(0)
@@ -19,5 +20,5 @@ export default ({ token, ascending }: MatchExtended | MatchEstimated) => {
   if (!ascending) {
     baseGuesses *= 2
   }
-  return baseGuesses * token.length
+  return baseGuesses * countCharacters(token)
 }

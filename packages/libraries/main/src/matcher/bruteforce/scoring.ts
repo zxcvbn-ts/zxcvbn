@@ -4,11 +4,10 @@ import {
   MIN_SUBMATCH_GUESSES_MULTI_CHAR,
 } from '../../data/const'
 import { MatchEstimated, MatchExtended } from '../../types'
+import { countCharacters } from '../../utils/helper'
 
 export default ({ token }: MatchExtended | MatchEstimated) => {
-  // count Unicode code points rather than UTF-16 code units, so a surrogate
-  // pair (eg. an emoji) counts as one character instead of two
-  const tokenLength = Array.from(token).length
+  const tokenLength = countCharacters(token)
   let guesses = BRUTEFORCE_CARDINALITY ** tokenLength
   if (guesses === Number.POSITIVE_INFINITY) {
     guesses = Number.MAX_VALUE

@@ -9,6 +9,7 @@ import sequenceMatcher from './matcher/sequence/feedback'
 import spatialMatcher from './matcher/spatial/feedback'
 import separatorMatcher from './matcher/separator/feedback'
 import wordSequenceMatcher from './matcher/wordSequence/feedback'
+import { countCharacters } from './utils/helper'
 
 const createFeedback = (
   suggestions?: FeedbackType['suggestions'],
@@ -67,11 +68,14 @@ class Feedback {
 
   private getLongestMatch(sequence: MatchEstimated[]) {
     let longestMatch = sequence[0]
+    let longestLength = countCharacters(longestMatch.token)
     // ignore first entry
     for (let i = 1; i < sequence.length; i += 1) {
       const match = sequence[i]
-      if (match.token.length > longestMatch.token.length) {
+      const length = countCharacters(match.token)
+      if (length > longestLength) {
         longestMatch = match
+        longestLength = length
       }
     }
     return longestMatch

@@ -1,4 +1,4 @@
-import { buildRankedDictionary } from './utils/helper'
+import { buildRankedDictionary, toLowerCase } from './utils/helper'
 import {
   TranslationKeys,
   OptionsType,
@@ -207,7 +207,7 @@ export default class Options {
         inputType === 'number' ||
         inputType === 'boolean'
       ) {
-        sanitizedInputs.push(input.toString().toLowerCase())
+        sanitizedInputs.push(toLowerCase(input.toString()))
       }
     })
 

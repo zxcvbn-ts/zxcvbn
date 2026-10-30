@@ -30,11 +30,13 @@ describe('feedback', () => {
     })
 
     it('should return some basic feedback if no feedback could be generated', () => {
-      // @ts-expect-error for testing purposes
-      const data = feedbackClass.getFeedback(1, [{}])
+      const data = feedbackClass.getFeedback(1, [])
       expect(data).toEqual({
         warning: null,
-        suggestions: [translations.suggestions.anotherWord],
+        suggestions: [
+          translations.suggestions.useWords,
+          translations.suggestions.noNeed,
+        ],
       })
     })
 
@@ -299,6 +301,62 @@ describe('feedback', () => {
           translations.suggestions.anotherWord,
           translations.suggestions.repeated,
         ],
+      })
+    })
+
+    it('should treat a repeated emoji as a single repeated character', () => {
+      const data = feedbackClass.getFeedback(2, [
+        // @ts-expect-error for testing purposes
+        { pattern: 'repeat', token: '😀😀😀', baseToken: '😀' },
+      ])
+      expect(data).toEqual({
+        warning: translations.warnings.simpleRepeat,
+        suggestions: [
+          translations.suggestions.anotherWord,
+          translations.suggestions.repeated,
+        ],
+      })
+    })
+
+    it('should count emoji as one character when picking the longest match', () => {
+      // 'password' is 8 characters, the repeat is 5 (but 10 UTF-16 code units)
+      const data = feedbackClass.getFeedback(1, [
+        // @ts-expect-error for testing purposes
+        {
+          pattern: 'dictionary',
+          token: 'password',
+          dictionaryName: 'passwords-common',
+          reversed: false,
+          l33t: false,
+          rank: 10,
+          guessesLog10: 4,
+        },
+        // @ts-expect-error for testing purposes
+        { pattern: 'repeat', token: '😀😀😀😀😀', baseToken: '😀' },
+      ])
+      expect(data).toEqual({
+        warning: translations.warnings.similarToCommon,
+        suggestions: [translations.suggestions.anotherWord],
+      })
+    })
+
+    it('should count an emoji as one character for the reversed word suggestion', () => {
+      // 3 characters, below the 4 needed for the suggestion
+      const data = feedbackClass.getFeedback(1, [
+        // @ts-expect-error for testing purposes
+        {
+          pattern: 'dictionary',
+          token: 'a😀b',
+          dictionaryName: 'passwords-common',
+          reversed: true,
+          l33t: false,
+          rank: 10,
+          guessesLog10: 4,
+        },
+      ])
+      expect(data).toEqual({
+        warning: translations.warnings.similarToCommon,
+        suggestions: [translations.suggestions.anotherWord],
       })
     })
 

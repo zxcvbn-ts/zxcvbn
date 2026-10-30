@@ -3,6 +3,7 @@ import {
   MIN_SUBMATCH_GUESSES_MULTI_CHAR,
 } from '../data/const'
 import utils from './utils'
+import { countCharacters } from '../utils/helper'
 import Options from '../Options'
 import {
   DefaultScoringFunction,
@@ -26,7 +27,9 @@ const getMinGuesses = (
 ) => {
   let minGuesses = 1
   if (match.token.length < password.length) {
-    if (match.token.length === 1) {
+    // a single character is at most 2 UTF-16 code units (eg. an emoji).
+    // Check the length first, this runs for every bruteforce candidate
+    if (match.token.length <= 2 && countCharacters(match.token) === 1) {
       minGuesses = MIN_SUBMATCH_GUESSES_SINGLE_CHAR
     } else {
       minGuesses = MIN_SUBMATCH_GUESSES_MULTI_CHAR

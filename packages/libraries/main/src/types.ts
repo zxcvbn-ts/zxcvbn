@@ -237,7 +237,7 @@ export interface OptionsType {
    */
   useLevenshteinDistance?: boolean
   /**
-   * @description Defines how many characters can be different to match a dictionary word with the levenshtein algorithm.
+   * @description Defines how many characters can be different to match a dictionary word with the levenshtein algorithm, whatever the length of the password. An emoji counts as one character.
    * @default 2
    */
   levenshteinThreshold?: number
