@@ -88,6 +88,19 @@ describe('MatchWordSequence', () => {
       expect(isValid([first], second, 'one_two')).toBe(true)
     })
 
+    it('accepts a run of separator characters', () => {
+      const first = baseMatch({ i: 0, j: 2, token: 'one' })
+      const second = baseMatch({ i: 5, j: 7, token: 'two' })
+      expect(isValid([first], second, 'one..two')).toBe(true)
+      expect(isValid([first], second, 'one._two')).toBe(true)
+    })
+
+    it('rejects a run containing a non separator character', () => {
+      const first = baseMatch({ i: 0, j: 2, token: 'one' })
+      const second = baseMatch({ i: 5, j: 7, token: 'two' })
+      expect(isValid([first], second, 'one.9two')).toBe(false)
+    })
+
     it('rejects an invalid separator character', () => {
       const first = baseMatch({ i: 0, j: 2, token: 'one' })
       const second = baseMatch({ i: 4, j: 6, token: 'two' })

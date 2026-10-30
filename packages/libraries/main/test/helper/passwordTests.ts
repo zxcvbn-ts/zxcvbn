@@ -2933,6 +2933,7 @@ export default [
         wordCount: 2,
         dictionaryName: 'chineseZodiac-en',
         ascending: true,
+        separators: [],
         guesses: 2,
         guessesLog10: 0.30102999566398114,
       },

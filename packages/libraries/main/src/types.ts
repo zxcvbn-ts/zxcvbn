@@ -135,6 +135,10 @@ export interface WordSequenceMatch extends Match {
   wordCount: number
   dictionaryName: string
   ascending: boolean
+  /**
+   * @description The separators found between the words, empty when they are concatenated
+   */
+  separators: string[]
 }
 
 export type MatchExtended =
