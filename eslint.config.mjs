@@ -187,6 +187,7 @@ export default defineConfig([
   {
     files: [
       './data-scripts/**/*.ts',
+      './scripts/**/*.ts',
       '**/*.spec.ts',
       '**/*.config.ts',
       '**/*.config.js',
