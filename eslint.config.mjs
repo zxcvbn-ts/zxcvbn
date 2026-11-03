@@ -1,4 +1,6 @@
+import { fileURLToPath } from 'node:url'
 import { defineConfig, globalIgnores } from 'eslint/config'
+import { includeIgnoreFile } from '@eslint/compat'
 import tsParser from '@typescript-eslint/parser'
 import importPlugin from 'eslint-plugin-import'
 import eslintConfigPrettier from 'eslint-config-prettier/flat'
@@ -10,17 +12,11 @@ import tseslint from 'typescript-eslint'
 import sortClassMembers from 'eslint-plugin-sort-class-members'
 import prettierConfig from './prettier.mjs'
 
+const gitignorePath = fileURLToPath(new URL('.gitignore', import.meta.url))
+
 export default defineConfig([
-  globalIgnores([
-    '**/.vuepress',
-    '**/node_modules',
-    '**/dist',
-    '**/dist2',
-    '**/demo',
-    '**/coverage',
-    'data-scripts/wikiExtractor/extracts',
-    '**/dist_new',
-  ]),
+  includeIgnoreFile(gitignorePath),
+  globalIgnores(['**/.vuepress', '**/dist2', '**/demo', '**/dist_new']),
   js.configs.recommended,
   compatPlugin.configs['flat/recommended'],
   sortClassMembers.configs['flat/recommended'],
