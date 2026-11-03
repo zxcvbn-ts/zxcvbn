@@ -183,7 +183,7 @@ describe('levenshtein', () => {
   // dictionaries, and listing the keys of a large dictionary is slow in V8
   it('should list the keys of a dictionary only once', () => {
     const rankedDictionary = { elephant: 1, giraffe: 2 }
-    const objectKeysSpy = jest.spyOn(Object, 'keys')
+    const objectKeysSpy = vi.spyOn(Object, 'keys')
     try {
       expect(findLevenshteinDistance('alaphant', rankedDictionary, 2)).toEqual({
         levenshteinDistance: 2,

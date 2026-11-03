@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`l33t table to trie node should convert correctly 1`] = `
+exports[`l33t table to trie node > should convert correctly 1`] = `
 TrieNode {
   "children": Map {
     "@" => TrieNode {
@@ -58,7 +58,6 @@ TrieNode {
       "parents": [
         "^",
       ],
-      "subs": undefined,
     },
     "n" => TrieNode {
       "children": Map {
@@ -76,7 +75,6 @@ TrieNode {
       "parents": [
         "n",
       ],
-      "subs": undefined,
     },
     "2" => TrieNode {
       "children": Map {
@@ -94,7 +92,6 @@ TrieNode {
       "parents": [
         "2",
       ],
-      "subs": undefined,
     },
     "/" => TrieNode {
       "children": Map {
@@ -128,7 +125,6 @@ TrieNode {
                         "/",
                         "\\",
                       ],
-                      "subs": undefined,
                     },
                   },
                   "parents": [
@@ -137,7 +133,6 @@ TrieNode {
                     "\\",
                     "/",
                   ],
-                  "subs": undefined,
                 },
               },
               "parents": [
@@ -145,20 +140,17 @@ TrieNode {
                 "\\",
                 "\\",
               ],
-              "subs": undefined,
             },
           },
           "parents": [
             "/",
             "\\",
           ],
-          "subs": undefined,
         },
       },
       "parents": [
         "/",
       ],
-      "subs": undefined,
     },
     "|" => TrieNode {
       "children": Map {
@@ -180,16 +172,13 @@ TrieNode {
             "|",
             "_",
           ],
-          "subs": undefined,
         },
       },
       "parents": [
         "|",
       ],
-      "subs": undefined,
     },
   },
   "parents": [],
-  "subs": undefined,
 }
 `;

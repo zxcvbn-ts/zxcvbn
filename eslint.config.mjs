@@ -3,7 +3,7 @@ import tsParser from '@typescript-eslint/parser'
 import importPlugin from 'eslint-plugin-import'
 import eslintConfigPrettier from 'eslint-config-prettier/flat'
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
-import jest from 'eslint-plugin-jest'
+import vitest from '@vitest/eslint-plugin'
 import compatPlugin from 'eslint-plugin-compat'
 import js from '@eslint/js'
 import tseslint from 'typescript-eslint'
@@ -32,7 +32,7 @@ export default defineConfig([
     files: ['**/*.{ts,tsx}'],
     languageOptions: {
       globals: {
-        ...jest.environments.globals.globals,
+        ...vitest.environments.env.globals,
       },
       parser: tsParser,
       parserOptions: {
@@ -43,7 +43,7 @@ export default defineConfig([
 
     plugins: {
       import: importPlugin,
-      jest,
+      vitest,
     },
 
     settings: {

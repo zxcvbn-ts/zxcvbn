@@ -49,7 +49,7 @@ describe('Options', () => {
     })
 
     it('should warn when adding an existing matcher', () => {
-      const spy = jest.spyOn(console, 'info').mockImplementation()
+      const spy = vi.spyOn(console, 'info').mockImplementation(() => undefined)
       const matcher = {
         // eslint-disable-next-line @typescript-eslint/no-extraneous-class
         Matching: class {},

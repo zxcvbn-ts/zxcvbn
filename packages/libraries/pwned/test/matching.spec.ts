@@ -3,7 +3,7 @@ import matchingFactory from '../src/matching'
 import Options from '../../main/src/Options'
 
 // eslint-disable-next-line @typescript-eslint/require-await
-const fetch = jest.fn(async () => ({
+const fetch = vi.fn(async () => ({
   status: 200,
   text() {
     return `008A205652858375D71117A63004CC75167:5\r\n3EA386688A0147AB736AABCEDE496610382:244`
@@ -19,7 +19,7 @@ describe('pwned matching', () => {
     const match = await matchPwned.match({
       password: 'P4$$w0rd',
       // @ts-expect-error doesn't matter for pwnd matcher
-      omniMatch: jest.fn,
+      omniMatch: vi.fn,
     })
     expect(match).toEqual([
       {
@@ -48,7 +48,7 @@ describe('pwned matching', () => {
 
   it('should default pwnedAmount to 0 when the count segment is missing', async () => {
     // eslint-disable-next-line @typescript-eslint/require-await
-    const fetchMissingCount = jest.fn(async () => ({
+    const fetchMissingCount = vi.fn(async () => ({
       status: 200,
       text() {
         return `3EA386688A0147AB736AABCEDE496610382`
@@ -62,7 +62,7 @@ describe('pwned matching', () => {
     const match = await matchPwnedMissingCount.match({
       password: 'P4$$w0rd',
       // @ts-expect-error doesn't matter for pwnd matcher
-      omniMatch: jest.fn,
+      omniMatch: vi.fn,
     })
     expect(match).toEqual([
       {
@@ -82,7 +82,7 @@ describe('pwned matching', () => {
     const match = await matchPwned.match({
       password: 'P4$$w0rd',
       // @ts-expect-error doesn't matter for pwnd matcher
-      omniMatch: jest.fn,
+      omniMatch: vi.fn,
     })
     expect(match).toEqual([
       {

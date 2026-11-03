@@ -56,7 +56,7 @@ For security reasons a limit was implemented for 256 characters by default but c
 - Keyboard layouts can be customised. This means you can overwrite the default set of layouts with your own or extend it.
   E.g., if you are developing a Russian website, you need to include a Cyrillic keyboard set. Create a PR so that others can benefit from it.
 - You can use multiple keyboard layouts, which means that the library will check against them by default.
-- the tests are Jest based, so we get a coverage score
+- the tests are Vitest based, so we get a coverage score
 - eslint/prettier for consistent code style
 - Added static page docs https://zxcvbn-ts.github.io/zxcvbn/
 - esm, commonJS

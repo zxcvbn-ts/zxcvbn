@@ -171,7 +171,7 @@ describe('repeat matching', () => {
     // exercise the memoization bug at all.
     const sharedOmniMatch = new MatchOmni(zxcvbnOptions)
     const sharedMatchRepeat = sharedOmniMatch.matchers.repeat as MatchRepeat
-    const matchSpy = jest.spyOn(sharedOmniMatch, 'match')
+    const matchSpy = vi.spyOn(sharedOmniMatch, 'match')
 
     await sharedMatchRepeat.match({
       password: 'aaaaaaXXXbbbbbbYYYaaaaaa',

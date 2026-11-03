@@ -10,15 +10,19 @@ const getLanguages = () => {
     .map((dirent) => dirent.name)
 }
 
-describe('translations', () => {
+describe('translations', async () => {
   const withoutTranslations = ['common']
   const languages = getLanguages().filter(
     (language) => !withoutTranslations.includes(language),
   )
-  languages.forEach((language) => {
-    const translationPath = `${languagePath}/${language}/src/translations.ts`
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const translations = require(translationPath).default
+  const translationsByLanguage = await Promise.all(
+    languages.map(async (language) => {
+      const translationPath = `${languagePath}/${language}/src/translations.ts`
+      const { default: translations } = await import(translationPath)
+      return [language, translations] as const
+    }),
+  )
+  translationsByLanguage.forEach(([language, translations]) => {
     it(`should have all translation keys for ${language}`, () => {
       Object.entries(translationKeys).forEach(([key, value]) => {
         expect(translations[key]).toBeDefined()
