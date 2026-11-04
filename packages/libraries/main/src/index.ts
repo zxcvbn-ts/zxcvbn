@@ -76,7 +76,7 @@ class ZxcvbnFactory {
 
     if (matches instanceof Promise) {
       throw new Error(
-        'You are using a Promised matcher, please use `zxcvbnAsync` for it.',
+        'You are using a Promised matcher, please use `checkAsync` for it.',
       )
     }
     return this.createReturnValue(matches, reducedPassword, start)

@@ -55,7 +55,7 @@ describe('asyncMatcher', () => {
     expect(() => {
       zxcvbn.check('ep8fkw8ds')
     }).toThrow(
-      'You are using a Promised matcher, please use `zxcvbnAsync` for it.',
+      'You are using a Promised matcher, please use `checkAsync` for it.',
     )
   })
 

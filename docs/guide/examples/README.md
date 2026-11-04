@@ -2,16 +2,16 @@
 
 ## Debounce
 ```js
-import {
-    zxcvbnAsync,
-    debounce,
-} from '@zxcvbn-ts/core'
+import { ZxcvbnFactory, debounce } from '@zxcvbn-ts/core'
+
+// options and customMatchers as described in the getting started guide
+const zxcvbn = new ZxcvbnFactory(options, customMatchers)
 
 let result
-const someCallableFunction = () => {
+const someCallableFunction = async () => {
 // ...do your magic for example get the value from an input field or somewhere else
     const value = getInputValue()
-    result = zxcvbnAsync(value)
+    result = await zxcvbn.checkAsync(value)
 }
 
 const debouncedZxcvbn = debounce(someCallableFunction, 200)
@@ -28,16 +28,16 @@ debouncedZxcvbn()
 If you want to execute the function on the first debounce and ignore the rest you can use the third parameter.
 
 ```js
-import {
-    zxcvbnAsync,
-    debounce,
-} from '@zxcvbn-ts/core'
+import { ZxcvbnFactory, debounce } from '@zxcvbn-ts/core'
+
+// options and customMatchers as described in the getting started guide
+const zxcvbn = new ZxcvbnFactory(options, customMatchers)
 
 let result
-const someCallableFunction = () => {
+const someCallableFunction = async () => {
 // ...do your magic for example get the value from an input field or somewhere else
     const value = getInputValue()
-    result = zxcvbnAsync(value)
+    result = await zxcvbn.checkAsync(value)
 }
 
 const debouncedZxcvbn = debounce(someCallableFunction, 200, true)
