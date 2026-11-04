@@ -74,6 +74,8 @@ describe('date matching', () => {
     [1, 1, 1999],
     [11, 8, 2000],
     [9, 12, 2005],
+    [14, 3, 2075],
+    [28, 2, 2099],
     [22, 11, 1551],
   ]
   numberData.forEach(([day, month, year]) => {
@@ -180,4 +182,16 @@ describe('date matching', () => {
       day: [20],
     },
   })
+})
+
+describe('date matching out of range years', () => {
+  const matchDate = new MatchDate(new Options())
+
+  it.each(['2100.3.14', '14.3.2100', '21000314'])(
+    'does not match %s with the year 2100',
+    (password) => {
+      const years = matchDate.match({ password }).map((match) => match.year)
+      expect(years).not.toContain(2100)
+    },
+  )
 })
