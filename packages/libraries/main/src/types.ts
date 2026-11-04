@@ -160,6 +160,9 @@ export interface Estimate {
 
 export type MatchEstimated = MatchExtended & Estimate
 
+/**
+ * @deprecated not used anymore, the scoring search keeps its state internally.
+ */
 export interface Optimal {
   bestMatches: Record<string, MatchEstimated>[]
   guessesProduct: Record<string, number>[]

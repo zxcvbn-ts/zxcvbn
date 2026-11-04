@@ -6,8 +6,10 @@ import {
 import { MatchEstimated, MatchExtended } from '../../types'
 import { countCharacters } from '../../utils/helper'
 
-export default ({ token }: MatchExtended | MatchEstimated) => {
-  const tokenLength = countCharacters(token)
+// guesses for a bruteforce token of tokenLength characters (code points).
+// The scoring search calls this directly to rate bruteforce candidates
+// without creating a match object for each of them.
+export const bruteforceGuesses = (tokenLength: number) => {
   let guesses = BRUTEFORCE_CARDINALITY ** tokenLength
   if (guesses === Number.POSITIVE_INFINITY) {
     guesses = Number.MAX_VALUE
@@ -23,3 +25,6 @@ export default ({ token }: MatchExtended | MatchEstimated) => {
 
   return Math.max(guesses, minGuesses)
 }
+
+export default ({ token }: MatchExtended | MatchEstimated) =>
+  bruteforceGuesses(countCharacters(token))
