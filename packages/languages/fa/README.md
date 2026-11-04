@@ -1,34 +1,61 @@
 # @zxcvbn-ts/language-fa
 
-The Persian dictionary and language package for zxcvbn-ts
+[![npm](https://badgen.net/npm/v/@zxcvbn-ts/language-fa)](https://www.npmjs.com/package/@zxcvbn-ts/language-fa)
+[![bundle size](https://badgen.net/bundlephobia/minzip/@zxcvbn-ts/language-fa)](https://bundlephobia.com/package/@zxcvbn-ts/language-fa)
+[![license](https://badgen.net/npm/license/@zxcvbn-ts/language-fa)](https://github.com/zxcvbn-ts/zxcvbn/blob/master/LICENSE.txt)
 
-## Install
+Persian dictionaries and feedback translations for [zxcvbn-ts](https://github.com/zxcvbn-ts/zxcvbn), a realistic password strength estimator.
 
-#### npm:
+📖 **[Documentation](https://zxcvbn-ts.github.io/zxcvbn/)** · [Languages guide](https://zxcvbn-ts.github.io/zxcvbn/guide/languages/) · [Demo](https://zxcvbn-ts.github.io/zxcvbn/demo/)
 
-`npm install @zxcvbn-ts/language-fa --save`
+## What's included
 
-#### yarn:
+- `dictionary`: `commonWords-fa`, `firstnames-fa`, `lastnames-fa`. Passwords built from these words are recognized and get a lower score.
+- `translations`: the warnings and suggestions returned in `result.feedback`, in Persian.
 
-`yarn add @zxcvbn-ts/language-fa`
+Use it together with [`@zxcvbn-ts/language-common`](https://www.npmjs.com/package/@zxcvbn-ts/language-common), which provides the common password list and the keyboard adjacency graphs. You can combine several language packages by spreading more dictionaries into `dictionary`.
 
-## Setup
+## Installation
+
+```sh
+# npm
+npm install @zxcvbn-ts/core @zxcvbn-ts/language-common @zxcvbn-ts/language-fa
+# yarn
+yarn add @zxcvbn-ts/core @zxcvbn-ts/language-common @zxcvbn-ts/language-fa
+# pnpm
+pnpm add @zxcvbn-ts/core @zxcvbn-ts/language-common @zxcvbn-ts/language-fa
+```
+
+## Usage
 
 ```js
 import { ZxcvbnFactory } from '@zxcvbn-ts/core'
 import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
 import * as zxcvbnFaPackage from '@zxcvbn-ts/language-fa'
 
-const password = 'somePassword'
 const options = {
   translations: zxcvbnFaPackage.translations,
   graphs: zxcvbnCommonPackage.adjacencyGraphs,
   dictionary: {
     ...zxcvbnCommonPackage.dictionary,
-    ...zxcvbnFAPackage.dictionary,
+    ...zxcvbnFaPackage.dictionary,
   },
 }
-
 const zxcvbn = new ZxcvbnFactory(options)
-zxcvbn.check(password)
+
+const result = zxcvbn.check('somePassword')
+console.log(result.score) // 0 (weak) to 4 (strong)
+console.log(result.feedback) // { warning, suggestions } in Persian
 ```
+
+The dictionaries are fairly large. To keep them out of your main bundle, see [lazy loading](https://zxcvbn-ts.github.io/zxcvbn/guide/lazy-loading/).
+
+## Sources
+
+- `commonWords` is generated from the [OpenSubtitles 2024](https://opus.nlpl.eu/datasets/OpenSubtitles) word frequency list (`fa`) provided via OPUS, licensed under [ODC-BY](https://opendatacommons.org/licenses/by/1-0/).
+- `firstnames` are taken from [winkcor/persian-first-names](https://github.com/winkcor/persian-first-names).
+- `lastnames` are taken from [farbodbj/iranian-surname-frequencies](https://github.com/farbodbj/iranian-surname-frequencies).
+
+## License
+
+[MIT](https://github.com/zxcvbn-ts/zxcvbn/blob/master/LICENSE.txt). The bundled data keeps the licenses of its sources listed above.

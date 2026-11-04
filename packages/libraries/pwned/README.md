@@ -1,57 +1,72 @@
 # @zxcvbn-ts/matcher-pwned
 
-The pwned matcher is an async matcher that will make a k-anonymity password request to the [have i been pwned](https://haveibeenpwned.com/) api.
+[![npm](https://badgen.net/npm/v/@zxcvbn-ts/matcher-pwned)](https://www.npmjs.com/package/@zxcvbn-ts/matcher-pwned)
+[![bundle size](https://badgen.net/bundlephobia/minzip/@zxcvbn-ts/matcher-pwned)](https://bundlephobia.com/package/@zxcvbn-ts/matcher-pwned)
+[![license](https://badgen.net/npm/license/@zxcvbn-ts/matcher-pwned)](https://github.com/zxcvbn-ts/zxcvbn/blob/master/LICENSE.txt)
 
+An async matcher for [zxcvbn-ts](https://github.com/zxcvbn-ts/zxcvbn) that checks whether a password appeared in a data breach, using the [Have I Been Pwned](https://haveibeenpwned.com/Passwords) Pwned Passwords API.
+
+📖 **[Documentation](https://zxcvbn-ts.github.io/zxcvbn/)** · [Matcher guide](https://zxcvbn-ts.github.io/zxcvbn/guide/matcher/#zxcvbn-ts-matcher-pwned) · [Demo](https://zxcvbn-ts.github.io/zxcvbn/demo/)
+
+The password never leaves the client. Only the first 5 characters of its SHA-1 hash are sent ([k-anonymity](https://haveibeenpwned.com/API/v3#SearchingPwnedPasswordsByRange)), and the request asks for padded responses so the response size doesn't reveal the match either. A password found in a breach is rated with a score of `0` and gets a warning and a suggestion.
 
 ## Installation
 
-#### npm:
+```sh
+# npm
+npm install @zxcvbn-ts/core @zxcvbn-ts/matcher-pwned
+# yarn
+yarn add @zxcvbn-ts/core @zxcvbn-ts/matcher-pwned
+# pnpm
+pnpm add @zxcvbn-ts/core @zxcvbn-ts/matcher-pwned
+```
 
-`npm install @zxcvbn-ts/core @zxcvbn-ts/matcher-pwned --save`
-
-#### yarn:
-
-`yarn add @zxcvbn-ts/core @zxcvbn-ts/matcher-pwned`
-
-## Setup
+## Usage
 
 ```js
 import { ZxcvbnFactory } from '@zxcvbn-ts/core'
+import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
+import * as zxcvbnEnPackage from '@zxcvbn-ts/language-en'
 import { matcherPwnedFactory } from '@zxcvbn-ts/matcher-pwned'
 
-const config = {
-  url: 'https://api.pwnedpasswords.com/range/'
+const options = {
+  translations: zxcvbnEnPackage.translations,
+  graphs: zxcvbnCommonPackage.adjacencyGraphs,
+  dictionary: {
+    ...zxcvbnCommonPackage.dictionary,
+    ...zxcvbnEnPackage.dictionary,
+  },
 }
-const matcherPwned = matcherPwnedFactory(fetch, config)
-const customMatcher = {
-  pwned: matcherPwned
+const customMatchers = {
+  pwned: matcherPwnedFactory(fetch, {}),
 }
+const zxcvbn = new ZxcvbnFactory(options, customMatchers)
 
-const zxcvbn = new ZxcvbnFactory(options, customMatcher)
-
-const password = 'somePassword'
-// @zxcvbn-ts/matcher-pwned is async so zxcvbn will return a promise
-zxcvbn.checkAsync(password).then((result) => {
-  
-})
+// the pwned matcher is async, so use checkAsync instead of check
+const result = await zxcvbn.checkAsync('somePassword')
 ```
 
 ## Options
 
-### fetch
-This needs to be some fetch function either the default browser fetch or a fetch package from nodejs
+```js
+matcherPwnedFactory(fetch, config)
+```
 
-### config
-This is an object with the following properties:
+### `fetch`
 
-#### url
-This is the url to the haveibeenpwned api. By default, it is set to `https://api.pwnedpasswords.com/range/`.
-This option can be used if you don't trust haveibeenpwned and download their list to host your own instance of pwnedpasswords
+A `fetch` implementation: the global `fetch` in browsers and Node.js 18+, or a fetch package on older Node.js versions.
 
-#### networkErrorHandler
-An error handler to handle network request. By default this function will just return false to silently ignore the pwned matcher.
+### `config`
 
-## Warning
-Incremental searching involves performing a search for the password as each character is typed by the user, for example via an asynchronous request from their browser. [This may provide a 3rd party (namely someone with access to view inbound requests at Cloudflare) with the ability to observe the API requests with sufficient information to discern the original password being searched for.](https://blog.quarkslab.com/passbolt-a-bold-use-of-haveibeenpwned.html) Waiting until the entire password is entered before checking Pwned Passwords (for example, when [the blur event](https://developer.mozilla.org/en-US/docs/Web/API/Element/blur_event) is raised on the password field), mitigates this risk.
+| Property              | Default                                  | Description                                                                                                                                          |
+|-----------------------|------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `url`                 | `https://api.pwnedpasswords.com/range/`  | The range API endpoint. Point it to your own instance if you host a copy of the Pwned Passwords list instead of calling Have I Been Pwned directly. |
+| `networkErrorHandler` | returns `false`                          | Called with the `Error` or failed `Response` when the request fails. The default silently skips the pwned check.                                    |
 
-Source: https://haveibeenpwned.com/api/v3#PwnedPasswordsIncrementalSearching
+## Check as late as possible
+
+Don't run this matcher on every keystroke. Searching incrementally as the user types [can let a third party with access to the inbound requests (e.g. at Cloudflare) work out the password](https://blog.quarkslab.com/passbolt-a-bold-use-of-haveibeenpwned.html) ([source](https://haveibeenpwned.com/API/v3#PwnedPasswordsIncrementalSearching)). Check once the whole password has been entered, for example on the [`blur`](https://developer.mozilla.org/en-US/docs/Web/API/Element/blur_event) event of the password field, or at least [debounce](https://zxcvbn-ts.github.io/zxcvbn/guide/examples/#debounce) the check.
+
+## License
+
+[MIT](https://github.com/zxcvbn-ts/zxcvbn/blob/master/LICENSE.txt)
