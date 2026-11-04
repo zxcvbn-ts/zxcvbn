@@ -104,18 +104,31 @@ describe('scoring: guesses dictionary', () => {
     })
   })
 
-  it('special scoring for diceware findings', () => {
+  it.each(['diceware', 'diceware-common', 'diceware-en'])(
+    'special scoring for diceware findings in %s',
+    (dictionaryName) => {
+      const match = {
+        ...baseMatch,
+        dictionaryName,
+        token: 'AaA@@@',
+      }
+      // @ts-expect-error for testing purposes
+      expect(dictionaryGuesses(match)).toEqual({
+        baseGuesses: 32,
+        calculation: 3888,
+        l33tVariations: 1,
+        uppercaseVariations: 3,
+      })
+    },
+  )
+
+  it('does not use diceware scoring for other dictionaries starting with diceware', () => {
     const match = {
       ...baseMatch,
-      dictionaryName: 'diceware',
+      dictionaryName: 'dicewareish-common',
       token: 'AaA@@@',
     }
     // @ts-expect-error for testing purposes
-    expect(dictionaryGuesses(match)).toEqual({
-      baseGuesses: 32,
-      calculation: 3888,
-      l33tVariations: 1,
-      uppercaseVariations: 3,
-    })
+    expect(dictionaryGuesses(match).calculation).not.toEqual(3888)
   })
 })
