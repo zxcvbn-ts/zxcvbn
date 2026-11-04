@@ -1,45 +1,23 @@
 # Framework examples
 
-Those examples are using the full feature set of zxcvbn, and are marked with `recommended` and `optional`
+All examples import the `zxcvbn` instance from the `zxcvbn.ts` module of the [recommended setup](../getting-started/#recommended-setup), so the options are only created once.
+To keep the dictionaries out of your main bundle, build the options as shown in [lazy loading](../lazy-loading/).
 
 ## Vue
 
-Use a plugin to only update the options once
+Use a plugin to provide the instance to all components
 
 ```ts
-import { ZxcvbnFactory } from '@zxcvbn-ts/core'
-import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
-import * as zxcvbnEnPackage from '@zxcvbn-ts/language-en'
-import * as zxcvbnDePackage from '@zxcvbn-ts/language-de'
-import { matcherPwnedFactory } from '@zxcvbn-ts/matcher-pwned'
+import { zxcvbn } from './zxcvbn'
 
 const myPlugin = {
-  install(Vue) {
-    // optional
-    const matcherPwned = matcherPwnedFactory(fetch)
-    const customMatcher = {
-      pwned: matcherPwned
-    }
-
-    const options = {
-      // recommended
-      dictionary: {
-        ...zxcvbnCommonPackage.dictionary,
-        ...zxcvbnEnPackage.dictionary,
-        // recommended the language of the country that the user will be in
-        ...zxcvbnDePackage.dictionary,
-      },
-      // recommended
-      graphs: zxcvbnCommonPackage.adjacencyGraphs,
-      // recommended
-      useLevenshteinDistance: true,
-      // optional
-      translations: zxcvbnEnPackage.translations,
-    }
-
-    Vue.prototype.$zxcvbn = new ZxcvbnFactory(options, customMatcher)
+  install(app) {
+    app.config.globalProperties.$zxcvbn = zxcvbn
   },
 }
+
+// main.js
+// createApp(App).use(myPlugin).mount('#app')
 ```
 
 ```vue
@@ -47,7 +25,7 @@ const myPlugin = {
   <div class="example">
     <label>
       Password
-      <input v-model="password" type="text" />
+      <input v-model="password" type="password" />
     </label>
     <template v-if="result">
       <div>The password score is {{ result.score }}/4</div>
@@ -64,9 +42,11 @@ export default {
     return {
       password: '',
       result: null,
-      // recommended
-      debounce: debounce(this.useZxcvbn, 200),
     }
+  },
+  created() {
+    // recommended
+    this.debouncedZxcvbn = debounce(this.useZxcvbn, 200)
   },
   methods: {
     async useZxcvbn() {
@@ -79,7 +59,7 @@ export default {
   },
   watch: {
     password() {
-      this.debounce()
+      this.debouncedZxcvbn()
     },
   },
 }
@@ -94,34 +74,15 @@ Most of the time you don't need to add the module because the user works only on
 /plugins/zxcvbn.ts
 
 ```ts
-import { matcherPwnedFactory } from '@zxcvbn-ts/matcher-pwned'
-import { ZxcvbnFactory } from '@zxcvbn-ts/core'
-import { OptionsType } from '@zxcvbn-ts/core/dist/types'
-import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
-import * as zxcvbnEnPackage from '@zxcvbn-ts/language-en'
-import { ModuleOptions, Nuxt } from '@nuxt/schema'
+// the zxcvbn.ts module of the recommended setup, e.g. in /utils
+import { zxcvbn } from '~/utils/zxcvbn'
 
-export default defineNuxtPlugin(({app}, inject) => {
-  const matcherPwned = matcherPwnedFactory(fetch)
-  const customMatcher = {
-    pwned: matcherPwned
-  }
-
-  const options: OptionsType = {
-    // recommended
-    dictionary: {
-      ...zxcvbnCommonPackage.dictionary,
-      ...zxcvbnEnPackage.dictionary,
+export default defineNuxtPlugin(() => {
+  return {
+    provide: {
+      zxcvbn,
     },
-    // recommended
-    graphs: zxcvbnCommonPackage.adjacencyGraphs,
-    // recommended
-    useLevenshteinDistance: true,
-    // optional
-    translations: zxcvbnEnPackage.translations,
   }
-
-  inject('zxcvbn', new ZxcvbnFactory(options, customMatcher))
 })
 ```
 
@@ -145,7 +106,7 @@ ZxcvbnInput.vue
   <div class="example">
     <label>
       Password
-      <input v-model="password" type="text" />
+      <input v-model="password" type="password" />
     </label>
     <template v-if="result">
       <div>The password score is {{ result.score }}/4</div>
@@ -154,15 +115,18 @@ ZxcvbnInput.vue
 </template>
 
 <script lang="ts" setup>
-import { debounce, ZxcvbnResult } from '@zxcvbn-ts/core'
-import { Ref, watch } from '@vue/runtime-core'
+import { ref, watch } from 'vue'
+import { debounce } from '@zxcvbn-ts/core'
+import type { ZxcvbnResult } from '@zxcvbn-ts/core'
 
-let password = ref()
-let result: Ref<ZxcvbnResult | null> = ref(null)
+const { $zxcvbn } = useNuxtApp()
+
+const password = ref('')
+const result = ref<ZxcvbnResult | null>(null)
 
 const useZxcvbn = async () => {
-  if (password) {
-    result.value = await this.$zxcvbn.checkAsync(password.value)
+  if (password.value) {
+    result.value = await $zxcvbn.checkAsync(password.value)
   } else {
     result.value = null
   }
@@ -176,36 +140,10 @@ watch(password, zxcvbnDebounce)
 
 ## React
 
-```jsx
+```tsx
 import { useState, useEffect, useDeferredValue } from 'react'
-import { ZxcvbnFactory, ZxcvbnResult } from '@zxcvbn-ts/core'
-import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
-import * as zxcvbnEnPackage from '@zxcvbn-ts/language-en'
-import * as zxcvbnDePackage from '@zxcvbn-ts/language-de'
-import { matcherPwnedFactory } from '@zxcvbn-ts/matcher-pwned'
-
-const options = {
-  // recommended
-  dictionary: {
-    ...zxcvbnCommonPackage.dictionary,
-    ...zxcvbnEnPackage.dictionary,
-    // recommended the language of the country that the user will be in
-    ...zxcvbnDePackage.dictionary,
-  },
-  // recommended
-  graphs: zxcvbnCommonPackage.adjacencyGraphs,
-  // recommended
-  useLevenshteinDistance: true,
-  // optional
-  translations: zxcvbnEnPackage.translations,
-}
-
-// optional
-const matcherPwned = matcherPwnedFactory(fetch)
-const customMatcher = {
-  pwned: matcherPwned
-}
-const zxcvbn = new ZxcvbnFactory(options, customMatcher)
+import type { ZxcvbnResult } from '@zxcvbn-ts/core'
+import { zxcvbn } from './zxcvbn'
 
 const usePasswordStrength = (password: string) => {
   const [result, setResult] = useState<ZxcvbnResult | null>(null)
@@ -213,7 +151,20 @@ const usePasswordStrength = (password: string) => {
   const deferredPassword = useDeferredValue(password)
 
   useEffect(() => {
-    zxcvbn.checkAsync(deferredPassword).then((response) => setResult(response))
+    if (!deferredPassword) {
+      setResult(null)
+      return
+    }
+    // ignore responses of outdated passwords, the async matchers can resolve out of order
+    let isCurrent = true
+    zxcvbn.checkAsync(deferredPassword).then((response) => {
+      if (isCurrent) {
+        setResult(response)
+      }
+    })
+    return () => {
+      isCurrent = false
+    }
   }, [deferredPassword])
 
   return result
@@ -228,7 +179,7 @@ export default function PasswordStrength() {
         Password:
         <input
           value={password}
-          type="text"
+          type="password"
           onChange={(e) => {
             setPassword(e.target.value)
           }}
@@ -246,47 +197,30 @@ We are using reactive forms in this example.
 
 ### 1. Install the packages
 
-```bash
-npm install @zxcvbn-ts/core @zxcvbn-ts/language-common @zxcvbn-ts/language-en
-```
+Install the packages of the [recommended setup](../getting-started/#recommended-setup) and add its `zxcvbn.ts` module to `src`.
 
 ---
 
 ### 2. Configure zxcvbn
 
-Create a service that initializes the library once.
+Create a service that wraps the instance.
 
 `src/password-strength.service.ts`
 
 ```typescript
 import { Injectable } from '@angular/core';
 
-import { ZxcvbnFactory } from '@zxcvbn-ts/core';
 import type { ZxcvbnResult } from '@zxcvbn-ts/core';
 
-import * as common from '@zxcvbn-ts/language-common';
-import * as en from '@zxcvbn-ts/language-en';
+import { zxcvbn } from './zxcvbn';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PasswordStrengthService {
-  private readonly zxcvbn = new ZxcvbnFactory({
-    dictionary: {
-      ...common.dictionary,
-      ...en.dictionary,
-    },
-    graphs: common.adjacencyGraphs,
-    translations: en.translations,
-    useLevenshteinDistance: true,
-  });
-
-  check(password: string): ZxcvbnResult {
-    return this.zxcvbn.check(password);
-  }
-
+  // checkAsync, because the recommended setup uses the async pwned matcher
   checkAsync(password: string): Promise<ZxcvbnResult> {
-    return this.zxcvbn.checkAsync(password);
+    return zxcvbn.checkAsync(password);
   }
 }
 ```
@@ -477,36 +411,26 @@ export class RegisterComponent {
 
 ## Fastify
 
+When checking passwords on the server, only accept them over HTTPS and make sure neither the request body nor the result (which contains the password) ends up in your logs.
+Pass the user's own data like username or email as user inputs, otherwise a password built from it is overestimated.
+
 ```ts
 import Fastify from 'fastify'
-import { ZxcvbnFactory } from '@zxcvbn-ts/core'
-import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
-import * as zxcvbnEnPackage from '@zxcvbn-ts/language-en'
+import { zxcvbn } from './zxcvbn'
 
 const fastify = Fastify()
 
-const options = {
-  // recommended
-  dictionary: {
-    ...zxcvbnCommonPackage.dictionary,
-    ...zxcvbnEnPackage.dictionary,
+fastify.post<{ Body: { password?: string; userInputs?: string[] } }>(
+  '/password-strength',
+  async (request, reply) => {
+    const { password, userInputs } = request.body ?? {}
+    if (password) {
+      const { score, feedback } = await zxcvbn.checkAsync(password, userInputs)
+      return { score, feedback }
+    }
+    return reply.status(400).send({ error: 'Password is required' })
   },
-  // recommended
-  graphs: zxcvbnCommonPackage.adjacencyGraphs,
-  // recommended
-  useLevenshteinDistance: true,
-  // optional
-  translations: zxcvbnEnPackage.translations,
-}
-
-const zxcvbn = new ZxcvbnFactory(options)
-
-fastify.post<{Body: string}>('/password-strength', async (request, reply) => {
-  if (request.body) {
-    return zxcvbn.check(request.body)
-  }
-  return reply.status(400).send({ error: 'Password is required' })
-})
+)
 
 const start = async () => {
   try {

@@ -6,7 +6,7 @@
 
 An async matcher for [zxcvbn-ts](https://github.com/zxcvbn-ts/zxcvbn) that checks whether a password appeared in a data breach, using the [Have I Been Pwned](https://haveibeenpwned.com/Passwords) Pwned Passwords API.
 
-📖 **[Documentation](https://zxcvbn-ts.github.io/zxcvbn/)** · [Matcher guide](https://zxcvbn-ts.github.io/zxcvbn/guide/matcher/#zxcvbn-ts-matcher-pwned) · [Demo](https://zxcvbn-ts.github.io/zxcvbn/demo/)
+📖 **[Documentation](https://zxcvbn-ts.github.io/zxcvbn/)** · [Pwned matcher guide](https://zxcvbn-ts.github.io/zxcvbn/guide/pwned-matcher/) · [Demo](https://zxcvbn-ts.github.io/zxcvbn/demo/)
 
 The password never leaves the client. Only the first 5 characters of its SHA-1 hash are sent ([k-anonymity](https://haveibeenpwned.com/API/v3#SearchingPwnedPasswordsByRange)), and the request asks for padded responses so the response size doesn't reveal the match either. A password found in a breach is rated with a score of `0` and gets a warning and a suggestion.
 
@@ -61,7 +61,7 @@ A `fetch` implementation: the global `fetch` in browsers and Node.js 18+, or a f
 | Property              | Default                                  | Description                                                                                                                                          |
 |-----------------------|------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `url`                 | `https://api.pwnedpasswords.com/range/`  | The range API endpoint. Point it to your own instance if you host a copy of the Pwned Passwords list instead of calling Have I Been Pwned directly. |
-| `networkErrorHandler` | returns `false`                          | Called with the `Error` or failed `Response` when the request fails. The default silently skips the pwned check.                                    |
+| `networkErrorHandler` | returns `false`                          | Called with the `Error` or failed `Response` when the request fails. The default silently skips the pwned check, so a breached password isn't flagged while the API is unreachable. Log or throw in it if that matters to you. |
 
 ## Check as late as possible
 

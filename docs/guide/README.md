@@ -20,7 +20,7 @@ This is a complete rewrite of [zxcvbn](https://github.com/dropbox/zxcvbn) in Typ
 which is licensed under the [MIT](https://github.com/dropbox/zxcvbn/blob/master/LICENSE.txt) license.
 Thanks to the original creators [dropbox](https://github.com/dropbox) for their great work.
 
-## Other implementation
+## Other implementations
 
 - [`zxcvbn`](https://github.com/dropbox/zxcvbn) (Original JS)
 - [`zxcvbn-python`](https://github.com/dwolfhub/zxcvbn-python) (Python)
@@ -46,24 +46,24 @@ To curb runtime latency for really long passwords, consider sending `zxcvbn.chec
 For security reasons a limit was implemented for 256 characters by default but can be customized with `maxLength`.
 
 
-## Change prior to original library
+## Changes compared to the original library
 
-- I18n support for feedback, dictionaries and keyboard patterns. By default, the feedback are keys now
-- All dictionaries are optional, but the `en` dictionary is highly recommend (wished feature in some issues)
+- I18n support for feedback, dictionaries and keyboard patterns. By default, the feedback consists of translation keys
+- All dictionaries are optional, but the `common` and `en` dictionaries are highly recommended (a requested feature in some issues)
 - Dictionaries are separate from the core library. This means zxcvbn-ts is relatively small without its dictionaries
-- compress dictionaries for smaller bundle size => up to 33% smaller dictionaries while having more entries
+- Compressed dictionaries for a smaller bundle size => up to 33% smaller dictionaries while having more entries
 - The project is a monorepo with a core library `@zxcvbn-ts/core` and language packages `@zxcvbn-ts/language-en`.
 - Keyboard layouts can be customised. This means you can overwrite the default set of layouts with your own or extend it.
   E.g., if you are developing a Russian website, you need to include a Cyrillic keyboard set. Create a PR so that others can benefit from it.
 - You can use multiple keyboard layouts, which means that the library will check against them by default.
-- the tests are Vitest based, so we get a coverage score
-- eslint/prettier for consistent code style
+- The tests are Vitest based, so we get a coverage score
+- ESLint/Prettier for consistent code style
 - Added static page docs https://zxcvbn-ts.github.io/zxcvbn/
-- esm, commonJS
-- Custom matcher can be added which means you can create your own matcher
-- Async matcher can be added which means you can create a matcher that makes an API call
+- ESM and CommonJS builds
+- Custom matchers can be added, which means you can create your own matcher
+- Async matchers can be added, which means you can create a matcher that makes an API call
 - [haveibeenpwned](https://haveibeenpwned.com/Passwords) matcher
-- included debounce helper
-- levenshtein check for the dictionaries
-- diceware dictionary
-- extended l33t matcher for substitutions like `|_| => u`
+- Included debounce helper
+- Levenshtein check for the dictionaries
+- Diceware dictionary
+- Extended l33t matcher for substitutions like `|_| => u`
