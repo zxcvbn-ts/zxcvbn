@@ -1,5 +1,5 @@
 import { DictionaryMatch, L33tMatch } from '../../../../types'
-import { DictionaryHit, DictionaryMatchOptions } from '../../types'
+import { DictionaryMatchOptions } from '../../types'
 import getCleanPasswords, {
   PasswordChanges,
   PasswordWithSubs,
@@ -91,8 +91,6 @@ class MatchL33t extends MatchDictionary {
       this.options.l33tMaxSubstitutions,
       this.options.trieNodeRoot,
     )
-    // the substituted passwords share most of their substrings
-    const lookupCache = new Map<string, DictionaryHit[]>()
     let hasFullMatch = false
     subbedPasswords.forEach((subbedPassword) => {
       if (hasFullMatch) {
@@ -103,7 +101,6 @@ class MatchL33t extends MatchDictionary {
         password: subbedPassword.password,
         useLevenshtein: subbedPassword.isFullSubstitution,
         minWindowEnds: getMinWindowEnds(subbedPassword),
-        lookupCache,
       })
       matchedDictionary.forEach((match: DictionaryMatch) => {
         const extras = getExtras(subbedPassword, match.i, match.j)

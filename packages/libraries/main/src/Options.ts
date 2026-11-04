@@ -15,6 +15,7 @@ import {
 import l33tTable from './data/l33tTable'
 import translationKeys from './data/translationKeys'
 import TrieNode from './matcher/dictionary/variants/matching/unmunger/TrieNode'
+import WordIndex from './matcher/dictionary/WordIndex'
 import l33tTableToTrieNode from './matcher/dictionary/variants/matching/unmunger/l33tTableToTrieNode'
 import { timeEstimationValuesDefaults } from './TimeEstimates'
 import {
@@ -42,7 +43,10 @@ export default class Options {
     userInputs: [],
   }
 
-  public rankedDictionaries: RankedDictionaries = {}
+  // the words of all dictionaries, empty until the dictionary option is set
+  public wordIndex = new WordIndex()
+
+  private cachedRankedDictionaries: RankedDictionaries | undefined
 
   public rankedDictionariesMaxWordSize: Record<string, number> = {}
 
@@ -173,15 +177,32 @@ export default class Options {
   }
 
   private setRankedDictionaries() {
-    const rankedDictionaries: RankedDictionaries = {}
     const rankedDictionariesMaxWorkSize: Record<string, number> = {}
-    Object.keys(this.dictionary).forEach((name) => {
-      rankedDictionaries[name] = buildRankedDictionary(this.dictionary[name])
+    const names = Object.keys(this.dictionary)
+    names.forEach((name) => {
       rankedDictionariesMaxWorkSize[name] =
         this.getRankedDictionariesMaxWordSize(this.dictionary[name])
     })
-    this.rankedDictionaries = rankedDictionaries
+    this.wordIndex = new WordIndex(
+      names.map((name) => ({ name, words: this.dictionary[name] })),
+    )
+    this.cachedRankedDictionaries = undefined
     this.rankedDictionariesMaxWordSize = rankedDictionariesMaxWorkSize
+  }
+
+  /**
+   * @deprecated The matchers use wordIndex, this builds an object per
+   * dictionary on first use, which takes several times the memory of it.
+   */
+  public get rankedDictionaries(): RankedDictionaries {
+    if (!this.cachedRankedDictionaries) {
+      const rankedDictionaries: RankedDictionaries = {}
+      this.wordIndex.dictionaryNames.forEach((name) => {
+        rankedDictionaries[name] = buildRankedDictionary(this.dictionary[name])
+      })
+      this.cachedRankedDictionaries = rankedDictionaries
+    }
+    return this.cachedRankedDictionaries
   }
 
   private getRankedDictionariesMaxWordSize(list: (string | number)[]) {
@@ -199,7 +220,7 @@ export default class Options {
     return data.reduce((a, b) => Math.max(a, b), -Infinity)
   }
 
-  private buildSanitizedRankedDictionary(list: (string | number)[]) {
+  private sanitizeUserInputs(list: (string | number)[]) {
     const sanitizedInputs: string[] = []
 
     list.forEach((input: string | number | boolean) => {
@@ -213,7 +234,30 @@ export default class Options {
       }
     })
 
-    return buildRankedDictionary(sanitizedInputs)
+    return sanitizedInputs
+  }
+
+  private createUserInputsOptions(
+    dictionary: (string | number)[] | undefined,
+  ): UserInputsOptions {
+    const sanitizedInputs = dictionary
+      ? this.sanitizeUserInputs(dictionary)
+      : []
+    let rankedDictionary: RankedDictionary | undefined
+    return {
+      get rankedDictionary() {
+        if (!rankedDictionary) {
+          rankedDictionary = buildRankedDictionary(sanitizedInputs)
+        }
+        return rankedDictionary
+      },
+      rankedDictionaryMaxWordSize: dictionary
+        ? this.getRankedDictionariesMaxWordSize(dictionary)
+        : 0,
+      wordIndex: new WordIndex([
+        { name: 'userInputs', words: sanitizedInputs },
+      ]),
+    }
   }
 
   public getUserInputsOptions(
@@ -231,18 +275,7 @@ export default class Options {
       return this.cachedUserInputsOptions!
     }
 
-    let rankedDictionary: RankedDictionary = {}
-    let rankedDictionaryMaxWordSize = 0
-    if (dictionary) {
-      rankedDictionary = this.buildSanitizedRankedDictionary(dictionary)
-      rankedDictionaryMaxWordSize =
-        this.getRankedDictionariesMaxWordSize(dictionary)
-    }
-
-    const userInputsOptions: UserInputsOptions = {
-      rankedDictionary,
-      rankedDictionaryMaxWordSize,
-    }
+    const userInputsOptions = this.createUserInputsOptions(dictionary)
 
     // Snapshot the contents rather than keeping the caller's array reference,
     // so a later mutate-and-reuse of the same array is detected as a cache miss.

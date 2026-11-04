@@ -5,6 +5,7 @@ import { DictionaryReturn } from './matcher/dictionary/scoring'
 import { REGEXEN } from './data/const'
 import l33tTableDefault from './data/l33tTable'
 import translationKeys from './data/translationKeys'
+import WordIndex from './matcher/dictionary/WordIndex'
 
 export type PluralizationFunction = (value: number) => string
 
@@ -260,6 +261,7 @@ export interface OptionsType {
   timeEstimationValues?: TimeEstimationValues
 }
 
+// the matchers use a WordIndex instead, see Options.wordIndex
 export type RankedDictionary = Record<string, number>
 
 export type RankedDictionaries = Record<string, RankedDictionary>
@@ -276,8 +278,15 @@ export type DefaultScoringFunction = (
 ) => number | DictionaryReturn
 
 export interface UserInputsOptions {
+  /**
+   * @deprecated Use wordIndex, this is built on first use.
+   */
   rankedDictionary: RankedDictionary
   rankedDictionaryMaxWordSize: number
+  /**
+   * @description The user inputs as the dictionary userInputs. Built from rankedDictionary if it is missing.
+   */
+  wordIndex?: WordIndex
 }
 export interface MatchOptions {
   password: string

@@ -124,8 +124,10 @@ describe('dictionary matching', () => {
       })
     })
 
-    Object.keys(zxcvbnOptions.rankedDictionaries).forEach((name) => {
-      const dict = zxcvbnOptions.rankedDictionaries[name]
+    // eslint-disable-next-line @typescript-eslint/no-deprecated -- also checks the getter
+    const { rankedDictionaries } = zxcvbnOptions
+    Object.keys(rankedDictionaries).forEach((name) => {
+      const dict = rankedDictionaries[name]
       Object.keys(dict).forEach((word) => {
         const rank = dict[word]
         if (word !== 'motherboard') {
@@ -177,27 +179,102 @@ describe('dictionary matching', () => {
     })
   })
 
+  describe('with user inputs and a userInputs dictionary', () => {
+    const zxcvbnOptions = new Options({
+      dictionary: {
+        d1: ['foo', 'bar'],
+        userInputs: ['bar', 'foo'],
+        d2: ['foo'],
+      },
+      translations: zxcvbnEnPackage.translations,
+    })
+    const matchDictionary = new MatchDictionary(zxcvbnOptions)
+    const getHits = (password: string, userInputs: (string | number)[]) =>
+      matchDictionary
+        .match({
+          password,
+          userInputsOptions: zxcvbnOptions.getUserInputsOptions(userInputs),
+        })
+        .map(({ matchedWord, dictionaryName, rank }) => [
+          matchedWord,
+          dictionaryName,
+          rank,
+        ])
+
+    it('replaces the rank of the dictionary with the one of the user input', () => {
+      expect(getHits('foo', ['x', 'foo'])).toEqual([
+        ['foo', 'd1', 1],
+        ['foo', 'userInputs', 2],
+        ['foo', 'd2', 1],
+      ])
+    })
+
+    it('keeps the rank of the dictionary without the user input', () => {
+      expect(getHits('bar', ['foo'])).toEqual([
+        ['bar', 'd1', 2],
+        ['bar', 'userInputs', 1],
+      ])
+    })
+
+    it('matches a user input that no dictionary has', () => {
+      expect(getHits('Q😀z7', ['q😀z', 7])).toEqual([
+        ['q😀z', 'userInputs', 1],
+        ['7', 'userInputs', 2],
+      ])
+    })
+  })
+
+  describe('with user inputs and no userInputs dictionary', () => {
+    const zxcvbnOptions = new Options({
+      dictionary: { d1: ['foo'], d2: ['foo'] },
+      translations: zxcvbnEnPackage.translations,
+    })
+
+    it('lists the user input after every dictionary', () => {
+      expect(
+        new MatchDictionary(zxcvbnOptions)
+          .match({
+            password: 'foo',
+            userInputsOptions: zxcvbnOptions.getUserInputsOptions(['foo']),
+          })
+          .map(({ dictionaryName }) => dictionaryName),
+      ).toEqual(['d1', 'd2', 'userInputs'])
+    })
+
+    it('matches user inputs options without a word index', () => {
+      // eslint-disable-next-line @typescript-eslint/no-deprecated -- a hand-built UserInputsOptions
+      const { rankedDictionary, rankedDictionaryMaxWordSize } =
+        zxcvbnOptions.getUserInputsOptions(['bar', 'foo'])
+      expect(
+        new MatchDictionary(zxcvbnOptions)
+          .match({
+            password: 'foo',
+            userInputsOptions: {
+              rankedDictionary,
+              rankedDictionaryMaxWordSize,
+            },
+          })
+          .map(({ dictionaryName, rank }) => [dictionaryName, rank]),
+      ).toEqual([
+        ['d1', 1],
+        ['d2', 1],
+        ['userInputs', 2],
+      ])
+    })
+  })
+
   describe('without levenshtein distance', () => {
-    it("doesn't look up a full password longer than every dictionary word", () => {
+    it('stops extending a window once no word starts with it', () => {
       const zxcvbnOptions = new Options({
         dictionary: { d1: ['password'] },
         translations: zxcvbnEnPackage.translations,
       })
-      const lookups: string[] = []
-      zxcvbnOptions.rankedDictionaries.d1 = new Proxy(
-        zxcvbnOptions.rankedDictionaries.d1,
-        {
-          get(target, key, receiver) {
-            if (typeof key === 'string') lookups.push(key)
-            return Reflect.get(target, key, receiver)
-          },
-        },
-      )
+      const narrow = vi.spyOn(zxcvbnOptions.wordIndex, 'narrow')
       new MatchDictionary(zxcvbnOptions).match({ password: 'passsword1' })
 
-      // it can't be in a dictionary, only a Levenshtein check could match it
-      expect(lookups).not.toContain('passsword1')
-      expect(lookups).toContain('passswor')
+      // 'p', 'pa', 'pas', 'pass' and 'passs' from 0, then one character
+      // from each of the other 9 starts
+      expect(narrow).toHaveBeenCalledTimes(14)
     })
   })
 
