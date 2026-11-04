@@ -163,11 +163,13 @@ export default class Options {
   }
 
   private setTranslations(translations: TranslationKeys) {
-    if (checkCustomTranslations(translations)) {
-      this.translations = translations
-    } else {
-      throw new Error('Invalid translations object fallback to keys')
+    const invalidKeys = checkCustomTranslations(translations)
+    if (invalidKeys.length > 0) {
+      throw new Error(
+        `Invalid translations object, missing or invalid keys: ${invalidKeys.join(', ')}`,
+      )
     }
+    this.translations = translations
   }
 
   private setRankedDictionaries() {

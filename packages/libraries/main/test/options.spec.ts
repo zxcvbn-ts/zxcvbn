@@ -21,7 +21,27 @@ describe('Options', () => {
         // @ts-expect-error for testing purposes
 
         new Options({ translations: customTranslations })
-      }).toThrow('Invalid translations object fallback to keys')
+      }).toThrow(
+        /^Invalid translations object, missing or invalid keys: warnings\.simpleRepeat, .*, suggestions, timeEstimation$/,
+      )
+    })
+
+    it('should name the missing and invalid translation keys', () => {
+      const { pwned, ...warnings } = translationKeys.warnings
+      expect(() => {
+        new Options({
+          translations: {
+            ...translationKeys,
+            // @ts-expect-error for testing purposes
+            warnings,
+            // @ts-expect-error for testing purposes
+            suggestions: { ...translationKeys.suggestions, pwned: 1 },
+          },
+        })
+      }).toThrow(
+        'Invalid translations object, missing or invalid keys: warnings.pwned, suggestions.pwned',
+      )
+      expect(pwned).toBe('pwned')
     })
   })
 
