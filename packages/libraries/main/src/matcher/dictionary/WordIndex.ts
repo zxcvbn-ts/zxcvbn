@@ -40,9 +40,10 @@ const flatten = (lists: readonly WordList[]): Entries => {
 }
 
 // The character codes that occur, numbered from 1 in code unit order. 0 is
-// for a word that ends before the position that is sorted on.
+// for a word that ends before the position that is sorted on. Every code unit
+// can occur, so the last id can be 65536.
 const getCharacterIds = (words: string[]) => {
-  const ids = new Uint16Array(65536)
+  const ids = new Uint32Array(65536)
   words.forEach((word) => {
     for (let index = 0; index < word.length; index += 1) {
       ids[word.charCodeAt(index)] = 1
@@ -68,9 +69,9 @@ class EntrySorter {
   private readonly buffer: Int32Array
 
   // the id of order[index] at the depth being sorted, read once per pass
-  private readonly keys: Uint16Array
+  private keys: Uint16Array | Uint32Array = new Uint16Array(0)
 
-  private ids = new Uint16Array(0)
+  private ids = new Uint32Array(0)
 
   private idCount = 0
 
@@ -85,7 +86,6 @@ class EntrySorter {
       this.order[index] = index
     }
     this.buffer = new Int32Array(words.length)
-    this.keys = new Uint16Array(words.length)
   }
 
   sort() {
@@ -94,6 +94,10 @@ class EntrySorter {
       const { ids, count } = getCharacterIds(this.words)
       this.ids = ids
       this.idCount = count
+      this.keys =
+        count < 65536
+          ? new Uint16Array(this.words.length)
+          : new Uint32Array(this.words.length)
     }
     this.sortRange(0, this.words.length, 0)
     return this.order
@@ -218,6 +222,8 @@ export default class WordIndex {
   // the lists aren't copied, they are only read again for levenshtein
   private readonly lists: readonly WordList[]
 
+  private readonly findRange = new Int32Array(2)
+
   private readonly levenshteinDictionaries: LevenshteinDictionary[] = []
 
   // eslint-disable-next-line max-statements
@@ -291,7 +297,9 @@ export default class WordIndex {
 
   // the index of word, or -1
   find(word: string) {
-    const range = Int32Array.of(0, this.words.length)
+    const range = this.findRange
+    range[0] = 0
+    range[1] = this.words.length
     for (
       let depth = 0;
       depth < word.length && range[0] < range[1];

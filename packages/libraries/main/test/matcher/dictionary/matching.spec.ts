@@ -4,6 +4,7 @@ import MatchDictionary from '../../../src/matcher/dictionary/matching'
 import checkMatches from '../../helper/checkMatches'
 import genpws from '../../helper/genpws'
 import Options from '../../../src/Options'
+import { RankedDictionary, UserInputsOptions } from '../../../src/types'
 
 describe('dictionary matching', () => {
   describe('Default dictionary', () => {
@@ -300,6 +301,91 @@ describe('dictionary matching', () => {
         levenshteinDistanceEntry: ['password'],
         rank: [1],
       },
+    })
+  })
+
+  describe('with levenshtein distance and user inputs', () => {
+    const zxcvbnOptions = new Options({
+      dictionary: { userInputs: ['johnsmith', 'maryjones'] },
+      translations: zxcvbnEnPackage.translations,
+      useLevenshteinDistance: true,
+    })
+    const getHits = (password: string, userInputsOptions: UserInputsOptions) =>
+      new MatchDictionary(zxcvbnOptions)
+        .match({ password, userInputsOptions })
+        .map(({ dictionaryName, rank, levenshteinDistanceEntry }) => [
+          dictionaryName,
+          rank,
+          levenshteinDistanceEntry,
+        ])
+
+    it('replaces the rank of the dictionary with the one of the user input', () => {
+      expect(
+        getHits(
+          'maryjonez',
+          zxcvbnOptions.getUserInputsOptions(['x', 'maryjones']),
+        ),
+      ).toEqual([['userInputs', 2, 'maryjones']])
+    })
+
+    it('keeps the entries of the dictionary without the user input', () => {
+      expect(
+        getHits('johnsmlth', zxcvbnOptions.getUserInputsOptions(['x'])),
+      ).toEqual([['userInputs', 1, 'johnsmith']])
+    })
+
+    it('only reads the word index of the user inputs', () => {
+      const { wordIndex, rankedDictionaryMaxWordSize } =
+        zxcvbnOptions.getUserInputsOptions(['peterpan'])
+      const userInputsOptions = {
+        get rankedDictionary(): RankedDictionary {
+          throw new Error('rankedDictionary is deprecated')
+        },
+        rankedDictionaryMaxWordSize,
+        wordIndex,
+      }
+      expect(getHits('peterpam', userInputsOptions)).toEqual([
+        ['userInputs', 1, 'peterpan'],
+      ])
+    })
+  })
+
+  describe('with a hand-built UserInputsOptions', () => {
+    const zxcvbnOptions = new Options({
+      translations: zxcvbnEnPackage.translations,
+      useLevenshteinDistance: true,
+    })
+    const getHits = (password: string, userInputsOptions: UserInputsOptions) =>
+      new MatchDictionary(zxcvbnOptions)
+        .match({ password, userInputsOptions })
+        .filter(({ i, j }) => i === 0 && j === password.length - 1)
+        .map(({ dictionaryName, rank, levenshteinDistanceEntry }) => [
+          dictionaryName,
+          rank,
+          levenshteinDistanceEntry,
+        ])
+
+    it('finds the user inputs added to its rankedDictionary', () => {
+      const rankedDictionary: RankedDictionary = { peterpan: 1 }
+      const userInputsOptions = {
+        rankedDictionary,
+        rankedDictionaryMaxWordSize: 8,
+      }
+      expect(getHits('peterpan', userInputsOptions)).toEqual([
+        ['userInputs', 1, undefined],
+      ])
+      rankedDictionary.wendydarling = 2
+      expect(getHits('wendydarling', userInputsOptions)).toEqual([
+        ['userInputs', 2, undefined],
+      ])
+      // with a stale rankedDictionaryMaxWordSize
+      expect(getHits('wendydarlinx', userInputsOptions)).toEqual([
+        ['userInputs', 2, 'wendydarling'],
+      ])
+      rankedDictionary.peterpan = 3
+      expect(getHits('peterpan', userInputsOptions)).toEqual([
+        ['userInputs', 3, undefined],
+      ])
     })
   })
 

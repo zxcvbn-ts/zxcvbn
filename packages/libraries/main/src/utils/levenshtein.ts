@@ -96,18 +96,32 @@ const isLevenshteinDictionary = (
   typeof dictionary.getEntries === 'function' &&
   typeof dictionary.getRank === 'function'
 
-export const fromRankedDictionary = (
-  rankedDictionary: RankedDictionary,
-): LevenshteinDictionary => ({
-  getEntries: () => {
-    const entries = Object.keys(rankedDictionary)
-    return { entries, ranks: entries.map((entry) => rankedDictionary[entry]) }
-  },
-  getRank: (entry) =>
-    Object.prototype.hasOwnProperty.call(rankedDictionary, entry)
-      ? rankedDictionary[entry]
-      : undefined,
-})
+// one per object, so the entries by length below are cached for it
+const fromRankedDictionaryCache = new WeakMap<
+  RankedDictionary,
+  LevenshteinDictionary
+>()
+
+const fromRankedDictionary = (rankedDictionary: RankedDictionary) => {
+  let dictionary = fromRankedDictionaryCache.get(rankedDictionary)
+  if (!dictionary) {
+    dictionary = {
+      getEntries: () => {
+        const entries = Object.keys(rankedDictionary)
+        return {
+          entries,
+          ranks: entries.map((entry) => rankedDictionary[entry]),
+        }
+      },
+      getRank: (entry) =>
+        Object.prototype.hasOwnProperty.call(rankedDictionary, entry)
+          ? rankedDictionary[entry]
+          : undefined,
+    }
+    fromRankedDictionaryCache.set(rankedDictionary, dictionary)
+  }
+  return dictionary
+}
 
 // An entry can only be within the threshold if its length is close to the
 // password's, so group the entries by length (in characters, an emoji counts
@@ -116,7 +130,7 @@ export const fromRankedDictionary = (
 // Node) for the keys of large dictionaries. Dictionaries never change after
 // they are built, so do it once per object.
 const entriesByLengthCache = new WeakMap<
-  RankedDictionary | LevenshteinDictionary,
+  LevenshteinDictionary,
   Map<number, EntriesOfLength>
 >()
 
@@ -134,11 +148,8 @@ const sortByRank = (group: EntriesOfLength) => {
   group.ranks = order.map((index) => ranks[index])
 }
 
-const getEntriesByLength = (
-  key: RankedDictionary | LevenshteinDictionary,
-  dictionary: LevenshteinDictionary,
-) => {
-  const cached = entriesByLengthCache.get(key)
+const getEntriesByLength = (dictionary: LevenshteinDictionary) => {
+  const cached = entriesByLengthCache.get(dictionary)
   if (cached) {
     return cached
   }
@@ -162,11 +173,11 @@ const getEntriesByLength = (
     sortByRank(group)
     group.masks = Int32Array.from(group.entries, getCharacterMask)
   })
-  entriesByLengthCache.set(key, entriesByLength)
+  entriesByLengthCache.set(dictionary, entriesByLength)
   return entriesByLength
 }
 
-interface FoundEntry {
+export interface FoundEntry {
   rank: number
   entry: string
   distance: number
@@ -223,20 +234,20 @@ export interface FindLevenshteinDistanceResult {
   levenshteinDistanceEntry: string
 }
 
-const findLevenshteinDistance = (
+// The most common entry within the threshold, the password itself (with
+// passwordRank, its rank in the dictionary) unless a more common entry is
+// close to it
+export const findLevenshteinEntry = (
   password: string,
-  rankedDictionary: RankedDictionary | LevenshteinDictionary,
+  dictionary: LevenshteinDictionary,
   threshold: number,
-): Partial<FindLevenshteinDistanceResult> => {
-  const dictionary = isLevenshteinDictionary(rankedDictionary)
-    ? rankedDictionary
-    : fromRankedDictionary(rankedDictionary)
-  const entriesByLength = getEntriesByLength(rankedDictionary, dictionary)
+  passwordRank: number | undefined,
+  // eslint-disable-next-line max-params
+): FoundEntry | undefined => {
+  const entriesByLength = getEntriesByLength(dictionary)
   const passwordLength = countCharacters(password)
   const getDistance = createGetDistance(password)
   const passwordMask = getCharacterMask(password)
-  // the password itself is the match, unless a more common entry is close to it
-  const passwordRank = dictionary.getRank(password)
   let found: FoundEntry | undefined =
     passwordRank === undefined
       ? undefined
@@ -260,6 +271,23 @@ const findLevenshteinDistance = (
         found,
       })
     })
+  return found
+}
+
+const findLevenshteinDistance = (
+  password: string,
+  rankedDictionary: RankedDictionary | LevenshteinDictionary,
+  threshold: number,
+): Partial<FindLevenshteinDistanceResult> => {
+  const dictionary = isLevenshteinDictionary(rankedDictionary)
+    ? rankedDictionary
+    : fromRankedDictionary(rankedDictionary)
+  const found = findLevenshteinEntry(
+    password,
+    dictionary,
+    threshold,
+    dictionary.getRank(password),
+  )
   if (found) {
     return {
       levenshteinDistance: found.distance,

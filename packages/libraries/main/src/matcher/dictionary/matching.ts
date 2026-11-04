@@ -1,6 +1,6 @@
-import findLevenshteinDistance, {
-  fromRankedDictionary,
+import {
   LevenshteinDictionary,
+  findLevenshteinEntry,
 } from '../../utils/levenshtein'
 import {
   DictionaryNames,
@@ -9,19 +9,43 @@ import {
   RankedDictionary,
   UserInputsOptions,
 } from '../../types'
-import Options from '../../Options'
 import { DictionaryHit, DictionaryMatchOptions } from './types'
-import {
-  buildRankedDictionary,
-  countCharacters,
-  toLowerCase,
-} from '../../utils/helper'
+import { countCharacters, toLowerCase } from '../../utils/helper'
 import WordIndex from './WordIndex'
 
 const USER_INPUTS = 'userInputs'
 
-// for a UserInputsOptions built without Options.getUserInputsOptions
-const userInputsWordIndexCache = new WeakMap<RankedDictionary, WordIndex>()
+// The position of the user inputs among the dictionaries of wordIndex, the one
+// of the dictionary userInputs, or after the last without it
+const getUserInputsPosition = (wordIndex: WordIndex) => {
+  const position = wordIndex.dictionaryNames.indexOf(USER_INPUTS)
+  return position === -1 ? wordIndex.dictionaryNames.length : position
+}
+
+interface CachedUserInputs {
+  words: string[]
+  ranks: number[]
+  wordIndex: WordIndex
+}
+
+// For a UserInputsOptions built without Options.getUserInputsOptions. Its
+// rankedDictionary can be changed between matches, so the words and ranks
+// are compared before reusing the word index.
+const userInputsWordIndexCache = new WeakMap<
+  RankedDictionary,
+  CachedUserInputs
+>()
+
+const isSameUserInputs = (
+  cached: CachedUserInputs,
+  words: string[],
+  ranks: number[],
+) =>
+  cached.words.length === words.length &&
+  cached.words.every(
+    (word, index) =>
+      word === words[index] && cached.ranks[index] === ranks[index],
+  )
 
 const getUserInputsWordIndex = (userInputsOptions: UserInputsOptions) => {
   if (userInputsOptions.wordIndex) {
@@ -29,49 +53,82 @@ const getUserInputsWordIndex = (userInputsOptions: UserInputsOptions) => {
   }
   // eslint-disable-next-line @typescript-eslint/no-deprecated -- the only input it has
   const { rankedDictionary } = userInputsOptions
-  let wordIndex = userInputsWordIndexCache.get(rankedDictionary)
-  if (!wordIndex) {
-    const words = Object.keys(rankedDictionary)
-    wordIndex = new WordIndex([
-      {
-        name: USER_INPUTS,
-        words,
-        ranks: words.map((word) => rankedDictionary[word]),
-      },
-    ])
-    userInputsWordIndexCache.set(rankedDictionary, wordIndex)
+  const words = Object.keys(rankedDictionary)
+  const ranks = words.map((word) => rankedDictionary[word])
+  const cached = userInputsWordIndexCache.get(rankedDictionary)
+  if (cached && isSameUserInputs(cached, words, ranks)) {
+    return cached.wordIndex
   }
+  const wordIndex = new WordIndex([{ name: USER_INPUTS, words, ranks }])
+  userInputsWordIndexCache.set(rankedDictionary, { words, ranks, wordIndex })
   return wordIndex
 }
 
-// the userInputs dictionary of the options with the user inputs on top
+// The longest user input in characters. Computed from the words themselves,
+// as rankedDictionaryMaxWordSize can be stale for a hand-built
+// UserInputsOptions, and too small a size would skip the levenshtein search.
+const userInputsMaxWordSizeCache = new WeakMap<WordIndex, number>()
+
+const getUserInputsMaxWordSize = (userInputsWordIndex: WordIndex) => {
+  let maxWordSize = userInputsMaxWordSizeCache.get(userInputsWordIndex)
+  if (maxWordSize === undefined) {
+    maxWordSize = userInputsWordIndex.words.reduce(
+      (max, word) => Math.max(max, countCharacters(word)),
+      0,
+    )
+    userInputsMaxWordSizeCache.set(userInputsWordIndex, maxWordSize)
+  }
+  return maxWordSize
+}
+
+// the entries of both, an entry of first keeps its rank in first
+const combineLevenshteinDictionaries = (
+  first: LevenshteinDictionary,
+  second: LevenshteinDictionary,
+): LevenshteinDictionary => ({
+  getEntries: () => {
+    const { entries, ranks } = first.getEntries()
+    const seen = new Set(entries)
+    const secondEntries = second.getEntries()
+    secondEntries.entries.forEach((entry, index) => {
+      if (!seen.has(entry)) {
+        entries.push(entry)
+        ranks.push(secondEntries.ranks[index])
+      }
+    })
+    return { entries, ranks }
+  },
+  getRank: (entry) => first.getRank(entry) ?? second.getRank(entry),
+})
+
+// The userInputs dictionary of the options with the user inputs on top. Keyed
+// by both word indexes, which are rebuilt whenever their words change.
 const userInputsLevenshteinCache = new WeakMap<
-  Options,
-  WeakMap<UserInputsOptions, LevenshteinDictionary>
+  WordIndex,
+  WeakMap<WordIndex, LevenshteinDictionary>
 >()
 
 const getUserInputsLevenshteinDictionary = (
-  options: Options,
-  userInputsOptions: UserInputsOptions,
+  wordIndex: WordIndex,
+  userInputsWordIndex: WordIndex,
 ) => {
-  let byUserInputs = userInputsLevenshteinCache.get(options)
+  let byUserInputs = userInputsLevenshteinCache.get(wordIndex)
   if (!byUserInputs) {
     byUserInputs = new WeakMap()
-    userInputsLevenshteinCache.set(options, byUserInputs)
+    userInputsLevenshteinCache.set(wordIndex, byUserInputs)
   }
-  let dictionary = byUserInputs.get(userInputsOptions)
+  let dictionary = byUserInputs.get(userInputsWordIndex)
   if (!dictionary) {
-    const optionsUserInputs = options.wordIndex.dictionaryNames.includes(
-      USER_INPUTS,
-    )
-      ? buildRankedDictionary(options.dictionary[USER_INPUTS])
-      : {}
-    dictionary = fromRankedDictionary({
-      ...optionsUserInputs,
-      // eslint-disable-next-line @typescript-eslint/no-deprecated -- levenshtein needs every entry
-      ...userInputsOptions.rankedDictionary,
-    })
-    byUserInputs.set(userInputsOptions, dictionary)
+    const userInputs = userInputsWordIndex.getLevenshteinDictionary(0)
+    const optionsDictionary = wordIndex.dictionaryNames.indexOf(USER_INPUTS)
+    dictionary =
+      optionsDictionary === -1
+        ? userInputs
+        : combineLevenshteinDictionaries(
+            userInputs,
+            wordIndex.getLevenshteinDictionary(optionsDictionary),
+          )
+    byUserInputs.set(userInputsWordIndex, dictionary)
   }
   return dictionary
 }
@@ -88,6 +145,7 @@ class MatchDictionary extends MatcherBaseClass {
     const passwordLength = password.length
     const passwordLower = toLowerCase(password)
     const { wordIndex } = this.options
+    const userInputsPosition = getUserInputsPosition(wordIndex)
     const userInputsWordIndex = userInputsOptions
       ? getUserInputsWordIndex(userInputsOptions)
       : undefined
@@ -156,7 +214,11 @@ class MatchDictionary extends MatcherBaseClass {
             ? userInputsWordIndex.getRank(userInputsRange[0], 0)
             : undefined
         if (word !== -1 || userInputsRank !== undefined) {
-          addMatches(i, j, this.getHits(word, userInputsRank))
+          addMatches(
+            i,
+            j,
+            this.getHits(word, userInputsRank, userInputsPosition),
+          )
         }
       }
       // the full password is checked for every dictionary, even if no word starts with it
@@ -166,7 +228,7 @@ class MatchDictionary extends MatcherBaseClass {
         addMatches(
           0,
           passwordLength - 1,
-          this.getLevenshteinHits(passwordLower, userInputsOptions),
+          this.getLevenshteinHits(passwordLower, userInputsWordIndex),
         )
       }
     }
@@ -177,14 +239,14 @@ class MatchDictionary extends MatcherBaseClass {
   // A rank of the user inputs replaces the one of the dictionary userInputs,
   // or comes last without it.
   // eslint-disable-next-line max-statements
-  private getHits(word: number, userInputsRank: number | undefined) {
+  private getHits(
+    word: number,
+    userInputsRank: number | undefined,
+    userInputsDictionary: number,
+  ) {
     const { wordIndex } = this.options
     const { dictionaryNames, hitStart, hitDictionary, hitRank } = wordIndex
     const hits: DictionaryHit[] = []
-    let userInputsDictionary = dictionaryNames.indexOf(USER_INPUTS)
-    if (userInputsDictionary === -1) {
-      userInputsDictionary = dictionaryNames.length
-    }
     let remainingUserInputsRank = userInputsRank
     if (word !== -1) {
       for (let hit = hitStart[word]; hit < hitStart[word + 1]; hit += 1) {
@@ -217,85 +279,69 @@ class MatchDictionary extends MatcherBaseClass {
   // the hits of the full password in every dictionary, in dictionary order
   private getLevenshteinHits(
     usedPassword: string,
-    userInputsOptions: UserInputsOptions | undefined,
+    userInputsWordIndex: WordIndex | undefined,
   ) {
-    const { wordIndex, rankedDictionariesMaxWordSize } = this.options
+    const { wordIndex, rankedDictionariesMaxWordSize, levenshteinThreshold } =
+      this.options
+    const { dictionaryNames } = wordIndex
+    const passwordLength = countCharacters(usedPassword)
     const hits: DictionaryHit[] = []
     const addHit = (
       dictionaryName: string,
       dictionary: LevenshteinDictionary,
       maxWordSize: number,
     ) => {
-      // a more common entry close to the full password beats the password
-      // itself, even if the dictionary contains it
-      const levenshteinHit = this.findLevenshteinHit(
-        usedPassword,
-        dictionary,
-        maxWordSize,
-      )
       const rank = dictionary.getRank(usedPassword)
-      if (levenshteinHit) {
+      // a more common entry close to the full password beats the password
+      // itself, even if the dictionary contains it. A password longer than
+      // the dictionary's longest word by more than the threshold is at least
+      // that many edits away from every entry.
+      const found =
+        passwordLength - maxWordSize > levenshteinThreshold
+          ? undefined
+          : findLevenshteinEntry(
+              usedPassword,
+              dictionary,
+              levenshteinThreshold,
+              rank,
+            )
+      // finding the password itself is an exact match, not a levenshtein one
+      if (found && found.entry !== usedPassword) {
         hits.push({
           dictionaryName: dictionaryName as DictionaryNames,
-          ...levenshteinHit,
+          rank: found.rank,
+          levenshteinDistance: found.distance,
+          levenshteinDistanceEntry: found.entry,
         })
       } else if (rank !== undefined) {
         hits.push({ dictionaryName: dictionaryName as DictionaryNames, rank })
       }
     }
-    const addUserInputsHit = (options: UserInputsOptions) => {
-      addHit(
-        USER_INPUTS,
-        getUserInputsLevenshteinDictionary(this.options, options),
-        Math.max(
-          options.rankedDictionaryMaxWordSize,
-          rankedDictionariesMaxWordSize[USER_INPUTS] || 0,
-        ),
-      )
-    }
-    wordIndex.dictionaryNames.forEach((name, dictionary) => {
-      if (name === USER_INPUTS && userInputsOptions) {
-        addUserInputsHit(userInputsOptions)
-      } else {
+    const userInputsDictionary = getUserInputsPosition(wordIndex)
+    for (
+      let dictionary = 0;
+      dictionary <= dictionaryNames.length;
+      dictionary += 1
+    ) {
+      if (dictionary === userInputsDictionary && userInputsWordIndex) {
+        addHit(
+          USER_INPUTS,
+          getUserInputsLevenshteinDictionary(wordIndex, userInputsWordIndex),
+          Math.max(
+            getUserInputsMaxWordSize(userInputsWordIndex),
+            rankedDictionariesMaxWordSize[USER_INPUTS] || 0,
+          ),
+        )
+      } else if (dictionary < dictionaryNames.length) {
+        const name = dictionaryNames[dictionary]
         addHit(
           name,
           wordIndex.getLevenshteinDictionary(dictionary),
           rankedDictionariesMaxWordSize[name],
         )
       }
-    })
-    if (userInputsOptions && !wordIndex.dictionaryNames.includes(USER_INPUTS)) {
-      addUserInputsHit(userInputsOptions)
     }
     return hits
-  }
-
-  private findLevenshteinHit(
-    usedPassword: string,
-    dictionary: LevenshteinDictionary,
-    maxWordSize: number,
-  ) {
-    const { levenshteinThreshold } = this.options
-    // a password longer than the dictionary's longest word by more than
-    // the threshold is at least that many edits away from every entry
-    if (countCharacters(usedPassword) - maxWordSize > levenshteinThreshold) {
-      return undefined
-    }
-    const { levenshteinDistance, levenshteinDistanceEntry } =
-      findLevenshteinDistance(usedPassword, dictionary, levenshteinThreshold)
-    // finding the password itself is an exact match, not a levenshtein one
-    if (
-      levenshteinDistance === undefined ||
-      levenshteinDistanceEntry === undefined ||
-      levenshteinDistanceEntry === usedPassword
-    ) {
-      return undefined
-    }
-    return {
-      rank: dictionary.getRank(levenshteinDistanceEntry)!,
-      levenshteinDistance,
-      levenshteinDistanceEntry,
-    }
   }
 }
 

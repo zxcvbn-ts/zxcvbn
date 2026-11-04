@@ -67,6 +67,16 @@ describe('WordIndex', () => {
     expect(wordIndex.words).toEqual([...new Set(words)].sort())
   })
 
+  it('sorts words with every UTF-16 code unit', () => {
+    // more character ids than fit in 16 bits
+    const words = Array.from({ length: 65536 }, (_, code) =>
+      String.fromCharCode(65535 - code).concat(code % 2 ? 'a' : ''),
+    )
+    words.push('\uffff\u0000', 'a\uffff', '\u0000')
+    const wordIndex = new WordIndex([{ name: 'd1', words }])
+    expect(wordIndex.words).toEqual([...new Set(words)].sort())
+  })
+
   it('puts a prefix before the words that start with it', () => {
     const wordIndex = new WordIndex([
       { name: 'd1', words: ['password', 'pass', 'passwords', 'pa'] },
