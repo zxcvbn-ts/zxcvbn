@@ -107,9 +107,13 @@ export default class Options {
       this.addMatcher(name, matcher)
     })
   }
+  // runs for every dictionary match, so it compares without building
+  // `${name}-` for each name
   public isWordSequence(key: string) {
     return this.wordSequenceNames.some(
-      (name) => key === name || key.startsWith(`${name}-`),
+      (name) =>
+        key.startsWith(name) &&
+        (key.length === name.length || key[name.length] === '-'),
     )
   }
 
