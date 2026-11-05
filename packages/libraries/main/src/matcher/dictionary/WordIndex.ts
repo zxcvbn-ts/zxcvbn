@@ -224,6 +224,14 @@ export default class WordIndex {
 
   private readonly findRange = new Int32Array(2)
 
+  // The words that start with a character are at [firstCharacterStarts[n],
+  // firstCharacterStarts[n + 1]), n being firstCharacters.get(its code).
+  // Narrowing all words by their first character is the widest and so
+  // slowest search, and every matcher does it for every start in a password.
+  private readonly firstCharacters = new Map<number, number>()
+
+  private readonly firstCharacterStarts: Int32Array
+
   private readonly levenshteinDictionaries: LevenshteinDictionary[] = []
 
   // eslint-disable-next-line max-statements
@@ -264,6 +272,25 @@ export default class WordIndex {
     this.hitStart = hitStart.slice(0, words.length + 1)
     this.hitDictionary = hitDictionary.slice(0, hitCount)
     this.hitRank = hitRank.slice(0, hitCount)
+    this.firstCharacterStarts = this.getFirstCharacterStarts()
+  }
+
+  // the words are sorted, so the ones with the same first character are
+  // next to each other
+  private getFirstCharacterStarts() {
+    const starts: number[] = []
+    this.words.forEach((word, index) => {
+      if (word.length === 0) {
+        return
+      }
+      const code = word.charCodeAt(0)
+      if (!this.firstCharacters.has(code)) {
+        this.firstCharacters.set(code, starts.length)
+        starts.push(index)
+      }
+    })
+    starts.push(this.words.length)
+    return Int32Array.from(starts)
   }
 
   // the first index in [start, end) whose word has at least code at depth,
@@ -290,6 +317,16 @@ export default class WordIndex {
   // [first, end) in range[0] and range[1]. The words in [start, end) share
   // their first depth characters.
   narrow(range: Int32Array, depth: number, code: number) {
+    if (depth === 0 && range[0] === 0 && range[1] === this.words.length) {
+      const position = this.firstCharacters.get(code)
+      if (position === undefined) {
+        range[0] = range[1]
+      } else {
+        range[0] = this.firstCharacterStarts[position]
+        range[1] = this.firstCharacterStarts[position + 1]
+      }
+      return
+    }
     const first = this.findFirst(range[0], range[1], depth, code)
     range[1] = this.findFirst(first, range[1], depth, code + 1)
     range[0] = first

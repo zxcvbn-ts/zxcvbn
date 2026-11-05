@@ -33,30 +33,6 @@ const getSubs = (changes: PasswordChanges[]) => {
   return { subs, subDisplay: subDisplay.join(', ') }
 }
 
-// The words of a word index that start with a character. Each start of every
-// password narrows the whole index by its first character, the widest and so
-// slowest search, so it is done once per character.
-const firstCharacterRanges = new WeakMap<WordIndex, Map<number, Int32Array>>()
-
-const narrowFirstCharacter = (
-  wordIndex: WordIndex,
-  range: Int32Array,
-  code: number,
-) => {
-  let byCode = firstCharacterRanges.get(wordIndex)
-  if (!byCode) {
-    byCode = new Map()
-    firstCharacterRanges.set(wordIndex, byCode)
-  }
-  let cached = byCode.get(code)
-  if (!cached) {
-    cached = new Int32Array([0, wordIndex.words.length])
-    wordIndex.narrow(cached, 0, code)
-    byCode.set(code, cached)
-  }
-  range.set(cached)
-}
-
 export interface L33tWord {
   i: number
   j: number
@@ -161,10 +137,7 @@ class L33tWalk {
     const userInputsRange = bounds.subarray(2, 4)
     for (let index = 0; index < characters.length; index += 1) {
       const code = characters.charCodeAt(index)
-      if (depth + index === 0) {
-        narrowFirstCharacter(wordIndex, range, code)
-        this.narrowCount += 1
-      } else if (range[0] < range[1]) {
+      if (range[0] < range[1]) {
         wordIndex.narrow(range, depth + index, code)
         this.narrowCount += 1
       }
