@@ -334,4 +334,164 @@ describe('l33t matching', () => {
       expect(performance.now() - start).toBeLessThan(1000)
     })
   })
+
+  // The variant matcher stopped at the first variant that matched the whole
+  // password, so a second word over the whole password was never found. With
+  // every language package these passwords scored higher before the walk.
+  describe('matches that the first full match used to hide', () => {
+    const l33tMatch = (
+      password: string,
+      words: string[],
+      useLevenshteinDistance = false,
+    ) =>
+      new MatchL33t(
+        new Options({ dictionary: { words }, useLevenshteinDistance }),
+      ).match({ password })
+
+    it("finds 'lv' next to 'iv' for '1/', the repeated part of '1/1/91' and '1/1/2010'", () => {
+      expect(l33tMatch('1/', ['lv', 'iv'])).toContainEqual({
+        pattern: 'dictionary',
+        i: 0,
+        j: 1,
+        token: '1/',
+        matchedWord: 'lv',
+        rank: 1,
+        dictionaryName: 'words',
+        reversed: false,
+        l33t: true,
+        subs: [
+          { letter: 'l', substitution: '1' },
+          { letter: 'v', substitution: '/' },
+        ],
+        subDisplay: '1 -> l, / -> v',
+      })
+    })
+
+    it("finds 'lize' next to 'ilze' for '1123'", () => {
+      expect(l33tMatch('1123', ['lize', 'ilze'])).toContainEqual({
+        pattern: 'dictionary',
+        i: 0,
+        j: 3,
+        token: '1123',
+        matchedWord: 'lize',
+        rank: 1,
+        dictionaryName: 'words',
+        reversed: false,
+        l33t: true,
+        subs: [
+          { letter: 'l', substitution: '1' },
+          { letter: 'i', substitution: '1' },
+          { letter: 'z', substitution: '2' },
+          { letter: 'e', substitution: '3' },
+        ],
+        subDisplay: '1 -> l, 1 -> i, 2 -> z, 3 -> e',
+      })
+    })
+
+    describe('with levenshtein', () => {
+      it("finds the levenshtein match of 'computer' next to its l33t match for '(()mp|_|ter'", () => {
+        expect(l33tMatch('(()mp|_|ter', ['computer'], true)).toContainEqual({
+          pattern: 'dictionary',
+          i: 0,
+          j: 10,
+          token: '(()mp|_|ter',
+          matchedWord: 'cc)mputer',
+          rank: 1,
+          dictionaryName: 'words',
+          reversed: false,
+          l33t: true,
+          levenshteinDistance: 2,
+          levenshteinDistanceEntry: 'computer',
+          subs: [
+            { letter: 'c', substitution: '(' },
+            { letter: 'u', substitution: '|_|' },
+          ],
+          subDisplay: '( -> c, |_| -> u',
+        })
+      })
+
+      it("finds 'long' next to 'big' for '1899'", () => {
+        expect(l33tMatch('1899', ['long', 'big'], true)).toContainEqual({
+          pattern: 'dictionary',
+          i: 0,
+          j: 3,
+          token: '1899',
+          matchedWord: 'lbgg',
+          rank: 1,
+          dictionaryName: 'words',
+          reversed: false,
+          l33t: true,
+          levenshteinDistance: 2,
+          levenshteinDistanceEntry: 'long',
+          subs: [
+            { letter: 'l', substitution: '1' },
+            { letter: 'b', substitution: '8' },
+            { letter: 'g', substitution: '9' },
+          ],
+          subDisplay: '1 -> l, 8 -> b, 9 -> g',
+        })
+      })
+
+      it("finds 'que' next to 'dig' for '999'", () => {
+        expect(l33tMatch('999', ['que', 'dig'], true)).toContainEqual({
+          pattern: 'dictionary',
+          i: 0,
+          j: 2,
+          token: '999',
+          matchedWord: 'qqq',
+          rank: 1,
+          dictionaryName: 'words',
+          reversed: false,
+          l33t: true,
+          levenshteinDistance: 2,
+          levenshteinDistanceEntry: 'que',
+          subs: [{ letter: 'q', substitution: '9' }],
+          subDisplay: '9 -> q',
+        })
+      })
+
+      it("finds 'oldani' next to 'ioani' for '101 ani'", () => {
+        expect(l33tMatch('101 ani', ['oldani', 'ioani'], true)).toContainEqual({
+          pattern: 'dictionary',
+          i: 0,
+          j: 6,
+          token: '101 ani',
+          matchedWord: 'lol ani',
+          rank: 1,
+          dictionaryName: 'words',
+          reversed: false,
+          l33t: true,
+          levenshteinDistance: 2,
+          levenshteinDistanceEntry: 'oldani',
+          subs: [
+            { letter: 'l', substitution: '1' },
+            { letter: 'o', substitution: '0' },
+          ],
+          subDisplay: '1 -> l, 0 -> o',
+        })
+      })
+
+      it("finds 'ilani' next to 'igani' for '119 ani'", () => {
+        expect(l33tMatch('119 ani', ['ilani', 'igani'], true)).toContainEqual({
+          pattern: 'dictionary',
+          i: 0,
+          j: 6,
+          token: '119 ani',
+          matchedWord: 'ilg ani',
+          rank: 1,
+          dictionaryName: 'words',
+          reversed: false,
+          l33t: true,
+          levenshteinDistance: 2,
+          levenshteinDistanceEntry: 'ilani',
+          subs: [
+            { letter: 'i', substitution: '1' },
+            { letter: 'l', substitution: '1' },
+            { letter: 'g', substitution: '9' },
+          ],
+          subDisplay: '1 -> i, 1 -> l, 9 -> g',
+        })
+      })
+    })
+  })
 })
