@@ -8,14 +8,11 @@ export type DictionaryHit = {
 
 export interface DictionaryMatchOptionsLevenshtein extends MatchOptions {
   useLevenshtein?: boolean
-  // per start index i, the smallest j worth checking; windows [i, j] that end
-  // before it are skipped
-  minWindowEnds?: number[]
 }
 
 export type DictionaryMatchOptions = Pick<
   DictionaryMatchOptionsLevenshtein,
-  'password' | 'userInputsOptions' | 'useLevenshtein' | 'minWindowEnds'
+  'password' | 'userInputsOptions' | 'useLevenshtein'
 >
 
 export type DefaultMatch = (

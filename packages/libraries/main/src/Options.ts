@@ -17,6 +17,7 @@ import translationKeys from './data/translationKeys'
 import TrieNode from './matcher/dictionary/variants/matching/unmunger/TrieNode'
 import WordIndex from './matcher/dictionary/WordIndex'
 import l33tTableToTrieNode from './matcher/dictionary/variants/matching/unmunger/l33tTableToTrieNode'
+import getL33tSubstitutions from './matcher/dictionary/variants/matching/l33tSubstitutions'
 import { timeEstimationValuesDefaults } from './TimeEstimates'
 import {
   checkCustomMatchers,
@@ -37,7 +38,10 @@ export default class Options {
 
   public l33tTable: OptionsL33tTable = l33tTable
 
+  // only for the fully substituted passwords checked with levenshtein
   public trieNodeRoot: TrieNode = l33tTableToTrieNode(l33tTable, new TrieNode())
+
+  public l33tSubstitutions = getL33tSubstitutions(l33tTable)
 
   public dictionary: OptionsDictionary = {
     userInputs: [],
@@ -115,6 +119,7 @@ export default class Options {
       checkL33tTable(options.l33tTable)
       this.l33tTable = options.l33tTable
       this.trieNodeRoot = l33tTableToTrieNode(options.l33tTable, new TrieNode())
+      this.l33tSubstitutions = getL33tSubstitutions(options.l33tTable)
     }
 
     if (options.dictionary) {

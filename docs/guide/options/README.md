@@ -19,7 +19,7 @@ const zxcvbn = new ZxcvbnFactory(options)
 | translations           | Object  | Translations keys | Translations for the feedback                                        |
 | useLevenshteinDistance | boolean | false             | Activate levenshtein                                                 |
 | levenshteinThreshold   | number  | 2                 | Threshold for levenshtein                                            |
-| l33tMaxSubstitutions   | number  | 100               | Max substitutions for the l33t matcher to prevent DoS                |
+| l33tMaxSubstitutions   | number  | 100               | Max fully substituted passwords checked with levenshtein             |
 | maxLength              | number  | 256               | Defines how many characters of the password are checked              |
 | timeEstimationValues   | Object  | see below         | Define the values to calculate the scoring and attack times          |
 
@@ -62,7 +62,7 @@ An emoji counts as one character. If several dictionary words are close enough, 
 
 ### l33tMaxSubstitutions
 
-The l33t matcher will check how many characters can be exchanged with the l33t table. If there are too many, the calcTime increases significantly. So it is capped at a reasonable value by default; a password with that many substitutions will most likely be rated strong anyway.
+Only used together with `useLevenshteinDistance`: the l33t matcher checks the password with every possible substitution made for a close dictionary entry, and this caps how many of those fully substituted passwords are checked, as each costs a levenshtein search. The l33t matches without levenshtein are found by walking the dictionaries and don't depend on it.
 
 ### maxLength
 

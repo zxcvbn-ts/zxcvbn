@@ -246,7 +246,7 @@ export interface OptionsType {
    */
   levenshteinThreshold?: number
   /**
-   * @description The l33t matcher will check how many characters can be exchanged with the l33t table. If there are too many, the calcTime increases significantly. So it is capped at a reasonable value by default; a password with that many substitutions will most likely be rated strong anyway.
+   * @description Only used together with `useLevenshteinDistance`: the l33t matcher checks the password with every possible substitution made for a close dictionary entry, and this caps how many of those fully substituted passwords are checked, as each costs a levenshtein search. The l33t matches without levenshtein are found by walking the dictionaries and don't depend on it.
    * @default 100
    */
   l33tMaxSubstitutions?: number

@@ -16,12 +16,9 @@ export type IndexedPasswordChanges = PasswordChanges & { i: number }
 export interface PasswordWithSubs {
   password: string
   changes: IndexedPasswordChanges[]
-  isFullSubstitution: boolean
 }
 
 interface HelperOptions {
-  onlyFullSub: boolean
-  isFullSub: boolean
   index: number
   subIndex: number
   changes: IndexedPasswordChanges[]
@@ -62,8 +59,6 @@ class CleanPasswords {
 
   // eslint-disable-next-line complexity,max-statements
   private helper({
-    onlyFullSub,
-    isFullSub,
     index,
     subIndex,
     changes,
@@ -75,13 +70,10 @@ class CleanPasswords {
     }
 
     if (index === this.substr.length) {
-      if (onlyFullSub === isFullSub) {
-        this.finalPasswords.push({
-          password: this.buffer.join(''),
-          changes,
-          isFullSubstitution: onlyFullSub,
-        })
-      }
+      this.finalPasswords.push({
+        password: this.buffer.join(''),
+        changes,
+      })
       return
     }
 
@@ -113,8 +105,6 @@ class CleanPasswords {
 
           // recursively build the rest of the string
           this.helper({
-            onlyFullSub,
-            isFullSub,
             index: index + sub.length,
             subIndex: subIndex + letter.length,
             changes: newSubs,
@@ -130,14 +120,11 @@ class CleanPasswords {
         }
       }
     }
-    // next, generate all combos without doing a substitution at this index
-    // if a partial substitution is requested or there are no substitutions at this index
-    if (!onlyFullSub || !hasSubs) {
+    // keep the character only if there is no substitution at this index
+    if (!hasSubs) {
       const firstChar = this.substr.charAt(index)
       this.buffer.push(firstChar)
       this.helper({
-        onlyFullSub,
-        isFullSub: isFullSub && !hasSubs,
         index: index + 1,
         subIndex: subIndex + 1,
         changes,
@@ -149,20 +136,7 @@ class CleanPasswords {
   }
 
   getAll() {
-    // only full substitution
     this.helper({
-      onlyFullSub: true,
-      isFullSub: true,
-      index: 0,
-      subIndex: 0,
-      changes: [],
-      lastSubLetter: undefined,
-      consecutiveSubCount: 0,
-    })
-    // only partial substitution
-    this.helper({
-      onlyFullSub: false,
-      isFullSub: true,
       index: 0,
       subIndex: 0,
       changes: [],
@@ -174,6 +148,9 @@ class CleanPasswords {
   }
 }
 
+// The passwords with every possible substitution made, up to limit of them.
+// The l33t matcher checks them with levenshtein, it finds the l33t words of
+// the password itself by walking the word index.
 const getCleanPasswords = (
   password: string,
   limit: number,

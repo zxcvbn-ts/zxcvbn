@@ -17,7 +17,7 @@ const USER_INPUTS = 'userInputs'
 
 // The position of the user inputs among the dictionaries of wordIndex, the one
 // of the dictionary userInputs, or after the last without it
-const getUserInputsPosition = (wordIndex: WordIndex) => {
+export const getUserInputsPosition = (wordIndex: WordIndex) => {
   const position = wordIndex.dictionaryNames.indexOf(USER_INPUTS)
   return position === -1 ? wordIndex.dictionaryNames.length : position
 }
@@ -47,7 +47,9 @@ const isSameUserInputs = (
       word === words[index] && cached.ranks[index] === ranks[index],
   )
 
-const getUserInputsWordIndex = (userInputsOptions: UserInputsOptions) => {
+export const getUserInputsWordIndex = (
+  userInputsOptions: UserInputsOptions,
+) => {
   if (userInputsOptions.wordIndex) {
     return userInputsOptions.wordIndex
   }
@@ -139,7 +141,6 @@ class MatchDictionary extends MatcherBaseClass {
     password,
     userInputsOptions,
     useLevenshtein = true,
-    minWindowEnds,
   }: DictionaryMatchOptions) {
     const matches: DictionaryMatch[] = []
     const passwordLength = password.length
@@ -199,9 +200,6 @@ class MatchDictionary extends MatcherBaseClass {
         if (isLevenshteinEnabled && isFullPassword) {
           break
         }
-        if (minWindowEnds && j < minWindowEnds[i]) {
-          continue
-        }
         // the shortest word of a range comes first
         const word =
           range[0] < range[1] && wordIndex.words[range[0]].length === depth + 1
@@ -222,9 +220,7 @@ class MatchDictionary extends MatcherBaseClass {
         }
       }
       // the full password is checked for every dictionary, even if no word starts with it
-      const isFullPasswordSkipped =
-        minWindowEnds !== undefined && passwordLength - 1 < minWindowEnds[0]
-      if (i === 0 && isLevenshteinEnabled && !isFullPasswordSkipped) {
+      if (i === 0 && isLevenshteinEnabled) {
         addMatches(
           0,
           passwordLength - 1,
@@ -239,7 +235,7 @@ class MatchDictionary extends MatcherBaseClass {
   // A rank of the user inputs replaces the one of the dictionary userInputs,
   // or comes last without it.
   // eslint-disable-next-line max-statements
-  private getHits(
+  protected getHits(
     word: number,
     userInputsRank: number | undefined,
     userInputsDictionary: number,
@@ -277,7 +273,7 @@ class MatchDictionary extends MatcherBaseClass {
   }
 
   // the hits of the full password in every dictionary, in dictionary order
-  private getLevenshteinHits(
+  protected getLevenshteinHits(
     usedPassword: string,
     userInputsWordIndex: WordIndex | undefined,
   ) {

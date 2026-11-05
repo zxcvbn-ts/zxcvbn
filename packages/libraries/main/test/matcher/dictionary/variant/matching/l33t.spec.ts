@@ -253,4 +253,85 @@ describe('l33t matching', () => {
       },
     })
   })
+
+  describe('walk over the word index', () => {
+    it('finds l33t words without any substitution limit', () => {
+      const options = new Options({
+        dictionary: dicts,
+        l33tTable: testTable,
+        l33tMaxSubstitutions: 0,
+      })
+      const matches = new MatchL33t(options).match({ password: 'p4ssw0rd' })
+      expect(
+        matches.map(({ token, matchedWord }) => [token, matchedWord]),
+      ).toEqual([['p4ssw0rd', 'password']])
+    })
+
+    it('matches a l33t word that is only a user input', () => {
+      const l33tUserInputs = zxcvbnOptions.getUserInputsOptions(['wookie'])
+      const l33tMatches = matchL33t.match({
+        password: 'xw00kiex',
+        userInputsOptions: l33tUserInputs,
+      })
+      expect(
+        l33tMatches.map(({ i, j, matchedWord, dictionaryName }) => [
+          i,
+          j,
+          matchedWord,
+          dictionaryName,
+        ]),
+      ).toEqual([[1, 6, 'wookie', 'userInputs']])
+    })
+
+    it('matches a case-sensitive substitution', () => {
+      const options = new Options({
+        dictionary: { words: ['bell'] },
+        l33tTable: { l: ['L'] },
+      })
+      const matches = new MatchL33t(options).match({ password: 'beLL' })
+      // 'L' lowercased is already 'l', so there is no substitution to make
+      expect(matches).toEqual([])
+      const upperOptions = new Options({
+        dictionary: { words: ['bell'] },
+        l33tTable: { l: ['I'] },
+      })
+      const upperMatches = new MatchL33t(upperOptions).match({
+        password: 'beII',
+      })
+      expect(
+        upperMatches.map(({ token, matchedWord }) => [token, matchedWord]),
+      ).toEqual([['beII', 'bell']])
+    })
+
+    it('stops at the budget and keeps the matches found so far', () => {
+      class SmallBudgetL33t extends MatchL33t {
+        protected narrowBudget = 50
+      }
+      const options = new Options({
+        dictionary: { words: ['aac', 'aaa'] },
+        l33tTable: { a: ['4'], c: ['4', '('] },
+      })
+      const password = `4@(${'4'.repeat(250)}`
+      const full = new MatchL33t(options).match({ password })
+      const limited = new SmallBudgetL33t(options).match({ password })
+      expect(full.length).toBeGreaterThan(limited.length)
+      expect(limited.length).toBeGreaterThan(0)
+      const fullKeys = full.map(
+        ({ i, j, matchedWord }) => `${i}-${j}-${matchedWord}`,
+      )
+      limited.forEach(({ i, j, matchedWord }) => {
+        expect(fullKeys).toContain(`${i}-${j}-${matchedWord}`)
+      })
+    })
+
+    it('handles a password of only ambiguous substitutions in time', () => {
+      const options = new Options({
+        dictionary: { words: ['ilit', 'liti'] },
+        l33tTable: { i: ['!', '1'], l: ['!', '1'], t: ['!', '1'] },
+      })
+      const start = performance.now()
+      new MatchL33t(options).match({ password: '!'.repeat(256) })
+      expect(performance.now() - start).toBeLessThan(1000)
+    })
+  })
 })
