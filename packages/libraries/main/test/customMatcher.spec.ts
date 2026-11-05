@@ -93,4 +93,41 @@ describe('customMatcher', () => {
       ],
     })
   })
+
+  it('should score a match again when a matcher returns it again', () => {
+    // the same object for every check, scoring writes onto it
+    const sharedMatch: Match = {
+      pattern: 'shared',
+      token: 'ep8fkw8ds',
+      i: 0,
+      j: 8,
+    }
+    let sharedGuesses = 10
+    const sharedZxcvbn = new ZxcvbnFactory(
+      {},
+      {
+        shared: {
+          Matching: class MatchShared extends MatcherBaseClass {
+            match() {
+              return [sharedMatch]
+            }
+          },
+          feedback() {
+            return null
+          },
+          scoring() {
+            return sharedGuesses
+          },
+        },
+      },
+    )
+    const sharedSequenceGuesses = () =>
+      sharedZxcvbn
+        .check('ep8fkw8ds')
+        .sequence.find(({ pattern }) => pattern === 'shared')?.guesses
+
+    expect(sharedSequenceGuesses()).toBe(10)
+    sharedGuesses = 20
+    expect(sharedSequenceGuesses()).toBe(20)
+  })
 })
