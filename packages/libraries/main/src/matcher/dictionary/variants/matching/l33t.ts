@@ -70,7 +70,9 @@ class L33tWalk {
 
   // [start, end) of the word index and of the user inputs per depth, the
   // words in them share their first depth characters
-  private readonly boundsByDepth: Int32Array[] = []
+  private readonly rangesByDepth: Int32Array[] = []
+
+  private readonly userInputsRangesByDepth: Int32Array[] = []
 
   private start = 0
 
@@ -99,13 +101,17 @@ class L33tWalk {
 
   run() {
     const { wordIndex, userInputsWordIndex } = this.options
-    const bounds = this.getBounds(0)
+    this.ensureRanges(0)
+    const range = this.rangesByDepth[0]
+    const userInputsRange = this.userInputsRangesByDepth[0]
     for (let start = 0; start <= this.lastSubstitution; start += 1) {
       this.start = start
-      bounds[0] = 0
-      bounds[1] = wordIndex.words.length
-      bounds[2] = 0
-      bounds[3] = userInputsWordIndex ? userInputsWordIndex.words.length : 0
+      range[0] = 0
+      range[1] = wordIndex.words.length
+      userInputsRange[0] = 0
+      userInputsRange[1] = userInputsWordIndex
+        ? userInputsWordIndex.words.length
+        : 0
       this.walk(start, 0)
       if (this.isOverBudget()) {
         return
@@ -117,13 +123,13 @@ class L33tWalk {
     return this.narrowCount > this.options.budget
   }
 
-  private getBounds(depth: number) {
-    let bounds = this.boundsByDepth[depth]
-    if (!bounds) {
-      bounds = new Int32Array(4)
-      this.boundsByDepth[depth] = bounds
+  private ensureRanges(depth: number) {
+    if (depth >= this.rangesByDepth.length) {
+      for (let next = this.rangesByDepth.length; next <= depth; next += 1) {
+        this.rangesByDepth.push(new Int32Array(2))
+        this.userInputsRangesByDepth.push(new Int32Array(2))
+      }
     }
-    return bounds
   }
 
   // the bounds of depth narrowed by characters, into the bounds of the depth
@@ -131,10 +137,16 @@ class L33tWalk {
   // eslint-disable-next-line max-statements
   private narrow(depth: number, characters: string) {
     const { wordIndex, userInputsWordIndex } = this.options
-    const bounds = this.getBounds(depth + characters.length)
-    bounds.set(this.getBounds(depth))
-    const range = bounds.subarray(0, 2)
-    const userInputsRange = bounds.subarray(2, 4)
+    this.ensureRanges(depth + characters.length)
+    const range = this.rangesByDepth[depth + characters.length]
+    const userInputsRange =
+      this.userInputsRangesByDepth[depth + characters.length]
+    const previousRange = this.rangesByDepth[depth]
+    const previousUserInputsRange = this.userInputsRangesByDepth[depth]
+    range[0] = previousRange[0]
+    range[1] = previousRange[1]
+    userInputsRange[0] = previousUserInputsRange[0]
+    userInputsRange[1] = previousUserInputsRange[1]
     for (let index = 0; index < characters.length; index += 1) {
       const code = characters.charCodeAt(index)
       if (range[0] < range[1]) {
@@ -156,16 +168,17 @@ class L33tWalk {
   // eslint-disable-next-line complexity
   private emit(position: number, depth: number) {
     const { wordIndex, userInputsWordIndex, onWord } = this.options
-    const bounds = this.getBounds(depth)
+    const range = this.rangesByDepth[depth]
+    const userInputsRange = this.userInputsRangesByDepth[depth]
     const word =
-      bounds[0] < bounds[1] && wordIndex.words[bounds[0]].length === depth
-        ? bounds[0]
+      range[0] < range[1] && wordIndex.words[range[0]].length === depth
+        ? range[0]
         : -1
     const userInputsRank =
       userInputsWordIndex &&
-      bounds[2] < bounds[3] &&
-      userInputsWordIndex.words[bounds[2]].length === depth
-        ? userInputsWordIndex.getRank(bounds[2], 0)
+      userInputsRange[0] < userInputsRange[1] &&
+      userInputsWordIndex.words[userInputsRange[0]].length === depth
+        ? userInputsWordIndex.getRank(userInputsRange[0], 0)
         : undefined
     if (word !== -1 || userInputsRank !== undefined) {
       onWord({
@@ -173,7 +186,7 @@ class L33tWalk {
         j: position - 1,
         matchedWord:
           word === -1
-            ? userInputsWordIndex!.words[bounds[2]]
+            ? userInputsWordIndex!.words[userInputsRange[0]]
             : wordIndex.words[word],
         word,
         userInputsRank,
@@ -202,6 +215,7 @@ class L33tWalk {
     return matching
   }
 
+  // eslint-disable-next-line complexity
   private walk(position: number, depth: number) {
     if (depth > 0 && this.changes.length > 0) {
       this.emit(position, depth)
@@ -212,19 +226,22 @@ class L33tWalk {
     ) {
       return
     }
-    this.substitutionsAt[position].forEach(
-      ({ substitution, letters, lettersLower }) => {
-        letters.forEach((letter, index) => {
-          const letterLower = lettersLower[index]
-          if (this.isOverBudget() || !this.narrow(depth, letterLower)) {
-            return
-          }
-          this.changes.push({ i: position, letter, substitution })
+    for (const { substitution, letters, lettersLower } of this.substitutionsAt[
+      position
+    ]) {
+      for (let index = 0; index < letters.length; index += 1) {
+        const letterLower = lettersLower[index]
+        if (!this.isOverBudget() && this.narrow(depth, letterLower)) {
+          this.changes.push({
+            i: position,
+            letter: letters[index],
+            substitution,
+          })
           this.walk(position + substitution.length, depth + letterLower.length)
           this.changes.pop()
-        })
-      },
-    )
+        }
+      }
+    }
     if (
       !this.isOverBudget() &&
       this.narrow(depth, this.passwordLower.charAt(position))
