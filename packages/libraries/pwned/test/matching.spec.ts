@@ -1,6 +1,6 @@
+import { Options } from '@zxcvbn-ts/core'
 import { matcherPwnedFactory } from '../src'
 import matchingFactory from '../src/matching'
-import Options from '../../main/src/Options'
 
 // eslint-disable-next-line @typescript-eslint/require-await
 const fetch = vi.fn(async () => ({
