@@ -16,9 +16,7 @@ export const getUserInputsPosition = (wordIndex: WordIndex) => {
   return position === -1 ? wordIndex.dictionaryNames.length : position
 }
 
-// The longest user input in characters. Computed from the words themselves,
-// as rankedDictionaryMaxWordSize can be stale for a hand-built
-// UserInputsOptions, and too small a size would skip the levenshtein search.
+// The longest user input in characters
 const userInputsMaxWordSizeCache = new WeakMap<WordIndex, number>()
 
 const getUserInputsMaxWordSize = (userInputsWordIndex: WordIndex) => {

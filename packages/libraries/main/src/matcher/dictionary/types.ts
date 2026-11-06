@@ -1,4 +1,4 @@
-import { DictionaryMatch, DictionaryNames, MatchOptions } from '../../types'
+import { DictionaryNames, MatchOptions } from '../../types'
 import { FindLevenshteinDistanceResult } from '../../utils/levenshtein'
 
 export type DictionaryHit = {
@@ -14,7 +14,3 @@ export type DictionaryMatchOptions = Pick<
   DictionaryMatchOptionsLevenshtein,
   'password' | 'userInputsOptions' | 'useLevenshtein'
 >
-
-export type DefaultMatch = (
-  options: DictionaryMatchOptions,
-) => DictionaryMatch[]

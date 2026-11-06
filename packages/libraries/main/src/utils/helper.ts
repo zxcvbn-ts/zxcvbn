@@ -39,9 +39,6 @@ export const countCharacters = (string: string) =>
 export const toLowerCase = (string: string) =>
   string.replace(/İ/g, 'i').toLowerCase()
 
-// mod implementation that works for negative numbers
-export const mod = (n: number, m: number) => ((n % m) + m) % m
-
 // sort on i primary, j secondary
 export const sorted = (matches: MatchExtended[]) =>
   matches.sort((m1, m2) => m1.i - m2.i || m1.j - m2.j)

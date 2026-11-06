@@ -3,7 +3,6 @@ import {
   sorted,
   extend,
   translate,
-  mod,
   countCharacters,
   toLowerCase,
 } from '../../src/utils/helper'
@@ -119,23 +118,6 @@ describe('utils matching', () => {
     })
   })
 
-  describe('mod', () => {
-    const data: [number[], number][] = [
-      [[0, 1], 0],
-      [[1, 1], 0],
-      [[-1, 1], 0],
-      [[5, 5], 0],
-      [[3, 5], 3],
-      [[-1, 5], 4],
-      [[-5, 5], 0],
-      [[6, 5], 1],
-    ]
-    data.forEach(([[dividend, divisor], remainder]) => {
-      it(`(${dividend}, ${divisor}) == ${remainder}`, () => {
-        expect(mod(dividend, divisor)).toEqual(remainder)
-      })
-    })
-  })
   describe('countCharacters', () => {
     const data: [string, number][] = [
       ['', 0],

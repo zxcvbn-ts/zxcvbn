@@ -327,9 +327,8 @@ describe('dictionary matching', () => {
           levenshteinDistanceEntry,
         ])
 
-    it('finds a user input longer than a stale rankedDictionaryMaxWordSize', () => {
+    it('finds a user input with the levenshtein search', () => {
       const userInputsOptions = {
-        rankedDictionaryMaxWordSize: 8,
         wordIndex: new WordIndex([
           { name: 'userInputs', words: ['wendydarling'] },
         ]),

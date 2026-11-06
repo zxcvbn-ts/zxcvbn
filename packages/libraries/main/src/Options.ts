@@ -233,9 +233,6 @@ export default class Options {
       ? this.sanitizeUserInputs(dictionary)
       : []
     return {
-      rankedDictionaryMaxWordSize: dictionary
-        ? this.getRankedDictionariesMaxWordSize(dictionary)
-        : 0,
       wordIndex: new WordIndex([
         { name: 'userInputs', words: sanitizedInputs },
       ]),

@@ -264,7 +264,6 @@ export type DefaultScoringFunction = (
 ) => number | DictionaryReturn
 
 export interface UserInputsOptions {
-  rankedDictionaryMaxWordSize: number
   /**
    * @description The user inputs as the dictionary userInputs.
    */
