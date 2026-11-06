@@ -2,9 +2,8 @@ import { LevenshteinDictionary } from '../../utils/levenshtein'
 
 export interface WordList {
   name: string
+  // the rank of a word is its position, starting at 1
   words: readonly unknown[]
-  // rank of each word, defaults to its position in words, starting at 1
-  ranks?: ArrayLike<number>
 }
 
 // buckets smaller than this are sorted by insertion instead of by character
@@ -27,12 +26,12 @@ const flatten = (lists: readonly WordList[]): Entries => {
     ranks: new Int32Array(count),
   }
   let entry = 0
-  lists.forEach(({ words, ranks }, dictionary) => {
+  lists.forEach(({ words }, dictionary) => {
     for (let index = 0; index < words.length; index += 1) {
       // numbers are listed too, they match as their string
       entries.words[entry] = String(words[index])
       entries.dictionaries[entry] = dictionary
-      entries.ranks[entry] = ranks ? ranks[index] : index + 1
+      entries.ranks[entry] = index + 1
       entry += 1
     }
   })
@@ -353,7 +352,7 @@ export default class WordIndex {
   getLevenshteinDictionary(dictionary: number) {
     let levenshteinDictionary = this.levenshteinDictionaries[dictionary]
     if (!levenshteinDictionary) {
-      const { words, ranks } = this.lists[dictionary]
+      const { words } = this.lists[dictionary]
       levenshteinDictionary = {
         getEntries: () => {
           const entries: string[] = []
@@ -365,7 +364,7 @@ export default class WordIndex {
             if (!seen.has(word)) {
               seen.add(word)
               entries.push(word)
-              entryRanks.push(ranks ? ranks[index] : index + 1)
+              entryRanks.push(index + 1)
             }
           }
           return { entries: entries.reverse(), ranks: entryRanks.reverse() }

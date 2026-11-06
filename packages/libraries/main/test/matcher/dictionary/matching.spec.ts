@@ -4,7 +4,8 @@ import MatchDictionary from '../../../src/matcher/dictionary/matching'
 import checkMatches from '../../helper/checkMatches'
 import genpws from '../../helper/genpws'
 import Options from '../../../src/Options'
-import { RankedDictionary, UserInputsOptions } from '../../../src/types'
+import WordIndex from '../../../src/matcher/dictionary/WordIndex'
+import { UserInputsOptions } from '../../../src/types'
 
 describe('dictionary matching', () => {
   describe('Default dictionary', () => {
@@ -125,12 +126,9 @@ describe('dictionary matching', () => {
       })
     })
 
-    // eslint-disable-next-line @typescript-eslint/no-deprecated -- also checks the getter
-    const { rankedDictionaries } = zxcvbnOptions
-    Object.keys(rankedDictionaries).forEach((name) => {
-      const dict = rankedDictionaries[name]
-      Object.keys(dict).forEach((word) => {
-        const rank = dict[word]
+    Object.entries(testDicts).forEach(([name, words]) => {
+      words.forEach((word, index) => {
+        const rank = index + 1
         if (word !== 'motherboard') {
           matches = dm(word)
           msg = 'matches against all words in provided dictionaries'
@@ -241,27 +239,6 @@ describe('dictionary matching', () => {
           .map(({ dictionaryName }) => dictionaryName),
       ).toEqual(['d1', 'd2', 'userInputs'])
     })
-
-    it('matches user inputs options without a word index', () => {
-      // eslint-disable-next-line @typescript-eslint/no-deprecated -- a hand-built UserInputsOptions
-      const { rankedDictionary, rankedDictionaryMaxWordSize } =
-        zxcvbnOptions.getUserInputsOptions(['bar', 'foo'])
-      expect(
-        new MatchDictionary(zxcvbnOptions)
-          .match({
-            password: 'foo',
-            userInputsOptions: {
-              rankedDictionary,
-              rankedDictionaryMaxWordSize,
-            },
-          })
-          .map(({ dictionaryName, rank }) => [dictionaryName, rank]),
-      ).toEqual([
-        ['d1', 1],
-        ['d2', 1],
-        ['userInputs', 2],
-      ])
-    })
   })
 
   describe('without levenshtein distance', () => {
@@ -333,21 +310,6 @@ describe('dictionary matching', () => {
         getHits('johnsmlth', zxcvbnOptions.getUserInputsOptions(['x'])),
       ).toEqual([['userInputs', 1, 'johnsmith']])
     })
-
-    it('only reads the word index of the user inputs', () => {
-      const { wordIndex, rankedDictionaryMaxWordSize } =
-        zxcvbnOptions.getUserInputsOptions(['peterpan'])
-      const userInputsOptions = {
-        get rankedDictionary(): RankedDictionary {
-          throw new Error('rankedDictionary is deprecated')
-        },
-        rankedDictionaryMaxWordSize,
-        wordIndex,
-      }
-      expect(getHits('peterpam', userInputsOptions)).toEqual([
-        ['userInputs', 1, 'peterpan'],
-      ])
-    })
   })
 
   describe('with a hand-built UserInputsOptions', () => {
@@ -365,26 +327,15 @@ describe('dictionary matching', () => {
           levenshteinDistanceEntry,
         ])
 
-    it('finds the user inputs added to its rankedDictionary', () => {
-      const rankedDictionary: RankedDictionary = { peterpan: 1 }
+    it('finds a user input longer than a stale rankedDictionaryMaxWordSize', () => {
       const userInputsOptions = {
-        rankedDictionary,
         rankedDictionaryMaxWordSize: 8,
+        wordIndex: new WordIndex([
+          { name: 'userInputs', words: ['wendydarling'] },
+        ]),
       }
-      expect(getHits('peterpan', userInputsOptions)).toEqual([
-        ['userInputs', 1, undefined],
-      ])
-      rankedDictionary.wendydarling = 2
-      expect(getHits('wendydarling', userInputsOptions)).toEqual([
-        ['userInputs', 2, undefined],
-      ])
-      // with a stale rankedDictionaryMaxWordSize
       expect(getHits('wendydarlinx', userInputsOptions)).toEqual([
-        ['userInputs', 2, 'wendydarling'],
-      ])
-      rankedDictionary.peterpan = 3
-      expect(getHits('peterpan', userInputsOptions)).toEqual([
-        ['userInputs', 3, undefined],
+        ['userInputs', 1, 'wendydarling'],
       ])
     })
   })

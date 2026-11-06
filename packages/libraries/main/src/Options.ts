@@ -1,15 +1,13 @@
-import { buildRankedDictionary, toLowerCase } from './utils/helper'
+import { toLowerCase } from './utils/helper'
 import {
   TranslationKeys,
   OptionsType,
   OptionsDictionary,
   OptionsL33tTable,
   OptionsGraph,
-  RankedDictionaries,
   Matchers,
   Matcher,
   UserInputsOptions,
-  RankedDictionary,
   TimeEstimationValues,
 } from './types'
 import l33tTable from './data/l33tTable'
@@ -49,8 +47,6 @@ export default class Options {
 
   // the words of all dictionaries, empty until the dictionary option is set
   public wordIndex = new WordIndex()
-
-  private cachedRankedDictionaries: RankedDictionaries | undefined
 
   public rankedDictionariesMaxWordSize: Record<string, number> = {}
 
@@ -195,23 +191,7 @@ export default class Options {
     this.wordIndex = new WordIndex(
       names.map((name) => ({ name, words: this.dictionary[name] })),
     )
-    this.cachedRankedDictionaries = undefined
     this.rankedDictionariesMaxWordSize = rankedDictionariesMaxWorkSize
-  }
-
-  /**
-   * @deprecated The matchers use wordIndex, this builds an object per
-   * dictionary on first use, which takes several times the memory of it.
-   */
-  public get rankedDictionaries(): RankedDictionaries {
-    if (!this.cachedRankedDictionaries) {
-      const rankedDictionaries: RankedDictionaries = {}
-      this.wordIndex.dictionaryNames.forEach((name) => {
-        rankedDictionaries[name] = buildRankedDictionary(this.dictionary[name])
-      })
-      this.cachedRankedDictionaries = rankedDictionaries
-    }
-    return this.cachedRankedDictionaries
   }
 
   private getRankedDictionariesMaxWordSize(list: (string | number)[]) {
@@ -252,14 +232,7 @@ export default class Options {
     const sanitizedInputs = dictionary
       ? this.sanitizeUserInputs(dictionary)
       : []
-    let rankedDictionary: RankedDictionary | undefined
     return {
-      get rankedDictionary() {
-        if (!rankedDictionary) {
-          rankedDictionary = buildRankedDictionary(sanitizedInputs)
-        }
-        return rankedDictionary
-      },
       rankedDictionaryMaxWordSize: dictionary
         ? this.getRankedDictionariesMaxWordSize(dictionary)
         : 0,

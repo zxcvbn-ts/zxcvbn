@@ -4,10 +4,7 @@ import getCleanPasswords, {
   IndexedPasswordChanges,
   PasswordChanges,
 } from './unmunger/getCleanPasswords'
-import MatchDictionary, {
-  getUserInputsPosition,
-  getUserInputsWordIndex,
-} from '../../matching'
+import MatchDictionary, { getUserInputsPosition } from '../../matching'
 import WordIndex from '../../WordIndex'
 import { L33tSubstitution, L33tSubstitutions } from './l33tSubstitutions'
 import { countCharacters, toLowerCase } from '../../../../utils/helper'
@@ -267,9 +264,7 @@ class MatchL33t extends MatchDictionary {
     const matches: L33tMatch[] = []
     const seen = new Set<string>()
     const { wordIndex } = this.options
-    const userInputsWordIndex = userInputsOptions
-      ? getUserInputsWordIndex(userInputsOptions)
-      : undefined
+    const userInputsWordIndex = userInputsOptions?.wordIndex
 
     const addMatches = (
       {

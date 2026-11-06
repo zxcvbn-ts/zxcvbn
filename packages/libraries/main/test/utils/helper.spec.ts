@@ -4,7 +4,6 @@ import {
   extend,
   translate,
   mod,
-  buildRankedDictionary,
   countCharacters,
   toLowerCase,
 } from '../../src/utils/helper'
@@ -134,15 +133,6 @@ describe('utils matching', () => {
     data.forEach(([[dividend, divisor], remainder]) => {
       it(`(${dividend}, ${divisor}) == ${remainder}`, () => {
         expect(mod(dividend, divisor)).toEqual(remainder)
-      })
-    })
-  })
-  describe('buildRankedDictionary', () => {
-    it('should build correctly', () => {
-      expect(buildRankedDictionary(['foo', 'bar', 'rofl'])).toEqual({
-        foo: 1,
-        bar: 2,
-        rofl: 3,
       })
     })
   })

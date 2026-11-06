@@ -161,15 +161,6 @@ export interface Estimate {
 
 export type MatchEstimated = MatchExtended & Estimate
 
-/**
- * @deprecated not used anymore, the scoring search keeps its state internally.
- */
-export interface Optimal {
-  bestMatches: Record<string, MatchEstimated>[]
-  guessesProduct: Record<string, number>[]
-  totalGuesses: Record<string, number>[]
-}
-
 export interface CrackTime {
   base: number | null
   seconds: number
@@ -261,11 +252,6 @@ export interface OptionsType {
   timeEstimationValues?: TimeEstimationValues
 }
 
-// the matchers use a WordIndex instead, see Options.wordIndex
-export type RankedDictionary = Record<string, number>
-
-export type RankedDictionaries = Record<string, RankedDictionary>
-
 export type DefaultFeedbackFunction = (
   options: Options,
   match: MatchEstimated,
@@ -278,15 +264,11 @@ export type DefaultScoringFunction = (
 ) => number | DictionaryReturn
 
 export interface UserInputsOptions {
-  /**
-   * @deprecated Use wordIndex, this is built on first use.
-   */
-  rankedDictionary: RankedDictionary
   rankedDictionaryMaxWordSize: number
   /**
-   * @description The user inputs as the dictionary userInputs. Built from rankedDictionary if it is missing.
+   * @description The user inputs as the dictionary userInputs.
    */
-  wordIndex?: WordIndex
+  wordIndex: WordIndex
 }
 export interface MatchOptions {
   password: string

@@ -2,13 +2,7 @@ import {
   LevenshteinDictionary,
   findLevenshteinEntry,
 } from '../../utils/levenshtein'
-import {
-  DictionaryNames,
-  DictionaryMatch,
-  MatcherBaseClass,
-  RankedDictionary,
-  UserInputsOptions,
-} from '../../types'
+import { DictionaryNames, DictionaryMatch, MatcherBaseClass } from '../../types'
 import { DictionaryHit, DictionaryMatchOptions } from './types'
 import { countCharacters, toLowerCase } from '../../utils/helper'
 import WordIndex from './WordIndex'
@@ -20,50 +14,6 @@ const USER_INPUTS = 'userInputs'
 export const getUserInputsPosition = (wordIndex: WordIndex) => {
   const position = wordIndex.dictionaryNames.indexOf(USER_INPUTS)
   return position === -1 ? wordIndex.dictionaryNames.length : position
-}
-
-interface CachedUserInputs {
-  words: string[]
-  ranks: number[]
-  wordIndex: WordIndex
-}
-
-// For a UserInputsOptions built without Options.getUserInputsOptions. Its
-// rankedDictionary can be changed between matches, so the words and ranks
-// are compared before reusing the word index.
-const userInputsWordIndexCache = new WeakMap<
-  RankedDictionary,
-  CachedUserInputs
->()
-
-const isSameUserInputs = (
-  cached: CachedUserInputs,
-  words: string[],
-  ranks: number[],
-) =>
-  cached.words.length === words.length &&
-  cached.words.every(
-    (word, index) =>
-      word === words[index] && cached.ranks[index] === ranks[index],
-  )
-
-export const getUserInputsWordIndex = (
-  userInputsOptions: UserInputsOptions,
-) => {
-  if (userInputsOptions.wordIndex) {
-    return userInputsOptions.wordIndex
-  }
-  // eslint-disable-next-line @typescript-eslint/no-deprecated -- the only input it has
-  const { rankedDictionary } = userInputsOptions
-  const words = Object.keys(rankedDictionary)
-  const ranks = words.map((word) => rankedDictionary[word])
-  const cached = userInputsWordIndexCache.get(rankedDictionary)
-  if (cached && isSameUserInputs(cached, words, ranks)) {
-    return cached.wordIndex
-  }
-  const wordIndex = new WordIndex([{ name: USER_INPUTS, words, ranks }])
-  userInputsWordIndexCache.set(rankedDictionary, { words, ranks, wordIndex })
-  return wordIndex
 }
 
 // The longest user input in characters. Computed from the words themselves,
@@ -147,9 +97,7 @@ class MatchDictionary extends MatcherBaseClass {
     const passwordLower = toLowerCase(password)
     const { wordIndex } = this.options
     const userInputsPosition = getUserInputsPosition(wordIndex)
-    const userInputsWordIndex = userInputsOptions
-      ? getUserInputsWordIndex(userInputsOptions)
-      : undefined
+    const userInputsWordIndex = userInputsOptions?.wordIndex
     const isLevenshteinEnabled =
       this.options.useLevenshteinDistance && useLevenshtein
 

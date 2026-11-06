@@ -129,13 +129,6 @@ describe('WordIndex', () => {
     expect(getHits(wordIndex, '7')).toEqual([['d1', 3]])
   })
 
-  it('uses the given ranks', () => {
-    const wordIndex = new WordIndex([
-      { name: 'd1', words: ['a', 'b'], ranks: [5, 9] },
-    ])
-    expect(getHits(wordIndex, 'b')).toEqual([['d1', 9]])
-  })
-
   it('has an empty word', () => {
     const wordIndex = new WordIndex([{ name: 'd1', words: ['a', ''] }])
     expect(wordIndex.words).toEqual(['', 'a'])

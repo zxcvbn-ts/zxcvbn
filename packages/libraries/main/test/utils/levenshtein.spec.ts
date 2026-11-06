@@ -1,12 +1,54 @@
 import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common/src'
 import * as zxcvbnEnPackage from '@zxcvbn-ts/language-en/src'
 import { ZxcvbnFactory } from '../../src'
-import findLevenshteinDistance from '../../src/utils/levenshtein'
+import {
+  FindLevenshteinDistanceResult,
+  LevenshteinDictionary,
+  findLevenshteinEntry,
+} from '../../src/utils/levenshtein'
 import Options from '../../src/Options'
 import MatchDictionary from '../../src/matcher/dictionary/matching'
 import MatchL33t from '../../src/matcher/dictionary/variants/matching/l33t'
 import MatchReverse from '../../src/matcher/dictionary/variants/matching/reverse'
-import { DictionaryMatch, RankedDictionary } from '../../src/types'
+import { DictionaryMatch } from '../../src/types'
+
+type EntryRanks = Record<string, number>
+
+const toDictionary = (entryRanks: EntryRanks): LevenshteinDictionary => ({
+  getEntries: () => {
+    const entries = Object.keys(entryRanks)
+    return { entries, ranks: entries.map((entry) => entryRanks[entry]) }
+  },
+  getRank: (entry) =>
+    Object.prototype.hasOwnProperty.call(entryRanks, entry)
+      ? entryRanks[entry]
+      : undefined,
+})
+
+const findInLevenshteinDictionary = (
+  password: string,
+  dictionary: LevenshteinDictionary,
+  threshold: number,
+): Partial<FindLevenshteinDistanceResult> => {
+  const found = findLevenshteinEntry(
+    password,
+    dictionary,
+    threshold,
+    dictionary.getRank(password),
+  )
+  return found
+    ? {
+        levenshteinDistance: found.distance,
+        levenshteinDistanceEntry: found.entry,
+      }
+    : {}
+}
+
+const findLevenshteinDistance = (
+  password: string,
+  entryRanks: EntryRanks,
+  threshold: number,
+) => findInLevenshteinDictionary(password, toDictionary(entryRanks), threshold)
 
 describe('levenshtein', () => {
   const zxcvbn = new ZxcvbnFactory({
@@ -180,26 +222,19 @@ describe('levenshtein', () => {
   })
 
   // the l33t matcher runs this once per substituted password against the same
-  // dictionaries, and listing the keys of a large dictionary is slow in V8
-  it('should list the keys of a dictionary only once', () => {
-    const rankedDictionary = { elephant: 1, giraffe: 2 }
-    const objectKeysSpy = vi.spyOn(Object, 'keys')
-    try {
-      expect(findLevenshteinDistance('alaphant', rankedDictionary, 2)).toEqual({
-        levenshteinDistance: 2,
-        levenshteinDistanceEntry: 'elephant',
-      })
-      expect(findLevenshteinDistance('girafe', rankedDictionary, 2)).toEqual({
-        levenshteinDistance: 1,
-        levenshteinDistanceEntry: 'giraffe',
-      })
-      const dictionaryCalls = objectKeysSpy.mock.calls.filter(
-        ([object]) => object === rankedDictionary,
-      )
-      expect(dictionaryCalls).toHaveLength(1)
-    } finally {
-      objectKeysSpy.mockRestore()
-    }
+  // dictionaries, and listing the entries of a large dictionary is slow
+  it('should list the entries of a dictionary only once', () => {
+    const dictionary = toDictionary({ elephant: 1, giraffe: 2 })
+    const getEntriesSpy = vi.spyOn(dictionary, 'getEntries')
+    expect(findInLevenshteinDictionary('alaphant', dictionary, 2)).toEqual({
+      levenshteinDistance: 2,
+      levenshteinDistanceEntry: 'elephant',
+    })
+    expect(findInLevenshteinDictionary('girafe', dictionary, 2)).toEqual({
+      levenshteinDistance: 1,
+      levenshteinDistanceEntry: 'giraffe',
+    })
+    expect(getEntriesSpy).toHaveBeenCalledTimes(1)
   })
 
   it('should return the first entry within the threshold in dictionary order', () => {
@@ -218,7 +253,7 @@ describe('levenshtein', () => {
     })
   })
 
-  describe('findLevenshteinDistance', () => {
+  describe('findLevenshteinEntry', () => {
     describe('edit operations', () => {
       it.each([
         { edit: 'an exact match', password: 'password', edits: 0 },
@@ -398,12 +433,10 @@ describe('levenshtein', () => {
       ])(
         'returns the most common of %s, %s and %s, whatever their length',
         (...entries) => {
-          const rankedDictionary = Object.fromEntries(
+          const entryRanks = Object.fromEntries(
             entries.map((entry, index) => [entry, index + 1]),
           )
-          expect(
-            findLevenshteinDistance('abcdefgh', rankedDictionary, 2),
-          ).toEqual({
+          expect(findLevenshteinDistance('abcdefgh', entryRanks, 2)).toEqual({
             levenshteinDistance: 1,
             levenshteinDistanceEntry: entries[0],
           })
@@ -626,17 +659,17 @@ describe('levenshtein', () => {
       })
 
       it('finds entries of any length in a dictionary it has seen before', () => {
-        const rankedDictionary = { ab: 1, abcde: 2, abcdefghij: 3 }
-        expect(findLevenshteinDistance('ac', rankedDictionary, 2)).toEqual({
+        const dictionary = toDictionary({ ab: 1, abcde: 2, abcdefghij: 3 })
+        expect(findInLevenshteinDictionary('ac', dictionary, 2)).toEqual({
           levenshteinDistance: 1,
           levenshteinDistanceEntry: 'ab',
         })
-        expect(findLevenshteinDistance('abcdx', rankedDictionary, 2)).toEqual({
+        expect(findInLevenshteinDictionary('abcdx', dictionary, 2)).toEqual({
           levenshteinDistance: 1,
           levenshteinDistanceEntry: 'abcde',
         })
         expect(
-          findLevenshteinDistance('abcdefghix', rankedDictionary, 2),
+          findInLevenshteinDictionary('abcdefghix', dictionary, 2),
         ).toEqual({
           levenshteinDistance: 1,
           levenshteinDistanceEntry: 'abcdefghij',
@@ -673,15 +706,12 @@ describe('levenshtein', () => {
 
       const checkEveryEntry = (
         password: string,
-        rankedDictionary: RankedDictionary,
+        entryRanks: EntryRanks,
         threshold: number,
       ) => {
-        const found = Object.keys(rankedDictionary)
+        const found = Object.keys(entryRanks)
           .filter((entry) => entry !== '')
-          .sort(
-            (first, second) =>
-              rankedDictionary[first] - rankedDictionary[second],
-          )
+          .sort((first, second) => entryRanks[first] - entryRanks[second])
           .find((entry) => characterDistance(password, entry) <= threshold)
         return found === undefined
           ? {}
@@ -737,7 +767,7 @@ describe('levenshtein', () => {
             ranks[index] = ranks[other]
             ranks[other] = rank
           }
-          const rankedDictionary = Object.fromEntries(
+          const entryRanks = Object.fromEntries(
             words.map((word, index) => [word, ranks[index]]),
           )
           const nonEmptyWords = words.filter((word) => word !== '')
@@ -751,14 +781,10 @@ describe('levenshtein', () => {
                     randomInt(0, 4),
                   )
             const threshold = thresholds[randomInt(0, thresholds.length - 1)]
-            const expected = checkEveryEntry(
-              password,
-              rankedDictionary,
-              threshold,
-            )
+            const expected = checkEveryEntry(password, entryRanks, threshold)
             const result = findLevenshteinDistance(
               password,
-              rankedDictionary,
+              entryRanks,
               threshold,
             )
             checks += 1

@@ -1,5 +1,4 @@
 import { distance } from 'fastest-levenshtein'
-import { RankedDictionary } from '../types'
 import { countCharacters } from './helper'
 
 // fastest-levenshtein compares UTF-16 code units, which would count a
@@ -82,60 +81,26 @@ interface EntriesOfLength {
   masks: Int32Array
 }
 
-// A dictionary for findLevenshteinDistance without building a
-// RankedDictionary for it
+// A dictionary for findLevenshteinEntry
 export interface LevenshteinDictionary {
   // every entry once with its rank, in any order
   getEntries: () => { entries: string[]; ranks: number[] }
   getRank: (entry: string) => number | undefined
 }
 
-const isLevenshteinDictionary = (
-  dictionary: RankedDictionary | LevenshteinDictionary,
-): dictionary is LevenshteinDictionary =>
-  typeof dictionary.getEntries === 'function' &&
-  typeof dictionary.getRank === 'function'
-
-// one per object, so the entries by length below are cached for it
-const fromRankedDictionaryCache = new WeakMap<
-  RankedDictionary,
-  LevenshteinDictionary
->()
-
-const fromRankedDictionary = (rankedDictionary: RankedDictionary) => {
-  let dictionary = fromRankedDictionaryCache.get(rankedDictionary)
-  if (!dictionary) {
-    dictionary = {
-      getEntries: () => {
-        const entries = Object.keys(rankedDictionary)
-        return {
-          entries,
-          ranks: entries.map((entry) => rankedDictionary[entry]),
-        }
-      },
-      getRank: (entry) =>
-        Object.prototype.hasOwnProperty.call(rankedDictionary, entry)
-          ? rankedDictionary[entry]
-          : undefined,
-    }
-    fromRankedDictionaryCache.set(rankedDictionary, dictionary)
-  }
-  return dictionary
-}
-
 // An entry can only be within the threshold if its length is close to the
 // password's, so group the entries by length (in characters, an emoji counts
 // as one) and only check those groups.
-// Building this means listing every entry, which is expensive in V8 (Chrome,
-// Node) for the keys of large dictionaries. Dictionaries never change after
-// they are built, so do it once per object.
+// Building this means listing every entry, which is expensive for large
+// dictionaries. Dictionaries never change after they are built, so do it once
+// per object.
 const entriesByLengthCache = new WeakMap<
   LevenshteinDictionary,
   Map<number, EntriesOfLength>
 >()
 
-// Object.keys lists integer-like keys (eg. '123456') before all others, so the
-// entries of a group aren't always in rank order
+// a dictionary lists its entries in any order, so the entries of a group
+// aren't always in rank order
 const sortByRank = (group: EntriesOfLength) => {
   const { entries, ranks } = group
   if (ranks.every((rank, index) => index === 0 || ranks[index - 1] <= rank)) {
@@ -273,28 +238,3 @@ export const findLevenshteinEntry = (
     })
   return found
 }
-
-const findLevenshteinDistance = (
-  password: string,
-  rankedDictionary: RankedDictionary | LevenshteinDictionary,
-  threshold: number,
-): Partial<FindLevenshteinDistanceResult> => {
-  const dictionary = isLevenshteinDictionary(rankedDictionary)
-    ? rankedDictionary
-    : fromRankedDictionary(rankedDictionary)
-  const found = findLevenshteinEntry(
-    password,
-    dictionary,
-    threshold,
-    dictionary.getRank(password),
-  )
-  if (found) {
-    return {
-      levenshteinDistance: found.distance,
-      levenshteinDistanceEntry: found.entry,
-    }
-  }
-  return {}
-}
-
-export default findLevenshteinDistance
