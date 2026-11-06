@@ -2,6 +2,14 @@
 import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
+  plugins: [
+    {
+      name: 'provide-coverage-enabled',
+      configureVitest({ vitest, project }) {
+        project.provide('coverageEnabled', vitest.config.coverage.enabled)
+      },
+    },
+  ],
   test: {
     globals: true,
     // automatically clear all mocks since preserved mock state
