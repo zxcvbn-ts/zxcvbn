@@ -24,6 +24,8 @@ Yarn workspaces + Lerna monorepo (independent versioning):
 
 Faster iteration loops:
 - `yarn -s test:silent [path]` — use this when running tests as an AI agent: prints only failures and the summary, hides console output from passing tests, no coverage table
+- `yarn -s test:coverage:silent [path]` — the same plus overall coverage percentages, without the per-file table or uncovered lines (`yarn test` has those)
+- `yarn -s benchmark:silent [--targets local,4.2.0] [--scenarios common,long]` — use this when running the benchmark as an AI agent: same measurements and options as `yarn benchmark`, printed as a compact table
 - `yarn -s typecheck` / `yarn -s lint` — `-s` hides yarn's own noise; there are no agent-specific variants, so output is plain tsc / eslint stylish (absolute paths, grouped per file)
 - `npx vitest run packages/libraries/main` — just the core package's tests
 - `npx tsc --noEmit -p .` — typecheck without rebuilding

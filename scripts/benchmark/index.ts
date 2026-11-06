@@ -2,10 +2,12 @@
 // checkout. Every measurement runs in its own plain node process, see ./worker.ts.
 //
 // Prints one markdown table, --json also keeps median, p95 and average scores.
+// --compact ("yarn -s benchmark:silent") measures the same but prints as little as possible
+// for AI agents, without progress, scenario descriptions and table padding.
 //
 //   yarn benchmark [--targets local,4.2.0] [--scenarios common,long]
 //                  [--time 2000] [--warmup 500] [--startup-runs 5] [--baseline "zxcvbn 4.4.2"]
-//                  [--timeout 60] [--json out.json]
+//                  [--timeout 60] [--json out.json] [--compact]
 import { execFileSync, spawnSync } from 'node:child_process'
 import {
   existsSync,
@@ -36,8 +38,15 @@ const { values: args } = parseArgs({
     // seconds per measuring process, old versions take minutes for some inputs
     'timeout': { type: 'string', default: '60' },
     'json': { type: 'string' },
+    'compact': { type: 'boolean', default: false },
   },
 })
+
+const logProgress = (message: string) => {
+  if (!args.compact) {
+    console.warn(message)
+  }
+}
 
 // a comma separated list of word prefixes, e.g. "zxcvbn,4.2,local" picks
 // "zxcvbn 4.4.2", "@zxcvbn-ts 4.2.0" and "local"
@@ -66,11 +75,12 @@ const installPublishedVersions = () => {
   if (installed) {
     return
   }
-  console.info('Installing the published versions into scripts/benchmark')
+  logProgress('Installing the published versions into scripts/benchmark')
   execFileSync(
     'npm',
     ['install', '--no-audit', '--no-fund', '--no-package-lock'],
-    { cwd: benchmarkDir, stdio: 'inherit' },
+    // a failed install still reports its stderr through the thrown error
+    { cwd: benchmarkDir, stdio: args.compact ? 'pipe' : 'inherit' },
   )
 }
 
@@ -248,6 +258,67 @@ const printResults = (
   )
 }
 
+const formatCompactNumber = (value: number) => {
+  if (value >= 100) {
+    return value.toFixed(0)
+  }
+  return String(Number(value.toFixed(value >= 10 ? 1 : 2)))
+}
+
+// a value and, unlike formatWithBaseline, its time relative to the baseline as a plain factor
+const formatCompactCell = (
+  values: Map<Target, number>,
+  target: Target,
+  baseline: string,
+) => {
+  const value = values.get(target)
+  if (value === undefined) {
+    return 't/o'
+  }
+  const baselineValue = [...values].find(([{ name }]) => name === baseline)?.[1]
+  return target.name === baseline || baselineValue === undefined
+    ? formatCompactNumber(value)
+    : `${formatCompactNumber(value)} ${formatCompactNumber(value / baselineValue)}x`
+}
+
+const printCompactResults = (
+  startup: Map<Target, StartupResult>,
+  throughput: ReturnType<typeof measure>['throughput'],
+  baseline: string,
+) => {
+  const loadMs = mapValues(startup, (result) => result.loadMs)
+  const meanUs = throughput.map(({ scenario, results }) => ({
+    scenario,
+    values: mapValues(results, (result) => result.meanUs),
+  }))
+  const rows = [...startup].map(([target, result]) =>
+    [
+      target.name.replace('@zxcvbn-ts ', ''),
+      result.dictionaryWords || 'bundled',
+      formatCompactNumber(result.heapMb),
+      formatCompactNumber(
+        result.initMs === undefined
+          ? result.loadMs
+          : result.loadMs - result.initMs,
+      ),
+      result.initMs === undefined ? '-' : formatCompactNumber(result.initMs),
+      formatCompactCell(loadMs, target, baseline),
+      formatCompactNumber(result.firstCheckMs),
+      ...meanUs.map(({ values }) =>
+        formatCompactCell(values, target, baseline),
+      ),
+    ].join('|'),
+  )
+  console.info(
+    [
+      `target|words|heapMB|importMs|initMs|startupMs|firstCheckMs|${meanUs
+        .map(({ scenario }) => `${scenario.name}Us`)
+        .join('|')}`,
+      ...rows,
+    ].join('\n'),
+  )
+}
+
 const selectTargets = () => {
   const selected = filterByName(targets, args.targets).filter((target) => {
     if (target.name !== 'local') {
@@ -271,14 +342,14 @@ const selectTargets = () => {
 const measure = (selectedTargets: Target[], scenarios: Scenario[]) => {
   const startup = new Map<Target, StartupResult>()
   selectedTargets.forEach((target) => {
-    console.warn(`startup: ${target.name}`)
+    logProgress(`startup: ${target.name}`)
     startup.set(target, measureStartup(target))
   })
 
   const throughput = scenarios.map((scenario) => {
     const results = new Map<Target, ThroughputResult>()
     selectedTargets.forEach((target) => {
-      console.warn(`${scenario.name}: ${target.name}`)
+      logProgress(`${scenario.name}: ${target.name}`)
       const result = runWorker([
         'throughput',
         target.name,
@@ -287,7 +358,7 @@ const measure = (selectedTargets: Target[], scenarios: Scenario[]) => {
         args.warmup,
       ])
       if (result === undefined) {
-        console.warn(`  timed out after ${args.timeout} s`)
+        logProgress(`  timed out after ${args.timeout} s`)
         return
       }
       results.set(target, result as ThroughputResult)
@@ -343,6 +414,12 @@ const writeJson = (
 }
 
 const printLegend = (scenarios: Scenario[]) => {
+  if (args.compact) {
+    console.info(
+      `Nx: time relative to baseline, <1 is faster; t/o: over ${args.timeout} s`,
+    )
+    return
+  }
   console.info(
     '- @zxcvbn-ts targets load language-common and language-en, zxcvbn uses its bundled data',
   )
@@ -370,7 +447,8 @@ const main = () => {
 
   const { startup, throughput } = measure(selectedTargets, scenarios)
 
-  printResults(startup, throughput, baseline)
+  const print = args.compact ? printCompactResults : printResults
+  print(startup, throughput, baseline)
 
   if (args.json) {
     writeJson(args.json, {
