@@ -1,24 +1,10 @@
 import utils from '../../src/scoring/utils'
 
-const { log2 } = utils
 const { log10 } = utils
 const EPSILON = 1e-10
 const truncateFloat = (float: number) => Math.round(float / EPSILON) * EPSILON
 
 describe('scoring: utils log', () => {
-  it('log2 should calculate correctly', () => {
-    const data = [
-      [1, 0],
-      [2, 1],
-      [4, 2],
-      [32, 5],
-    ]
-
-    data.forEach(([n, result]) => {
-      expect(log2(n)).toEqual(result)
-    })
-  })
-
   it('log10 should calculate correctly', () => {
     const data = [
       [0, 0],

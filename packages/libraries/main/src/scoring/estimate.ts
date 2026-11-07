@@ -66,6 +66,24 @@ const getScoring = (
   return 0
 }
 
+type EstimatedMatch = MatchEstimated & Partial<DictionaryScoringExtras>
+
+// the guesses of a match by its pattern. A dictionary match also gets the
+// numbers they are calculated from.
+const getGuesses = (options: Options, match: EstimatedMatch) => {
+  const estimationResult = getScoring(options, match.pattern, match)
+  if (typeof estimationResult === 'number') {
+    return estimationResult
+  }
+  if (match.pattern === 'dictionary') {
+    match.baseGuesses = estimationResult.baseGuesses
+    match.uppercaseVariations = estimationResult.uppercaseVariations
+    match.l33tVariations = estimationResult.l33tVariations
+    return estimationResult.calculation
+  }
+  return 0
+}
+
 // ------------------------------------------------------------------------------
 // guess estimation -- one function per match pattern ---------------------------
 // ------------------------------------------------------------------------------
@@ -75,7 +93,6 @@ export default (
   match: MatchExtended | MatchEstimated,
   password: string,
 ): MatchEstimated => {
-  const extraData: Partial<DictionaryScoringExtras> = {}
   // a match's guess estimate doesn't change. cache it.
   if ('guesses' in match && match.guesses != null) {
     return match as MatchEstimated
@@ -83,22 +100,12 @@ export default (
 
   const minGuesses = getMinGuesses(match, password)
 
-  const estimationResult = getScoring(options, match.pattern, match)
-  let guesses = 0
-  if (typeof estimationResult === 'number') {
-    guesses = estimationResult
-  } else if (match.pattern === 'dictionary') {
-    guesses = estimationResult.calculation
-    extraData.baseGuesses = estimationResult.baseGuesses
-    extraData.uppercaseVariations = estimationResult.uppercaseVariations
-    extraData.l33tVariations = estimationResult.l33tVariations
-  }
-
-  const matchGuesses = Math.max(guesses, minGuesses)
-  return {
-    ...match,
-    ...extraData,
-    guesses: matchGuesses,
-    guessesLog10: utils.log10(matchGuesses),
-  }
+  // The estimate is written onto the match itself instead of a copy, this
+  // runs for every match of every check. Matching copies the matches of
+  // custom matchers, so the match is new for this check.
+  const estimated = match as EstimatedMatch
+  const matchGuesses = Math.max(getGuesses(options, estimated), minGuesses)
+  estimated.guesses = matchGuesses
+  estimated.guessesLog10 = utils.log10(matchGuesses)
+  return estimated
 }

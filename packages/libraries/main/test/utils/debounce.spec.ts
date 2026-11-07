@@ -1,6 +1,12 @@
 import debounce from '../../src/utils/debounce'
 
 describe('debounce', () => {
+  // test files share their environment (isolate: false), so fake timers left
+  // on here would stop the timers of the next file in this worker
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
   it('should call handler immediately', () => {
     const testFn = vi.fn()
     const temp = debounce(testFn, 100, true)

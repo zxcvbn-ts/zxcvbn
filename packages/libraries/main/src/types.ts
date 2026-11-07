@@ -5,6 +5,7 @@ import { DictionaryReturn } from './matcher/dictionary/scoring'
 import { REGEXEN } from './data/const'
 import l33tTableDefault from './data/l33tTable'
 import translationKeys from './data/translationKeys'
+import WordIndex from './matcher/dictionary/WordIndex'
 
 export type PluralizationFunction = (value: number) => string
 
@@ -164,12 +165,6 @@ export interface Estimate {
 
 export type MatchEstimated = MatchExtended & Estimate
 
-export interface Optimal {
-  bestMatches: Record<string, MatchEstimated>[]
-  guessesProduct: Record<string, number>[]
-  totalGuesses: Record<string, number>[]
-}
-
 export interface CrackTime {
   base: number | null
   seconds: number
@@ -246,7 +241,7 @@ export interface OptionsType {
    */
   levenshteinThreshold?: number
   /**
-   * @description The l33t matcher will check how many characters can be exchanged with the l33t table. If there are too many, the calcTime increases significantly. So it is capped at a reasonable value by default; a password with that many substitutions will most likely be rated strong anyway.
+   * @description Only used together with `useLevenshteinDistance`: the l33t matcher checks the password with every possible substitution made for a close dictionary entry, and this caps how many of those fully substituted passwords are checked, as each costs a levenshtein search. The l33t matches without levenshtein are found by walking the dictionaries and don't depend on it.
    * @default 100
    */
   l33tMaxSubstitutions?: number
@@ -261,10 +256,6 @@ export interface OptionsType {
   timeEstimationValues?: TimeEstimationValues
 }
 
-export type RankedDictionary = Record<string, number>
-
-export type RankedDictionaries = Record<string, RankedDictionary>
-
 export type DefaultFeedbackFunction = (
   options: Options,
   match: MatchEstimated,
@@ -277,8 +268,10 @@ export type DefaultScoringFunction = (
 ) => number | DictionaryReturn
 
 export interface UserInputsOptions {
-  rankedDictionary: RankedDictionary
-  rankedDictionaryMaxWordSize: number
+  /**
+   * @description The user inputs as the dictionary userInputs.
+   */
+  wordIndex: WordIndex
 }
 export interface MatchOptions {
   password: string

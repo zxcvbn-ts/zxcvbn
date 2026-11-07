@@ -305,7 +305,7 @@ describe('Options', () => {
       userInputs.push('second')
       const result = options.getUserInputsOptions(userInputs)
 
-      expect(Object.keys(result.rankedDictionary)).toContain('second')
+      expect(result.wordIndex.words).toContain('second')
     })
 
     it('should reuse the cached result for an equal but different array reference', () => {
@@ -322,7 +322,7 @@ describe('Options', () => {
       const second = options.getUserInputsOptions(['a', 'c'])
 
       expect(second).not.toBe(first)
-      expect(Object.keys(second.rankedDictionary)).toContain('c')
+      expect(second.wordIndex.words).toContain('c')
     })
 
     it('should reuse the cached result across repeated calls with no userInputs argument at all', () => {

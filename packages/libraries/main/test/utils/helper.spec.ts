@@ -3,8 +3,6 @@ import {
   sorted,
   extend,
   translate,
-  mod,
-  buildRankedDictionary,
   countCharacters,
   toLowerCase,
 } from '../../src/utils/helper'
@@ -120,32 +118,6 @@ describe('utils matching', () => {
     })
   })
 
-  describe('mod', () => {
-    const data: [number[], number][] = [
-      [[0, 1], 0],
-      [[1, 1], 0],
-      [[-1, 1], 0],
-      [[5, 5], 0],
-      [[3, 5], 3],
-      [[-1, 5], 4],
-      [[-5, 5], 0],
-      [[6, 5], 1],
-    ]
-    data.forEach(([[dividend, divisor], remainder]) => {
-      it(`(${dividend}, ${divisor}) == ${remainder}`, () => {
-        expect(mod(dividend, divisor)).toEqual(remainder)
-      })
-    })
-  })
-  describe('buildRankedDictionary', () => {
-    it('should build correctly', () => {
-      expect(buildRankedDictionary(['foo', 'bar', 'rofl'])).toEqual({
-        foo: 1,
-        bar: 2,
-        rofl: 3,
-      })
-    })
-  })
   describe('countCharacters', () => {
     const data: [string, number][] = [
       ['', 0],

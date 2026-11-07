@@ -43,34 +43,6 @@ describe('l33t matching', () => {
     })
   })
 
-  describe('dictionary lookups', () => {
-    // up to l33tMaxSubstitutions substituted passwords get matched, so a
-    // lookup that is repeated or can't produce a l33t match adds up quickly
-    it('should only look up substrings with a substitution, each once', () => {
-      const lookupOptions = new Options({ dictionary: { words: ['pass'] } })
-      const lookups: string[] = []
-      lookupOptions.rankedDictionaries.words = new Proxy(
-        lookupOptions.rankedDictionaries.words,
-        {
-          get(target, key) {
-            lookups.push(String(key))
-            return Reflect.get(target, key)
-          },
-        },
-      )
-      const matches = new MatchL33t(lookupOptions).match({
-        password: 'p4ssw0rd',
-      })
-
-      expect(matches.map((match) => match.matchedWord)).toEqual(['pass'])
-      // 'a' and 'o' only come from substituting '4' and '0'
-      expect(lookups.filter((word) => !/[ao]/.test(word))).toEqual([])
-      expect(
-        lookups.filter((word, index) => lookups.indexOf(word) !== index),
-      ).toEqual([])
-    })
-  })
-
   const zxcvbnOptions = new Options({
     dictionary: dicts,
     l33tTable: testTable,
@@ -279,6 +251,247 @@ describe('l33t matching', () => {
         rank: [1, 1, 1],
         dictionaryName: ['words', 'words2', 'words2'],
       },
+    })
+  })
+
+  describe('walk over the word index', () => {
+    it('finds l33t words without any substitution limit', () => {
+      const options = new Options({
+        dictionary: dicts,
+        l33tTable: testTable,
+        l33tMaxSubstitutions: 0,
+      })
+      const matches = new MatchL33t(options).match({ password: 'p4ssw0rd' })
+      expect(
+        matches.map(({ token, matchedWord }) => [token, matchedWord]),
+      ).toEqual([['p4ssw0rd', 'password']])
+    })
+
+    it('matches a l33t word that is only a user input', () => {
+      const l33tUserInputs = zxcvbnOptions.getUserInputsOptions(['wookie'])
+      const l33tMatches = matchL33t.match({
+        password: 'xw00kiex',
+        userInputsOptions: l33tUserInputs,
+      })
+      expect(
+        l33tMatches.map(({ i, j, matchedWord, dictionaryName }) => [
+          i,
+          j,
+          matchedWord,
+          dictionaryName,
+        ]),
+      ).toEqual([[1, 6, 'wookie', 'userInputs']])
+    })
+
+    it('matches a case-sensitive substitution', () => {
+      const options = new Options({
+        dictionary: { words: ['bell'] },
+        l33tTable: { l: ['L'] },
+      })
+      const matches = new MatchL33t(options).match({ password: 'beLL' })
+      // 'L' lowercased is already 'l', so there is no substitution to make
+      expect(matches).toEqual([])
+      const upperOptions = new Options({
+        dictionary: { words: ['bell'] },
+        l33tTable: { l: ['I'] },
+      })
+      const upperMatches = new MatchL33t(upperOptions).match({
+        password: 'beII',
+      })
+      expect(
+        upperMatches.map(({ token, matchedWord }) => [token, matchedWord]),
+      ).toEqual([['beII', 'bell']])
+    })
+
+    it('stops at the budget and keeps the matches found so far', () => {
+      class SmallBudgetL33t extends MatchL33t {
+        protected narrowBudget = 50
+      }
+      const options = new Options({
+        dictionary: { words: ['aac', 'aaa'] },
+        l33tTable: { a: ['4'], c: ['4', '('] },
+      })
+      const password = `4@(${'4'.repeat(250)}`
+      const full = new MatchL33t(options).match({ password })
+      const limited = new SmallBudgetL33t(options).match({ password })
+      expect(full.length).toBeGreaterThan(limited.length)
+      expect(limited.length).toBeGreaterThan(0)
+      const fullKeys = full.map(
+        ({ i, j, matchedWord }) => `${i}-${j}-${matchedWord}`,
+      )
+      limited.forEach(({ i, j, matchedWord }) => {
+        expect(fullKeys).toContain(`${i}-${j}-${matchedWord}`)
+      })
+    })
+
+    it('handles a password of only ambiguous substitutions in time', () => {
+      const options = new Options({
+        dictionary: { words: ['ilit', 'liti'] },
+        l33tTable: { i: ['!', '1'], l: ['!', '1'], t: ['!', '1'] },
+      })
+      const start = performance.now()
+      new MatchL33t(options).match({ password: '!'.repeat(256) })
+      expect(performance.now() - start).toBeLessThan(1000)
+    })
+  })
+
+  // The variant matcher stopped at the first variant that matched the whole
+  // password, so a second word over the whole password was never found. With
+  // every language package these passwords scored higher before the walk.
+  describe('matches that the first full match used to hide', () => {
+    const l33tMatch = (
+      password: string,
+      words: string[],
+      useLevenshteinDistance = false,
+    ) =>
+      new MatchL33t(
+        new Options({ dictionary: { words }, useLevenshteinDistance }),
+      ).match({ password })
+
+    it("finds 'lv' next to 'iv' for '1/', the repeated part of '1/1/91' and '1/1/2010'", () => {
+      expect(l33tMatch('1/', ['lv', 'iv'])).toContainEqual({
+        pattern: 'dictionary',
+        i: 0,
+        j: 1,
+        token: '1/',
+        matchedWord: 'lv',
+        rank: 1,
+        dictionaryName: 'words',
+        reversed: false,
+        l33t: true,
+        subs: [
+          { letter: 'l', substitution: '1' },
+          { letter: 'v', substitution: '/' },
+        ],
+        subDisplay: '1 -> l, / -> v',
+      })
+    })
+
+    it("finds 'lize' next to 'ilze' for '1123'", () => {
+      expect(l33tMatch('1123', ['lize', 'ilze'])).toContainEqual({
+        pattern: 'dictionary',
+        i: 0,
+        j: 3,
+        token: '1123',
+        matchedWord: 'lize',
+        rank: 1,
+        dictionaryName: 'words',
+        reversed: false,
+        l33t: true,
+        subs: [
+          { letter: 'l', substitution: '1' },
+          { letter: 'i', substitution: '1' },
+          { letter: 'z', substitution: '2' },
+          { letter: 'e', substitution: '3' },
+        ],
+        subDisplay: '1 -> l, 1 -> i, 2 -> z, 3 -> e',
+      })
+    })
+
+    describe('with levenshtein', () => {
+      it("finds the levenshtein match of 'computer' next to its l33t match for '(()mp|_|ter'", () => {
+        expect(l33tMatch('(()mp|_|ter', ['computer'], true)).toContainEqual({
+          pattern: 'dictionary',
+          i: 0,
+          j: 10,
+          token: '(()mp|_|ter',
+          matchedWord: 'cc)mputer',
+          rank: 1,
+          dictionaryName: 'words',
+          reversed: false,
+          l33t: true,
+          levenshteinDistance: 2,
+          levenshteinDistanceEntry: 'computer',
+          subs: [
+            { letter: 'c', substitution: '(' },
+            { letter: 'u', substitution: '|_|' },
+          ],
+          subDisplay: '( -> c, |_| -> u',
+        })
+      })
+
+      it("finds 'long' next to 'big' for '1899'", () => {
+        expect(l33tMatch('1899', ['long', 'big'], true)).toContainEqual({
+          pattern: 'dictionary',
+          i: 0,
+          j: 3,
+          token: '1899',
+          matchedWord: 'lbgg',
+          rank: 1,
+          dictionaryName: 'words',
+          reversed: false,
+          l33t: true,
+          levenshteinDistance: 2,
+          levenshteinDistanceEntry: 'long',
+          subs: [
+            { letter: 'l', substitution: '1' },
+            { letter: 'b', substitution: '8' },
+            { letter: 'g', substitution: '9' },
+          ],
+          subDisplay: '1 -> l, 8 -> b, 9 -> g',
+        })
+      })
+
+      it("finds 'que' next to 'dig' for '999'", () => {
+        expect(l33tMatch('999', ['que', 'dig'], true)).toContainEqual({
+          pattern: 'dictionary',
+          i: 0,
+          j: 2,
+          token: '999',
+          matchedWord: 'qqq',
+          rank: 1,
+          dictionaryName: 'words',
+          reversed: false,
+          l33t: true,
+          levenshteinDistance: 2,
+          levenshteinDistanceEntry: 'que',
+          subs: [{ letter: 'q', substitution: '9' }],
+          subDisplay: '9 -> q',
+        })
+      })
+
+      it("finds 'oldani' next to 'ioani' for '101 ani'", () => {
+        expect(l33tMatch('101 ani', ['oldani', 'ioani'], true)).toContainEqual({
+          pattern: 'dictionary',
+          i: 0,
+          j: 6,
+          token: '101 ani',
+          matchedWord: 'lol ani',
+          rank: 1,
+          dictionaryName: 'words',
+          reversed: false,
+          l33t: true,
+          levenshteinDistance: 2,
+          levenshteinDistanceEntry: 'oldani',
+          subs: [
+            { letter: 'l', substitution: '1' },
+            { letter: 'o', substitution: '0' },
+          ],
+          subDisplay: '1 -> l, 0 -> o',
+        })
+      })
+
+      it("finds 'ilani' next to 'igani' for '119 ani'", () => {
+        expect(l33tMatch('119 ani', ['ilani', 'igani'], true)).toContainEqual({
+          pattern: 'dictionary',
+          i: 0,
+          j: 6,
+          token: '119 ani',
+          matchedWord: 'ilg ani',
+          rank: 1,
+          dictionaryName: 'words',
+          reversed: false,
+          l33t: true,
+          levenshteinDistance: 2,
+          levenshteinDistanceEntry: 'ilani',
+          subs: [
+            { letter: 'i', substitution: '1' },
+            { letter: 'l', substitution: '1' },
+            { letter: 'g', substitution: '9' },
+          ],
+          subDisplay: '1 -> i, 1 -> l, 9 -> g',
+        })
+      })
     })
   })
 })

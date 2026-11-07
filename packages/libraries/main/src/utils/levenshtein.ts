@@ -1,5 +1,4 @@
 import { distance } from 'fastest-levenshtein'
-import { RankedDictionary } from '../types'
 import { countCharacters } from './helper'
 
 // fastest-levenshtein compares UTF-16 code units, which would count a
@@ -82,19 +81,26 @@ interface EntriesOfLength {
   masks: Int32Array
 }
 
+// A dictionary for findLevenshteinEntry
+export interface LevenshteinDictionary {
+  // every entry once with its rank, in any order
+  getEntries: () => { entries: string[]; ranks: number[] }
+  getRank: (entry: string) => number | undefined
+}
+
 // An entry can only be within the threshold if its length is close to the
 // password's, so group the entries by length (in characters, an emoji counts
 // as one) and only check those groups.
-// Building this means listing every key, which is expensive in V8 (Chrome,
-// Node) for large dictionaries. Dictionaries never change after they are
-// built, so do it once per object.
+// Building this means listing every entry, which is expensive for large
+// dictionaries. Dictionaries never change after they are built, so do it once
+// per object.
 const entriesByLengthCache = new WeakMap<
-  RankedDictionary,
+  LevenshteinDictionary,
   Map<number, EntriesOfLength>
 >()
 
-// Object.keys lists integer-like keys (eg. '123456') before all others, so the
-// entries of a group aren't always in rank order
+// a dictionary lists its entries in any order, so the entries of a group
+// aren't always in rank order
 const sortByRank = (group: EntriesOfLength) => {
   const { entries, ranks } = group
   if (ranks.every((rank, index) => index === 0 || ranks[index - 1] <= rank)) {
@@ -107,13 +113,14 @@ const sortByRank = (group: EntriesOfLength) => {
   group.ranks = order.map((index) => ranks[index])
 }
 
-const getEntriesByLength = (rankedDictionary: RankedDictionary) => {
-  const cached = entriesByLengthCache.get(rankedDictionary)
+const getEntriesByLength = (dictionary: LevenshteinDictionary) => {
+  const cached = entriesByLengthCache.get(dictionary)
   if (cached) {
     return cached
   }
   const entriesByLength = new Map<number, EntriesOfLength>()
-  Object.keys(rankedDictionary).forEach((entry) => {
+  const { entries, ranks } = dictionary.getEntries()
+  entries.forEach((entry, index) => {
     // an empty entry (eg. from an empty user input) is never a match
     if (entry === '') {
       return
@@ -125,17 +132,17 @@ const getEntriesByLength = (rankedDictionary: RankedDictionary) => {
       entriesByLength.set(length, group)
     }
     group.entries.push(entry)
-    group.ranks.push(rankedDictionary[entry])
+    group.ranks.push(ranks[index])
   })
   entriesByLength.forEach((group) => {
     sortByRank(group)
     group.masks = Int32Array.from(group.entries, getCharacterMask)
   })
-  entriesByLengthCache.set(rankedDictionary, entriesByLength)
+  entriesByLengthCache.set(dictionary, entriesByLength)
   return entriesByLength
 }
 
-interface FoundEntry {
+export interface FoundEntry {
   rank: number
   entry: string
   distance: number
@@ -192,22 +199,24 @@ export interface FindLevenshteinDistanceResult {
   levenshteinDistanceEntry: string
 }
 
-const findLevenshteinDistance = (
+// The most common entry within the threshold, the password itself (with
+// passwordRank, its rank in the dictionary) unless a more common entry is
+// close to it
+export const findLevenshteinEntry = (
   password: string,
-  rankedDictionary: RankedDictionary,
+  dictionary: LevenshteinDictionary,
   threshold: number,
-): Partial<FindLevenshteinDistanceResult> => {
-  const entriesByLength = getEntriesByLength(rankedDictionary)
+  passwordRank: number | undefined,
+  // eslint-disable-next-line max-params
+): FoundEntry | undefined => {
+  const entriesByLength = getEntriesByLength(dictionary)
   const passwordLength = countCharacters(password)
   const getDistance = createGetDistance(password)
   const passwordMask = getCharacterMask(password)
-  // the password itself is the match, unless a more common entry is close to it
-  let found: FoundEntry | undefined = Object.prototype.hasOwnProperty.call(
-    rankedDictionary,
-    password,
-  )
-    ? { rank: rankedDictionary[password], entry: password, distance: 0 }
-    : undefined
+  let found: FoundEntry | undefined =
+    passwordRank === undefined
+      ? undefined
+      : { rank: passwordRank, entry: password, distance: 0 }
 
   const lengthDifference = (entryLength: number) =>
     Math.abs(entryLength - passwordLength)
@@ -227,13 +236,5 @@ const findLevenshteinDistance = (
         found,
       })
     })
-  if (found) {
-    return {
-      levenshteinDistance: found.distance,
-      levenshteinDistanceEntry: found.entry,
-    }
-  }
-  return {}
+  return found
 }
-
-export default findLevenshteinDistance

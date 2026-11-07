@@ -1,70 +1,251 @@
-import { DictionaryMatch, L33tMatch } from '../../../../types'
+import { L33tMatch } from '../../../../types'
 import { DictionaryHit, DictionaryMatchOptions } from '../../types'
 import getCleanPasswords, {
+  IndexedPasswordChanges,
   PasswordChanges,
-  PasswordWithSubs,
 } from './unmunger/getCleanPasswords'
-import MatchDictionary from '../../matching'
+import MatchDictionary, { getUserInputsPosition } from '../../matching'
+import WordIndex from '../../WordIndex'
+import { L33tSubstitution, L33tSubstitutions } from './l33tSubstitutions'
 import { countCharacters, toLowerCase } from '../../../../utils/helper'
 
-const getExtras = (
-  passwordWithSubs: PasswordWithSubs,
-  i: number,
-  j: number,
-) => {
-  let iUnsubbed = i
-  let jUnsubbed = j
-  const filtered: PasswordChanges[] = []
+// The narrow calls one password may take. A password made of substitutions
+// that each stand for several letters (eg. '!'.repeat(256)) branches at every
+// character, the walk then stops early and keeps the matches found so far.
+export const L33T_NARROW_BUDGET = 100000
+
+// the changes in [i, j] once each, as the match lists them
+const getSubs = (changes: PasswordChanges[]) => {
+  const subs: PasswordChanges[] = []
   const subDisplay: string[] = []
   const seenSubs = new Set<string>()
-
-  passwordWithSubs.changes.forEach((change) => {
-    if (change.i < i) {
-      const diff = change.substitution.length - change.letter.length
-      iUnsubbed += diff
-      jUnsubbed += diff
-    } else if (change.i <= j) {
-      jUnsubbed += change.substitution.length - change.letter.length
-
-      const subKey = `${change.letter}-${change.substitution}`
-      if (!seenSubs.has(subKey)) {
-        seenSubs.add(subKey)
-        filtered.push({
-          letter: change.letter,
-          substitution: change.substitution,
-        })
-        subDisplay.push(`${change.substitution} -> ${change.letter}`)
-      }
+  changes.forEach(({ letter, substitution }) => {
+    const subKey = `${letter}-${substitution}`
+    if (!seenSubs.has(subKey)) {
+      seenSubs.add(subKey)
+      subs.push({ letter, substitution })
+      subDisplay.push(`${substitution} -> ${letter}`)
     }
   })
-  return {
-    i: iUnsubbed,
-    j: jUnsubbed,
-    subs: filtered,
-    subDisplay: subDisplay.join(', '),
-  }
+  return { subs, subDisplay: subDisplay.join(', ') }
 }
 
-// a window [i, j] without a substitution was already checked by the plain
-// dictionary matcher, so for each i find the first j that reaches one
-const getMinWindowEnds = ({ password, changes }: PasswordWithSubs) => {
-  const minWindowEnds: number[] = []
-  let changeIndex = 0
-  for (let i = 0; i < password.length; i += 1) {
-    // changes are ordered by position, skip the ones that end before i
-    while (
-      changeIndex < changes.length &&
-      changes[changeIndex].i + changes[changeIndex].letter.length <= i
-    ) {
-      changeIndex += 1
+export interface L33tWord {
+  i: number
+  j: number
+  // the word password[i, j] stands for with changes
+  matchedWord: string
+  // its index in the word index, or -1 if only a user input
+  word: number
+  // its rank among the user inputs, if one
+  userInputsRank: number | undefined
+  changes: IndexedPasswordChanges[]
+}
+
+interface L33tWalkOptions {
+  password: string
+  substitutions: L33tSubstitutions
+  wordIndex: WordIndex
+  userInputsWordIndex: WordIndex | undefined
+  budget: number
+  onWord: (found: L33tWord) => void
+}
+
+// Walks the word index from every start of the password. At each character
+// it continues with every substitution that starts there, for each letter it
+// stands for, and with the character itself. A branch ends as soon as no word
+// starts with it, so only prefixes of words are explored.
+class L33tWalk {
+  private readonly password: string
+
+  private readonly passwordLower: string
+
+  private readonly options: L33tWalkOptions
+
+  // the substitutions made so far, in password positions
+  private readonly changes: IndexedPasswordChanges[] = []
+
+  // [start, end) of the word index and of the user inputs per depth, the
+  // words in them share their first depth characters
+  private readonly rangesByDepth: Int32Array[] = []
+
+  private readonly userInputsRangesByDepth: Int32Array[] = []
+
+  private start = 0
+
+  // the substitutions that match at each position, of the lowercased
+  // password and then of the password as it is
+  private readonly substitutionsAt: L33tSubstitution[][] = []
+
+  // the last position a substitution matches at, -1 for none. A branch
+  // without changes past it can't make one anymore, so it never matches.
+  private lastSubstitution = -1
+
+  private narrowCount = 0
+
+  constructor(options: L33tWalkOptions) {
+    this.options = options
+    this.password = options.password
+    this.passwordLower = toLowerCase(options.password)
+    for (let position = 0; position < this.password.length; position += 1) {
+      const matching = this.getSubstitutionsAt(position)
+      this.substitutionsAt.push(matching)
+      if (matching.length > 0) {
+        this.lastSubstitution = position
+      }
     }
-    minWindowEnds.push(
-      changeIndex < changes.length
-        ? Math.max(i, changes[changeIndex].i)
-        : password.length,
-    )
   }
-  return minWindowEnds
+
+  run() {
+    const { wordIndex, userInputsWordIndex } = this.options
+    this.ensureRanges(0)
+    const range = this.rangesByDepth[0]
+    const userInputsRange = this.userInputsRangesByDepth[0]
+    for (let start = 0; start <= this.lastSubstitution; start += 1) {
+      this.start = start
+      range[0] = 0
+      range[1] = wordIndex.words.length
+      userInputsRange[0] = 0
+      userInputsRange[1] = userInputsWordIndex
+        ? userInputsWordIndex.words.length
+        : 0
+      this.walk(start, 0)
+      if (this.isOverBudget()) {
+        return
+      }
+    }
+  }
+
+  private isOverBudget() {
+    return this.narrowCount > this.options.budget
+  }
+
+  private ensureRanges(depth: number) {
+    if (depth >= this.rangesByDepth.length) {
+      for (let next = this.rangesByDepth.length; next <= depth; next += 1) {
+        this.rangesByDepth.push(new Int32Array(2))
+        this.userInputsRangesByDepth.push(new Int32Array(2))
+      }
+    }
+  }
+
+  // the bounds of depth narrowed by characters, into the bounds of the depth
+  // after them. False if no word starts with them.
+  // eslint-disable-next-line max-statements
+  private narrow(depth: number, characters: string) {
+    const { wordIndex, userInputsWordIndex } = this.options
+    this.ensureRanges(depth + characters.length)
+    const range = this.rangesByDepth[depth + characters.length]
+    const userInputsRange =
+      this.userInputsRangesByDepth[depth + characters.length]
+    const previousRange = this.rangesByDepth[depth]
+    const previousUserInputsRange = this.userInputsRangesByDepth[depth]
+    range[0] = previousRange[0]
+    range[1] = previousRange[1]
+    userInputsRange[0] = previousUserInputsRange[0]
+    userInputsRange[1] = previousUserInputsRange[1]
+    for (let index = 0; index < characters.length; index += 1) {
+      const code = characters.charCodeAt(index)
+      if (range[0] < range[1]) {
+        wordIndex.narrow(range, depth + index, code)
+        this.narrowCount += 1
+      }
+      if (userInputsWordIndex && userInputsRange[0] < userInputsRange[1]) {
+        userInputsWordIndex.narrow(userInputsRange, depth + index, code)
+        this.narrowCount += 1
+      }
+      if (range[0] >= range[1] && userInputsRange[0] >= userInputsRange[1]) {
+        return false
+      }
+    }
+    return true
+  }
+
+  // the word of exactly depth characters in the bounds of depth, if any
+  // eslint-disable-next-line complexity
+  private emit(position: number, depth: number) {
+    const { wordIndex, userInputsWordIndex, onWord } = this.options
+    const range = this.rangesByDepth[depth]
+    const userInputsRange = this.userInputsRangesByDepth[depth]
+    const word =
+      range[0] < range[1] && wordIndex.words[range[0]].length === depth
+        ? range[0]
+        : -1
+    const userInputsRank =
+      userInputsWordIndex &&
+      userInputsRange[0] < userInputsRange[1] &&
+      userInputsWordIndex.words[userInputsRange[0]].length === depth
+        ? userInputsWordIndex.getRank(userInputsRange[0], 0)
+        : undefined
+    if (word !== -1 || userInputsRank !== undefined) {
+      onWord({
+        i: this.start,
+        j: position - 1,
+        matchedWord:
+          word === -1
+            ? userInputsWordIndex!.words[userInputsRange[0]]
+            : wordIndex.words[word],
+        word,
+        userInputsRank,
+        changes: this.changes,
+      })
+    }
+  }
+
+  // the substitutions that start at position, of the password lowercased and
+  // as it is
+  private getSubstitutionsAt(position: number) {
+    const { substitutions } = this.options
+    const lower = this.passwordLower.charAt(position)
+    const character = this.password.charAt(position)
+    const matching = (substitutions.get(lower) || []).filter(
+      ({ substitution }) =>
+        this.passwordLower.startsWith(substitution, position),
+    )
+    if (character !== lower) {
+      ;(substitutions.get(character) || []).forEach((candidate) => {
+        if (this.password.startsWith(candidate.substitution, position)) {
+          matching.push(candidate)
+        }
+      })
+    }
+    return matching
+  }
+
+  // eslint-disable-next-line complexity
+  private walk(position: number, depth: number) {
+    if (depth > 0 && this.changes.length > 0) {
+      this.emit(position, depth)
+    }
+    if (
+      position === this.password.length ||
+      (this.changes.length === 0 && position > this.lastSubstitution)
+    ) {
+      return
+    }
+    for (const { substitution, letters, lettersLower } of this.substitutionsAt[
+      position
+    ]) {
+      for (let index = 0; index < letters.length; index += 1) {
+        const letterLower = lettersLower[index]
+        if (!this.isOverBudget() && this.narrow(depth, letterLower)) {
+          this.changes.push({
+            i: position,
+            letter: letters[index],
+            substitution,
+          })
+          this.walk(position + substitution.length, depth + letterLower.length)
+          this.changes.pop()
+        }
+      }
+    }
+    if (
+      !this.isOverBudget() &&
+      this.narrow(depth, this.passwordLower.charAt(position))
+    ) {
+      this.walk(position + 1, depth + 1)
+    }
+  }
 }
 
 /*
@@ -73,64 +254,91 @@ const getMinWindowEnds = ({ password, changes }: PasswordWithSubs) => {
  * -------------------------------------------------------------------------------
  */
 class MatchL33t extends MatchDictionary {
-  private isAlreadyIncluded(matches: L33tMatch[], newMatch: L33tMatch) {
-    return matches.some((l33tMatch) => {
-      return (
-        l33tMatch.i === newMatch.i &&
-        l33tMatch.j === newMatch.j &&
-        l33tMatch.dictionaryName === newMatch.dictionaryName &&
-        l33tMatch.matchedWord === newMatch.matchedWord
-      )
-    })
-  }
+  protected narrowBudget = L33T_NARROW_BUDGET
 
-  public match(matchOptions: DictionaryMatchOptions) {
+  public match({
+    password,
+    userInputsOptions,
+    useLevenshtein = true,
+  }: DictionaryMatchOptions) {
     const matches: L33tMatch[] = []
-    const subbedPasswords = getCleanPasswords(
-      matchOptions.password,
-      this.options.l33tMaxSubstitutions,
-      this.options.trieNodeRoot,
-    )
-    // the substituted passwords share most of their substrings
-    const lookupCache = new Map<string, DictionaryHit[]>()
-    let hasFullMatch = false
-    subbedPasswords.forEach((subbedPassword) => {
-      if (hasFullMatch) {
+    const seen = new Set<string>()
+    const { wordIndex } = this.options
+    const userInputsWordIndex = userInputsOptions?.wordIndex
+
+    const addMatches = (
+      {
+        i,
+        j,
+        matchedWord,
+        changes,
+      }: Pick<L33tWord, 'i' | 'j' | 'matchedWord' | 'changes'>,
+      hits: DictionaryHit[],
+    ) => {
+      const token = password.slice(i, j + 1)
+      // only the matches that contain an actual substitution, and no single
+      // characters: '1' would match 'i' and '4' would match 'a', both very
+      // common English words with a low rank
+      if (toLowerCase(token) === matchedWord || countCharacters(token) <= 1) {
         return
       }
-      const matchedDictionary = super.match({
-        ...matchOptions,
-        password: subbedPassword.password,
-        useLevenshtein: subbedPassword.isFullSubstitution,
-        minWindowEnds: getMinWindowEnds(subbedPassword),
-        lookupCache,
-      })
-      matchedDictionary.forEach((match: DictionaryMatch) => {
-        const extras = getExtras(subbedPassword, match.i, match.j)
-        if (!hasFullMatch) {
-          hasFullMatch =
-            extras.i === 0 && extras.j === matchOptions.password.length - 1
+      const extras = getSubs(changes)
+      hits.forEach(({ dictionaryName, rank, ...levenshtein }) => {
+        const key = `${i}\u0000${j}\u0000${dictionaryName}\u0000${matchedWord}`
+        if (seen.has(key)) {
+          return
         }
-        const token = matchOptions.password.slice(extras.i, extras.j + 1)
-        const newMatch: L33tMatch = {
-          ...match,
-          l33t: true,
+        seen.add(key)
+        matches.push({
+          pattern: 'dictionary',
+          i,
+          j,
           token,
+          matchedWord,
+          rank,
+          dictionaryName,
+          reversed: false,
+          l33t: true,
+          ...levenshtein,
           ...extras,
-        }
-        const alreadyIncluded = this.isAlreadyIncluded(matches, newMatch)
-
-        // only return the matches that contain an actual substitution
-        if (toLowerCase(token) !== match.matchedWord && !alreadyIncluded) {
-          matches.push(newMatch)
-        }
+        })
       })
-    })
+    }
 
-    // filter single-character l33t matches to reduce noise.
-    // otherwise '1' matches 'i', '4' matches 'a', both very common English words
-    // with low dictionary rank.
-    return matches.filter((match) => countCharacters(match.token) > 1)
+    if (this.options.useLevenshteinDistance && useLevenshtein) {
+      // levenshtein only checks the full password, so the l33t words close
+      // to it are only found with every possible substitution made
+      getCleanPasswords(
+        password,
+        this.options.l33tMaxSubstitutions,
+        this.options.trieNodeRoot,
+      ).forEach(({ password: subbedPassword, changes }) => {
+        if (changes.length === 0) {
+          return
+        }
+        const matchedWord = toLowerCase(subbedPassword)
+        addMatches(
+          { i: 0, j: password.length - 1, matchedWord, changes },
+          this.getLevenshteinHits(matchedWord, userInputsWordIndex),
+        )
+      })
+    }
+
+    const userInputsPosition = getUserInputsPosition(wordIndex)
+    new L33tWalk({
+      password,
+      substitutions: this.options.l33tSubstitutions,
+      wordIndex,
+      userInputsWordIndex,
+      budget: this.narrowBudget,
+      onWord: (found) => {
+        addMatches(
+          found,
+          this.getHits(found.word, found.userInputsRank, userInputsPosition),
+        )
+      },
+    }).run()
+    return matches
   }
 }
 
