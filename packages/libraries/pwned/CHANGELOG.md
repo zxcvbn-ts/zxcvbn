@@ -5,36 +5,73 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## [4.1.3](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/matcher-pwned@4.1.2...@zxcvbn-ts/matcher-pwned@4.1.3) (2026-08-12)
 
-**Note:** Version bump only for package @zxcvbn-ts/matcher-pwned
+### Bug Fixes
 
-## [4.1.1](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/matcher-pwned@4.1.0...@zxcvbn-ts/matcher-pwned@4.1.1) (2026-06-13)
+- **deps:** requires @zxcvbn-ts/core ^4.2.0
 
-**Note:** Version bump only for package @zxcvbn-ts/matcher-pwned
-
-# [4.1.0](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/matcher-pwned@3.0.4...@zxcvbn-ts/matcher-pwned@4.1.0) (2026-06-11)
+## [4.1.2](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/matcher-pwned@4.1.1...@zxcvbn-ts/matcher-pwned@4.1.2) (2026-06-16)
 
 ### Bug Fixes
 
-- **dictionary:** do not add userInputs on the fly to the options dictionary ([f1c2af7](https://github.com/zxcvbn-ts/zxcvbn/commit/f1c2af7d032a73e4829340c98a65035d3a53b120))
-- **matcher-pwned:** use Web Crypto in HIBP digest, drop Node-specific branch ([#316](https://github.com/zxcvbn-ts/zxcvbn/issues/316)) ([f3ff059](https://github.com/zxcvbn-ts/zxcvbn/commit/f3ff059a5278922cfee043d70e8578b61e033056))
-- split fix and cache for ci ([#317](https://github.com/zxcvbn-ts/zxcvbn/issues/317)) ([07f0f84](https://github.com/zxcvbn-ts/zxcvbn/commit/07f0f847f4b055627b5883038977b9bef146c354))
+- **deps:** requires @zxcvbn-ts/core ^4.1.2
 
-- feat!(scoring): merge crackTime types into one ([53f4e73](https://github.com/zxcvbn-ts/zxcvbn/commit/53f4e731f02ff147bb3eda7e9cd1d4e6f3f2331e))
-- feat!(scoring): make scoring thresholds configurable ([6738eb6](https://github.com/zxcvbn-ts/zxcvbn/commit/6738eb61900824d7470025191e22a9989912eade))
+## [4.1.1](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/matcher-pwned@4.1.0...@zxcvbn-ts/matcher-pwned@4.1.1) (2026-06-13)
 
-### Features
+### Bug Fixes
 
-- Add word sequence matcher ([#301](https://github.com/zxcvbn-ts/zxcvbn/issues/301)) ([8aba38e](https://github.com/zxcvbn-ts/zxcvbn/commit/8aba38eeabeb5b7eaed8d37330b024e66d34dc1e))
-- **package:** cleanup package json with publint ([74f6fff](https://github.com/zxcvbn-ts/zxcvbn/commit/74f6ffffcc93c90591523fe7047ed843cb25c3ac))
-- **package:** revert cleanup package json with publint ([360ce9e](https://github.com/zxcvbn-ts/zxcvbn/commit/360ce9e28b464a573e5f92294027518a995b06c0))
-- **package:** revert cleanup package json with publint ([0eca875](https://github.com/zxcvbn-ts/zxcvbn/commit/0eca875d6de5265278666299c0a06fc4a8c453a7))
-- **packages:** modernize packages ([c2a6313](https://github.com/zxcvbn-ts/zxcvbn/commit/c2a6313ca0ca61de875f45338df3147c050549fe))
-- use wordSequences correctly as dictionary ([e88226d](https://github.com/zxcvbn-ts/zxcvbn/commit/e88226df7aa17b6302d86aeb443089b442c60e66))
+- **deps:** requires @zxcvbn-ts/core ^4.1.1
+
+# [4.1.0](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/matcher-pwned@3.0.4...@zxcvbn-ts/matcher-pwned@4.1.0) (2026-06-11)
+
+First stable 4.x release. It includes every change from `4.0.0-beta.0` to `4.0.0-beta.4`.
+
+### Bug Fixes
+
+- **matcher-pwned:** compute the HIBP digest with Web Crypto (`crypto.subtle`) in every environment; the Node specific `require('crypto')` branch is removed ([#316](https://github.com/zxcvbn-ts/zxcvbn/issues/316)) ([f3ff059](https://github.com/zxcvbn-ts/zxcvbn/commit/f3ff059a5278922cfee043d70e8578b61e033056))
 
 ### BREAKING CHANGES
 
-- merge the three crackTime types into one
-- rename scoring thresholds
+- **matcher-pwned:** `matcherPwnedFactory(universalFetch, options, config)` is now `matcherPwnedFactory(universalFetch, config)`; the matcher gets the options from the new `ZxcvbnFactory` instead ([#244](https://github.com/zxcvbn-ts/zxcvbn/issues/244)) ([a66f27b](https://github.com/zxcvbn-ts/zxcvbn/commit/a66f27b3cf33227190fba5da5d42f2e26e0cd9f3))
+- **matcher-pwned:** the matcher now extends `MatcherBaseClass` from @zxcvbn-ts/core 4 ([#301](https://github.com/zxcvbn-ts/zxcvbn/issues/301)) ([8aba38e](https://github.com/zxcvbn-ts/zxcvbn/commit/8aba38eeabeb5b7eaed8d37330b024e66d34dc1e))
+- **build:** the dist files are renamed: `dist/index.js` is now `dist/index.cjs` and `dist/index.esm.js` is now `dist/index.mjs`. The minified CDN build `dist/zxcvbn-ts.min.js` is no longer shipped; the IIFE build `dist/zxcvbn-ts.js` stays until 5.x ([#282](https://github.com/zxcvbn-ts/zxcvbn/issues/282)) ([4caf5e0](https://github.com/zxcvbn-ts/zxcvbn/commit/4caf5e086dad53b05496101c49b50309066822fb)) ([b34d1bf](https://github.com/zxcvbn-ts/zxcvbn/commit/b34d1bff9e79dc845b08bda6e1b7a71760555ac4))
+- **deps:** requires @zxcvbn-ts/core ^4.1.0
+
+# 4.0.0 (2026-06-11)
+
+**Note:** 4.0.0 was tagged but never published to npm. Its changes are part of 4.1.0.
+
+# [4.0.0-beta.4](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/matcher-pwned@4.0.0-beta.3...@zxcvbn-ts/matcher-pwned@4.0.0-beta.4) (2026-05-13)
+
+### Bug Fixes
+
+- **matcher-pwned:** compute the HIBP digest with Web Crypto (`crypto.subtle`) in every environment; the Node specific `require('crypto')` branch is removed ([#316](https://github.com/zxcvbn-ts/zxcvbn/issues/316)) ([f3ff059](https://github.com/zxcvbn-ts/zxcvbn/commit/f3ff059a5278922cfee043d70e8578b61e033056))
+- **deps:** requires @zxcvbn-ts/core ^4.0.0-beta.4
+
+# [4.0.0-beta.3](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/matcher-pwned@4.0.0-beta.2...@zxcvbn-ts/matcher-pwned@4.0.0-beta.3) (2026-03-04)
+
+### BREAKING CHANGES
+
+- **matcher-pwned:** the matcher now extends `MatcherBaseClass` and requires @zxcvbn-ts/core ^4.0.0-beta.3 ([#301](https://github.com/zxcvbn-ts/zxcvbn/issues/301)) ([8aba38e](https://github.com/zxcvbn-ts/zxcvbn/commit/8aba38eeabeb5b7eaed8d37330b024e66d34dc1e))
+
+# [4.0.0-beta.2](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/matcher-pwned@4.0.0-beta.1...@zxcvbn-ts/matcher-pwned@4.0.0-beta.2) (2024-09-30)
+
+### BREAKING CHANGES
+
+- **build:** the dist files are renamed: `dist/index.js` is now `dist/index.cjs` and `dist/index.esm.js` is now `dist/index.mjs`. The IIFE browser build is removed ([#282](https://github.com/zxcvbn-ts/zxcvbn/issues/282)) ([4caf5e0](https://github.com/zxcvbn-ts/zxcvbn/commit/4caf5e086dad53b05496101c49b50309066822fb))
+- **deps:** requires @zxcvbn-ts/core ^4.0.0-beta.2
+
+# [4.0.0-beta.1](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/matcher-pwned@4.0.0-beta.0...@zxcvbn-ts/matcher-pwned@4.0.0-beta.1) (2024-09-30)
+
+### Bug Fixes
+
+- **deps:** requires @zxcvbn-ts/core ^4.0.0-beta.1
+
+# [4.0.0-beta.0](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/matcher-pwned@3.0.4...@zxcvbn-ts/matcher-pwned@4.0.0-beta.0) (2024-07-31)
+
+### BREAKING CHANGES
+
+- **matcher-pwned:** `matcherPwnedFactory(universalFetch, options, config)` is now `matcherPwnedFactory(universalFetch, config)`; the matcher gets the options from the new `ZxcvbnFactory` instead ([#244](https://github.com/zxcvbn-ts/zxcvbn/issues/244)) ([a66f27b](https://github.com/zxcvbn-ts/zxcvbn/commit/a66f27b3cf33227190fba5da5d42f2e26e0cd9f3))
+- **deps:** requires @zxcvbn-ts/core ^4.0.0-beta.0
 
 ## [3.0.4](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/matcher-pwned@3.0.3...@zxcvbn-ts/matcher-pwned@3.0.4) (2023-09-17)
 
@@ -99,11 +136,15 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package @zxcvbn-ts/matcher-pwned
 
-# [2.0.0](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/matcher-pwned@1.2.0...@zxcvbn-ts/matcher-pwned@2.0.0) (2022-02-10)
+## [2.0.1](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/matcher-pwned@2.0.0...@zxcvbn-ts/matcher-pwned@2.0.1) (2022-03-17)
+
+**Note:** Version bump only for package @zxcvbn-ts/matcher-pwned
+
+# [2.0.0](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/matcher-pwned@1.2.0...@zxcvbn-ts/matcher-pwned@2.0.0) (2022-02-09)
 
 ### Bug Fixes
 
-- **translations:** transfere ZxcvbnOptions as parameter ([3ff0f75](https://github.com/zxcvbn-ts/zxcvbn/commit/3ff0f751890a24b8cbb39aad78875e13ed5e6b6d))
+- **translations:** transfer ZxcvbnOptions as parameter ([3ff0f75](https://github.com/zxcvbn-ts/zxcvbn/commit/3ff0f751890a24b8cbb39aad78875e13ed5e6b6d))
 
 ### Features
 

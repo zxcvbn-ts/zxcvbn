@@ -16,7 +16,9 @@
   "files": [
     "dist",
     "src",
-    "CHANGELOG.md"
+    "CHANGELOG.md",
+    "NOTICE.md",
+    "THIRD_PARTY_LICENSES.md"
   ],
   "publishConfig": {
     "access": "public"

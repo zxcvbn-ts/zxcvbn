@@ -3,12 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# 4.1.0 (2026-06-11)
+## [4.1.1](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/language-hr@4.1.0...@zxcvbn-ts/language-hr@4.1.1) (2026-06-16)
+
+### Bug Fixes
+
+- **build:** fix `require()` of the CJS build, which failed with "decompress is not a function" ([#324](https://github.com/zxcvbn-ts/zxcvbn/issues/324)) ([281ead6](https://github.com/zxcvbn-ts/zxcvbn/commit/281ead6d7c681dde716705e3d8bee23999274c0e))
+
+# [4.1.0](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/language-hr@4.0.0-beta.4...@zxcvbn-ts/language-hr@4.1.0) (2026-06-11)
+
+First stable release. It includes the changes from `4.0.0-beta.4`.
 
 ### Features
 
-- **languages:** add Croatian language package ([#311](https://github.com/zxcvbn-ts/zxcvbn/issues/311)) ([d2c5d13](https://github.com/zxcvbn-ts/zxcvbn/commit/d2c5d131a788b7c18e60842f5c4b464bec0714af))
-- **packages:** modernize packages ([c2a6313](https://github.com/zxcvbn-ts/zxcvbn/commit/c2a6313ca0ca61de875f45338df3147c050549fe))
-- Update to new common words list ([#314](https://github.com/zxcvbn-ts/zxcvbn/issues/314)) ([1bbd9db](https://github.com/zxcvbn-ts/zxcvbn/commit/1bbd9db5ed225b9aaa50781b5fa6348bf1852e74))
-- use wordSequences correctly as dictionary ([e88226d](https://github.com/zxcvbn-ts/zxcvbn/commit/e88226df7aa17b6302d86aeb443089b442c60e66))
-- use wordSequences correctly as dictionary ([0c84a11](https://github.com/zxcvbn-ts/zxcvbn/commit/0c84a11e821e299d311e61458111fbc64318705b))
+- **languages:** add the Croatian language package with translated feedback messages and dictionaries (common words, first names, last names, Wikipedia). Its dictionaries are compressed and decompressed at runtime with `@zxcvbn-ts/dictionary-compression` ([#311](https://github.com/zxcvbn-ts/zxcvbn/issues/311)) ([d2c5d13](https://github.com/zxcvbn-ts/zxcvbn/commit/d2c5d131a788b7c18e60842f5c4b464bec0714af))
+- **dictionaries:** add lists of word sequences, such as numbers, days of the week, months and colors, to `dictionary` (keys like `cardinalNumbers-hr`). Passwords built from these words now score lower ([#301](https://github.com/zxcvbn-ts/zxcvbn/issues/301)) ([8aba38e](https://github.com/zxcvbn-ts/zxcvbn/commit/8aba38eeabeb5b7eaed8d37330b024e66d34dc1e)) ([0c84a11](https://github.com/zxcvbn-ts/zxcvbn/commit/0c84a11e821e299d311e61458111fbc64318705b)) ([e88226d](https://github.com/zxcvbn-ts/zxcvbn/commit/e88226df7aa17b6302d86aeb443089b442c60e66))
+
+### BREAKING CHANGES
+
+- **dictionaries:** for users of the betas: the separate `wordSequences` export from 4.0.0-beta.4 is removed. The word sequences are part of `dictionary` now ([0c84a11](https://github.com/zxcvbn-ts/zxcvbn/commit/0c84a11e821e299d311e61458111fbc64318705b)) ([e88226d](https://github.com/zxcvbn-ts/zxcvbn/commit/e88226df7aa17b6302d86aeb443089b442c60e66))
+
+# 4.0.0 (2026-06-11)
+
+**Note:** 4.0.0 was tagged but never published to npm. Its changes are part of 4.1.0.
+
+# 4.0.0-beta.4 (2026-05-13)
+
+### Features
+
+- **languages:** add the Croatian language package with translated feedback messages and dictionaries (common words, first names, last names, Wikipedia). The word sequences are a separate `wordSequences` export ([#311](https://github.com/zxcvbn-ts/zxcvbn/issues/311)) ([d2c5d13](https://github.com/zxcvbn-ts/zxcvbn/commit/d2c5d131a788b7c18e60842f5c4b464bec0714af))

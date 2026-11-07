@@ -1,25 +1,38 @@
 # @zxcvbn-ts/language-fi
 
-The Finnish dictionary and language package for zxcvbn-ts
+[![npm](https://badgen.net/npm/v/@zxcvbn-ts/language-fi)](https://www.npmjs.com/package/@zxcvbn-ts/language-fi)
+[![bundle size](https://badgen.net/bundlephobia/minzip/@zxcvbn-ts/language-fi)](https://bundlephobia.com/package/@zxcvbn-ts/language-fi)
+[![license](https://badgen.net/npm/license/@zxcvbn-ts/language-fi)](https://github.com/zxcvbn-ts/zxcvbn/blob/master/LICENSE.txt)
 
-## Install
+Finnish dictionaries and feedback translations for [zxcvbn-ts](https://github.com/zxcvbn-ts/zxcvbn), a realistic password strength estimator.
 
-#### npm:
+📖 **[Documentation](https://zxcvbn-ts.github.io/zxcvbn/)** · [Languages guide](https://zxcvbn-ts.github.io/zxcvbn/guide/languages/) · [Demo](https://zxcvbn-ts.github.io/zxcvbn/demo/)
 
-`npm install @zxcvbn-ts/language-fi --save`
+## What's included
 
-#### yarn:
+- `dictionary`: `commonWords-fi`, `femaleFirstnames-fi`, `lastnames-fi`, `maleFirstnames-fi`, `wikipedia-fi`, word sequence lists. Passwords built from these words are recognized and get a lower score.
+- `translations`: the warnings and suggestions returned in `result.feedback`, in Finnish.
 
-`yarn add @zxcvbn-ts/language-fi`
+Use it together with [`@zxcvbn-ts/language-common`](https://www.npmjs.com/package/@zxcvbn-ts/language-common), which provides the common password list and the keyboard adjacency graphs. You can combine several language packages by spreading more dictionaries into `dictionary`.
 
-## Setup
+## Installation
+
+```sh
+# npm
+npm install @zxcvbn-ts/core @zxcvbn-ts/language-common @zxcvbn-ts/language-fi
+# yarn
+yarn add @zxcvbn-ts/core @zxcvbn-ts/language-common @zxcvbn-ts/language-fi
+# pnpm
+pnpm add @zxcvbn-ts/core @zxcvbn-ts/language-common @zxcvbn-ts/language-fi
+```
+
+## Usage
 
 ```js
 import { ZxcvbnFactory } from '@zxcvbn-ts/core'
 import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common'
 import * as zxcvbnFiPackage from '@zxcvbn-ts/language-fi'
 
-const password = 'somePassword'
 const options = {
   translations: zxcvbnFiPackage.translations,
   graphs: zxcvbnCommonPackage.adjacencyGraphs,
@@ -29,15 +42,21 @@ const options = {
   },
 }
 const zxcvbn = new ZxcvbnFactory(options)
-zxcvbn.check(password)
+
+const result = zxcvbn.check('somePassword')
+console.log(result.score) // 0 (weak) to 4 (strong)
+console.log(result.feedback) // { warning, suggestions } in Finnish
 ```
+
+The dictionaries are fairly large. To keep them out of your main bundle, see [lazy loading](https://zxcvbn-ts.github.io/zxcvbn/guide/lazy-loading/).
 
 ## Sources
 
-- commonWords.json is generated from the OpenSubtitles 2024 dataset provided via OPUS (https://opus.nlpl.eu/datasets/OpenSubtitles). The dataset is licensed under ODC-BY (Open Data Commons Attribution License) and requires attribution when redistributed.
+- `commonWords` is generated from the [OpenSubtitles 2024](https://opus.nlpl.eu/datasets/OpenSubtitles) word frequency list (`fi`) provided via OPUS, licensed under [ODC-BY](https://opendatacommons.org/licenses/by/1-0/).
+- `maleFirstnames`, `femaleFirstnames` and `lastnames` are generated from the name statistics of the Finnish Digital and Population Data Services Agency on [avoindata.fi](https://www.avoindata.fi/data/dataset/57282ad6-3ab1-48fb-983a-8aba5ff8d29a). The data is updated regularly and its download links contain the export date, so they change over time.
+- `wikipedia` is generated from the [Finnish Wikipedia dump](https://dumps.wikimedia.org/fiwiki/latest/fiwiki-latest-pages-articles.xml.bz2).
+- `wordSequences` contains manually curated sequences (numbers, weekdays, months, …) used by the word sequence matcher.
 
-  - firstname and lastname https://avoindata.suomi.fi/data/fi/dataset/none
-  https://www.avoindata.fi/data/dataset/57282ad6-3ab1-48fb-983a-8aba5ff8d29a/resource/957d19a5-b87a-4c4d-8595-49c22d9d3c58
-  https://www.avoindata.fi/data/dataset/57282ad6-3ab1-48fb-983a-8aba5ff8d29a/resource/08c89936-a230-42e9-a9fc-288632e234f5
-  This data is updated regularly and the download link will change because the date of the change is inside the link
+## License
 
+[MIT](https://github.com/zxcvbn-ts/zxcvbn/blob/master/LICENSE.txt). The bundled data keeps the licenses of its sources listed above.

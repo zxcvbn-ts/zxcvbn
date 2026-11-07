@@ -1,6 +1,7 @@
 import Options from '../src/Options'
 import translationKeys from '../src/data/translationKeys'
 import { timeEstimationValuesDefaults } from '../src/TimeEstimates'
+import { checkMatcher } from '../src/runtimeChecks'
 
 describe('Options', () => {
   describe('translations', () => {
@@ -20,7 +21,27 @@ describe('Options', () => {
         // @ts-expect-error for testing purposes
 
         new Options({ translations: customTranslations })
-      }).toThrow('Invalid translations object fallback to keys')
+      }).toThrow(
+        /^Invalid translations object, missing or invalid keys: warnings\.simpleRepeat, .*, suggestions, timeEstimation$/,
+      )
+    })
+
+    it('should name the missing and invalid translation keys', () => {
+      const { pwned, ...warnings } = translationKeys.warnings
+      expect(() => {
+        new Options({
+          translations: {
+            ...translationKeys,
+            // @ts-expect-error for testing purposes
+            warnings,
+            // @ts-expect-error for testing purposes
+            suggestions: { ...translationKeys.suggestions, pwned: 1 },
+          },
+        })
+      }).toThrow(
+        'Invalid translations object, missing or invalid keys: warnings.pwned, suggestions.pwned',
+      )
+      expect(pwned).toBe('pwned')
     })
   })
 
@@ -48,7 +69,7 @@ describe('Options', () => {
     })
 
     it('should warn when adding an existing matcher', () => {
-      const spy = jest.spyOn(console, 'info').mockImplementation()
+      const spy = vi.spyOn(console, 'info').mockImplementation(() => undefined)
       const matcher = {
         // eslint-disable-next-line @typescript-eslint/no-extraneous-class
         Matching: class {},
@@ -174,6 +195,13 @@ describe('Options', () => {
       }).toThrow('dictionary entries must be strings or numbers')
     })
 
+    it('should throw error for a non-string matcher name', () => {
+      expect(() => {
+        // @ts-expect-error test runtime checks
+        checkMatcher(123, {})
+      }).toThrow('matcher name must be a string')
+    })
+
     it('should throw error for invalid graph content', () => {
       expect(() => {
         // @ts-expect-error test runtime checks
@@ -265,6 +293,44 @@ describe('Options', () => {
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         new Options({}, { test: { feedback: () => {}, scoring: () => 0 } })
       }).toThrow('matcher test.Matching must be a constructor')
+    })
+  })
+
+  describe('getUserInputsOptions caching', () => {
+    it('should pick up new entries when the same userInputs array is mutated and reused', () => {
+      const options = new Options({ dictionary: { commonWords: ['foo'] } })
+      const userInputs: (string | number)[] = ['first']
+      options.getUserInputsOptions(userInputs)
+
+      userInputs.push('second')
+      const result = options.getUserInputsOptions(userInputs)
+
+      expect(Object.keys(result.rankedDictionary)).toContain('second')
+    })
+
+    it('should reuse the cached result for an equal but different array reference', () => {
+      const options = new Options({ dictionary: { commonWords: ['foo'] } })
+      const first = options.getUserInputsOptions(['a', 'b'])
+      const second = options.getUserInputsOptions(['a', 'b'])
+
+      expect(second).toBe(first)
+    })
+
+    it('should rebuild when a same-length array has different content', () => {
+      const options = new Options({ dictionary: { commonWords: ['foo'] } })
+      const first = options.getUserInputsOptions(['a', 'b'])
+      const second = options.getUserInputsOptions(['a', 'c'])
+
+      expect(second).not.toBe(first)
+      expect(Object.keys(second.rankedDictionary)).toContain('c')
+    })
+
+    it('should reuse the cached result across repeated calls with no userInputs argument at all', () => {
+      const options = new Options({ dictionary: { commonWords: ['foo'] } })
+      const first = options.getUserInputsOptions()
+      const second = options.getUserInputsOptions()
+
+      expect(second).toBe(first)
     })
   })
 })

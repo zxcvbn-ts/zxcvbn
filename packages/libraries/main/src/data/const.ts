@@ -1,6 +1,6 @@
 import dateSplits from './dateSplits'
 
-export const DATE_MAX_YEAR = 2050
+export const DATE_MAX_YEAR = 2099
 export const DATE_MIN_YEAR = 1000
 export const DATE_SPLITS = dateSplits
 export const BRUTEFORCE_CARDINALITY = 10
@@ -21,7 +21,7 @@ export const ONE_UPPER = /[A-Z\xbf-\xdf]/
 export const ALPHA_INVERTED = /[^A-Za-z\xbf-\xdf]/gi
 export const ALL_DIGIT = /^\d+$/
 export const REFERENCE_YEAR = new Date().getFullYear()
-export const REGEXEN = { recentYear: /19\d\d|200\d|201\d|202\d/g }
+export const REGEXEN = { recentYear: /19\d\d|20\d\d/g }
 /* Separators */
 export const SEPERATOR_CHARS = [
   ' ',
@@ -36,4 +36,7 @@ export const SEPERATOR_CHARS = [
   '-',
 ]
 export const SEPERATOR_CHAR_COUNT = SEPERATOR_CHARS.length
+/* Word sequences */
+export const WORD_SEQUENCE_SEPARATOR_CHARS = new Set([' ', '-', '_', '.'])
+export const WORD_SEQUENCE_LETTER_GAP_OPTIONS = 26
 export const ESCAPE_REGEX = /[.*+?^${}()|[\]\\]/g

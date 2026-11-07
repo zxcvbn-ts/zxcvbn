@@ -1,4 +1,4 @@
-import { HaveIBeenPwnedConfig } from './types'
+import { FetchApi, HaveIBeenPwnedConfig } from './types'
 
 const textEncode = (text: string) => {
   try {
@@ -24,42 +24,65 @@ const defaultNetworkErrorHandler = (_error: Error | Response): false => {
   return false
 }
 
+const toError = (error: unknown) =>
+  error instanceof Error ? error : new Error(String(error))
+
+const requestRange = async (
+  password: string,
+  universalFetch: FetchApi,
+  url?: string,
+) => {
+  const passwordHash = await digestMessage(password)
+  const range = passwordHash.slice(0, 5)
+  const response = await universalFetch(`${url || pwnedUrl}${range}`, {
+    method: 'GET',
+    headers: {
+      'Add-Padding': 'true',
+    },
+  })
+  return { suffix: passwordHash.slice(5), response }
+}
+
+const hasSuccessStatus = (response: Response) =>
+  typeof response.status === 'number' && response.status < 400
+
+// the api answers with CRLF but proxies or custom endpoints may only use LF
+const findEntry = (result: string, suffix: string) =>
+  result.split(/\r?\n/).find((entry: string) => {
+    const passwordHasPart = entry.split(':')[0]
+    return passwordHasPart === suffix
+  })
+
 export default async (
   password: string,
   {
     universalFetch,
-    url = pwnedUrl,
+    url,
     networkErrorHandler = defaultNetworkErrorHandler,
-  }: HaveIBeenPwnedConfig,
+  }: Partial<HaveIBeenPwnedConfig> = {},
 ) => {
   // we don't need to check passwords with a length smaller 2 which can happen for repeat matcher or if we don't have a fetch function
   if (!universalFetch || password.length < 2) {
     return null
   }
-  const passwordHash = (await digestMessage(password)).toUpperCase()
-  const range = passwordHash.slice(0, 5)
-  const suffix = passwordHash.slice(5)
-  const response = await universalFetch(`${url}${range}`, {
-    method: 'GET',
-    headers: {
-      'Add-Padding': 'true',
-    },
-  }).catch((error: unknown) => {
-    return networkErrorHandler(error as Error)
-  })
-
-  if (typeof response === 'boolean') {
-    return false
+  // networkErrorHandler is never called inside a try block so a handler that throws on purpose isn't caught and called twice
+  let request: Awaited<ReturnType<typeof requestRange>>
+  try {
+    request = await requestRange(password, universalFetch, url)
+  } catch (error) {
+    return networkErrorHandler(toError(error))
   }
-  if (response.status >= 400) {
+
+  const { suffix, response } = request
+  if (!hasSuccessStatus(response)) {
     return networkErrorHandler(response)
   }
 
-  const result = await response.text()
-  const resultArray = result.split('\r\n')
-
-  return resultArray.find((entry: string) => {
-    const passwordHasPart = entry.split(':')[0]
-    return passwordHasPart === suffix
-  })
+  let result: string
+  try {
+    result = await response.text()
+  } catch (error) {
+    return networkErrorHandler(toError(error))
+  }
+  return findEntry(result, suffix)
 }

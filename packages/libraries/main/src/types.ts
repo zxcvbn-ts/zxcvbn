@@ -135,6 +135,10 @@ export interface WordSequenceMatch extends Match {
   wordCount: number
   dictionaryName: string
   ascending: boolean
+  /**
+   * @description The text between each pair of consecutive words: separators, an uppercase letter, or an empty string when they are concatenated
+   */
+  separators: string[]
 }
 
 export type MatchExtended =
@@ -237,12 +241,12 @@ export interface OptionsType {
    */
   useLevenshteinDistance?: boolean
   /**
-   * @description Defines how many characters can be different to match a dictionary word with the levenshtein algorithm.
+   * @description Defines how many characters can be different to match a dictionary word with the levenshtein algorithm, whatever the length of the password. An emoji counts as one character.
    * @default 2
    */
   levenshteinThreshold?: number
   /**
-   * @description The l33t matcher will check how many characters can be exchanged with the l33t table. If they are to many it will decrease the calcTime significantly. So we cap it at a reasonable value by default which will probably already seems like a strong password anyway.
+   * @description The l33t matcher will check how many characters can be exchanged with the l33t table. If there are too many, the calcTime increases significantly. So it is capped at a reasonable value by default; a password with that many substitutions will most likely be rated strong anyway.
    * @default 100
    */
   l33tMaxSubstitutions?: number
@@ -283,6 +287,7 @@ export interface MatchOptions {
    */
   omniMatch: Matching
   userInputsOptions?: UserInputsOptions
+  matches?: MatchExtended[]
 }
 
 export abstract class MatcherBaseClass {

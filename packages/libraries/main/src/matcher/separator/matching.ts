@@ -3,7 +3,9 @@ import { MatcherBaseClass, MatchOptions, SeparatorMatch } from '../../types'
 
 type SeparatorMatchOptions = Pick<MatchOptions, 'password'>
 
-const separatorRegex = new RegExp(`[${SEPERATOR_CHARS.join('')}]`)
+// a set instead of a regex character class, so no separator ('-', '\\', ']', '^')
+// can turn into a range or an escape depending on its position in the list
+const separatorChars = new Set(SEPERATOR_CHARS)
 
 /*
  *-------------------------------------------------------------------------------
@@ -12,26 +14,29 @@ const separatorRegex = new RegExp(`[${SEPERATOR_CHARS.join('')}]`)
  */
 class MatchSeparator extends MatcherBaseClass {
   static getMostUsedSeparatorChar(password: string): string | undefined {
-    const mostUsedSeperators = [
-      ...password
-        .split('')
-        .filter((c) => separatorRegex.test(c))
-        .reduce((memo, c) => {
-          const m = memo.get(c)
-          if (m) {
-            memo.set(c, parseInt(m, 10) + 1)
-          } else {
-            memo.set(c, 1)
-          }
-          return memo
-        }, new Map())
-        .entries(),
-    ].sort(([_a, a], [_b, b]) => b - a)
-    if (!mostUsedSeperators.length) return undefined
-    const match = mostUsedSeperators[0]
+    const counts = new Map<string, number>()
+    for (const char of password) {
+      if (separatorChars.has(char)) {
+        counts.set(char, (counts.get(char) || 0) + 1)
+      }
+    }
+
+    let maxChar: string | undefined
+    let maxCount = 0
+
+    for (const [char, count] of counts.entries()) {
+      if (count > maxCount) {
+        maxCount = count
+        maxChar = char
+      }
+    }
+
     // If the special character is only used once, don't treat it like a separator
-    if (match[1] < 2) return undefined
-    return match[0]
+    if (maxCount < 2) {
+      return undefined
+    }
+
+    return maxChar
   }
 
   static getSeparatorRegex(separator: string): RegExp {
@@ -53,11 +58,10 @@ class MatchSeparator extends MatcherBaseClass {
     const isSeparator = MatchSeparator.getSeparatorRegex(mostUsedSpecial)
 
     for (const match of password.matchAll(isSeparator)) {
-      if (match.index === undefined) continue
-
       // add one to the index because we changed the regex from negative lookbehind to something simple.
       // this simple approach uses the first character before the separater too but we only need the index of the separater
       // https://github.com/zxcvbn-ts/zxcvbn/issues/202
+      // matchAll always yields a defined index for a successful match; only `groups` is optional.
       const i = match.index + 1
       result.push({
         pattern: 'separator',

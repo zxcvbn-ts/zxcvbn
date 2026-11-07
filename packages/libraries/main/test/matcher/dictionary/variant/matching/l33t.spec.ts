@@ -25,6 +25,50 @@ describe('l33t matching', () => {
     it("doesn't match single-character l33ted words", () => {
       expect(matchL33t.match({ password: '4 1 @' })).toEqual([])
     })
+    it("doesn't match a single l33ted emoji", () => {
+      const emojiOptions = new Options({
+        dictionary: { words: ['a'] },
+        l33tTable: { a: ['😀'] },
+      })
+      expect(new MatchL33t(emojiOptions).match({ password: '😀' })).toEqual([])
+    })
+    it("doesn't match a word with 'İ' that has no substitution", () => {
+      // the '1' gets substituted, but the match on 'İstanbul' doesn't include it
+      const dottedIOptions = new Options({
+        dictionary: { words: ['istanbul'] },
+      })
+      expect(
+        new MatchL33t(dottedIOptions).match({ password: 'İstanbul1' }),
+      ).toEqual([])
+    })
+  })
+
+  describe('dictionary lookups', () => {
+    // up to l33tMaxSubstitutions substituted passwords get matched, so a
+    // lookup that is repeated or can't produce a l33t match adds up quickly
+    it('should only look up substrings with a substitution, each once', () => {
+      const lookupOptions = new Options({ dictionary: { words: ['pass'] } })
+      const lookups: string[] = []
+      lookupOptions.rankedDictionaries.words = new Proxy(
+        lookupOptions.rankedDictionaries.words,
+        {
+          get(target, key) {
+            lookups.push(String(key))
+            return Reflect.get(target, key)
+          },
+        },
+      )
+      const matches = new MatchL33t(lookupOptions).match({
+        password: 'p4ssw0rd',
+      })
+
+      expect(matches.map((match) => match.matchedWord)).toEqual(['pass'])
+      // 'a' and 'o' only come from substituting '4' and '0'
+      expect(lookups.filter((word) => !/[ao]/.test(word))).toEqual([])
+      expect(
+        lookups.filter((word, index) => lookups.indexOf(word) !== index),
+      ).toEqual([])
+    })
   })
 
   const zxcvbnOptions = new Options({

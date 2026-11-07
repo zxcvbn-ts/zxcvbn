@@ -4,6 +4,7 @@ import { MatcherBaseClass, MatchOptions, SequenceMatch } from '../../types'
 interface UpdateParams {
   i: number
   j: number
+  characterCount: number
   delta: number
   password: string
   result: any[]
@@ -35,22 +36,39 @@ class MatchSequence extends MatcherBaseClass {
      * [(i, j, delta), ...] = [(0, 3, 1), (5, 7, -2), (8, 9, 1)]
      */
     const result: SequenceMatch[] = []
-    if (password.length === 1) {
+    // split by Unicode code point rather than UTF-16 code unit, so a
+    // surrogate pair (eg. an astral-plane character) is treated as one
+    // character with one codepoint delta instead of two meaningless ones
+    const characters = Array.from(password)
+    if (characters.length <= 1) {
       return []
     }
+    // [i, j] are reported in UTF-16 code units (like every other matcher), so
+    // track the code-unit offset each character starts at
+    const unitOffsets: number[] = []
+    let unitOffset = 0
+    characters.forEach((character) => {
+      unitOffsets.push(unitOffset)
+      unitOffset += character.length
+    })
+    const lastUnitIndex = (charIndex: number) =>
+      unitOffsets[charIndex] + characters[charIndex].length - 1
+
     let i = 0
     let lastDelta: number | null = null
-    const passwordLength = password.length
-    for (let k = 1; k < passwordLength; k += 1) {
-      const delta = password.charCodeAt(k) - password.charCodeAt(k - 1)
+    const charactersLength = characters.length
+    for (let k = 1; k < charactersLength; k += 1) {
+      const delta =
+        characters[k].codePointAt(0)! - characters[k - 1].codePointAt(0)!
       if (lastDelta === null) {
         lastDelta = delta
       }
       if (delta !== lastDelta) {
         const j = k - 1
         this.update({
-          i,
-          j,
+          i: unitOffsets[i],
+          j: lastUnitIndex(j),
+          characterCount: j - i + 1,
           delta: lastDelta,
           password,
           result,
@@ -60,8 +78,9 @@ class MatchSequence extends MatcherBaseClass {
       }
     }
     this.update({
-      i,
-      j: passwordLength - 1,
+      i: unitOffsets[i],
+      j: lastUnitIndex(charactersLength - 1),
+      characterCount: charactersLength - i,
       delta: lastDelta!,
       password,
       result,
@@ -69,17 +88,19 @@ class MatchSequence extends MatcherBaseClass {
     return result
   }
 
-  update({ i, j, delta, password, result }: UpdateParams) {
-    if (j - i > 1 || Math.abs(delta) === 1) {
+  // [i, j] are UTF-16 code units, characterCount is the number of code points
+  // between them: a run of two surrogate pairs is 2 characters, not 4
+  update({ i, j, characterCount, delta, password, result }: UpdateParams) {
+    if (characterCount > 2 || Math.abs(delta) === 1) {
       const absoluteDelta = Math.abs(delta)
       if (absoluteDelta > 0 && absoluteDelta <= this.MAX_DELTA) {
-        const token = password.slice(i, j + 1 || 9e9)
+        const token = password.slice(i, j + 1)
         const { sequenceName, sequenceSpace } = this.getSequence(token)
         return result.push({
           pattern: 'sequence',
           i,
           j,
-          token: password.slice(i, j + 1 || 9e9),
+          token,
           sequenceName,
           sequenceSpace,
           ascending: delta > 0,

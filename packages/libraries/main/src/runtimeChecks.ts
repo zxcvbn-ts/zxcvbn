@@ -110,28 +110,26 @@ export const checkCustomMatchers = (customMatchers: any) => {
   }
 }
 
+// returns the missing or invalid keys, a missing type is returned as a whole
 export const checkCustomTranslations = (translations: TranslationKeys) => {
-  let valid = true
+  const invalidKeys: string[] = []
   Object.keys(translationKeys).forEach((type) => {
     if (type in translations) {
       const translationType = type as keyof typeof translationKeys
       Object.keys(translationKeys[translationType]).forEach((key) => {
-        if (!(key in translations[translationType])) {
-          valid = false
-        }
         const translation = (translations[translationType] as any)[key]
         if (
           typeof translation !== 'string' &&
           typeof translation !== 'function'
         ) {
-          valid = false
+          invalidKeys.push(`${type}.${key}`)
         }
       })
     } else {
-      valid = false
+      invalidKeys.push(type)
     }
   })
-  return valid
+  return invalidKeys
 }
 
 export const checkTimeEstimationValues = (

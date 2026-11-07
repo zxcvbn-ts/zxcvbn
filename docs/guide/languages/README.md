@@ -46,6 +46,59 @@ const zxcvbn = new ZxcvbnFactory(options)
 zxcvbn.check(password)
 ```
 
+### Translation keys
+
+Without translations, `feedback.warning` and `feedback.suggestions` contain these keys (without the group prefix) and `crackTimes.*.display` contains the `timeEstimation` key. Use `crackTimes.*.base` for the number in your own translation.
+If you pass your own `translations`, every key has to be there, as a string or a function, otherwise `ZxcvbnFactory` throws `Invalid translations object, missing or invalid keys: <keys>`, listing the keys to fix. This includes the `pwned` keys, even if you don't use the [pwned matcher](../pwned-matcher/).
+A [custom matcher](../matcher/#custom-matcher) can return its own feedback and doesn't need a key here.
+
+| Key | English translation |
+|-----|---------------------|
+| `warnings.straightRow` | Straight rows of keys on your keyboard are easy to guess. |
+| `warnings.keyPattern` | Short keyboard patterns are easy to guess. |
+| `warnings.simpleRepeat` | Repeated characters like "aaa" are easy to guess. |
+| `warnings.extendedRepeat` | Repeated character patterns like "abcabcabc" are easy to guess. |
+| `warnings.sequences` | Common character sequences like "abc" are easy to guess. |
+| `warnings.recentYears` | Recent years are easy to guess. |
+| `warnings.dates` | Dates are easy to guess. |
+| `warnings.topTen` | This is a heavily used password. |
+| `warnings.topHundred` | This is a frequently used password. |
+| `warnings.common` | This is a commonly used password. |
+| `warnings.similarToCommon` | This is similar to a commonly used password. |
+| `warnings.wordByItself` | Single words are easy to guess. |
+| `warnings.namesByThemselves` | Single names or surnames are easy to guess. |
+| `warnings.commonNames` | Common names and surnames are easy to guess. |
+| `warnings.userInputs` | There should not be any personal or page related data. |
+| `warnings.pwned` | Your password was exposed by a data breach on the Internet. |
+| `suggestions.l33t` | Avoid predictable letter substitutions like '@' for 'a'. |
+| `suggestions.reverseWords` | Avoid reversed spellings of common words. |
+| `suggestions.allUppercase` | Capitalize some, but not all letters. |
+| `suggestions.capitalization` | Capitalize more than the first letter. |
+| `suggestions.dates` | Avoid dates and years that are associated with you. |
+| `suggestions.recentYears` | Avoid recent years. |
+| `suggestions.associatedYears` | Avoid years that are associated with you. |
+| `suggestions.sequences` | Avoid common character sequences. |
+| `suggestions.repeated` | Avoid repeated words and characters. |
+| `suggestions.longerKeyboardPattern` | Use longer keyboard patterns and change typing direction multiple times. |
+| `suggestions.anotherWord` | Add more words that are less common. |
+| `suggestions.useWords` | Use multiple words, but avoid common phrases. |
+| `suggestions.noNeed` | You can create strong passwords without using symbols, numbers, or uppercase letters. |
+| `suggestions.pwned` | If you use this password elsewhere, you should change it. |
+| `timeEstimation.ltSecond` | less than a second |
+| `timeEstimation.second` | {base} second |
+| `timeEstimation.seconds` | {base} seconds |
+| `timeEstimation.minute` | {base} minute |
+| `timeEstimation.minutes` | {base} minutes |
+| `timeEstimation.hour` | {base} hour |
+| `timeEstimation.hours` | {base} hours |
+| `timeEstimation.day` | {base} day |
+| `timeEstimation.days` | {base} days |
+| `timeEstimation.month` | {base} month |
+| `timeEstimation.months` | {base} months |
+| `timeEstimation.year` | {base} year |
+| `timeEstimation.years` | {base} years |
+| `timeEstimation.centuries` | centuries |
+
 ### Pluralization
 
 For the `timeEstimation` translations, you can use a string with a `{base}` placeholder or a function for more complex pluralization rules.
@@ -74,7 +127,7 @@ const translations = {
 
 By default, `zxcvbn-ts` doesn't use any dictionaries to let the developer decide how much of the library will be used.
 This makes the library tiny but inefficient compared to the original library.
-It is recommended to use at least the common and english language package.
+It is recommended to use at least the common and English language package.
 
 ```js
 import { ZxcvbnFactory } from '@zxcvbn-ts/core'
@@ -95,7 +148,7 @@ zxcvbn.check(password)
 
 ## Keyboard patterns
 
-By default, `zxcvbn-ts` don't use any keyboard patterns to let the developer decided how much of the library will be used.
+By default, `zxcvbn-ts` doesn't use any keyboard patterns to let the developer decide how much of the library will be used.
 It is recommended to use at least the common keyboard patterns.
 
 ```js
@@ -130,7 +183,7 @@ To add a missing language package you need to do the following things:
 - Fill `src/translations.ts` with translations for your language. You can use strings with `{base}` or functions for `timeEstimation` if your language has complex pluralization rules.
 - Adjust `README.md` file as appropriate.
 - Find some reliable sources for some dictionaries. As a minimum, you need to have a source for `firstname`, `lastname` and `commonWords`.
-  For common words you can check out <https://github.com/hermitdave/FrequencyWords> - there are a lot of languages available.
+  For common words you can use the [OpenSubtitles](https://opus.nlpl.eu/datasets/OpenSubtitles) frequency lists like the other languages (`https://object.pouta.csc.fi/OPUS-OpenSubtitles/v2024/freq/XX.freq.gz` with the `CommonWordsGenerator`) - there are a lot of languages available.
 - Add your language and sources to the generator list in `./data-scripts/lists.ts`.
 
   There is a default generator that takes simple lists that have only single words per line and can have occurrences of that word with a space separator.
@@ -150,9 +203,9 @@ To add a missing language package you need to do the following things:
   the 234
   ```
 
-  If your list is more complex you need to write your own generator like the [password generator](./data-scripts/_generators/PasswordGenerator.ts) or the [keyboard generator](./data-scripts/_generators/KeyboardAdjacencyGraph.ts)
+  If your list is more complex you need to write your own generator like the [password generator](https://github.com/zxcvbn-ts/zxcvbn/blob/master/data-scripts/_generators/PasswordGenerator.ts) or the [keyboard generator](https://github.com/zxcvbn-ts/zxcvbn/blob/master/data-scripts/_generators/KeyboardAdjacencyGraph.ts)
 
-- Run `yarn generate:languageData`. This will generate the JSON files and `index.ts`.
+- Run `yarn generate:languageData`. This will generate the JSON files and `index.ts`. The dictionary keys in `index.ts` get your language code as suffix, e.g. `commonWords-de`.
 - During debugging, it might be easy to only generate the language files for one
   language, use `yarn generate:languageData nl-be` for example.
 - Create a pull request to the master branch.

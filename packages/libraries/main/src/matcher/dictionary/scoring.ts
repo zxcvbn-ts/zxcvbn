@@ -23,7 +23,8 @@ export default ({
   const l33tVariations = l33tVariant({ l33t, subs, token })
   const reversedVariations = (reversed && 2) || 1
   let calculation
-  if (dictionaryName === 'diceware') {
+  // dictionary names get a language suffix like `diceware-common`
+  if (dictionaryName.split('-')[0] === 'diceware') {
     // diceware dictionaries are special, so we get a simple scoring of 1/2 of 6^5 (6 digits on 5 dice)
     // to get fix entropy of ~12.9 bits for every entry https://en.wikipedia.org/wiki/Diceware#:~:text=The%20level%20of,bits
     calculation = 6 ** 5 / 2

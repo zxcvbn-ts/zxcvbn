@@ -1,4 +1,4 @@
-import { buildRankedDictionary } from './utils/helper'
+import { buildRankedDictionary, toLowerCase } from './utils/helper'
 import {
   TranslationKeys,
   OptionsType,
@@ -48,6 +48,10 @@ export default class Options {
 
   public translations: TranslationKeys = translationKeys
 
+  private cachedUserInputs: (string | number)[] | undefined
+
+  private cachedUserInputsOptions: UserInputsOptions | undefined
+
   public graphs: OptionsGraph = {}
 
   public useLevenshteinDistance = false
@@ -73,6 +77,7 @@ export default class Options {
     'planets',
     'zodiacSigns',
     'chineseZodiac',
+    'userInputs',
   ]
 
   timeEstimationValues: TimeEstimationValues = {
@@ -158,11 +163,13 @@ export default class Options {
   }
 
   private setTranslations(translations: TranslationKeys) {
-    if (checkCustomTranslations(translations)) {
-      this.translations = translations
-    } else {
-      throw new Error('Invalid translations object fallback to keys')
+    const invalidKeys = checkCustomTranslations(translations)
+    if (invalidKeys.length > 0) {
+      throw new Error(
+        `Invalid translations object, missing or invalid keys: ${invalidKeys.join(', ')}`,
+      )
     }
+    this.translations = translations
   }
 
   private setRankedDictionaries() {
@@ -202,7 +209,7 @@ export default class Options {
         inputType === 'number' ||
         inputType === 'boolean'
       ) {
-        sanitizedInputs.push(input.toString().toLowerCase())
+        sanitizedInputs.push(toLowerCase(input.toString()))
       }
     })
 
@@ -212,6 +219,18 @@ export default class Options {
   public getUserInputsOptions(
     dictionary?: (string | number)[],
   ): UserInputsOptions {
+    const { cachedUserInputs } = this
+    const isCacheHit =
+      this.cachedUserInputsOptions !== undefined &&
+      (dictionary === undefined
+        ? cachedUserInputs === undefined
+        : cachedUserInputs?.length === dictionary.length &&
+          cachedUserInputs.every((value, index) => value === dictionary[index]))
+
+    if (isCacheHit) {
+      return this.cachedUserInputsOptions!
+    }
+
     let rankedDictionary: RankedDictionary = {}
     let rankedDictionaryMaxWordSize = 0
     if (dictionary) {
@@ -220,10 +239,17 @@ export default class Options {
         this.getRankedDictionariesMaxWordSize(dictionary)
     }
 
-    return {
+    const userInputsOptions: UserInputsOptions = {
       rankedDictionary,
       rankedDictionaryMaxWordSize,
     }
+
+    // Snapshot the contents rather than keeping the caller's array reference,
+    // so a later mutate-and-reuse of the same array is detected as a cache miss.
+    this.cachedUserInputs = dictionary ? [...dictionary] : undefined
+    this.cachedUserInputsOptions = userInputsOptions
+
+    return userInputsOptions
   }
 
   private addMatcher(name: string, matcher: Matcher) {

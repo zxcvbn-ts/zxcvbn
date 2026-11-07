@@ -5,6 +5,8 @@ import {
   translate,
   mod,
   buildRankedDictionary,
+  countCharacters,
+  toLowerCase,
 } from '../../src/utils/helper'
 import { LooseObject } from '../../src/types'
 
@@ -141,6 +143,39 @@ describe('utils matching', () => {
         foo: 1,
         bar: 2,
         rofl: 3,
+      })
+    })
+  })
+  describe('countCharacters', () => {
+    const data: [string, number][] = [
+      ['', 0],
+      ['abc', 3],
+      ['😀', 1],
+      ['a😀b😀', 4],
+      // a lone surrogate is still one character
+      ['\ud83d', 1],
+      ['\ud83da', 2],
+      ['\ude00\ud83d', 2],
+    ]
+    data.forEach(([string, count]) => {
+      it(`counts ${JSON.stringify(string)} as ${count} characters`, () => {
+        expect(countCharacters(string)).toEqual(count)
+      })
+    })
+  })
+  describe('toLowerCase', () => {
+    const data: [string, string][] = [
+      ['', ''],
+      ['PassWord', 'password'],
+      ['ÄÖÜ', 'äöü'],
+      // 'İ' (U+0130) would lowercase to 'i' + U+0307, one code unit longer
+      ['İstanbul', 'istanbul'],
+      ['aİbİ', 'aibi'],
+    ]
+    data.forEach(([string, lower]) => {
+      it(`lowercases ${JSON.stringify(string)} to ${JSON.stringify(lower)}`, () => {
+        expect(toLowerCase(string)).toEqual(lower)
+        expect(toLowerCase(string)).toHaveLength(string.length)
       })
     })
   })

@@ -7,24 +7,71 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Features
 
-- Improve language packages ([#341](https://github.com/zxcvbn-ts/zxcvbn/issues/341)) ([ac0ef46](https://github.com/zxcvbn-ts/zxcvbn/commit/ac0ef464e8d8f6bac9dd6744cd71d8bcefba66fd))
+- **dictionaries:** add a list of common Arabic words (`commonWords-ar`). Passwords built from common Arabic words now score lower ([#341](https://github.com/zxcvbn-ts/zxcvbn/issues/341)) ([ac0ef46](https://github.com/zxcvbn-ts/zxcvbn/commit/ac0ef464e8d8f6bac9dd6744cd71d8bcefba66fd))
 
-# [4.1.0](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/language-ar@3.1.0...@zxcvbn-ts/language-ar@4.1.0) (2026-06-11)
+## [4.1.1](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/language-ar@4.1.0...@zxcvbn-ts/language-ar@4.1.1) (2026-06-16)
 
 ### Bug Fixes
 
-- **dictionaries:** remove gzip/base64 as it increases the bundle size in the browser ([c8f1f79](https://github.com/zxcvbn-ts/zxcvbn/commit/c8f1f79a4848c7ff69b892ec005b9bd2f48e62d1))
+- **build:** fix `require()` of the CJS build, which failed with "decompress is not a function" ([#324](https://github.com/zxcvbn-ts/zxcvbn/issues/324)) ([281ead6](https://github.com/zxcvbn-ts/zxcvbn/commit/281ead6d7c681dde716705e3d8bee23999274c0e))
+
+# [4.1.0](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/language-ar@3.1.0...@zxcvbn-ts/language-ar@4.1.0) (2026-06-11)
+
+First stable 4.x release. It includes every change from `4.0.0-beta.0` to `4.0.0-beta.4`.
+
+### Bug Fixes
+
+- **dictionaries:** the dictionary keys now carry the language code. Before, merging the dictionaries of several languages (`{ ...en.dictionary, ...de.dictionary }`) let lists with the same key overwrite each other, so only the last language's words and names were checked and passwords from the other languages were rated stronger than they are ([#249](https://github.com/zxcvbn-ts/zxcvbn/issues/249)) ([f601f8f](https://github.com/zxcvbn-ts/zxcvbn/commit/f601f8f8d9945a232996fa30074f941ee57f8cec))
 
 ### Features
 
-- Add word sequence matcher ([#301](https://github.com/zxcvbn-ts/zxcvbn/issues/301)) ([8aba38e](https://github.com/zxcvbn-ts/zxcvbn/commit/8aba38eeabeb5b7eaed8d37330b024e66d34dc1e))
-- **package:** add dictionary compression ([c317614](https://github.com/zxcvbn-ts/zxcvbn/commit/c317614cd758416a71f9adcb2e9d7caf125a23f7))
-- **package:** cleanup package json with publint ([74f6fff](https://github.com/zxcvbn-ts/zxcvbn/commit/74f6ffffcc93c90591523fe7047ed843cb25c3ac))
-- **package:** revert cleanup package json with publint ([360ce9e](https://github.com/zxcvbn-ts/zxcvbn/commit/360ce9e28b464a573e5f92294027518a995b06c0))
-- **package:** revert cleanup package json with publint ([0eca875](https://github.com/zxcvbn-ts/zxcvbn/commit/0eca875d6de5265278666299c0a06fc4a8c453a7))
-- **packages:** modernize packages ([c2a6313](https://github.com/zxcvbn-ts/zxcvbn/commit/c2a6313ca0ca61de875f45338df3147c050549fe))
-- Update to new common words list ([#314](https://github.com/zxcvbn-ts/zxcvbn/issues/314)) ([1bbd9db](https://github.com/zxcvbn-ts/zxcvbn/commit/1bbd9db5ed225b9aaa50781b5fa6348bf1852e74))
-- use wordSequences correctly as dictionary ([0c84a11](https://github.com/zxcvbn-ts/zxcvbn/commit/0c84a11e821e299d311e61458111fbc64318705b))
+- **dictionaries:** ship the dictionaries compressed and decompress them at runtime with `@zxcvbn-ts/dictionary-compression`, which is now a dependency ([#276](https://github.com/zxcvbn-ts/zxcvbn/issues/276)) ([#294](https://github.com/zxcvbn-ts/zxcvbn/issues/294)) ([c317614](https://github.com/zxcvbn-ts/zxcvbn/commit/c317614cd758416a71f9adcb2e9d7caf125a23f7)) ([c8f1f79](https://github.com/zxcvbn-ts/zxcvbn/commit/c8f1f79a4848c7ff69b892ec005b9bd2f48e62d1))
+
+### BREAKING CHANGES
+
+- **build:** the dist files are renamed: `dist/index.js` is now `dist/index.cjs` and `dist/index.esm.js` is now `dist/index.mjs`. The minified CDN build `dist/zxcvbn-ts.min.js` is no longer shipped; the IIFE build `dist/zxcvbn-ts.js` stays until 5.x ([#282](https://github.com/zxcvbn-ts/zxcvbn/issues/282)) ([4caf5e0](https://github.com/zxcvbn-ts/zxcvbn/commit/4caf5e086dad53b05496101c49b50309066822fb)) ([b34d1bf](https://github.com/zxcvbn-ts/zxcvbn/commit/b34d1bff9e79dc845b08bda6e1b7a71760555ac4))
+
+- **dictionaries:** the dictionary keys are renamed: `firstnames` is now `firstnames-ar`, `lastnames` is now `lastnames-ar`. The empty `wikipedia` list is removed. This only affects code that reads the keys directly ([#249](https://github.com/zxcvbn-ts/zxcvbn/issues/249)) ([#307](https://github.com/zxcvbn-ts/zxcvbn/issues/307)) ([f601f8f](https://github.com/zxcvbn-ts/zxcvbn/commit/f601f8f8d9945a232996fa30074f941ee57f8cec)) ([9f830ba](https://github.com/zxcvbn-ts/zxcvbn/commit/9f830ba77923083642a43337ceca9cb69d8555f2))
+
+# 4.0.0 (2026-06-11)
+
+**Note:** 4.0.0 was tagged but never published to npm. Its changes are part of 4.1.0.
+
+# [4.0.0-beta.4](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/language-ar@4.0.0-beta.3...@zxcvbn-ts/language-ar@4.0.0-beta.4) (2026-05-13)
+
+**Note:** Version bump only for package @zxcvbn-ts/language-ar
+
+# [4.0.0-beta.3](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/language-ar@4.0.0-beta.2...@zxcvbn-ts/language-ar@4.0.0-beta.3) (2026-03-04)
+
+### Bug Fixes
+
+- **dictionaries:** ship the dictionaries without gzip/base64 encoding again, as it increased the bundle size in the browser. The decompression now comes from the external `@zxcvbn-ts/dictionary-compression` ^3.0.1 ([#294](https://github.com/zxcvbn-ts/zxcvbn/issues/294)) ([c8f1f79](https://github.com/zxcvbn-ts/zxcvbn/commit/c8f1f79a4848c7ff69b892ec005b9bd2f48e62d1))
+
+### BREAKING CHANGES
+
+- **dictionaries:** remove the empty `wikipedia-ar` list ([#307](https://github.com/zxcvbn-ts/zxcvbn/issues/307)) ([9f830ba](https://github.com/zxcvbn-ts/zxcvbn/commit/9f830ba77923083642a43337ceca9cb69d8555f2))
+
+# [4.0.0-beta.2](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/language-ar@4.0.0-beta.1...@zxcvbn-ts/language-ar@4.0.0-beta.2) (2024-09-30)
+
+### BREAKING CHANGES
+
+- **build:** the dist files are renamed: `dist/index.js` is now `dist/index.cjs` and `dist/index.esm.js` is now `dist/index.mjs`. The IIFE browser build is removed. The package now depends on `@zxcvbn-ts/dictionary-compression` ([#282](https://github.com/zxcvbn-ts/zxcvbn/issues/282)) ([4caf5e0](https://github.com/zxcvbn-ts/zxcvbn/commit/4caf5e086dad53b05496101c49b50309066822fb))
+
+# [4.0.0-beta.1](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/language-ar@4.0.0-beta.0...@zxcvbn-ts/language-ar@4.0.0-beta.1) (2024-09-30)
+
+### Features
+
+- **dictionaries:** ship the dictionaries compressed and decompress them at runtime ([#276](https://github.com/zxcvbn-ts/zxcvbn/issues/276)) ([c317614](https://github.com/zxcvbn-ts/zxcvbn/commit/c317614cd758416a71f9adcb2e9d7caf125a23f7))
+
+# [4.0.0-beta.0](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/language-ar@3.1.0...@zxcvbn-ts/language-ar@4.0.0-beta.0) (2024-07-31)
+
+### Bug Fixes
+
+- **dictionaries:** the dictionary keys now carry the language code. Before, merging the dictionaries of several languages (`{ ...en.dictionary, ...de.dictionary }`) let lists with the same key overwrite each other, so only the last language's words and names were checked and passwords from the other languages were rated stronger than they are ([#249](https://github.com/zxcvbn-ts/zxcvbn/issues/249)) ([f601f8f](https://github.com/zxcvbn-ts/zxcvbn/commit/f601f8f8d9945a232996fa30074f941ee57f8cec))
+
+### BREAKING CHANGES
+
+- **dictionaries:** the dictionary keys are renamed: `firstnames` is now `firstnames-ar`, `lastnames` is now `lastnames-ar`, `wikipedia` is now `wikipedia-ar`. This only affects code that reads the keys directly ([#249](https://github.com/zxcvbn-ts/zxcvbn/issues/249)) ([f601f8f](https://github.com/zxcvbn-ts/zxcvbn/commit/f601f8f8d9945a232996fa30074f941ee57f8cec))
 
 # 3.1.0 (2023-09-17)
 

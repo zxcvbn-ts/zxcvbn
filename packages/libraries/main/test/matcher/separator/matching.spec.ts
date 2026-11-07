@@ -14,6 +14,32 @@ describe('separator matching', () => {
     })
   })
 
+  it('treats separators as single characters wherever they are in the list', async () => {
+    vi.resetModules()
+    vi.doMock('../../../src/data/const', async (importOriginal) => {
+      const actual =
+        await importOriginal<typeof import('../../../src/data/const')>()
+      // '-' is no longer the last separator, so if it isn't treated as a
+      // literal it would turn '.-~' into a range covering letters and digits
+      return { ...actual, SEPERATOR_CHARS: [...actual.SEPERATOR_CHARS, '~'] }
+    })
+    // importActual only bypasses a mock of the separator module itself,
+    // its import of the constants above still gets the mocked list
+    const { default: IsolatedMatchSeparator } = await vi.importActual<{
+      default: typeof MatchSeparator
+    }>('../../../src/matcher/separator/matching')
+
+    try {
+      expect(IsolatedMatchSeparator.getMostUsedSeparatorChar('aa11')).toBe(
+        undefined,
+      )
+      expect(IsolatedMatchSeparator.getMostUsedSeparatorChar('a~b~c')).toBe('~')
+    } finally {
+      vi.doUnmock('../../../src/data/const')
+      vi.resetModules()
+    }
+  })
+
   let matches = matchSeparator.match({ password: 'first second third' })
   let msg = 'matches same separators'
 
@@ -50,6 +76,20 @@ describe('separator matching', () => {
     matches,
     patternNames: 'separator',
     patterns: ['.', '.'],
+    ijs: [
+      [5, 5],
+      [12, 12],
+    ],
+    propsToCheck: {},
+  })
+
+  matches = matchSeparator.match({ password: 'first\\second\\third' })
+  msg = 'matches backslash separators'
+  checkMatches({
+    messagePrefix: msg,
+    matches,
+    patternNames: 'separator',
+    patterns: ['\\', '\\'],
     ijs: [
       [5, 5],
       [12, 12],
