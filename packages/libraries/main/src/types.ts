@@ -136,7 +136,7 @@ export interface WordSequenceMatch extends Match {
   dictionaryName: string
   ascending: boolean
   /**
-   * @description The separators found between the words, empty when they are concatenated
+   * @description The text between each pair of consecutive words: separators, an uppercase letter, or an empty string when they are concatenated
    */
   separators: string[]
 }

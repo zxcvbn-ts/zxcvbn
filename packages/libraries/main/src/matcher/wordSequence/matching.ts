@@ -6,12 +6,17 @@ import {
   L33tMatch,
   MatchExtended,
 } from '../../types'
+import { WORD_SEQUENCE_SEPARATOR_CHARS } from '../../data/const'
 
-export const VALID_SEPARATORS = new Set([' ', '-', '_', '.'])
-
-// '' (plain concatenation) counts too, since every() is true for it
-const isSeparator = (text: string) =>
-  Array.from(text).every((char) => VALID_SEPARATORS.has(char))
+// '' (plain concatenation) counts too, since there is no character to reject
+const isSeparator = (text: string) => {
+  for (const char of text) {
+    if (!WORD_SEQUENCE_SEPARATOR_CHARS.has(char)) {
+      return false
+    }
+  }
+  return true
+}
 
 /*
  *-------------------------------------------------------------------------------
@@ -162,11 +167,10 @@ class MatchWordSequence extends MatcherBaseClass {
     const firstMatch = sequence[0]
     const lastMatch = sequence[sequence.length - 1]
     const words = sequence.map((match) => match.matchedWord)
-    // camelCase gaps are a letter, not a separator, so they are left out
+    // one entry per gap, so scoring can tell which words are separated
     const separators = sequence
       .slice(1)
       .map((match, index) => password.slice(sequence[index].j + 1, match.i))
-      .filter((gap) => gap !== '' && isSeparator(gap))
 
     // Determine if sequence is ascending (by rank)
     const ranks = sequence.map((match) => match.rank)
