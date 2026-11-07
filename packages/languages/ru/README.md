@@ -50,6 +50,14 @@ console.log(result.feedback) // { warning, suggestions } in Russian
 
 The dictionaries are fairly large. To keep them out of your main bundle, see [lazy loading](https://zxcvbn-ts.github.io/zxcvbn/guide/lazy-loading/).
 
+The common language package also exports the Russian ЙЦУКЕН keyboard graph as
+`adjacencyGraphs.jcuken`. The graph covers the standard Russian letter layout,
+including `ё` and shifted characters, so sequences such as `фыва`, `йцукен`,
+and `ячсм` can be matched as keyboard patterns when the common package is
+configured as shown above.
+
+
+
 ## Sources
 
 - `commonWords` is generated from the [OpenSubtitles 2024](https://opus.nlpl.eu/datasets/OpenSubtitles) word frequency list (`ru`) provided via OPUS, licensed under [ODC-BY](https://opendatacommons.org/licenses/by/1-0/).
