@@ -136,6 +136,10 @@ export interface WordSequenceMatch extends Match {
   wordCount: number
   dictionaryName: string
   ascending: boolean
+  /**
+   * @description The text between each pair of consecutive words: separators, an uppercase letter, or an empty string when they are concatenated
+   */
+  separators: string[]
 }
 
 export type MatchExtended =

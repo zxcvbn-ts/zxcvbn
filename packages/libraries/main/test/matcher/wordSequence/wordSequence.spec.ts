@@ -3,6 +3,7 @@ import wordSequences from '../../../../../languages/en/src/wordSequences.json'
 import scoring from '../../../src/matcher/wordSequence/scoring'
 import feedback from '../../../src/matcher/wordSequence/feedback'
 import Options from '../../../src/Options'
+import { WORD_SEQUENCE_SEPARATOR_CHARS } from '../../../src/data/const'
 
 describe('WordSequence Matcher', () => {
   let zxcvbn: ZxcvbnFactory
@@ -453,6 +454,91 @@ describe('WordSequence Matcher', () => {
       )
     })
 
+    it.each<[string, string[]]>([
+      ['Hans..Florian..Zimmer', ['..', '..']],
+      ['Hans._Florian._Zimmer', ['._', '._']],
+      ['HansZimmer', ['']],
+      ['Hans.FlorianZimmer', ['.', '']],
+      ['HansXZimmer', ['X']],
+    ])(
+      'should keep %s together and record its separators',
+      (password, separators) => {
+        const result = zxcvbn.check(password, userInputs)
+
+        expect(result.sequence).toHaveLength(1)
+        const [match] = result.sequence
+        expect(match.pattern).toBe('wordSequence')
+        if (match.pattern === 'wordSequence') {
+          expect(match.separators).toEqual(separators)
+        }
+      },
+    )
+
+    it('should keep user input sequences at the lowest score with repeated separators', () => {
+      const single = zxcvbn.check('Hans.Florian.Zimmer', userInputs)
+      const repeated = zxcvbn.check('Hans..Florian..Zimmer', userInputs)
+
+      expect(single.score).toBe(0)
+      expect(repeated.score).toBe(0)
+    })
+
+    it('should charge more guesses when only some words are separated', () => {
+      const guesses = (password: string) =>
+        zxcvbn.check(password, userInputs).guesses
+
+      expect(guesses('hans.florianzimmer')).toBeGreaterThan(
+        guesses('hans.florian.zimmer'),
+      )
+      expect(guesses('hansflorian.zimmer')).toBeGreaterThan(
+        guesses('hans.florian.zimmer'),
+      )
+    })
+
+    it('should charge more guesses for an uppercase letter gap than for a separator', () => {
+      const guesses = (password: string) =>
+        zxcvbn.check(password, userInputs).guesses
+
+      expect(guesses('hansXzimmer')).toBeGreaterThan(guesses('hans.zimmer'))
+      expect(guesses('hansXflorian.zimmer')).toBeGreaterThan(
+        guesses('hans.florian.zimmer'),
+      )
+    })
+
+    it('should charge more guesses for a longer separator run', () => {
+      const guesses = (password: string) =>
+        zxcvbn.check(password, userInputs).guesses
+
+      expect(guesses('hans.zimmer')).toBeGreaterThan(guesses('hanszimmer'))
+      expect(guesses('hans..zimmer')).toBeGreaterThan(guesses('hans.zimmer'))
+      expect(guesses('hans----------zimmer')).toBeGreaterThan(
+        guesses('hans--zimmer'),
+      )
+    })
+
+    it('should charge more guesses for mixed separators', () => {
+      const guesses = (password: string) =>
+        zxcvbn.check(password, userInputs).guesses
+
+      expect(guesses('Hans._Florian._Zimmer')).toBeGreaterThan(
+        guesses('Hans..Florian..Zimmer'),
+      )
+      expect(guesses('Hans.Florian_Zimmer')).toBeGreaterThan(
+        guesses('Hans.Florian..Zimmer'),
+      )
+    })
+
+    it('should charge more guesses for uneven runs of the same separator', () => {
+      const guesses = (password: string) =>
+        zxcvbn.check(password, userInputs).guesses
+
+      expect(guesses('Hans.Florian..Zimmer')).toBeGreaterThan(
+        guesses('Hans.Florian.Zimmer'),
+      )
+      expect(guesses('Hans..Florian...Zimmer')).toBeGreaterThan(
+        guesses('Hans...Florian...Zimmer'),
+      )
+    })
+
     it('should not detect a sequence without user inputs', () => {
       const result = zxcvbn.check('HansFlorianZimmer')
 
@@ -467,6 +553,72 @@ describe('WordSequence Matcher', () => {
   })
 
   describe('Scoring and Feedback unit tests', () => {
+    it('scoring should charge the separator choice and run length', () => {
+      const match = (separators: string[]) =>
+        ({ pattern: 'wordSequence', wordCount: 2, separators }) as any
+
+      expect(scoring(match(['']))).toBe(2)
+      expect(scoring(match(['.']))).toBe(2 * WORD_SEQUENCE_SEPARATOR_CHARS.size)
+      expect(scoring(match(['..']))).toBe(
+        2 * WORD_SEQUENCE_SEPARATOR_CHARS.size * 2,
+      )
+      expect(scoring(match(['._']))).toBe(
+        2 * WORD_SEQUENCE_SEPARATOR_CHARS.size ** 2,
+      )
+    })
+
+    it('scoring should treat a missing separators field as concatenation', () => {
+      expect(scoring({ pattern: 'wordSequence', wordCount: 2 } as any)).toBe(2)
+    })
+
+    it('scoring should charge an uppercase letter gap for the letter choice', () => {
+      const match = (separators: string[]) =>
+        ({ pattern: 'wordSequence', wordCount: 2, separators }) as any
+
+      expect(scoring(match(['X']))).toBe(2 * 26)
+    })
+
+    describe('scoring with several gaps', () => {
+      // 3! orderings * 2 for the length penalty
+      const baseGuesses = 12
+      const match = (separators: string[]) =>
+        ({ pattern: 'wordSequence', wordCount: 3, separators }) as any
+
+      it('should guess a separator shared by every gap once', () => {
+        expect(scoring(match(['.', '.']))).toBe(
+          baseGuesses * WORD_SEQUENCE_SEPARATOR_CHARS.size,
+        )
+        expect(scoring(match(['._', '._']))).toBe(
+          baseGuesses * WORD_SEQUENCE_SEPARATOR_CHARS.size ** 2,
+        )
+      })
+
+      it('should charge which gaps hold a separator', () => {
+        expect(scoring(match(['.', '']))).toBe(
+          baseGuesses * WORD_SEQUENCE_SEPARATOR_CHARS.size * 2 ** 2,
+        )
+        expect(scoring(match(['', '']))).toBe(baseGuesses)
+      })
+
+      it('should guess a character once when only its run length differs', () => {
+        expect(scoring(match(['.', '..']))).toBe(
+          baseGuesses * WORD_SEQUENCE_SEPARATOR_CHARS.size * 2,
+        )
+        expect(scoring(match(['..', '...']))).toBe(
+          baseGuesses * WORD_SEQUENCE_SEPARATOR_CHARS.size * 2 * 3,
+        )
+      })
+
+      it('should charge different separators per gap', () => {
+        expect(scoring(match(['.', '_']))).toBe(
+          baseGuesses * WORD_SEQUENCE_SEPARATOR_CHARS.size ** 2,
+        )
+        expect(scoring(match(['X', '.']))).toBe(
+          baseGuesses * 26 * WORD_SEQUENCE_SEPARATOR_CHARS.size,
+        )
+      })
+    })
+
     it('scoring should return 0 if pattern is not wordSequence', () => {
       expect(scoring({ pattern: 'dictionary' } as any)).toBe(0)
     })

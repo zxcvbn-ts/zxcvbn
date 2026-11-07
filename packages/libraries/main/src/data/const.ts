@@ -36,4 +36,7 @@ export const SEPERATOR_CHARS = [
   '-',
 ]
 export const SEPERATOR_CHAR_COUNT = SEPERATOR_CHARS.length
+/* Word sequences */
+export const WORD_SEQUENCE_SEPARATOR_CHARS = new Set([' ', '-', '_', '.'])
+export const WORD_SEQUENCE_LETTER_GAP_OPTIONS = 26
 export const ESCAPE_REGEX = /[.*+?^${}()|[\]\\]/g
