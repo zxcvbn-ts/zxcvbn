@@ -6,6 +6,7 @@ import { DictionaryNames, DictionaryMatch, MatcherBaseClass } from '../../types'
 import { DictionaryHit, DictionaryMatchOptions } from './types'
 import { countCharacters, toLowerCase } from '../../utils/helper'
 import WordIndex from './WordIndex'
+import WordRanges from './WordRanges'
 
 const USER_INPUTS = 'userInputs'
 
@@ -85,19 +86,13 @@ const getUserInputsLevenshteinDictionary = (
 
 class MatchDictionary extends MatcherBaseClass {
   // eslint-disable-next-line complexity,max-statements
-  public match({
-    password,
-    userInputsOptions,
-    useLevenshtein = true,
-  }: DictionaryMatchOptions) {
+  public match({ password, userInputsOptions }: DictionaryMatchOptions) {
     const matches: DictionaryMatch[] = []
     const passwordLength = password.length
     const passwordLower = toLowerCase(password)
-    const { wordIndex } = this.options
+    const { wordIndex, useLevenshteinDistance } = this.options
     const userInputsPosition = getUserInputsPosition(wordIndex)
     const userInputsWordIndex = userInputsOptions?.wordIndex
-    const isLevenshteinEnabled =
-      this.options.useLevenshteinDistance && useLevenshtein
 
     const addMatches = (i: number, j: number, hits: DictionaryHit[]) => {
       const usedPassword = passwordLower.slice(i, j + 1)
@@ -118,45 +113,24 @@ class MatchDictionary extends MatcherBaseClass {
     }
 
     // the words that start with password[i, j], narrowed with each j
-    const range = new Int32Array(2)
-    const userInputsRange = new Int32Array(2)
+    const ranges = new WordRanges(wordIndex, userInputsWordIndex)
     for (let i = 0; i < passwordLength; i += 1) {
-      range[0] = 0
-      range[1] = wordIndex.words.length
-      userInputsRange[0] = 0
-      userInputsRange[1] = userInputsWordIndex
-        ? userInputsWordIndex.words.length
-        : 0
+      ranges.reset()
       for (let j = i; j < passwordLength; j += 1) {
         const depth = j - i
-        const code = passwordLower.charCodeAt(j)
-        if (range[0] < range[1]) {
-          wordIndex.narrow(range, depth, code)
-        }
-        if (userInputsWordIndex && userInputsRange[0] < userInputsRange[1]) {
-          userInputsWordIndex.narrow(userInputsRange, depth, code)
-        }
+        ranges.narrow(depth, passwordLower.charCodeAt(j))
         // no longer word starts with it
-        if (range[0] >= range[1] && userInputsRange[0] >= userInputsRange[1]) {
+        if (ranges.isEmpty()) {
           break
         }
         // only use levenshtein distance on full password to minimize the performance drop
         // and because otherwise there would be to many false positives
         const isFullPassword = i === 0 && j === passwordLength - 1
-        if (isLevenshteinEnabled && isFullPassword) {
+        if (useLevenshteinDistance && isFullPassword) {
           break
         }
-        // the shortest word of a range comes first
-        const word =
-          range[0] < range[1] && wordIndex.words[range[0]].length === depth + 1
-            ? range[0]
-            : -1
-        const userInputsRank =
-          userInputsWordIndex &&
-          userInputsRange[0] < userInputsRange[1] &&
-          userInputsWordIndex.words[userInputsRange[0]].length === depth + 1
-            ? userInputsWordIndex.getRank(userInputsRange[0], 0)
-            : undefined
+        const word = ranges.getWord(depth + 1)
+        const userInputsRank = ranges.getUserInputsRank(depth + 1)
         if (word !== -1 || userInputsRank !== undefined) {
           addMatches(
             i,
@@ -166,7 +140,7 @@ class MatchDictionary extends MatcherBaseClass {
         }
       }
       // the full password is checked for every dictionary, even if no word starts with it
-      if (i === 0 && isLevenshteinEnabled) {
+      if (i === 0 && useLevenshteinDistance) {
         addMatches(
           0,
           passwordLength - 1,
@@ -223,7 +197,7 @@ class MatchDictionary extends MatcherBaseClass {
     usedPassword: string,
     userInputsWordIndex: WordIndex | undefined,
   ) {
-    const { wordIndex, rankedDictionariesMaxWordSize, levenshteinThreshold } =
+    const { wordIndex, dictionaryMaxWordSizes, levenshteinThreshold } =
       this.options
     const { dictionaryNames } = wordIndex
     const passwordLength = countCharacters(usedPassword)
@@ -271,7 +245,7 @@ class MatchDictionary extends MatcherBaseClass {
           getUserInputsLevenshteinDictionary(wordIndex, userInputsWordIndex),
           Math.max(
             getUserInputsMaxWordSize(userInputsWordIndex),
-            rankedDictionariesMaxWordSize[USER_INPUTS] || 0,
+            dictionaryMaxWordSizes[USER_INPUTS] || 0,
           ),
         )
       } else if (dictionary < dictionaryNames.length) {
@@ -279,7 +253,7 @@ class MatchDictionary extends MatcherBaseClass {
         addHit(
           name,
           wordIndex.getLevenshteinDictionary(dictionary),
-          rankedDictionariesMaxWordSize[name],
+          dictionaryMaxWordSizes[name],
         )
       }
     }

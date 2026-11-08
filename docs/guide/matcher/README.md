@@ -111,6 +111,7 @@ new ZxcvbnFactory(options, {
 
 The `Matching` class must extend `MatcherBaseClass`. It is instantiated with the factory's `Options`, which are available as `this.options`.
 Its `match` method receives a `MatchOptions` object (`password`, `omniMatch`, `userInputsOptions`) and returns an array of matched tokens, or a promise of one for an async matcher.
+`userInputsOptions.wordIndex` holds the user inputs, and `this.options.wordIndex` holds the words of all dictionaries. The old `userInputsOptions.rankedDictionary`, `rankedDictionaryMaxWordSize`, `options.rankedDictionaries` and `options.rankedDictionariesMaxWordSize` are deprecated. They are only built when read and will be removed in the next major version.
 The four default properties (pattern, token, i, and j) are mandatory but the object can be extended as needed.
 `pattern` is the name of the matcher that found the token
 `token` is the part of the password that was found by the matcher

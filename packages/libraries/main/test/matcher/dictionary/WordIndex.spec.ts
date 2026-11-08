@@ -166,6 +166,17 @@ describe('WordIndex', () => {
       expect(dictionary.getRank('b')).toBeUndefined()
     })
 
+    it('keeps the words from when the index was created', () => {
+      const words = ['b', 'a']
+      const index = new WordIndex([{ name: 'd1', words }])
+      words.length = 0
+      words.push('c')
+      expect(index.getLevenshteinDictionary(0).getEntries()).toEqual({
+        entries: ['b', 'a'],
+        ranks: [1, 2],
+      })
+    })
+
     it('is built once', () => {
       expect(wordIndex.getLevenshteinDictionary(0)).toBe(
         wordIndex.getLevenshteinDictionary(0),

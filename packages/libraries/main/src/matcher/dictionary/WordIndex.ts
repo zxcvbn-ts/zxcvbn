@@ -218,8 +218,8 @@ export default class WordIndex {
 
   readonly dictionaryNames: string[]
 
-  // the lists aren't copied, they are only read again for levenshtein
-  private readonly lists: readonly WordList[]
+  // the number of words listed per dictionary, the highest rank each can have
+  private readonly listSizes: number[]
 
   private readonly findRange = new Int32Array(2)
 
@@ -235,7 +235,7 @@ export default class WordIndex {
 
   // eslint-disable-next-line max-statements
   constructor(lists: readonly WordList[] = []) {
-    this.lists = lists
+    this.listSizes = lists.map(({ words }) => words.length)
     this.dictionaryNames = lists.map(({ name }) => name)
     const entries = flatten(lists)
     const order = new EntrySorter(entries.words).sort()
@@ -352,28 +352,38 @@ export default class WordIndex {
   getLevenshteinDictionary(dictionary: number) {
     let levenshteinDictionary = this.levenshteinDictionaries[dictionary]
     if (!levenshteinDictionary) {
-      const { words } = this.lists[dictionary]
       levenshteinDictionary = {
-        getEntries: () => {
-          const entries: string[] = []
-          const entryRanks: number[] = []
-          const seen = new Set<string>()
-          // from the end, a word listed twice has its last rank
-          for (let index = words.length - 1; index >= 0; index -= 1) {
-            const word = String(words[index])
-            if (!seen.has(word)) {
-              seen.add(word)
-              entries.push(word)
-              entryRanks.push(index + 1)
-            }
-          }
-          return { entries: entries.reverse(), ranks: entryRanks.reverse() }
-        },
+        getEntries: () => this.getEntries(dictionary),
         getRank: (entry) => this.getRank(this.find(entry), dictionary),
       }
       this.levenshteinDictionaries[dictionary] = levenshteinDictionary
     }
     return levenshteinDictionary
+  }
+
+  // the words of a dictionary in rank order, from the index and not the list
+  // it was created from, so both always have the same words
+  private getEntries(dictionary: number) {
+    // a word listed twice leaves a hole at the rank it doesn't have
+    const wordsByRank = new Array<string>(this.listSizes[dictionary])
+    this.words.forEach((word, wordIndex) => {
+      for (
+        let hit = this.hitStart[wordIndex];
+        hit < this.hitStart[wordIndex + 1];
+        hit += 1
+      ) {
+        if (this.hitDictionary[hit] === dictionary) {
+          wordsByRank[this.hitRank[hit] - 1] = word
+        }
+      }
+    })
+    const entries: string[] = []
+    const ranks: number[] = []
+    wordsByRank.forEach((word, index) => {
+      entries.push(word)
+      ranks.push(index + 1)
+    })
+    return { entries, ranks }
   }
 
   // the rank of words[wordIndex] in a dictionary, or undefined

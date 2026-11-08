@@ -65,7 +65,17 @@ describe('Options', () => {
           empty: [],
         },
       })
-      expect(options.rankedDictionariesMaxWordSize.empty).toBe(0)
+      expect(options.dictionaryMaxWordSizes.empty).toBe(0)
+    })
+
+    it('should only build the l33t trie for levenshtein', () => {
+      const l33tTable = { a: ['4'] }
+      expect(new Options({ l33tTable }).trieNodeRoot.children.size).toBe(0)
+      expect(new Options().trieNodeRoot.children.size).toBe(0)
+      expect(
+        new Options({ l33tTable, useLevenshteinDistance: true }).trieNodeRoot
+          .children.size,
+      ).toBe(1)
     })
 
     it('should warn when adding an existing matcher', () => {
@@ -331,6 +341,50 @@ describe('Options', () => {
       const second = options.getUserInputsOptions()
 
       expect(second).toBe(first)
+    })
+  })
+
+  /* eslint-disable @typescript-eslint/no-deprecated -- tests the deprecated API */
+  describe('deprecated ranked dictionaries', () => {
+    it('should rank the words of every dictionary from 1', () => {
+      const options = new Options({
+        dictionary: { words: ['foo', 'bar', 12], userInputs: ['me'] },
+      })
+      expect(options.rankedDictionaries).toEqual({
+        words: { foo: 1, bar: 2, 12: 3 },
+        userInputs: { me: 1 },
+      })
+      expect(options.rankedDictionaries).toBe(options.rankedDictionaries)
+    })
+
+    it('should keep the last rank of a duplicate word', () => {
+      const options = new Options({ dictionary: { words: ['a', 'b', 'a'] } })
+      expect(options.rankedDictionaries.words).toEqual({ a: 3, b: 2 })
+    })
+
+    it('should give the longest word size of every dictionary', () => {
+      const options = new Options({
+        dictionary: { words: ['foo', 'barbaz', 1234567], empty: [] },
+      })
+      expect(options.rankedDictionariesMaxWordSize).toEqual({
+        words: 7,
+        empty: 0,
+      })
+    })
+
+    it('should rank the sanitized user inputs', () => {
+      const userInputs: (string | number)[] = ['Foo', 'barBaz', 42]
+      const result = new Options().getUserInputsOptions(userInputs)
+      userInputs.push('muchlongerinput')
+
+      expect(result.rankedDictionary).toEqual({ foo: 1, barbaz: 2, 42: 3 })
+      expect(result.rankedDictionaryMaxWordSize).toBe(6)
+    })
+
+    it('should give an empty ranked dictionary without user inputs', () => {
+      const result = new Options().getUserInputsOptions()
+      expect(result.rankedDictionary).toEqual({})
+      expect(result.rankedDictionaryMaxWordSize).toBe(0)
     })
   })
 })

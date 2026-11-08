@@ -332,6 +332,8 @@ describe('dictionary matching', () => {
         wordIndex: new WordIndex([
           { name: 'userInputs', words: ['wendydarling'] },
         ]),
+        rankedDictionary: { wendydarling: 1 },
+        rankedDictionaryMaxWordSize: 12,
       }
       expect(getHits('wendydarlinx', userInputsOptions)).toEqual([
         ['userInputs', 1, 'wendydarling'],

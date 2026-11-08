@@ -6,11 +6,7 @@ export type DictionaryHit = {
   rank: number
 } & Partial<FindLevenshteinDistanceResult>
 
-export interface DictionaryMatchOptionsLevenshtein extends MatchOptions {
-  useLevenshtein?: boolean
-}
-
 export type DictionaryMatchOptions = Pick<
-  DictionaryMatchOptionsLevenshtein,
-  'password' | 'userInputsOptions' | 'useLevenshtein'
+  MatchOptions,
+  'password' | 'userInputsOptions'
 >

@@ -2,7 +2,6 @@ import * as zxcvbnCommonPackage from '../../../languages/common/src'
 import * as zxcvbnEnPackage from '../../../languages/en/src'
 import { MatcherBaseClass, ZxcvbnFactory } from '../src'
 import { Match, Matcher } from '../src/types'
-import { sorted } from '../src/utils/helper'
 
 const minLengthMatcher: Matcher = {
   Matching: class MatchMinLength extends MatcherBaseClass {
@@ -18,7 +17,7 @@ const minLengthMatcher: Matcher = {
           j: password.length - 1,
         })
       }
-      return sorted(matches)
+      return matches
     }
   },
   feedback() {

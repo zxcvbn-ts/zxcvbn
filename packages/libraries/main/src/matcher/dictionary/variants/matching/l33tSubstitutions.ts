@@ -27,8 +27,11 @@ export default (l33tTable: OptionsL33tTable): L33tSubstitutions => {
         entry = { substitution, letters: [], lettersLower: [] }
         bySubstitution.set(substitution, entry)
       }
-      entry.letters.push(letter)
-      entry.lettersLower.push(toLowerCase(letter))
+      // listed twice for a letter it would be walked twice
+      if (!entry.letters.includes(letter)) {
+        entry.letters.push(letter)
+        entry.lettersLower.push(toLowerCase(letter))
+      }
     })
   })
   const result: L33tSubstitutions = new Map()

@@ -11,6 +11,24 @@ import SpatialMatcher from './matcher/spatial/matching'
 import SeparatorMatcher from './matcher/separator/matching'
 import WordSequenceMatcher from './matcher/wordSequence/matching'
 import Options from './Options'
+import WordIndex from './matcher/dictionary/WordIndex'
+
+// An object built by hand without wordIndex only has the ranked dictionary,
+// its words are put in the word index in the order of their rank. Without
+// this the user inputs would be skipped.
+const withWordIndex = (userInputsOptions: UserInputsOptions | undefined) => {
+  if (!userInputsOptions || userInputsOptions.wordIndex) {
+    return userInputsOptions
+  }
+  // eslint-disable-next-line @typescript-eslint/no-deprecated
+  const words = Object.entries(userInputsOptions.rankedDictionary)
+    .sort((first, second) => first[1] - second[1])
+    .map(([word]) => word)
+  return {
+    ...userInputsOptions,
+    wordIndex: new WordIndex([{ name: 'userInputs', words }]),
+  }
+}
 
 /*
  * -------------------------------------------------------------------------------
@@ -42,8 +60,9 @@ class Matching {
 
   match(
     password: string,
-    userInputsOptions?: UserInputsOptions,
+    givenUserInputsOptions?: UserInputsOptions,
   ): MatchExtended[] | Promise<MatchExtended[]> {
+    const userInputsOptions = withWordIndex(givenUserInputsOptions)
     const matches: MatchExtended[] = []
     const promises: Promise<MatchExtended[]>[] = []
     // wordSequence reads the shared `matches` array to find sequences of

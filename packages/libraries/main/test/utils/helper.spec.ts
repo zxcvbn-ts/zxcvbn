@@ -1,6 +1,5 @@
 import {
   empty,
-  sorted,
   extend,
   translate,
   countCharacters,
@@ -32,42 +31,6 @@ describe('utils matching', () => {
       values.forEach((value) => {
         expect(empty(value)).toBeFalsy()
       })
-    })
-  })
-
-  describe('sorted', () => {
-    it('sorting an empty list leaves it empty', () => {
-      expect(sorted([])).toEqual([])
-    })
-    it('matches are sorted on i index primary, j secondary', () => {
-      const [m1, m2, m3, m4, m5, m6] = [
-        {
-          i: 5,
-          j: 5,
-        },
-        {
-          i: 6,
-          j: 7,
-        },
-        {
-          i: 2,
-          j: 5,
-        },
-        {
-          i: 0,
-          j: 0,
-        },
-        {
-          i: 2,
-          j: 3,
-        },
-        {
-          i: 0,
-          j: 3,
-        },
-      ]
-      // @ts-expect-error for testing purposes
-      expect(sorted([m1, m2, m3, m4, m5, m6])).toEqual([m4, m6, m5, m3, m1, m2])
     })
   })
 

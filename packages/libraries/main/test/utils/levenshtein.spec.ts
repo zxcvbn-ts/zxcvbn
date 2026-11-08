@@ -881,13 +881,6 @@ describe('levenshtein', () => {
       expect(withoutLevenshtein.match({ password: 'passwerd' })).toEqual([])
     })
 
-    it('is skipped when the caller passes useLevenshtein: false', () => {
-      // the l33t matcher does this for passwords with only some substitutions
-      expect(
-        matchDictionary.match({ password: 'passwerd', useLevenshtein: false }),
-      ).toEqual([])
-    })
-
     const withThreshold = (levenshteinThreshold: number) =>
       new MatchDictionary(
         new Options({

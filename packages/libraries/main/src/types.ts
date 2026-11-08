@@ -267,11 +267,40 @@ export type DefaultScoringFunction = (
   options: Options,
 ) => number | DictionaryReturn
 
+/**
+ * @deprecated The dictionaries are matched with `Options.wordIndex`, this is only built when read and will be removed in the next major version.
+ */
+export type RankedDictionary = Record<string, number>
+
+/**
+ * @deprecated The dictionaries are matched with `Options.wordIndex`, this is only built when read and will be removed in the next major version.
+ */
+export type RankedDictionaries = Record<string, Record<string, number>>
+
+/**
+ * @deprecated Not used anymore, will be removed in the next major version.
+ */
+export interface Optimal {
+  bestMatches: Record<string, MatchEstimated>[]
+  guessesProduct: Record<string, number>[]
+  totalGuesses: Record<string, number>[]
+}
+
 export interface UserInputsOptions {
   /**
-   * @description The user inputs as the dictionary userInputs.
+   * @description The user inputs as the dictionary userInputs. Optional until
+   * the next major version, so objects built by hand without it stay valid,
+   * the matching then builds it from rankedDictionary.
    */
-  wordIndex: WordIndex
+  wordIndex?: WordIndex
+  /**
+   * @deprecated Use `wordIndex`. Only built when read, will be removed in the next major version.
+   */
+  readonly rankedDictionary: Record<string, number>
+  /**
+   * @deprecated Only built when read, will be removed in the next major version.
+   */
+  readonly rankedDictionaryMaxWordSize: number
 }
 export interface MatchOptions {
   password: string

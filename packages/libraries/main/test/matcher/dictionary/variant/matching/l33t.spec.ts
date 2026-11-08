@@ -1,7 +1,10 @@
-import MatchL33t from '../../../../../src/matcher/dictionary/variants/matching/l33t'
+import MatchL33t, {
+  L33T_NARROW_BUDGET,
+} from '../../../../../src/matcher/dictionary/variants/matching/l33t'
+import WordIndex from '../../../../../src/matcher/dictionary/WordIndex'
 import checkMatches from '../../../../helper/checkMatches'
 import Options from '../../../../../src/Options'
-import { sorted } from '../../../../../src/utils/helper'
+import sorted from '../../../../helper/sorted'
 
 describe('l33t matching', () => {
   let msg
@@ -303,9 +306,86 @@ describe('l33t matching', () => {
       ).toEqual([['beII', 'bell']])
     })
 
+    it('matches a mixed-case substitution that starts lowercase', () => {
+      const options = new Options({
+        dictionary: { words: ['password', 'mouse'] },
+        l33tTable: { m: ['nN'], a: ['4'] },
+      })
+      const matches = new MatchL33t(options).match({ password: 'nNouse' })
+      expect(
+        matches.map(({ token, matchedWord, rank, subDisplay }) => [
+          token,
+          matchedWord,
+          rank,
+          subDisplay,
+        ]),
+      ).toEqual([['nNouse', 'mouse', 2, 'nN -> m']])
+    })
+
+    it('finds a word at the end after a start used up its share of the budget', () => {
+      class SmallBudgetL33t extends MatchL33t {
+        protected narrowBudget = 5000
+      }
+      const options = new Options({
+        dictionary: { words: ['a'.repeat(40), 'password'] },
+        l33tTable: { a: ['4'], b: ['4'], o: ['0'] },
+      })
+      const matches = new SmallBudgetL33t(options).match({
+        password: `${'4'.repeat(240)}p4ssw0rd`,
+      })
+      expect(
+        matches.map(({ i, j, matchedWord }) => [i, j, matchedWord]),
+      ).toContainEqual([240, 247, 'password'])
+    })
+
+    it('finds a word that needs more than its share while budget is left', () => {
+      const word = 'l'.repeat(200)
+      const options = new Options({ dictionary: { words: [word] } })
+      // the 4 makes every position a start, so the share of a start is small
+      const matches = new MatchL33t(options).match({
+        password: `${'1'.repeat(200)}${'z'.repeat(55)}4`,
+      })
+      expect(
+        matches.map(({ i, j, matchedWord }) => [i, j, matchedWord]),
+      ).toEqual([[0, 199, word]])
+    })
+
+    it('finds a word when what is left is less than the share of a start', () => {
+      class SmallBudgetL33t extends MatchL33t {
+        protected narrowBudget = 12000
+      }
+      const word = 'l'.repeat(100)
+      const options = new Options({ dictionary: { words: [word] } })
+      const matches = new SmallBudgetL33t(options).match({
+        password: `${'1'.repeat(100)}${'z'.repeat(155)}4`,
+      })
+      expect(
+        matches.map(({ i, j, matchedWord }) => [i, j, matchedWord]),
+      ).toEqual([[0, 99, word]])
+    })
+
+    it('stays within the budget when stopped starts walk again', () => {
+      const options = new Options({
+        dictionary: { words: ['i'.repeat(256), 'l'.repeat(256)] },
+      })
+      const { narrow } = WordIndex.prototype
+      let narrowCount = 0
+      WordIndex.prototype.narrow = function countedNarrow(...args) {
+        narrowCount += 1
+        narrow.apply(this, args)
+      }
+      try {
+        new MatchL33t(options).match({ password: '1'.repeat(256) })
+      } finally {
+        WordIndex.prototype.narrow = narrow
+      }
+      expect(narrowCount).toBeLessThanOrEqual(L33T_NARROW_BUDGET)
+      expect(narrowCount).toBeGreaterThan(L33T_NARROW_BUDGET / 2)
+    })
+
     it('stops at the budget and keeps the matches found so far', () => {
       class SmallBudgetL33t extends MatchL33t {
-        protected narrowBudget = 50
+        protected narrowBudget = 1000
       }
       const options = new Options({
         dictionary: { words: ['aac', 'aaa'] },
