@@ -233,6 +233,11 @@ export default class WordIndex {
 
   private readonly levenshteinDictionaries: LevenshteinDictionary[] = []
 
+  // For each dictionary the index of the word at each rank plus one, 0 for a
+  // rank no word has. Built for all dictionaries in one walk over the words,
+  // a walk for each dictionary takes seconds with hundreds of them.
+  private wordsByRank: Int32Array[] | undefined
+
   // eslint-disable-next-line max-statements
   constructor(lists: readonly WordList[] = []) {
     this.listSizes = lists.map(({ words }) => words.length)
@@ -361,27 +366,35 @@ export default class WordIndex {
     return levenshteinDictionary
   }
 
+  private getWordsByRank(dictionary: number) {
+    if (!this.wordsByRank) {
+      const wordsByRank = this.listSizes.map((size) => new Int32Array(size))
+      for (let wordIndex = 0; wordIndex < this.words.length; wordIndex += 1) {
+        for (
+          let hit = this.hitStart[wordIndex];
+          hit < this.hitStart[wordIndex + 1];
+          hit += 1
+        ) {
+          wordsByRank[this.hitDictionary[hit]][this.hitRank[hit] - 1] =
+            wordIndex + 1
+        }
+      }
+      this.wordsByRank = wordsByRank
+    }
+    return this.wordsByRank[dictionary]
+  }
+
   // the words of a dictionary in rank order, from the index and not the list
   // it was created from, so both always have the same words
   private getEntries(dictionary: number) {
-    // a word listed twice leaves a hole at the rank it doesn't have
-    const wordsByRank = new Array<string>(this.listSizes[dictionary])
-    this.words.forEach((word, wordIndex) => {
-      for (
-        let hit = this.hitStart[wordIndex];
-        hit < this.hitStart[wordIndex + 1];
-        hit += 1
-      ) {
-        if (this.hitDictionary[hit] === dictionary) {
-          wordsByRank[this.hitRank[hit] - 1] = word
-        }
-      }
-    })
     const entries: string[] = []
     const ranks: number[] = []
-    wordsByRank.forEach((word, index) => {
-      entries.push(word)
-      ranks.push(index + 1)
+    this.getWordsByRank(dictionary).forEach((word, index) => {
+      // a word listed twice leaves a hole at the rank it doesn't have
+      if (word > 0) {
+        entries.push(this.words[word - 1])
+        ranks.push(index + 1)
+      }
     })
     return { entries, ranks }
   }

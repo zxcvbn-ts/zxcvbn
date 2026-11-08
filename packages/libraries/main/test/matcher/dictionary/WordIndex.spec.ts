@@ -160,6 +160,13 @@ describe('WordIndex', () => {
       })
     })
 
+    it('has only the entries of its own dictionary', () => {
+      expect(wordIndex.getLevenshteinDictionary(1).getEntries()).toEqual({
+        entries: ['a'],
+        ranks: [1],
+      })
+    })
+
     it('has the rank of an entry in its dictionary', () => {
       const dictionary = wordIndex.getLevenshteinDictionary(1)
       expect(dictionary.getRank('a')).toBe(1)
