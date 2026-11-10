@@ -21,7 +21,7 @@ describe('separator matching', () => {
         await importOriginal<typeof import('../../../src/data/const')>()
       // '-' is no longer the last separator, so if it isn't treated as a
       // literal it would turn '.-~' into a range covering letters and digits
-      return { ...actual, SEPERATOR_CHARS: [...actual.SEPERATOR_CHARS, '~'] }
+      return { ...actual, SEPARATOR_CHARS: [...actual.SEPARATOR_CHARS, '~'] }
     })
     // importActual only bypasses a mock of the separator module itself,
     // its import of the constants above still gets the mocked list

@@ -1,11 +1,11 @@
-import { ESCAPE_REGEX, SEPERATOR_CHARS } from '../../data/const'
+import { ESCAPE_REGEX, SEPARATOR_CHARS } from '../../data/const'
 import { MatcherBaseClass, MatchOptions, SeparatorMatch } from '../../types'
 
 type SeparatorMatchOptions = Pick<MatchOptions, 'password'>
 
 // a set instead of a regex character class, so no separator ('-', '\\', ']', '^')
 // can turn into a range or an escape depending on its position in the list
-const separatorChars = new Set(SEPERATOR_CHARS)
+const separatorChars = new Set(SEPARATOR_CHARS)
 
 /*
  *-------------------------------------------------------------------------------

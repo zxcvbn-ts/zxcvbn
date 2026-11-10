@@ -1,5 +1,5 @@
-import { SEPERATOR_CHAR_COUNT } from '../../data/const'
+import { SEPARATOR_CHAR_COUNT } from '../../data/const'
 
 export default () => {
-  return SEPERATOR_CHAR_COUNT
+  return SEPARATOR_CHAR_COUNT
 }
