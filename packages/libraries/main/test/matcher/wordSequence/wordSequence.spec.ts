@@ -515,6 +515,17 @@ describe('WordSequence Matcher', () => {
       )
     })
 
+    it('should keep a cheap prefix when an expensive separator run follows', () => {
+      const result = zxcvbn.check(
+        `HansFlorianZimmer${'._'.repeat(12)}Hans`,
+        userInputs,
+      )
+
+      expect(result.sequence[0].pattern).toBe('wordSequence')
+      expect(result.sequence[0].token).toBe('HansFlorianZimmer')
+      expect(result.score).toBeLessThan(4)
+    })
+
     it('should charge more guesses for mixed separators', () => {
       const guesses = (password: string) =>
         zxcvbn.check(password, userInputs).guesses
