@@ -79,15 +79,16 @@ export default class Scoring {
   // helper: evaluate bruteforce matches ending at passwordCharIndex.
   private bruteforceUpdate(passwordCharIndex: number) {
     // see if a single bruteforce match spanning the passwordCharIndex-prefix is optimal.
-    let match = this.makeBruteforceMatch(0, passwordCharIndex)
-    this.update(match, 1)
+    this.update(this.makeBruteforceMatch(0, passwordCharIndex), 1)
 
     for (let i = 1; i <= passwordCharIndex; i += 1) {
       // generate passwordCharIndex bruteforce matches, spanning from (i=1, j=passwordCharIndex) up to (i=passwordCharIndex, j=passwordCharIndex).
       // see if adding these new matches to any of the sequences in optimal[i-1]
       // leads to new bests.
-      match = this.makeBruteforceMatch(i, passwordCharIndex)
       const tmp = this.optimal.bestMatches[i - 1]
+      // estimated on first use and then reused for every length: most
+      // candidates are skipped, and estimating one costs O(token length)
+      let match: MatchEstimated | undefined
 
       Object.keys(tmp).forEach((sequenceLengthStr) => {
         const sequenceLength = Number(sequenceLengthStr)
@@ -97,6 +98,13 @@ export default class Scoring {
         // same contribution to the guess product with a lower length.
         // --> safe to skip those cases.
         if (lastMatch.pattern !== 'bruteforce') {
+          if (!match) {
+            match = estimateGuesses(
+              this.options,
+              this.makeBruteforceMatch(i, passwordCharIndex),
+              this.password,
+            )
+          }
           // try adding bestMatches to this length-sequenceLength sequence.
           this.update(match, sequenceLength + 1)
         }
