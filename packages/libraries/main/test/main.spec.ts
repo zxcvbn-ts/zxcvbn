@@ -4,12 +4,6 @@ import * as zxcvbnEnPackage from '../../../languages/en/src'
 import { ZxcvbnFactory } from '../src'
 import passwordTests from './helper/passwordTests'
 
-declare module 'vitest' {
-  export interface ProvidedContext {
-    coverageEnabled: boolean
-  }
-}
-
 describe('main', () => {
   const zxcvbn = new ZxcvbnFactory({
     dictionary: {
@@ -278,10 +272,9 @@ describe('main', () => {
       // the l33tMaxSubstitutions full substitutions is searched for a close
       // entry, and none is close enough to stop the search early
       it('should not die while processing and have a appropriate calcTime for ambiguous l33t substitutions', () => {
-        // v8 coverage makes the hot loops of check() about 13 times slower
-        const calcTime = inject('coverageEnabled') ? 3000 : 1000
         const result = zxcvbnLevenshtein.check('<1x|<1q|<')
-        expect(result.calcTime).toBeLessThan(calcTime)
+        // v8 coverage makes the hot loops of check() about 13 times slower
+        expect(result.calcTime).toBeLessThan(maxCalcTime)
       })
 
       // the user input is as long as the password, so the full password is
