@@ -454,6 +454,20 @@ describe('feedback', () => {
       })
     })
 
+    it('should fall back to the default feedback for a custom matcher without feedback', () => {
+      const options = new Options({ translations })
+      // @ts-expect-error for testing purposes
+      options.matchers.custom = { scoring: () => 1 }
+      const data = new Feedback(options).getFeedback(1, [
+        // @ts-expect-error for testing purposes
+        { pattern: 'custom', token: 'abc' },
+      ])
+      expect(data).toEqual({
+        warning: null,
+        suggestions: [translations.suggestions.anotherWord],
+      })
+    })
+
     it('returns a fresh default feedback for empty sequences', () => {
       const first = feedbackClass.getFeedback(0, [])
       first.suggestions.push('mutated')

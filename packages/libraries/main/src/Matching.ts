@@ -87,7 +87,6 @@ class Matching {
         password,
         omniMatch: this,
         userInputsOptions,
-        matches,
       })
 
       if (result instanceof Promise) {
@@ -108,11 +107,13 @@ class Matching {
       if (!wordSequence) {
         return matches
       }
+      // a copy, so a custom wordSequence matcher can't drop or reorder the
+      // matches of the other matchers
       const result = wordSequence.match({
         password,
         omniMatch: this,
         userInputsOptions,
-        matches,
+        matches: matches.slice(),
       })
       if (result instanceof Promise) {
         return result.then((response) => {

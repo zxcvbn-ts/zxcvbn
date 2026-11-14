@@ -68,6 +68,10 @@ const getScoring = (
 
 type EstimatedMatch = MatchEstimated & Partial<DictionaryScoringExtras>
 
+// the floor the guesses of a match were estimated with, only kept for
+// estimates that a floor can have changed
+const estimatedFloors = new WeakMap<object, number>()
+
 // the guesses of a match by its pattern. A dictionary match also gets the
 // numbers they are calculated from.
 const getGuesses = (options: Options, match: EstimatedMatch) => {
@@ -93,9 +97,21 @@ export default (
   match: MatchExtended | MatchEstimated,
   password: string,
 ): MatchEstimated => {
-  // a match's guess estimate doesn't change. cache it.
+  // a match's guess estimate doesn't change. cache it. Guesses set by the
+  // caller are kept as they are. Ours include the floor of the password they
+  // were estimated for, which only matters when they are at most the highest
+  // floor: then they are estimated again for another floor.
   if ('guesses' in match && match.guesses != null) {
-    return match as MatchEstimated
+    const estimatedFloor =
+      match.guesses > MIN_SUBMATCH_GUESSES_MULTI_CHAR
+        ? undefined
+        : estimatedFloors.get(match)
+    if (
+      estimatedFloor === undefined ||
+      estimatedFloor === getMinGuesses(match, password)
+    ) {
+      return match as MatchEstimated
+    }
   }
 
   const minGuesses = getMinGuesses(match, password)
@@ -106,6 +122,9 @@ export default (
   const estimated = match as EstimatedMatch
   const matchGuesses = Math.max(getGuesses(options, estimated), minGuesses)
   estimated.guesses = matchGuesses
+  if (matchGuesses <= MIN_SUBMATCH_GUESSES_MULTI_CHAR) {
+    estimatedFloors.set(estimated, minGuesses)
+  }
   estimated.guessesLog10 = utils.log10(matchGuesses)
   return estimated
 }

@@ -2,7 +2,12 @@ import * as zxcvbnCommonPackage from '../../../languages/common/src'
 import * as zxcvbnEnPackage from '../../../languages/en/src'
 import MatchOmni from '../src/Matching'
 import Options from '../src/Options'
-import { Matcher, MatcherBaseClass, MatchExtended } from '../src/types'
+import {
+  Matcher,
+  MatcherBaseClass,
+  MatchExtended,
+  MatchOptions,
+} from '../src/types'
 
 const zxcvbnOptions = new Options({
   dictionary: {
@@ -219,5 +224,42 @@ describe('omnimatch with user inputs options built by hand', () => {
 
   it('finds the user inputs with l33t substitutions without a wordIndex', () => {
     expect(getUserInputHits('w3ndyd4rling')).toEqual([[0, 11, true, 1]])
+  })
+})
+
+describe('matches given to the matchers', () => {
+  it('gives only the wordSequence matcher the matches, as a copy', () => {
+    const received: Record<string, number | undefined> = {}
+    const recordingMatcher = (name: string): Matcher => ({
+      Matching: class extends MatcherBaseClass {
+        match({ matches }: MatchOptions) {
+          received[name] = matches?.length
+          // a matcher that empties what it is given
+          ;(matches as MatchExtended[] | undefined)?.splice(0)
+          return []
+        }
+      },
+      feedback: () => null,
+      scoring: () => 1,
+    })
+    const omniMatch = new MatchOmni(
+      new Options(
+        { dictionary: zxcvbnCommonPackage.dictionary },
+        {
+          recorder: recordingMatcher('recorder'),
+          wordSequence: recordingMatcher('wordSequence'),
+        },
+      ),
+    )
+
+    const matches = omniMatch.match('password') as MatchExtended[]
+
+    expect(received.recorder).toBeUndefined()
+    expect(received.wordSequence).toBeGreaterThan(0)
+    expect(
+      matches.some(
+        (match) => match.pattern === 'dictionary' && match.token === 'password',
+      ),
+    ).toBe(true)
   })
 })

@@ -309,7 +309,10 @@ export interface MatchOptions {
    */
   omniMatch: Matching
   userInputsOptions?: UserInputsOptions
-  matches?: MatchExtended[]
+  /**
+   * @description Only given to the wordSequence matcher, which runs after every other matcher: a copy of their matches
+   */
+  matches?: readonly MatchExtended[]
 }
 
 export abstract class MatcherBaseClass {

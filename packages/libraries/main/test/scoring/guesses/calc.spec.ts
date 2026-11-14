@@ -15,6 +15,28 @@ describe('scoring', () => {
     })
   })
 
+  it('estimates a match again when it is scored for a password with another floor', () => {
+    const customOptions = new Options(
+      {},
+      {
+        custom: {
+          Matching: class extends MatcherBaseClass {
+            match() {
+              return []
+            }
+          },
+          feedback: () => ({ warning: null, suggestions: [] }),
+          scoring: () => 5,
+        },
+      },
+    )
+    const match = { pattern: 'custom', token: 'ab', i: 0, j: 1 }
+
+    expect(estimate(customOptions, match, 'abcd').guesses).toEqual(50)
+    expect(estimate(customOptions, match, 'ab').guesses).toEqual(5)
+    expect(estimate(customOptions, match, 'abcd').guesses).toEqual(50)
+  })
+
   it('falls back to zero base guesses for a custom pattern with a non-numeric scoring result', () => {
     const customOptions = new Options(
       {},

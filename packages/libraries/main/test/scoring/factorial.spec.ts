@@ -16,3 +16,8 @@ describe('scoring: utils factorial', () => {
     })
   })
 })
+
+it('scoring: utils factorial extends its table for a larger n', () => {
+  expect(factorial(20)).toEqual(2432902008176640000)
+  expect(factorial(3)).toEqual(6)
+})

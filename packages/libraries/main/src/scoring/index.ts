@@ -97,7 +97,7 @@ export default class Scoring {
     this.additivePenalties = [1]
     this.bruteforceGuessesByLength = [bruteforceGuesses(0)]
     for (let n = 1; n <= passwordLength + 1; n += 1) {
-      this.factorials[n] = this.factorials[n - 1] * n
+      this.factorials[n] = utils.factorial(n)
       this.additivePenalties[n] = MIN_GUESSES_BEFORE_GROWING_SEQUENCE ** (n - 1)
       this.bruteforceGuessesByLength[n] = bruteforceGuesses(n)
     }

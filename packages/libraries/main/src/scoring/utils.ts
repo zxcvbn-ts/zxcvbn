@@ -1,5 +1,8 @@
 const LOG10 = Math.log(10)
 
+// factorials[n] = n!, extended when a larger one is asked for
+const factorials: number[] = [1]
+
 export default {
   // binomial coefficients
   // src: http://blog.plover.com/math/choose.html
@@ -20,9 +23,10 @@ export default {
     return coEff
   },
   factorial(n: number) {
-    let result = 1
-    for (let i = 2; i <= n; i += 1) result *= i
-    return result
+    for (let i = factorials.length; i <= n; i += 1) {
+      factorials[i] = factorials[i - 1] * i
+    }
+    return factorials[n]
   },
   log10(n: number) {
     if (n === 0) return 0
