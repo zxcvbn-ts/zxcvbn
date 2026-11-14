@@ -4,6 +4,7 @@ import { MIN_GUESSES_BEFORE_GROWING_SEQUENCE } from '../data/const'
 import { MatchExtended, BruteForceMatch, MatchEstimated } from '../types'
 import Options from '../Options'
 import { bruteforceGuesses } from '../matcher/bruteforce/scoring'
+import { isSurrogatePairAt } from '../utils/helper'
 
 // a slot in the search holds either an estimated match or, for a bruteforce
 // match, just its start index. Bruteforce candidates are rated as numbers
@@ -56,8 +57,9 @@ export default class Scoring {
   // sequences of a candidate are compared at once.
   private bestUpTo = new Float64Array(1)
 
-  // the most matches a sequence ending at the current k can have, k + 1
-  private longestSequence = 0
+  // the index whose best sequences the search is finding, every update is
+  // for a sequence ending there. A sequence ending at k has at most k + 1 matches
+  private k = 0
 
   // characterCounts[n] = number of characters (code points) in password[0, n)
   private characterCounts = new Int32Array(1)
@@ -114,19 +116,14 @@ export default class Scoring {
     // the low half of a surrogate pair doesn't count as a character
     this.characterCounts = new Int32Array(passwordLength + 1)
     for (let k = 0; k < passwordLength; k += 1) {
-      const isPairedLowSurrogate =
-        k > 0 &&
-        password.charCodeAt(k) >= 0xdc00 &&
-        password.charCodeAt(k) <= 0xdfff &&
-        password.charCodeAt(k - 1) >= 0xd800 &&
-        password.charCodeAt(k - 1) <= 0xdbff
+      const isPairedLowSurrogate = k > 0 && isSurrogatePairAt(password, k - 1)
       this.characterCounts[k + 1] =
         this.characterCounts[k] + (isPairedLowSurrogate ? 0 : 1)
     }
   }
 
-  // same as countCharacters(password.slice(i, j + 1))
-  private countCharacters(i: number, j: number) {
+  // same as countCharacters(password.slice(i, j + 1)), from the counts
+  private countTokenCharacters(i: number, j: number) {
     const counts = this.characterCounts
     let count = counts[j + 1] - counts[i]
     // a token starting in the middle of a surrogate pair counts that half
@@ -139,17 +136,14 @@ export default class Scoring {
   // helper: considers whether a length-sequenceLength
   // sequence ending at match is better (fewer guesses)
   // than previously encountered sequences, updating state if so.
-  // takes plain numbers instead of an options object, it runs in the hot loop
-  // eslint-disable-next-line max-params, max-statements, complexity
-  private update(
-    match: BestMatch,
-    i: number,
-    j: number,
-    guesses: number,
-    sequenceLength: number,
-  ) {
+  // match ends at k. Its guesses are passed in, a bruteforce match is only
+  // its start index and has none to read
+  // eslint-disable-next-line max-statements, complexity
+  private update(match: BestMatch, guesses: number, sequenceLength: number) {
+    const { k } = this
     let pi = guesses
     if (sequenceLength > 1) {
+      const i = typeof match === 'number' ? match : match.i
       // we're considering a length-sequenceLength sequence ending with match:
       // obtain the product term in the minimization function by multiplying match's guesses
       // by the product of the length-(sequenceLength-1)
@@ -165,7 +159,7 @@ export default class Scoring {
     // first see if any competing sequences covering this prefix,
     // with sequenceLength or fewer matches,
     // fare better than this sequence. if so, skip it and return.
-    const competingG = this.state.totalGuesses[j]
+    const competingG = this.state.totalGuesses[k]
     const { bestUpTo } = this
     if (g === Number.POSITIVE_INFINITY) {
       // bestUpTo can't tell an Infinity sequence from none
@@ -183,14 +177,14 @@ export default class Scoring {
     // length that already has as few
     for (
       let length = sequenceLength;
-      length <= this.longestSequence && bestUpTo[length] > g;
+      length <= k + 1 && bestUpTo[length] > g;
       length += 1
     ) {
       bestUpTo[length] = g
     }
     competingG[sequenceLength] = g
-    this.state.bestMatches[j][sequenceLength] = match
-    this.state.guessesProduct[j][sequenceLength] = pi
+    this.state.bestMatches[k][sequenceLength] = match
+    this.state.guessesProduct[k][sequenceLength] = pi
   }
 
   // helper: sets startBounds[i] once the sequences ending at i - 1 are final
@@ -229,10 +223,8 @@ export default class Scoring {
     // see if a single bruteforce match spanning the passwordCharIndex-prefix is optimal.
     this.update(
       0,
-      0,
-      passwordCharIndex,
       this.bruteforceGuessesByLength[
-        this.countCharacters(0, passwordCharIndex)
+        this.countTokenCharacters(0, passwordCharIndex)
       ],
       1,
     )
@@ -256,18 +248,18 @@ export default class Scoring {
       const lengths = this.startLengths[i]
       const guesses =
         this.bruteforceGuessesByLength[
-          this.countCharacters(i, passwordCharIndex)
+          this.countTokenCharacters(i, passwordCharIndex)
         ]
       for (const sequenceLength of lengths) {
         // try adding the bruteforce match to this length-sequenceLength sequence.
-        this.update(i, i, passwordCharIndex, guesses, sequenceLength + 1)
+        this.update(i, guesses, sequenceLength + 1)
       }
     }
   }
 
   // helper: finds the best sequences ending at k, from the matches ending at k
   private step(k: number, matchesAtK: MatchExtended[]) {
-    this.longestSequence = k + 1
+    this.k = k
     this.bestUpTo.fill(Number.POSITIVE_INFINITY, 0, k + 2)
     matchesAtK.forEach((match: MatchExtended) => {
       // a match's guess estimate doesn't change, estimate it once
@@ -281,11 +273,11 @@ export default class Scoring {
           sequenceLength += 1
         ) {
           if (previousBestMatches[sequenceLength] !== undefined) {
-            this.update(estimatedMatch, i, k, guesses, sequenceLength + 1)
+            this.update(estimatedMatch, guesses, sequenceLength + 1)
           }
         }
       } else {
-        this.update(estimatedMatch, i, k, guesses, 1)
+        this.update(estimatedMatch, guesses, 1)
       }
     })
     this.bruteforceUpdate(k)

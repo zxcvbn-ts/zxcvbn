@@ -24,12 +24,30 @@ export const translate = (string: string, chrMap: LooseObject) => {
 
 const SURROGATE_PAIR = /[\ud800-\udbff][\udc00-\udfff]/g
 
+// the first UTF-16 code unit of a character outside the BMP (eg. an emoji)
+export const isHighSurrogate = (code: number) =>
+  code >= 0xd800 && code <= 0xdbff
+
+const isLowSurrogate = (code: number) => code >= 0xdc00 && code <= 0xdfff
+
+// a surrogate pair, one character in two code units, starts at index
+export const isSurrogatePairAt = (string: string, index: number) =>
+  isHighSurrogate(string.charCodeAt(index)) &&
+  isLowSurrogate(string.charCodeAt(index + 1))
+
 // count characters by Unicode code point rather than UTF-16 code unit, so a
 // surrogate pair (eg. an emoji) counts as one character instead of two.
 // Same result as Array.from(string).length without building the array.
 // Match indices [i, j] stay in UTF-16 code units, this is only for counting.
 export const countCharacters = (string: string) =>
   string.length - (string.match(SURROGATE_PAIR)?.length ?? 0)
+
+// dictionary names get a suffix like `diceware-common`, so `name` covers
+// `name` and `name-<suffix>`. Runs for every dictionary match, so it compares
+// without building `${name}-`
+export const isDictionaryNamed = (dictionaryName: string, name: string) =>
+  dictionaryName.startsWith(name) &&
+  (dictionaryName.length === name.length || dictionaryName[name.length] === '-')
 
 // lowercase without changing the length, so match indices [i, j] point at the
 // same characters in the password and its lowercase form.

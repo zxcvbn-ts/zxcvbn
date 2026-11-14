@@ -19,6 +19,11 @@ export default {
     }
     return coEff
   },
+  factorial(n: number) {
+    let result = 1
+    for (let i = 2; i <= n; i += 1) result *= i
+    return result
+  },
   log10(n: number) {
     if (n === 0) return 0
     return Math.log(n) / LOG10 // IE doesn't support Math.log10 :(

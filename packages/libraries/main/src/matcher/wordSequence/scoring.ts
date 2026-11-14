@@ -1,13 +1,9 @@
 import { MatchExtended, MatchEstimated } from '../../types'
+import utils from '../../scoring/utils'
 import {
   WORD_SEQUENCE_LETTER_GAP_OPTIONS,
   WORD_SEQUENCE_SEPARATOR_CHARS,
 } from '../../data/const'
-
-function factorial(n: number): number {
-  if (n <= 1) return 1
-  return n * factorial(n - 1)
-}
 
 const product = (values: number[]) =>
   values.reduce((result, value) => result * value, 1)
@@ -57,7 +53,7 @@ export default (match: MatchExtended | MatchEstimated): number => {
   }
 
   // Base guesses: factorial of word count (number of ways to order the words)
-  const baseGuesses = factorial(match.wordCount)
+  const baseGuesses = utils.factorial(match.wordCount)
 
   // Additional penalty for longer sequences
   const lengthPenalty = 2 ** (match.wordCount - 2)

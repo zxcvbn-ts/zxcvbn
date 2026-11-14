@@ -1,11 +1,5 @@
-import {
-  MatcherBaseClass,
-  MatchOptions,
-  RepeatMatch,
-  UserInputsOptions,
-} from '../../types'
+import { MatcherBaseClass, MatchOptions, RepeatMatch } from '../../types'
 import Scoring from '../../scoring'
-import Matching from '../../Matching'
 import Options from '../../Options'
 import { MaybePromise } from 'rollup'
 
@@ -31,7 +25,8 @@ class MatchRepeat extends MatcherBaseClass {
   }
 
   // eslint-disable-next-line max-statements
-  match({ password, omniMatch, userInputsOptions }: MatchOptions) {
+  match(matchOptions: MatchOptions) {
+    const { password } = matchOptions
     // Scoped to this call rather than an instance field: getBaseGuesses
     // recurses back into this same instance via omniMatch.match(baseToken),
     // and a shared field would get cleared by that nested call before the
@@ -51,9 +46,8 @@ class MatchRepeat extends MatcherBaseClass {
         const j = match.index + match[0].length - 1
         const baseGuesses = this.getBaseGuesses(
           baseToken,
-          omniMatch,
+          matchOptions,
           memoizedResults,
-          userInputsOptions,
         )
         matches.push(this.normalizeMatch(baseToken, j, match, baseGuesses))
 
@@ -145,12 +139,12 @@ class MatchRepeat extends MatcherBaseClass {
     }
   }
 
-  // eslint-disable-next-line max-params
+  // the base token is matched with the same matchers and user inputs as the
+  // password it repeats in
   getBaseGuesses(
     baseToken: string,
-    omniMatch: Matching,
+    { omniMatch, userInputsOptions }: MatchOptions,
     memoizedResults: Map<string, number | Promise<number>>,
-    userInputsOptions?: UserInputsOptions,
   ) {
     // memoizedResults lives for one match() call, which has a single
     // userInputsOptions, so baseToken alone is a safe key

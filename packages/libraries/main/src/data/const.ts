@@ -23,6 +23,8 @@ export const ALL_DIGIT = /^\d+$/
 export const REFERENCE_YEAR = new Date().getFullYear()
 export const REGEXEN = { recentYear: /19\d\d|20\d\d/g }
 /* Separators */
+// what the separator matcher splits a password at, eg. 'pass;word|123'.
+// Its length is what a separator match is charged
 export const SEPARATOR_CHARS = [
   ' ',
   ',',
@@ -37,6 +39,9 @@ export const SEPARATOR_CHARS = [
 ]
 export const SEPARATOR_CHAR_COUNT = SEPARATOR_CHARS.length
 /* Word sequences */
+// the subset of SEPARATOR_CHARS that joins words into one name or phrase:
+// 'one two', 'one-two', 'one_two', 'one.two'. Its size is what each gap of a
+// word sequence is charged, so adding a character here raises those guesses
 export const WORD_SEQUENCE_SEPARATOR_CHARS = new Set([' ', '-', '_', '.'])
 export const WORD_SEQUENCE_LETTER_GAP_OPTIONS = 26
 export const ESCAPE_REGEX = /[.*+?^${}()|[\]\\]/g

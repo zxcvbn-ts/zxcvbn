@@ -1,5 +1,5 @@
 import { distance } from 'fastest-levenshtein'
-import { countCharacters } from './helper'
+import { countCharacters, isHighSurrogate } from './helper'
 
 // fastest-levenshtein compares UTF-16 code units, which would count a
 // character outside the BMP (eg. an emoji) as two edits. Such a character of
@@ -56,7 +56,7 @@ const getCharacterMask = (string: string) => {
   for (let index = 0; index < string.length; index += 1) {
     const code = string.charCodeAt(index)
     // skip the high surrogate, so an emoji only sets the bit of its low one
-    if (code < 0xd800 || code > 0xdbff) {
+    if (!isHighSurrogate(code)) {
       mask |= 1 << (code % 30)
     }
   }

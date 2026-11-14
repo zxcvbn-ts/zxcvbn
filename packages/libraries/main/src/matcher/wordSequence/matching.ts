@@ -8,8 +8,9 @@ import {
 } from '../../types'
 import { WORD_SEQUENCE_SEPARATOR_CHARS } from '../../data/const'
 
-// '' (plain concatenation) counts too, since there is no character to reject
-const isSeparator = (text: string) => {
+// a gap of only separators. '' (plain concatenation) counts too, since there
+// is no character to reject
+const isSeparatorRun = (text: string) => {
   for (const char of text) {
     if (!WORD_SEQUENCE_SEPARATOR_CHARS.has(char)) {
       return false
@@ -149,7 +150,7 @@ class MatchWordSequence extends MatcherBaseClass {
 
     // For snake_case, kebab-case, simple concatenation or a run of separators
     // like '..'. Longer runs are not free: scoring charges for them.
-    const hasValidSeparator = isSeparator(textBetween)
+    const hasValidSeparator = isSeparatorRun(textBetween)
 
     // For camelCase, we need to check if the next word starts with uppercase
     // and there's no separator (or just a single character that could be uppercase)

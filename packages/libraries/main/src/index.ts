@@ -3,6 +3,7 @@ import { TimeEstimates } from './TimeEstimates'
 import Feedback from './Feedback'
 import Options from './Options'
 import debounce from './utils/debounce'
+import { isSurrogatePairAt } from './utils/helper'
 import {
   Matcher,
   MatchEstimated,
@@ -93,7 +94,7 @@ class ZxcvbnFactory {
     let end = this.options.maxLength
     // maxLength counts UTF-16 code units. If the cut lands inside a surrogate
     // pair (eg. an emoji), drop that whole character instead of half of it.
-    if ((password.codePointAt(end - 1) ?? 0) > 0xffff) {
+    if (isSurrogatePairAt(password, end - 1)) {
       end -= 1
     }
     return {
