@@ -1,4 +1,3 @@
-import { inject } from 'vitest'
 import * as zxcvbnCommonPackage from '../../../languages/common/src'
 import * as zxcvbnEnPackage from '../../../languages/en/src'
 import { ZxcvbnFactory } from '../src'
