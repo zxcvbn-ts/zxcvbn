@@ -57,23 +57,19 @@ export default class Scoring {
     // first see if any competing sequences covering this prefix,
     // with sequenceLength or fewer matches,
     // fare better than this sequence. if so, skip it and return.
-    let shouldSkip = false
+    // look up each shorter length directly instead of listing the entries:
+    // this runs for every candidate, so it must not allocate
     const competingG = this.optimal.totalGuesses[k]
-    Object.keys(competingG).forEach((competingPatternLengthStr) => {
-      const competingPatternLength = Number(competingPatternLengthStr)
-      const competingMetricMatch = competingG[competingPatternLength]
-      if (competingPatternLength <= sequenceLength) {
-        if (competingMetricMatch <= g) {
-          shouldSkip = true
-        }
+    for (let length = 1; length <= sequenceLength; length += 1) {
+      const competingMetricMatch = competingG[length]
+      if (competingMetricMatch !== undefined && competingMetricMatch <= g) {
+        return
       }
-    })
-    if (!shouldSkip) {
-      // this sequence might be part of the final optimal sequence.
-      this.optimal.totalGuesses[k][sequenceLength] = g
-      this.optimal.bestMatches[k][sequenceLength] = estimatedMatch
-      this.optimal.guessesProduct[k][sequenceLength] = pi
     }
+    // this sequence might be part of the final optimal sequence.
+    this.optimal.totalGuesses[k][sequenceLength] = g
+    this.optimal.bestMatches[k][sequenceLength] = estimatedMatch
+    this.optimal.guessesProduct[k][sequenceLength] = pi
   }
 
   // helper: evaluate bruteforce matches ending at passwordCharIndex.
