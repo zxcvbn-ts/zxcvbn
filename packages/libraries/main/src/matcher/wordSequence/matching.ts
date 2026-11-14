@@ -103,9 +103,9 @@ class MatchWordSequence extends MatcherBaseClass {
     const startMatch = sortedMatches[startIdx]
 
     // Start with single word sequence
-    let currentSequence = [startMatch]
+    const currentSequence = [startMatch]
 
-    // Try to extend the sequence
+    // Sequences starting later are covered by the caller's loop over startIdx
     for (
       let nextIdx = startIdx + 1;
       nextIdx < sortedMatches.length;
@@ -113,23 +113,24 @@ class MatchWordSequence extends MatcherBaseClass {
     ) {
       const nextMatch = sortedMatches[nextIdx]
 
-      // Only extend if the next word can form a valid sequence
-      if (this.isValidWordSequence(currentSequence, nextMatch, password)) {
-        currentSequence.push(nextMatch)
-      } else {
-        // sortedMatches always comes from filterDictionaryMatches, which already
-        // guarantees each entry starts after the previous one ends, so a
-        // non-extending match is always a gap, never an overlap to skip.
-        if (currentSequence.length > 1) {
-          sequences.push(
-            this.createWordSequenceMatch(currentSequence, password),
-          )
-        }
-        currentSequence = [nextMatch]
+      // sortedMatches always comes from filterDictionaryMatches, which already
+      // guarantees each entry starts after the previous one ends, so a
+      // non-extending match is always a gap, never an overlap to skip.
+      if (!this.isValidWordSequence(currentSequence, nextMatch, password)) {
+        break
       }
+
+      // A separator run can make the longer sequence more expensive than
+      // stopping here and matching the run separately (e.g. as a repeat), so
+      // keep the sequence so far as a candidate before extending over it.
+      const lastWord = currentSequence[currentSequence.length - 1]
+      if (currentSequence.length > 1 && nextMatch.i - lastWord.j > 2) {
+        sequences.push(this.createWordSequenceMatch(currentSequence, password))
+      }
+
+      currentSequence.push(nextMatch)
     }
 
-    // Don't forget the last sequence
     if (currentSequence.length > 1) {
       sequences.push(this.createWordSequenceMatch(currentSequence, password))
     }
