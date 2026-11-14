@@ -195,3 +195,48 @@ describe('date matching out of range years', () => {
     },
   )
 })
+
+describe('date matching noise filter', () => {
+  const matchDate = new MatchDate(new Options())
+  const date = (i: number, j: number, year: number) => ({
+    pattern: 'date' as const,
+    token: 'x'.repeat(j - i + 1),
+    i,
+    j,
+    separator: '',
+    year,
+    month: 1,
+    day: 1,
+  })
+
+  it('keeps one of two matches with the same span', () => {
+    const result = matchDate.filterNoise([date(0, 7, 1991), date(0, 7, 1919)])
+    expect(result).toHaveLength(1)
+    expect([result[0].i, result[0].j]).toEqual([0, 7])
+  })
+
+  it('removes matches inside another match', () => {
+    const result = matchDate.filterNoise([
+      date(2, 5, 1991),
+      date(0, 7, 1991),
+      date(0, 5, 1991),
+      date(2, 7, 1991),
+    ])
+    expect(result.map(({ i, j }) => [i, j])).toEqual([[0, 7]])
+  })
+
+  it('keeps overlapping matches that are not inside each other', () => {
+    const result = matchDate.filterNoise([date(3, 9, 1991), date(0, 5, 1991)])
+    expect(result.map(({ i, j }) => [i, j])).toEqual([
+      [0, 5],
+      [3, 9],
+    ])
+  })
+
+  it('keeps one match for a repeated full date', () => {
+    const matches = matchDate.match({ password: '11111111' })
+    const spans = matches.map(({ i, j }) => `${i}-${j}`)
+    expect(new Set(spans).size).toEqual(spans.length)
+    expect(spans).toContain('0-7')
+  })
+})

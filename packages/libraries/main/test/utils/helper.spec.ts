@@ -4,6 +4,9 @@ import {
   translate,
   countCharacters,
   toLowerCase,
+  isHighSurrogate,
+  isSurrogatePairAt,
+  isDictionaryNamed,
 } from '../../src/utils/helper'
 import { LooseObject } from '../../src/types'
 
@@ -95,6 +98,56 @@ describe('utils matching', () => {
     data.forEach(([string, count]) => {
       it(`counts ${JSON.stringify(string)} as ${count} characters`, () => {
         expect(countCharacters(string)).toEqual(count)
+      })
+    })
+  })
+  describe('isHighSurrogate', () => {
+    const data: [number, boolean][] = [
+      [0xd7ff, false],
+      [0xd800, true],
+      [0xdbff, true],
+      [0xdc00, false],
+      ['a'.charCodeAt(0), false],
+      [Number.NaN, false],
+    ]
+    data.forEach(([code, expected]) => {
+      it(`returns ${expected} for ${code.toString(16)}`, () => {
+        expect(isHighSurrogate(code)).toEqual(expected)
+      })
+    })
+  })
+  describe('isSurrogatePairAt', () => {
+    const data: [string, number, boolean][] = [
+      ['a😀', 1, true],
+      ['a😀', 0, false],
+      // the second half of the pair doesn't start one
+      ['a😀', 2, false],
+      // lone and reversed surrogates
+      ['\ud83d', 0, false],
+      ['\ud83da', 0, false],
+      ['\ude00\ud83d', 0, false],
+      // out of range
+      ['😀', 5, false],
+      ['😀', -1, false],
+    ]
+    data.forEach(([string, index, expected]) => {
+      it(`returns ${expected} for ${JSON.stringify(string)} at ${index}`, () => {
+        expect(isSurrogatePairAt(string, index)).toEqual(expected)
+      })
+    })
+  })
+  describe('isDictionaryNamed', () => {
+    const data: [string, string, boolean][] = [
+      ['diceware', 'diceware', true],
+      ['diceware-common', 'diceware', true],
+      ['diceware-en', 'diceware', true],
+      ['dicewarex', 'diceware', false],
+      ['dicewar', 'diceware', false],
+      ['passwords-diceware', 'diceware', false],
+    ]
+    data.forEach(([dictionaryName, name, expected]) => {
+      it(`returns ${expected} for ${dictionaryName} named ${name}`, () => {
+        expect(isDictionaryNamed(dictionaryName, name)).toEqual(expected)
       })
     })
   })

@@ -64,4 +64,20 @@ describe('scoring', () => {
     // bruteforce: 10 ** 1 = 10, raised to MIN_SUBMATCH_GUESSES_SINGLE_CHAR + 1
     expect(result.guesses).toEqual(11)
   })
+
+  it('writes the estimate onto the given match and reuses it', () => {
+    const match = { pattern: 'bruteforce', token: 'abc', i: 0, j: 2 }
+    const result = estimate(zxcvbnOptions, match, 'abc')
+    expect(result).toBe(match)
+    expect(match).toEqual({
+      pattern: 'bruteforce',
+      token: 'abc',
+      i: 0,
+      j: 2,
+      guesses: 1000,
+      guessesLog10: expect.closeTo(3),
+    })
+    // a cached estimate isn't recalculated, even for another password
+    expect(estimate(zxcvbnOptions, match, 'abcdef').guesses).toEqual(1000)
+  })
 })
