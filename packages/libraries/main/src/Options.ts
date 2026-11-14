@@ -1,21 +1,21 @@
-import { buildRankedDictionary, toLowerCase } from './utils/helper'
+import { toLowerCase } from './utils/helper'
 import {
   TranslationKeys,
   OptionsType,
   OptionsDictionary,
   OptionsL33tTable,
   OptionsGraph,
-  RankedDictionaries,
   Matchers,
   Matcher,
   UserInputsOptions,
-  RankedDictionary,
   TimeEstimationValues,
 } from './types'
 import l33tTable from './data/l33tTable'
 import translationKeys from './data/translationKeys'
 import TrieNode from './matcher/dictionary/variants/matching/unmunger/TrieNode'
+import WordIndex from './matcher/dictionary/WordIndex'
 import l33tTableToTrieNode from './matcher/dictionary/variants/matching/unmunger/l33tTableToTrieNode'
+import getL33tSubstitutions from './matcher/dictionary/variants/matching/l33tSubstitutions'
 import { timeEstimationValuesDefaults } from './TimeEstimates'
 import {
   checkCustomMatchers,
@@ -31,26 +31,52 @@ import {
   checkLevenshteinThreshold,
 } from './runtimeChecks'
 
+// the rank of each word, from 1. A duplicate word keeps its last rank.
+const buildRankedDictionary = (list: (string | number)[]) => {
+  const result: Record<string, number> = {}
+  list.forEach((word, index) => {
+    result[word] = index + 1
+  })
+  return result
+}
+
+const getMaxWordSize = (list: (string | number)[]) => {
+  // do not use Math.max(...data) because it can result in max stack size error because every entry will be used as an argument
+  return list.reduce<number>(
+    (max, word) => Math.max(max, word.toString().length),
+    0,
+  )
+}
+
 export default class Options {
   public matchers: Matchers = {}
 
   public l33tTable: OptionsL33tTable = l33tTable
 
-  public trieNodeRoot: TrieNode = l33tTableToTrieNode(l33tTable, new TrieNode())
+  // only for the fully substituted passwords checked with levenshtein, empty
+  // without it
+  public trieNodeRoot = new TrieNode()
+
+  public l33tSubstitutions = getL33tSubstitutions(l33tTable)
 
   public dictionary: OptionsDictionary = {
     userInputs: [],
   }
 
-  public rankedDictionaries: RankedDictionaries = {}
+  // the words of all dictionaries, empty until the dictionary option is set
+  public wordIndex = new WordIndex()
 
-  public rankedDictionariesMaxWordSize: Record<string, number> = {}
+  public dictionaryMaxWordSizes: Record<string, number> = {}
+
+  private cachedRankedDictionaries:
+    | Record<string, Record<string, number>>
+    | undefined
 
   public translations: TranslationKeys = translationKeys
 
   private cachedUserInputs: (string | number)[] | undefined
 
-  private cachedUserInputsOptions: UserInputsOptions | undefined
+  private cachedUserInputsOptions: Required<UserInputsOptions> | undefined
 
   public graphs: OptionsGraph = {}
 
@@ -99,9 +125,36 @@ export default class Options {
       this.addMatcher(name, matcher)
     })
   }
+
+  /**
+   * @deprecated The dictionaries are matched with `wordIndex`. This is only
+   * built when read and will be removed in the next major version.
+   */
+  public get rankedDictionaries(): Record<string, Record<string, number>> {
+    if (this.cachedRankedDictionaries === undefined) {
+      const rankedDictionaries: Record<string, Record<string, number>> = {}
+      Object.keys(this.dictionary).forEach((name) => {
+        rankedDictionaries[name] = buildRankedDictionary(this.dictionary[name])
+      })
+      this.cachedRankedDictionaries = rankedDictionaries
+    }
+    return this.cachedRankedDictionaries
+  }
+
+  /**
+   * @deprecated Use `dictionaryMaxWordSizes`, will be removed in the next
+   * major version.
+   */
+  public get rankedDictionariesMaxWordSize(): Record<string, number> {
+    return this.dictionaryMaxWordSizes
+  }
+  // runs for every dictionary match, so it compares without building
+  // `${name}-` for each name
   public isWordSequence(key: string) {
     return this.wordSequenceNames.some(
-      (name) => key === name || key.startsWith(`${name}-`),
+      (name) =>
+        key.startsWith(name) &&
+        (key.length === name.length || key[name.length] === '-'),
     )
   }
 
@@ -110,14 +163,14 @@ export default class Options {
     if (options.l33tTable) {
       checkL33tTable(options.l33tTable)
       this.l33tTable = options.l33tTable
-      this.trieNodeRoot = l33tTableToTrieNode(options.l33tTable, new TrieNode())
+      this.l33tSubstitutions = getL33tSubstitutions(options.l33tTable)
     }
 
     if (options.dictionary) {
       checkDictionary(options.dictionary)
       this.dictionary = options.dictionary
 
-      this.setRankedDictionaries()
+      this.setWordIndex()
     }
 
     if (options.translations) {
@@ -132,6 +185,10 @@ export default class Options {
     if (options.useLevenshteinDistance !== undefined) {
       checkUseLevenshteinDistance(options.useLevenshteinDistance)
       this.useLevenshteinDistance = options.useLevenshteinDistance
+    }
+
+    if (this.useLevenshteinDistance) {
+      this.trieNodeRoot = l33tTableToTrieNode(this.l33tTable, new TrieNode())
     }
 
     if (options.levenshteinThreshold !== undefined) {
@@ -172,34 +229,19 @@ export default class Options {
     this.translations = translations
   }
 
-  private setRankedDictionaries() {
-    const rankedDictionaries: RankedDictionaries = {}
-    const rankedDictionariesMaxWorkSize: Record<string, number> = {}
-    Object.keys(this.dictionary).forEach((name) => {
-      rankedDictionaries[name] = buildRankedDictionary(this.dictionary[name])
-      rankedDictionariesMaxWorkSize[name] =
-        this.getRankedDictionariesMaxWordSize(this.dictionary[name])
+  private setWordIndex() {
+    const dictionaryMaxWordSizes: Record<string, number> = {}
+    const names = Object.keys(this.dictionary)
+    names.forEach((name) => {
+      dictionaryMaxWordSizes[name] = getMaxWordSize(this.dictionary[name])
     })
-    this.rankedDictionaries = rankedDictionaries
-    this.rankedDictionariesMaxWordSize = rankedDictionariesMaxWorkSize
+    this.wordIndex = new WordIndex(
+      names.map((name) => ({ name, words: this.dictionary[name] })),
+    )
+    this.dictionaryMaxWordSizes = dictionaryMaxWordSizes
   }
 
-  private getRankedDictionariesMaxWordSize(list: (string | number)[]) {
-    const data = list.map((el) => {
-      if (typeof el !== 'string') {
-        return el.toString().length
-      }
-      return el.length
-    })
-
-    // do not use Math.max(...data) because it can result in max stack size error because every entry will be used as an argument
-    if (data.length === 0) {
-      return 0
-    }
-    return data.reduce((a, b) => Math.max(a, b), -Infinity)
-  }
-
-  private buildSanitizedRankedDictionary(list: (string | number)[]) {
+  private sanitizeUserInputs(list: (string | number)[]) {
     const sanitizedInputs: string[] = []
 
     list.forEach((input: string | number | boolean) => {
@@ -213,12 +255,33 @@ export default class Options {
       }
     })
 
-    return buildRankedDictionary(sanitizedInputs)
+    return sanitizedInputs
+  }
+
+  private createUserInputsOptions(
+    dictionary: (string | number)[] | undefined,
+  ): Required<UserInputsOptions> {
+    const sanitizedInputs = dictionary
+      ? this.sanitizeUserInputs(dictionary)
+      : []
+    // of the inputs as given, like it always was
+    const maxWordSize = dictionary ? getMaxWordSize(dictionary) : 0
+    let rankedDictionary: Record<string, number> | undefined
+    return {
+      wordIndex: new WordIndex([
+        { name: 'userInputs', words: sanitizedInputs },
+      ]),
+      get rankedDictionary() {
+        rankedDictionary ??= buildRankedDictionary(sanitizedInputs)
+        return rankedDictionary
+      },
+      rankedDictionaryMaxWordSize: maxWordSize,
+    }
   }
 
   public getUserInputsOptions(
     dictionary?: (string | number)[],
-  ): UserInputsOptions {
+  ): Required<UserInputsOptions> {
     const { cachedUserInputs } = this
     const isCacheHit =
       this.cachedUserInputsOptions !== undefined &&
@@ -231,18 +294,7 @@ export default class Options {
       return this.cachedUserInputsOptions!
     }
 
-    let rankedDictionary: RankedDictionary = {}
-    let rankedDictionaryMaxWordSize = 0
-    if (dictionary) {
-      rankedDictionary = this.buildSanitizedRankedDictionary(dictionary)
-      rankedDictionaryMaxWordSize =
-        this.getRankedDictionariesMaxWordSize(dictionary)
-    }
-
-    const userInputsOptions: UserInputsOptions = {
-      rankedDictionary,
-      rankedDictionaryMaxWordSize,
-    }
+    const userInputsOptions = this.createUserInputsOptions(dictionary)
 
     // Snapshot the contents rather than keeping the caller's array reference,
     // so a later mutate-and-reuse of the same array is detected as a cache miss.

@@ -272,6 +272,7 @@ describe('main', () => {
       // entry, and none is close enough to stop the search early
       it('should not die while processing and have a appropriate calcTime for ambiguous l33t substitutions', () => {
         const result = zxcvbnLevenshtein.check('<1x|<1q|<')
+        // v8 coverage makes the hot loops of check() about 13 times slower
         expect(result.calcTime).toBeLessThan(maxCalcTime)
       })
 

@@ -1,10 +1,7 @@
 import {
   empty,
-  sorted,
   extend,
   translate,
-  mod,
-  buildRankedDictionary,
   countCharacters,
   toLowerCase,
 } from '../../src/utils/helper'
@@ -34,42 +31,6 @@ describe('utils matching', () => {
       values.forEach((value) => {
         expect(empty(value)).toBeFalsy()
       })
-    })
-  })
-
-  describe('sorted', () => {
-    it('sorting an empty list leaves it empty', () => {
-      expect(sorted([])).toEqual([])
-    })
-    it('matches are sorted on i index primary, j secondary', () => {
-      const [m1, m2, m3, m4, m5, m6] = [
-        {
-          i: 5,
-          j: 5,
-        },
-        {
-          i: 6,
-          j: 7,
-        },
-        {
-          i: 2,
-          j: 5,
-        },
-        {
-          i: 0,
-          j: 0,
-        },
-        {
-          i: 2,
-          j: 3,
-        },
-        {
-          i: 0,
-          j: 3,
-        },
-      ]
-      // @ts-expect-error for testing purposes
-      expect(sorted([m1, m2, m3, m4, m5, m6])).toEqual([m4, m6, m5, m3, m1, m2])
     })
   })
 
@@ -120,32 +81,6 @@ describe('utils matching', () => {
     })
   })
 
-  describe('mod', () => {
-    const data: [number[], number][] = [
-      [[0, 1], 0],
-      [[1, 1], 0],
-      [[-1, 1], 0],
-      [[5, 5], 0],
-      [[3, 5], 3],
-      [[-1, 5], 4],
-      [[-5, 5], 0],
-      [[6, 5], 1],
-    ]
-    data.forEach(([[dividend, divisor], remainder]) => {
-      it(`(${dividend}, ${divisor}) == ${remainder}`, () => {
-        expect(mod(dividend, divisor)).toEqual(remainder)
-      })
-    })
-  })
-  describe('buildRankedDictionary', () => {
-    it('should build correctly', () => {
-      expect(buildRankedDictionary(['foo', 'bar', 'rofl'])).toEqual({
-        foo: 1,
-        bar: 2,
-        rofl: 3,
-      })
-    })
-  })
   describe('countCharacters', () => {
     const data: [string, number][] = [
       ['', 0],

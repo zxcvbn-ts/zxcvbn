@@ -1,4 +1,4 @@
-import { extend, sorted } from './utils/helper'
+import { extend } from './utils/helper'
 import { MatcherBaseClass, MatchExtended, UserInputsOptions } from './types'
 import DateMatcher from './matcher/date/matching'
 import DictionaryMatcher from './matcher/dictionary/matching'
@@ -11,6 +11,24 @@ import SpatialMatcher from './matcher/spatial/matching'
 import SeparatorMatcher from './matcher/separator/matching'
 import WordSequenceMatcher from './matcher/wordSequence/matching'
 import Options from './Options'
+import WordIndex from './matcher/dictionary/WordIndex'
+
+// An object built by hand without wordIndex only has the ranked dictionary,
+// its words are put in the word index in the order of their rank. Without
+// this the user inputs would be skipped.
+const withWordIndex = (userInputsOptions: UserInputsOptions | undefined) => {
+  if (!userInputsOptions || userInputsOptions.wordIndex) {
+    return userInputsOptions
+  }
+  // eslint-disable-next-line @typescript-eslint/no-deprecated
+  const words = Object.entries(userInputsOptions.rankedDictionary)
+    .sort((first, second) => first[1] - second[1])
+    .map(([word]) => word)
+  return {
+    ...userInputsOptions,
+    wordIndex: new WordIndex([{ name: 'userInputs', words }]),
+  }
+}
 
 /*
  * -------------------------------------------------------------------------------
@@ -42,8 +60,9 @@ class Matching {
 
   match(
     password: string,
-    userInputsOptions?: UserInputsOptions,
+    givenUserInputsOptions?: UserInputsOptions,
   ): MatchExtended[] | Promise<MatchExtended[]> {
+    const userInputsOptions = withWordIndex(givenUserInputsOptions)
     const matches: MatchExtended[] = []
     const promises: Promise<MatchExtended[]>[] = []
     // wordSequence reads the shared `matches` array to find sequences of
@@ -51,8 +70,19 @@ class Matching {
     // (sync or async) have already landed in `matches` - it can't just be
     // one more entry in the same iteration order.
     const { wordSequence, ...otherMatchers } = this.matchers
+    // Scoring writes the guesses onto the matches. A custom matcher may
+    // return the same objects for every check, so its matches are copied and
+    // never carry the guesses of an earlier check.
+    const add = (name: string, result: MatchExtended[]) => {
+      extend(
+        matches,
+        name in this.options.matchers
+          ? result.map((match) => ({ ...match }))
+          : result,
+      )
+    }
 
-    Object.values(otherMatchers).forEach((matcher) => {
+    Object.entries(otherMatchers).forEach(([name, matcher]) => {
       const result = matcher.match({
         password,
         omniMatch: this,
@@ -63,20 +93,20 @@ class Matching {
       if (result instanceof Promise) {
         promises.push(
           result.then((response) => {
-            extend(matches, response)
+            add(name, response)
             return response
           }),
         )
       } else {
-        extend(matches, result)
+        add(name, result)
       }
     })
 
-    const runWordSequenceAndSort = ():
-      | MatchExtended[]
-      | Promise<MatchExtended[]> => {
+    // The matches are left unsorted: scoring groups them by j and sorts each
+    // group by i, which gives the same order a sort by i and j would
+    const runWordSequence = (): MatchExtended[] | Promise<MatchExtended[]> => {
       if (!wordSequence) {
-        return sorted(matches)
+        return matches
       }
       const result = wordSequence.match({
         password,
@@ -86,19 +116,19 @@ class Matching {
       })
       if (result instanceof Promise) {
         return result.then((response) => {
-          extend(matches, response)
-          return sorted(matches)
+          add('wordSequence', response)
+          return matches
         })
       }
-      extend(matches, result)
-      return sorted(matches)
+      add('wordSequence', result)
+      return matches
     }
 
     if (promises.length > 0) {
-      return Promise.all(promises).then(runWordSequenceAndSort)
+      return Promise.all(promises).then(runWordSequence)
     }
 
-    return runWordSequenceAndSort()
+    return runWordSequence()
   }
 }
 

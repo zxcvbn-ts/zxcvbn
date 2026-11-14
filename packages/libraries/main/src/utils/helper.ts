@@ -1,4 +1,4 @@
-import { LooseObject, MatchExtended } from '../types'
+import { LooseObject } from '../types'
 
 export const empty = (obj: LooseObject) => Object.keys(obj).length === 0
 
@@ -38,20 +38,3 @@ export const countCharacters = (string: string) =>
 // Use this everywhere text is lowercased to be compared with dictionary words.
 export const toLowerCase = (string: string) =>
   string.replace(/İ/g, 'i').toLowerCase()
-
-// mod implementation that works for negative numbers
-export const mod = (n: number, m: number) => ((n % m) + m) % m
-
-// sort on i primary, j secondary
-export const sorted = (matches: MatchExtended[]) =>
-  matches.sort((m1, m2) => m1.i - m2.i || m1.j - m2.j)
-
-export const buildRankedDictionary = (orderedList: any[]) => {
-  const result: LooseObject = {}
-  let counter = 1 // rank starts at 1, not 0
-  orderedList.forEach((word) => {
-    result[word] = counter
-    counter += 1
-  })
-  return result
-}

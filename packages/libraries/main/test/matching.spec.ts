@@ -194,3 +194,30 @@ describe('wordSequence ordering with async matchers', () => {
     expect(matches.some((match) => match.pattern === 'wordSequence')).toBe(true)
   })
 })
+
+describe('omnimatch with user inputs options built by hand', () => {
+  const omniMatch = new MatchOmni(
+    new Options({ translations: zxcvbnEnPackage.translations }),
+  )
+  // the shape before wordIndex, which a custom matcher may still pass on
+  const userInputsOptions = {
+    rankedDictionary: { wendydarling: 1, peterpan: 2 },
+    rankedDictionaryMaxWordSize: 12,
+  }
+  const getUserInputHits = (password: string) =>
+    (omniMatch.match(password, userInputsOptions) as MatchExtended[])
+      .filter(
+        (match) =>
+          match.pattern === 'dictionary' &&
+          match.dictionaryName === 'userInputs',
+      )
+      .map((match) => [match.i, match.j, match.l33t, match.rank])
+
+  it('finds the user inputs without a wordIndex', () => {
+    expect(getUserInputHits('peterpan')).toEqual([[0, 7, false, 2]])
+  })
+
+  it('finds the user inputs with l33t substitutions without a wordIndex', () => {
+    expect(getUserInputHits('w3ndyd4rling')).toEqual([[0, 11, true, 1]])
+  })
+})
