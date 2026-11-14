@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.1.4](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/matcher-pwned@4.1.3...@zxcvbn-ts/matcher-pwned@4.1.4) (2026-11-14)
+
+### Bug Fixes
+
+- **pwned:** `matcherPwnedFactory(fetch)` and `haveIBeenPwned(password)` work without a config object instead of throwing, and an empty `url` falls back to the default Have I Been Pwned API ([#344](https://github.com/zxcvbn-ts/zxcvbn/issues/344)) ([37cea12](https://github.com/zxcvbn-ts/zxcvbn/commit/37cea121683f97c8a84cdf9f291bbb42aa3cb360), [7008cf0](https://github.com/zxcvbn-ts/zxcvbn/commit/7008cf05aa42fa9348302e5d04aaa6d2a0b932c4))
+- **pwned:** responses with LF line endings are matched too, not just CRLF, so pwned passwords checked through a proxy or custom endpoint are found ([7008cf0](https://github.com/zxcvbn-ts/zxcvbn/commit/7008cf05aa42fa9348302e5d04aaa6d2a0b932c4))
+- **pwned:** every request failure goes to `networkErrorHandler` instead of throwing out of the check: a rejected `crypto.subtle.digest`, a `fetch` that throws synchronously, a failing `response.text()` and a response without a numeric status. Rejections that aren't `Error`s are wrapped in one ([7008cf0](https://github.com/zxcvbn-ts/zxcvbn/commit/7008cf05aa42fa9348302e5d04aaa6d2a0b932c4))
+- **pwned:** `pwnedAmount` is 0 instead of `NaN` when the response has no count for the matched hash ([#344](https://github.com/zxcvbn-ts/zxcvbn/issues/344)) ([37cea12](https://github.com/zxcvbn-ts/zxcvbn/commit/37cea121683f97c8a84cdf9f291bbb42aa3cb360))
+
 ## [4.1.3](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/matcher-pwned@4.1.2...@zxcvbn-ts/matcher-pwned@4.1.3) (2026-08-12)
 
 ### Bug Fixes

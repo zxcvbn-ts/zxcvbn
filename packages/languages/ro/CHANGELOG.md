@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.1.3](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/language-ro@4.1.2...@zxcvbn-ts/language-ro@4.1.3) (2026-11-14)
+
+### Bug Fixes
+
+- **translations:** time estimates add "de" for numbers ending in 00 or 20 to 99, e.g. "25 de secunde" and "120 de ani", while "15 secunde" and "101 ani" stay as they are ([#348](https://github.com/zxcvbn-ts/zxcvbn/issues/348)) ([aa9f9ed](https://github.com/zxcvbn-ts/zxcvbn/commit/aa9f9ed83b6e55d0a541fa0562cf8c21d1910158))
+- **translations:** the `keyPattern` warning talked about short passwords; it now says short key combinations are easy to guess. The `reverseWords` suggestion ends with a period and `associatedYears` uses the informal "tine" like the other texts ([#348](https://github.com/zxcvbn-ts/zxcvbn/issues/348)) ([aa9f9ed](https://github.com/zxcvbn-ts/zxcvbn/commit/aa9f9ed83b6e55d0a541fa0562cf8c21d1910158))
+
 ## [4.1.2](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/language-ro@4.1.1...@zxcvbn-ts/language-ro@4.1.2) (2026-07-16)
 
 ### Bug Fixes

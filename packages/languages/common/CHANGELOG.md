@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.2.0](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/language-common@4.1.3...@zxcvbn-ts/language-common@4.2.0) (2026-11-14)
+
+### Features
+
+- **common:** `adjacencyGraphs` includes the Russian ЙЦУКЕН keyboard as `jcuken`, covering `ё` and shifted characters. With the common package's graphs configured, keyboard patterns like `йцукен`, `фыва` or `ячсм` are matched as spatial patterns, which lowers their guesses ([#345](https://github.com/zxcvbn-ts/zxcvbn/issues/345)) ([48c32e6](https://github.com/zxcvbn-ts/zxcvbn/commit/48c32e63be61951c08ef6cf6f465d36a6c3e2e6a), [f62bba3](https://github.com/zxcvbn-ts/zxcvbn/commit/f62bba3868284ac7b008caf907a151157fee8087))
+- **common:** the package ships a `NOTICE.md` and `THIRD_PARTY_LICENSES.md` attributing the password and diceware lists ([#349](https://github.com/zxcvbn-ts/zxcvbn/issues/349)) ([e256095](https://github.com/zxcvbn-ts/zxcvbn/commit/e2560950dacdf684cd3c673331dc315fb80b62a8))
+
 ## [4.1.3](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/language-common@4.1.2...@zxcvbn-ts/language-common@4.1.3) (2026-07-16)
 
 ### Bug Fixes
