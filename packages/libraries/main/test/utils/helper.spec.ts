@@ -1,10 +1,12 @@
 import {
   empty,
-  sorted,
   extend,
   translate,
-  mod,
-  buildRankedDictionary,
+  countCharacters,
+  toLowerCase,
+  isHighSurrogate,
+  isSurrogatePairAt,
+  isDictionaryNamed,
 } from '../../src/utils/helper.ts'
 import { LooseObject } from '../../src/types.ts'
 
@@ -32,42 +34,6 @@ describe('utils matching', () => {
       values.forEach((value) => {
         expect(empty(value)).toBeFalsy()
       })
-    })
-  })
-
-  describe('sorted', () => {
-    it('sorting an empty list leaves it empty', () => {
-      expect(sorted([])).toEqual([])
-    })
-    it('matches are sorted on i index primary, j secondary', () => {
-      const [m1, m2, m3, m4, m5, m6] = [
-        {
-          i: 5,
-          j: 5,
-        },
-        {
-          i: 6,
-          j: 7,
-        },
-        {
-          i: 2,
-          j: 5,
-        },
-        {
-          i: 0,
-          j: 0,
-        },
-        {
-          i: 2,
-          j: 3,
-        },
-        {
-          i: 0,
-          j: 3,
-        },
-      ]
-      // @ts-expect-error for testing purposes
-      expect(sorted([m1, m2, m3, m4, m5, m6])).toEqual([m4, m6, m5, m3, m1, m2])
     })
   })
 
@@ -118,29 +84,86 @@ describe('utils matching', () => {
     })
   })
 
-  describe('mod', () => {
-    const data: [number[], number][] = [
-      [[0, 1], 0],
-      [[1, 1], 0],
-      [[-1, 1], 0],
-      [[5, 5], 0],
-      [[3, 5], 3],
-      [[-1, 5], 4],
-      [[-5, 5], 0],
-      [[6, 5], 1],
+  describe('countCharacters', () => {
+    const data: [string, number][] = [
+      ['', 0],
+      ['abc', 3],
+      ['😀', 1],
+      ['a😀b😀', 4],
+      // a lone surrogate is still one character
+      ['\ud83d', 1],
+      ['\ud83da', 2],
+      ['\ude00\ud83d', 2],
     ]
-    data.forEach(([[dividend, divisor], remainder]) => {
-      it(`(${dividend}, ${divisor}) == ${remainder}`, () => {
-        expect(mod(dividend, divisor)).toEqual(remainder)
+    data.forEach(([string, count]) => {
+      it(`counts ${JSON.stringify(string)} as ${count} characters`, () => {
+        expect(countCharacters(string)).toEqual(count)
       })
     })
   })
-  describe('buildRankedDictionary', () => {
-    it('should build correctly', () => {
-      expect(buildRankedDictionary(['foo', 'bar', 'rofl'])).toEqual({
-        foo: 1,
-        bar: 2,
-        rofl: 3,
+  describe('isHighSurrogate', () => {
+    const data: [number, boolean][] = [
+      [0xd7ff, false],
+      [0xd800, true],
+      [0xdbff, true],
+      [0xdc00, false],
+      ['a'.charCodeAt(0), false],
+      [Number.NaN, false],
+    ]
+    data.forEach(([code, expected]) => {
+      it(`returns ${expected} for ${code.toString(16)}`, () => {
+        expect(isHighSurrogate(code)).toEqual(expected)
+      })
+    })
+  })
+  describe('isSurrogatePairAt', () => {
+    const data: [string, number, boolean][] = [
+      ['a😀', 1, true],
+      ['a😀', 0, false],
+      // the second half of the pair doesn't start one
+      ['a😀', 2, false],
+      // lone and reversed surrogates
+      ['\ud83d', 0, false],
+      ['\ud83da', 0, false],
+      ['\ude00\ud83d', 0, false],
+      // out of range
+      ['😀', 5, false],
+      ['😀', -1, false],
+    ]
+    data.forEach(([string, index, expected]) => {
+      it(`returns ${expected} for ${JSON.stringify(string)} at ${index}`, () => {
+        expect(isSurrogatePairAt(string, index)).toEqual(expected)
+      })
+    })
+  })
+  describe('isDictionaryNamed', () => {
+    const data: [string, string, boolean][] = [
+      ['diceware', 'diceware', true],
+      ['diceware-common', 'diceware', true],
+      ['diceware-en', 'diceware', true],
+      ['dicewarex', 'diceware', false],
+      ['dicewar', 'diceware', false],
+      ['passwords-diceware', 'diceware', false],
+    ]
+    data.forEach(([dictionaryName, name, expected]) => {
+      it(`returns ${expected} for ${dictionaryName} named ${name}`, () => {
+        expect(isDictionaryNamed(dictionaryName, name)).toEqual(expected)
+      })
+    })
+  })
+  describe('toLowerCase', () => {
+    const data: [string, string][] = [
+      ['', ''],
+      ['PassWord', 'password'],
+      ['ÄÖÜ', 'äöü'],
+      // 'İ' (U+0130) would lowercase to 'i' + U+0307, one code unit longer
+      ['İstanbul', 'istanbul'],
+      ['aİbİ', 'aibi'],
+    ]
+    data.forEach(([string, lower]) => {
+      it(`lowercases ${JSON.stringify(string)} to ${JSON.stringify(lower)}`, () => {
+        expect(toLowerCase(string)).toEqual(lower)
+        expect(toLowerCase(string)).toHaveLength(string.length)
       })
     })
   })

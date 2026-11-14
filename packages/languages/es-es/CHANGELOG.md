@@ -3,29 +3,82 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.1.3](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/language-es-es@4.1.2...@zxcvbn-ts/language-es-es@4.1.3) (2026-11-14)
+
+**Note:** README update only: install commands for npm, yarn and pnpm, what the package includes, a usage example with `result.score` and `result.feedback`, linked dictionary sources and links to the documentation ([8d455f6](https://github.com/zxcvbn-ts/zxcvbn/commit/8d455f69dafe2f4f57e94b18be49a888c18d83ad))
+
 ## [4.1.2](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/language-es-es@4.1.1...@zxcvbn-ts/language-es-es@4.1.2) (2026-07-16)
 
 ### Bug Fixes
 
-- message for `l33t` suggestion in translation ([#325](https://github.com/zxcvbn-ts/zxcvbn/issues/325)) ([dcca1e3](https://github.com/zxcvbn-ts/zxcvbn/commit/dcca1e38652bf76d2e43600c21ee455f78cb4f10))
+- **translations:** the l33t suggestion said to avoid substituting "@" for "@"; it now says "@" for "a" ([#325](https://github.com/zxcvbn-ts/zxcvbn/issues/325)) ([dcca1e3](https://github.com/zxcvbn-ts/zxcvbn/commit/dcca1e38652bf76d2e43600c21ee455f78cb4f10))
 
-# [4.1.0](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/language-es-es@3.0.2...@zxcvbn-ts/language-es-es@4.1.0) (2026-06-11)
+## [4.1.1](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/language-es-es@4.1.0...@zxcvbn-ts/language-es-es@4.1.1) (2026-06-16)
 
 ### Bug Fixes
 
-- **dictionaries:** remove gzip/base64 as it increases the bundle size in the browser ([c8f1f79](https://github.com/zxcvbn-ts/zxcvbn/commit/c8f1f79a4848c7ff69b892ec005b9bd2f48e62d1))
+- **build:** fix `require()` of the CJS build, which failed with "decompress is not a function" ([#324](https://github.com/zxcvbn-ts/zxcvbn/issues/324)) ([281ead6](https://github.com/zxcvbn-ts/zxcvbn/commit/281ead6d7c681dde716705e3d8bee23999274c0e))
+
+# [4.1.0](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/language-es-es@3.0.2...@zxcvbn-ts/language-es-es@4.1.0) (2026-06-11)
+
+First stable 4.x release. It includes every change from `4.0.0-beta.0` to `4.0.0-beta.4`.
+
+### Bug Fixes
+
+- **dictionaries:** the dictionary keys now carry the language code. Before, merging the dictionaries of several languages (`{ ...en.dictionary, ...de.dictionary }`) let lists with the same key overwrite each other, so only the last language's words and names were checked and passwords from the other languages were rated stronger than they are ([#249](https://github.com/zxcvbn-ts/zxcvbn/issues/249)) ([f601f8f](https://github.com/zxcvbn-ts/zxcvbn/commit/f601f8f8d9945a232996fa30074f941ee57f8cec))
 
 ### Features
 
-- Add word sequence matcher ([#301](https://github.com/zxcvbn-ts/zxcvbn/issues/301)) ([8aba38e](https://github.com/zxcvbn-ts/zxcvbn/commit/8aba38eeabeb5b7eaed8d37330b024e66d34dc1e))
-- **package:** add dictionary compression ([c317614](https://github.com/zxcvbn-ts/zxcvbn/commit/c317614cd758416a71f9adcb2e9d7caf125a23f7))
-- **package:** cleanup package json with publint ([74f6fff](https://github.com/zxcvbn-ts/zxcvbn/commit/74f6ffffcc93c90591523fe7047ed843cb25c3ac))
-- **package:** revert cleanup package json with publint ([360ce9e](https://github.com/zxcvbn-ts/zxcvbn/commit/360ce9e28b464a573e5f92294027518a995b06c0))
-- **package:** revert cleanup package json with publint ([0eca875](https://github.com/zxcvbn-ts/zxcvbn/commit/0eca875d6de5265278666299c0a06fc4a8c453a7))
-- **packages:** modernize packages ([c2a6313](https://github.com/zxcvbn-ts/zxcvbn/commit/c2a6313ca0ca61de875f45338df3147c050549fe))
-- Update to new common words list ([#314](https://github.com/zxcvbn-ts/zxcvbn/issues/314)) ([1bbd9db](https://github.com/zxcvbn-ts/zxcvbn/commit/1bbd9db5ed225b9aaa50781b5fa6348bf1852e74))
-- use wordSequences correctly as dictionary ([e88226d](https://github.com/zxcvbn-ts/zxcvbn/commit/e88226df7aa17b6302d86aeb443089b442c60e66))
-- use wordSequences correctly as dictionary ([0c84a11](https://github.com/zxcvbn-ts/zxcvbn/commit/0c84a11e821e299d311e61458111fbc64318705b))
+- **dictionaries:** add lists of word sequences, such as numbers, days of the week, months and colors, to `dictionary` (keys like `cardinalNumbers-es-es`). Passwords built from these words now score lower ([#301](https://github.com/zxcvbn-ts/zxcvbn/issues/301)) ([8aba38e](https://github.com/zxcvbn-ts/zxcvbn/commit/8aba38eeabeb5b7eaed8d37330b024e66d34dc1e)) ([0c84a11](https://github.com/zxcvbn-ts/zxcvbn/commit/0c84a11e821e299d311e61458111fbc64318705b)) ([e88226d](https://github.com/zxcvbn-ts/zxcvbn/commit/e88226df7aa17b6302d86aeb443089b442c60e66))
+- **dictionaries:** ship the dictionaries compressed and decompress them at runtime with `@zxcvbn-ts/dictionary-compression`, which is now a dependency ([#276](https://github.com/zxcvbn-ts/zxcvbn/issues/276)) ([#294](https://github.com/zxcvbn-ts/zxcvbn/issues/294)) ([c317614](https://github.com/zxcvbn-ts/zxcvbn/commit/c317614cd758416a71f9adcb2e9d7caf125a23f7)) ([c8f1f79](https://github.com/zxcvbn-ts/zxcvbn/commit/c8f1f79a4848c7ff69b892ec005b9bd2f48e62d1))
+
+### BREAKING CHANGES
+
+- **build:** the dist files are renamed: `dist/index.js` is now `dist/index.cjs` and `dist/index.esm.js` is now `dist/index.mjs`. The minified CDN build `dist/zxcvbn-ts.min.js` is no longer shipped; the IIFE build `dist/zxcvbn-ts.js` stays until 5.x ([#282](https://github.com/zxcvbn-ts/zxcvbn/issues/282)) ([4caf5e0](https://github.com/zxcvbn-ts/zxcvbn/commit/4caf5e086dad53b05496101c49b50309066822fb)) ([b34d1bf](https://github.com/zxcvbn-ts/zxcvbn/commit/b34d1bff9e79dc845b08bda6e1b7a71760555ac4))
+
+- **dictionaries:** the dictionary keys are renamed: `commonWords` is now `commonWords-es-es`, `firstnames` is now `firstnames-es-es`, `lastnames` is now `lastnames-es-es`, `wikipedia` is now `wikipedia-es-es`. This only affects code that reads the keys directly ([#249](https://github.com/zxcvbn-ts/zxcvbn/issues/249)) ([f601f8f](https://github.com/zxcvbn-ts/zxcvbn/commit/f601f8f8d9945a232996fa30074f941ee57f8cec))
+
+- **dictionaries:** for users of the betas: the separate `wordSequences` export from 4.0.0-beta.3 is removed. The word sequences are part of `dictionary` now ([0c84a11](https://github.com/zxcvbn-ts/zxcvbn/commit/0c84a11e821e299d311e61458111fbc64318705b)) ([e88226d](https://github.com/zxcvbn-ts/zxcvbn/commit/e88226df7aa17b6302d86aeb443089b442c60e66))
+
+# 4.0.0 (2026-06-11)
+
+**Note:** 4.0.0 was tagged but never published to npm. Its changes are part of 4.1.0.
+
+# [4.0.0-beta.4](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/language-es-es@4.0.0-beta.3...@zxcvbn-ts/language-es-es@4.0.0-beta.4) (2026-05-13)
+
+**Note:** Version bump only for package @zxcvbn-ts/language-es-es
+
+# [4.0.0-beta.3](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/language-es-es@4.0.0-beta.2...@zxcvbn-ts/language-es-es@4.0.0-beta.3) (2026-03-04)
+
+### Bug Fixes
+
+- **dictionaries:** ship the dictionaries without gzip/base64 encoding again, as it increased the bundle size in the browser. The decompression now comes from the external `@zxcvbn-ts/dictionary-compression` ^3.0.1 ([#294](https://github.com/zxcvbn-ts/zxcvbn/issues/294)) ([c8f1f79](https://github.com/zxcvbn-ts/zxcvbn/commit/c8f1f79a4848c7ff69b892ec005b9bd2f48e62d1))
+
+### Features
+
+- **dictionaries:** add lists of word sequences, such as numbers, days of the week, months and colors, as a separate `wordSequences` export ([#301](https://github.com/zxcvbn-ts/zxcvbn/issues/301)) ([8aba38e](https://github.com/zxcvbn-ts/zxcvbn/commit/8aba38eeabeb5b7eaed8d37330b024e66d34dc1e))
+
+# [4.0.0-beta.2](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/language-es-es@4.0.0-beta.1...@zxcvbn-ts/language-es-es@4.0.0-beta.2) (2024-09-30)
+
+### BREAKING CHANGES
+
+- **build:** the dist files are renamed: `dist/index.js` is now `dist/index.cjs` and `dist/index.esm.js` is now `dist/index.mjs`. The IIFE browser build is removed. The package now depends on `@zxcvbn-ts/dictionary-compression` ([#282](https://github.com/zxcvbn-ts/zxcvbn/issues/282)) ([4caf5e0](https://github.com/zxcvbn-ts/zxcvbn/commit/4caf5e086dad53b05496101c49b50309066822fb))
+
+# [4.0.0-beta.1](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/language-es-es@4.0.0-beta.0...@zxcvbn-ts/language-es-es@4.0.0-beta.1) (2024-09-30)
+
+### Features
+
+- **dictionaries:** ship the dictionaries compressed and decompress them at runtime ([#276](https://github.com/zxcvbn-ts/zxcvbn/issues/276)) ([c317614](https://github.com/zxcvbn-ts/zxcvbn/commit/c317614cd758416a71f9adcb2e9d7caf125a23f7))
+
+# [4.0.0-beta.0](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/language-es-es@3.0.2...@zxcvbn-ts/language-es-es@4.0.0-beta.0) (2024-07-31)
+
+### Bug Fixes
+
+- **dictionaries:** the dictionary keys now carry the language code. Before, merging the dictionaries of several languages (`{ ...en.dictionary, ...de.dictionary }`) let lists with the same key overwrite each other, so only the last language's words and names were checked and passwords from the other languages were rated stronger than they are ([#249](https://github.com/zxcvbn-ts/zxcvbn/issues/249)) ([f601f8f](https://github.com/zxcvbn-ts/zxcvbn/commit/f601f8f8d9945a232996fa30074f941ee57f8cec))
+
+### BREAKING CHANGES
+
+- **dictionaries:** the dictionary keys are renamed: `commonWords` is now `commonWords-es-es`, `firstnames` is now `firstnames-es-es`, `lastnames` is now `lastnames-es-es`, `wikipedia` is now `wikipedia-es-es`. This only affects code that reads the keys directly ([#249](https://github.com/zxcvbn-ts/zxcvbn/issues/249)) ([f601f8f](https://github.com/zxcvbn-ts/zxcvbn/commit/f601f8f8d9945a232996fa30074f941ee57f8cec))
 
 ## [3.0.2](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/language-es-es@3.0.1...@zxcvbn-ts/language-es-es@3.0.2) (2023-09-17)
 
@@ -75,16 +128,19 @@ dictionary and translations.
 
 - **languages:** update dictionaries ([7f67d3a](https://github.com/zxcvbn-ts/zxcvbn/commit/7f67d3a71ef3b1136fc965c21d9febbfa3e74193))
 
-## [2.0.0](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/language-es-es@1.2.0...@zxcvbn-ts/language-es-es@2.0.0) (2022-02-10)
+## [2.0.1](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/language-es-es@2.0.0...@zxcvbn-ts/language-es-es@2.0.1) (2022-03-17)
 
 **Note:** Version bump only for package @zxcvbn-ts/language-es-es
 
-# 1.2.0 (2021-12-15)
+# [2.0.0](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/language-es-es@1.2.0...@zxcvbn-ts/language-es-es@2.0.0) (2022-02-09)
+
+**Note:** Version bump only for package @zxcvbn-ts/language-es-es
+
+# [1.2.0](https://github.com/zxcvbn-ts/zxcvbn/compare/@zxcvbn-ts/language-es-es@1.1.0...@zxcvbn-ts/language-es-es@1.2.0) (2021-12-15)
 
 ### Features
 
 - **language:** add es-es wikipedia ([9ffeed2](https://github.com/zxcvbn-ts/zxcvbn/commit/9ffeed21bf2668299707f352ad27e4c068ba4a3b))
-- **language:** add Spanish language pack ([#82](https://github.com/zxcvbn-ts/zxcvbn/issues/82)) ([e6ef77f](https://github.com/zxcvbn-ts/zxcvbn/commit/e6ef77f307f9aaec0ff515c4f7ca59b5ef5d72a0))
 - **project:** Add HaveIBeenPwned matcher ([#66](https://github.com/zxcvbn-ts/zxcvbn/issues/66)) ([5c4141c](https://github.com/zxcvbn-ts/zxcvbn/commit/5c4141cd34f6566fe753ce76572f74bb8229b414))
 
 # 1.1.0 (2021-12-14)

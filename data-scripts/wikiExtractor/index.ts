@@ -2,9 +2,9 @@ import fs from 'node:fs'
 import readline from 'node:readline'
 import path from 'node:path'
 import natural from 'natural'
-// @ts-expect-error doesn't have types
-import pinyin from 'chinese-to-pinyin'
+// import pinyin from 'chinese-to-pinyin'
 import nodejieba from 'nodejieba'
+import transliterate from '@sindresorhus/transliterate'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const tokenizerZh = {
@@ -34,10 +34,12 @@ class TopTokenCounter {
       const hyphenArray = token.split('-')
       if (splitHyphens && [1, 2].includes(hyphenArray.length)) {
         hyphenArray.forEach((subToken) => {
-          this.addToken(pinyin(subToken))
+          // this is the place to transform the strings if they are special like japanese
+          this.addToken(transliterate(subToken))
         })
       } else {
-        this.addToken(pinyin(token))
+        // this is the place to transform the strings if they are special like japanese
+        this.addToken(transliterate(token))
       }
     })
   }
@@ -156,9 +158,7 @@ const readLinePromise = (
 const getTokens = async (inputDir: string, counter: TopTokenCounter) => {
   // const tokenizer = tokenizerZh
   // const tokenizer = new natural.TokenizerJa()
-  const tokenizer = new natural.RegexpTokenizer({
-    pattern: /[^A-Za-z\xbf-\xdf\xdf-\xff]/,
-  })
+  const tokenizer = new natural.AggressiveTokenizerRu()
   let lines = 0
   let filesProcessedCounter = 0
   const files: string[] = fs.globSync(`${inputDir}/**/wiki_*`)

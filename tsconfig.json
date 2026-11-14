@@ -16,7 +16,7 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "lib": ["es2018", "es2019", "dom"],
-    "types": ["node", "jest"],
+    "types": ["node", "vitest/globals"],
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "strictNullChecks": true,

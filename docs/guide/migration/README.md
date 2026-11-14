@@ -4,16 +4,19 @@ This guide provides information on how to migrate between different versions of 
 
 ## Table of Contents
 
-- [3.x.x to 4.x.x](#3xx-to-4xx)
+- [3.x.x to 4.x.x](#_3-x-x-to-4-x-x)
   - [Move from singleton options to class-based approach](#move-from-singleton-options-to-class-based-approach)
   - [Custom matcher setup changed](#custom-matcher-setup-changed)
   - [Scoring thresholds naming changed in the output](#scoring-thresholds-naming-changed-in-the-output)
   - [Language packages dictionary keys changed](#language-packages-dictionary-keys-changed)
   - [Distribution files changed extension](#distribution-files-changed-extension)
-- [2.x.x to 3.x.x](#2xx-to-3xx)
-- [1.2.x to 2.x.x](#12x-to-2xx)
-- [0.3.x to 1.x.x](#03x-to-1xx)
-- [0.2.x to 0.3.x](#02x-to-03x)
+  - [New commonWords source](#new-commonwords-source)
+  - [New word sequence matching](#new-word-sequence-matching)
+  - [Advanced translations (pluralization)](#advanced-translations-pluralization)
+- [2.x.x to 3.x.x](#_2-x-x-to-3-x-x)
+- [1.2.x to 2.x.x](#_1-2-x-to-2-x-x)
+- [0.3.x to 1.x.x](#_0-3-x-to-1-x-x)
+- [0.2.x to 0.3.x](#_0-2-x-to-0-3-x)
 - [zxcvbn 4.4.2 to zxcvbn-ts 4.x.x](#migration-from-zxcvbn-4-4-2-to-zxcvbn-ts-4-x-x)
 
 ---
@@ -155,7 +158,7 @@ import { dictionary } from '@zxcvbn-ts/language-en'
 */
 ```
 
-Additionally, language packages now export `wordSequences`.
+Additionally, some language packages now include word sequence dictionaries (e.g. months) in their `dictionary` export. They are spread in, so you get them automatically by spreading the `dictionary`.
 
 ### Distribution files changed extension
 
@@ -419,7 +422,7 @@ zxcvbn.check('password', ['user', 'inputs'])
 | Feature | zxcvbn 4.4.2 | zxcvbn-ts 4.x.x |
 | :--- | :--- | :--- |
 | **Language** | JavaScript | TypeScript |
-| **Bundle Size** | Fixed (~800KB) | Modular (Core is ~25KB) |
+| **Bundle Size** | Everything bundled | Modular (core without dictionaries, languages as separate packages) |
 | **I18n** | English only | Multi-language support |
 | **Async Support** | No | Yes (`checkAsync`) |
 | **Setup** | Import and use | Factory-based configuration |

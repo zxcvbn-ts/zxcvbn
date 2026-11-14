@@ -1,5 +1,15 @@
 {
   "version": "independent",
   "npmClient": "yarn",
-  "$schema": "node_modules/lerna/schemas/lerna-schema.json"
+  "$schema": "node_modules/lerna/schemas/lerna-schema.json",
+  "command": {
+    "version": {
+      "conventionalCommits": false,
+      "changelog": false
+    },
+    "publish": {
+      "conventionalCommits": false,
+      "changelog": false
+    }
+  }
 }

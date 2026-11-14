@@ -1,21 +1,26 @@
-import { buildRankedDictionary } from './utils/helper.ts'
+import { isDictionaryNamed } from './utils/helper.ts'
 import {
   TranslationKeys,
   OptionsType,
   OptionsDictionary,
   OptionsL33tTable,
   OptionsGraph,
-  RankedDictionaries,
   Matchers,
   Matcher,
   UserInputsOptions,
-  RankedDictionary,
   TimeEstimationValues,
 } from './types.ts'
 import l33tTable from './data/l33tTable.ts'
 import translationKeys from './data/translationKeys.ts'
 import TrieNode from './matcher/dictionary/variants/matching/unmunger/TrieNode.ts'
+import WordIndex from './matcher/dictionary/WordIndex.ts'
+import {
+  buildRankedDictionary,
+  createUserInputsOptions,
+  getMaxWordSize,
+} from './matcher/dictionary/wordLists.ts'
 import l33tTableToTrieNode from './matcher/dictionary/variants/matching/unmunger/l33tTableToTrieNode.ts'
+import getL33tSubstitutions from './matcher/dictionary/variants/matching/l33tSubstitutions.ts'
 import { timeEstimationValuesDefaults } from './TimeEstimates.ts'
 import {
   checkCustomMatchers,
@@ -36,17 +41,30 @@ export default class Options {
 
   public l33tTable: OptionsL33tTable = l33tTable
 
-  public trieNodeRoot: TrieNode = l33tTableToTrieNode(l33tTable, new TrieNode())
+  // only for the fully substituted passwords checked with levenshtein, empty
+  // without it
+  public trieNodeRoot = new TrieNode()
+
+  public l33tSubstitutions = getL33tSubstitutions(l33tTable)
 
   public dictionary: OptionsDictionary = {
     userInputs: [],
   }
 
-  public rankedDictionaries: RankedDictionaries = {}
+  // the words of all dictionaries, empty until the dictionary option is set
+  public wordIndex = new WordIndex()
 
-  public rankedDictionariesMaxWordSize: Record<string, number> = {}
+  public dictionaryMaxWordSizes: Record<string, number> = {}
+
+  private cachedRankedDictionaries:
+    | Record<string, Record<string, number>>
+    | undefined
 
   public translations: TranslationKeys = translationKeys
+
+  private cachedUserInputs: (string | number)[] | undefined
+
+  private cachedUserInputsOptions: Required<UserInputsOptions> | undefined
 
   public graphs: OptionsGraph = {}
 
@@ -73,6 +91,7 @@ export default class Options {
     'planets',
     'zodiacSigns',
     'chineseZodiac',
+    'userInputs',
   ]
 
   timeEstimationValues: TimeEstimationValues = {
@@ -94,10 +113,31 @@ export default class Options {
       this.addMatcher(name, matcher)
     })
   }
+
+  /**
+   * @deprecated The dictionaries are matched with `wordIndex`. This is only
+   * built when read and will be removed in the next major version.
+   */
+  public get rankedDictionaries(): Record<string, Record<string, number>> {
+    if (this.cachedRankedDictionaries === undefined) {
+      const rankedDictionaries: Record<string, Record<string, number>> = {}
+      Object.keys(this.dictionary).forEach((name) => {
+        rankedDictionaries[name] = buildRankedDictionary(this.dictionary[name])
+      })
+      this.cachedRankedDictionaries = rankedDictionaries
+    }
+    return this.cachedRankedDictionaries
+  }
+
+  /**
+   * @deprecated Use `dictionaryMaxWordSizes`, will be removed in the next
+   * major version.
+   */
+  public get rankedDictionariesMaxWordSize(): Record<string, number> {
+    return this.dictionaryMaxWordSizes
+  }
   public isWordSequence(key: string) {
-    return this.wordSequenceNames.some(
-      (name) => key === name || key.startsWith(`${name}-`),
-    )
+    return this.wordSequenceNames.some((name) => isDictionaryNamed(key, name))
   }
 
   // eslint-disable-next-line max-statements,complexity
@@ -105,14 +145,14 @@ export default class Options {
     if (options.l33tTable) {
       checkL33tTable(options.l33tTable)
       this.l33tTable = options.l33tTable
-      this.trieNodeRoot = l33tTableToTrieNode(options.l33tTable, new TrieNode())
+      this.l33tSubstitutions = getL33tSubstitutions(options.l33tTable)
     }
 
     if (options.dictionary) {
       checkDictionary(options.dictionary)
       this.dictionary = options.dictionary
 
-      this.setRankedDictionaries()
+      this.setWordIndex()
     }
 
     if (options.translations) {
@@ -127,6 +167,10 @@ export default class Options {
     if (options.useLevenshteinDistance !== undefined) {
       checkUseLevenshteinDistance(options.useLevenshteinDistance)
       this.useLevenshteinDistance = options.useLevenshteinDistance
+    }
+
+    if (this.useLevenshteinDistance) {
+      this.trieNodeRoot = l33tTableToTrieNode(this.l33tTable, new TrieNode())
     }
 
     if (options.levenshteinThreshold !== undefined) {
@@ -158,72 +202,50 @@ export default class Options {
   }
 
   private setTranslations(translations: TranslationKeys) {
-    if (checkCustomTranslations(translations)) {
-      this.translations = translations
-    } else {
-      throw new Error('Invalid translations object fallback to keys')
+    const invalidKeys = checkCustomTranslations(translations)
+    if (invalidKeys.length > 0) {
+      throw new Error(
+        `Invalid translations object, missing or invalid keys: ${invalidKeys.join(', ')}`,
+      )
     }
+    this.translations = translations
   }
 
-  private setRankedDictionaries() {
-    const rankedDictionaries: RankedDictionaries = {}
-    const rankedDictionariesMaxWorkSize: Record<string, number> = {}
-    Object.keys(this.dictionary).forEach((name) => {
-      rankedDictionaries[name] = buildRankedDictionary(this.dictionary[name])
-      rankedDictionariesMaxWorkSize[name] =
-        this.getRankedDictionariesMaxWordSize(this.dictionary[name])
+  private setWordIndex() {
+    const dictionaryMaxWordSizes: Record<string, number> = {}
+    const names = Object.keys(this.dictionary)
+    names.forEach((name) => {
+      dictionaryMaxWordSizes[name] = getMaxWordSize(this.dictionary[name])
     })
-    this.rankedDictionaries = rankedDictionaries
-    this.rankedDictionariesMaxWordSize = rankedDictionariesMaxWorkSize
-  }
-
-  private getRankedDictionariesMaxWordSize(list: (string | number)[]) {
-    const data = list.map((el) => {
-      if (typeof el !== 'string') {
-        return el.toString().length
-      }
-      return el.length
-    })
-
-    // do not use Math.max(...data) because it can result in max stack size error because every entry will be used as an argument
-    if (data.length === 0) {
-      return 0
-    }
-    return data.reduce((a, b) => Math.max(a, b), -Infinity)
-  }
-
-  private buildSanitizedRankedDictionary(list: (string | number)[]) {
-    const sanitizedInputs: string[] = []
-
-    list.forEach((input: string | number | boolean) => {
-      const inputType = typeof input
-      if (
-        inputType === 'string' ||
-        inputType === 'number' ||
-        inputType === 'boolean'
-      ) {
-        sanitizedInputs.push(input.toString().toLowerCase())
-      }
-    })
-
-    return buildRankedDictionary(sanitizedInputs)
+    this.wordIndex = new WordIndex(
+      names.map((name) => ({ name, words: this.dictionary[name] })),
+    )
+    this.dictionaryMaxWordSizes = dictionaryMaxWordSizes
   }
 
   public getUserInputsOptions(
     dictionary?: (string | number)[],
-  ): UserInputsOptions {
-    let rankedDictionary: RankedDictionary = {}
-    let rankedDictionaryMaxWordSize = 0
-    if (dictionary) {
-      rankedDictionary = this.buildSanitizedRankedDictionary(dictionary)
-      rankedDictionaryMaxWordSize =
-        this.getRankedDictionariesMaxWordSize(dictionary)
+  ): Required<UserInputsOptions> {
+    const { cachedUserInputs } = this
+    const isCacheHit =
+      this.cachedUserInputsOptions !== undefined &&
+      (dictionary === undefined
+        ? cachedUserInputs === undefined
+        : cachedUserInputs?.length === dictionary.length &&
+          cachedUserInputs.every((value, index) => value === dictionary[index]))
+
+    if (isCacheHit) {
+      return this.cachedUserInputsOptions!
     }
 
-    return {
-      rankedDictionary,
-      rankedDictionaryMaxWordSize,
-    }
+    const userInputsOptions = createUserInputsOptions(dictionary)
+
+    // Snapshot the contents rather than keeping the caller's array reference,
+    // so a later mutate-and-reuse of the same array is detected as a cache miss.
+    this.cachedUserInputs = dictionary ? [...dictionary] : undefined
+    this.cachedUserInputsOptions = userInputsOptions
+
+    return userInputsOptions
   }
 
   private addMatcher(name: string, matcher: Matcher) {

@@ -1,26 +1,22 @@
+import { fileURLToPath } from 'node:url'
 import { defineConfig, globalIgnores } from 'eslint/config'
+import { includeIgnoreFile } from '@eslint/compat'
 import tsParser from '@typescript-eslint/parser'
 import importPlugin from 'eslint-plugin-import'
 import eslintConfigPrettier from 'eslint-config-prettier/flat'
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
-import jest from 'eslint-plugin-jest'
+import vitest from '@vitest/eslint-plugin'
 import compatPlugin from 'eslint-plugin-compat'
 import js from '@eslint/js'
 import tseslint from 'typescript-eslint'
 import sortClassMembers from 'eslint-plugin-sort-class-members'
 import prettierConfig from './prettier.mjs'
 
+const gitignorePath = fileURLToPath(new URL('.gitignore', import.meta.url))
+
 export default defineConfig([
-  globalIgnores([
-    '**/.vuepress',
-    '**/node_modules',
-    '**/dist',
-    '**/dist2',
-    '**/demo',
-    '**/coverage',
-    'data-scripts/wikiExtractor/extracts',
-    '**/dist_new',
-  ]),
+  includeIgnoreFile(gitignorePath),
+  globalIgnores(['**/.vuepress', '**/dist2', '**/demo', '**/dist_new']),
   js.configs.recommended,
   compatPlugin.configs['flat/recommended'],
   sortClassMembers.configs['flat/recommended'],
@@ -32,7 +28,7 @@ export default defineConfig([
     files: ['**/*.{ts,tsx}'],
     languageOptions: {
       globals: {
-        ...jest.environments.globals.globals,
+        ...vitest.environments.env.globals,
       },
       parser: tsParser,
       parserOptions: {
@@ -43,7 +39,7 @@ export default defineConfig([
 
     plugins: {
       import: importPlugin,
-      jest,
+      vitest,
     },
 
     settings: {
@@ -182,6 +178,7 @@ export default defineConfig([
   {
     files: [
       './data-scripts/**/*.ts',
+      './scripts/**/*.ts',
       '**/*.spec.ts',
       '**/*.config.ts',
       '**/*.config.js',

@@ -1,51 +1,37 @@
 # Examples
 
 ## Debounce
-```js
-import {
-    zxcvbnAsync,
-    debounce,
-} from '@zxcvbn-ts/core'
 
-let result
-const someCallableFunction = () => {
-// ...do your magic for example get the value from an input field or somewhere else
-    const value = getInputValue()
-    result = zxcvbnAsync(value)
-}
-
-const debouncedZxcvbn = debounce(someCallableFunction, 200)
-
-
-// then you can call debouncedZxcvbn and if it is in the timeframe of 200ms the someCallableFunction will only be called once by the last call
-debouncedZxcvbn()
-debouncedZxcvbn()
-debouncedZxcvbn()
-debouncedZxcvbn()
-```
-
-
-If you want to execute the function on the first debounce and ignore the rest you can use the third parameter.
+Checking a password takes a few milliseconds, more with the Levenshtein distance check or an async matcher like the [pwned matcher](../pwned-matcher/), which makes a network request.
+If you check while the user types, use the included `debounce` helper so the check doesn't run for every keystroke.
 
 ```js
-import {
-    zxcvbnAsync,
-    debounce,
-} from '@zxcvbn-ts/core'
+import { debounce } from '@zxcvbn-ts/core'
+// the instance from the recommended setup
+import { zxcvbn } from './zxcvbn'
 
 let result
-const someCallableFunction = () => {
-// ...do your magic for example get the value from an input field or somewhere else
-    const value = getInputValue()
-    result = zxcvbnAsync(value)
+const checkPassword = async () => {
+  // e.g. get the value from an input field
+  const value = getInputValue()
+  result = await zxcvbn.checkAsync(value)
 }
 
-const debouncedZxcvbn = debounce(someCallableFunction, 200, true)
+const debouncedCheckPassword = debounce(checkPassword, 200)
 
-
-// then you can call debouncedZxcvbn and if it is in the timeframe of 200ms the someCallableFunction will only be called once by the first call
-debouncedZxcvbn()
-debouncedZxcvbn()
-debouncedZxcvbn()
-debouncedZxcvbn()
+// called four times within 200ms, checkPassword only runs once, 200ms after the last call
+debouncedCheckPassword()
+debouncedCheckPassword()
+debouncedCheckPassword()
+debouncedCheckPassword()
 ```
+
+`debounce(fn, wait, isImmediate)` takes a third parameter. With `isImmediate` set to `true`, the first call runs right away and the calls that follow are ignored until there was no call for `wait` milliseconds:
+
+```js
+const debouncedCheckPassword = debounce(checkPassword, 200, true)
+```
+
+For a password field the default is usually what you want: with `isImmediate` the last characters typed aren't checked until the user types again.
+
+You can find complete examples for Vue, Nuxt, React, Angular and Fastify in the [framework examples](../framework-examples/).

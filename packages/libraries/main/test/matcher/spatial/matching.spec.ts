@@ -39,6 +39,18 @@ describe('spatial matching', () => {
   })
 })
 
+describe('spatial matching with an incomplete custom graph', () => {
+  it('does not throw when an adjacent character has no graph entry of its own', () => {
+    const graphs: OptionsGraph = {
+      custom: { q: ['w'] },
+    }
+    const zxcvbnOptions = new Options({ graphs })
+    const matchSpatial = new MatchSpatial(zxcvbnOptions)
+
+    expect(() => matchSpatial.match({ password: 'qw' })).not.toThrow()
+  })
+})
+
 describe('spatial matching specific patterns vs keyboards', () => {
   const data: [string, string, number, number][] = [
     ['12345', 'qwerty', 1, 0],
@@ -55,6 +67,9 @@ describe('spatial matching specific patterns vs keyboards', () => {
     ['*-632.0214', 'keypadMac', 9, 0],
     ['aoEP%yIxkjq:', 'dvorak', 4, 5],
     [';qoaOQ:Aoq;a', 'dvorak', 11, 4],
+    ['фыва', 'jcuken', 1, 0],
+    ['йцукен', 'jcuken', 1, 0],
+    ['ячсм', 'jcuken', 1, 0],
   ]
   data.forEach(([pattern, keyboard, turns, shifts]) => {
     const graphs: any = {}

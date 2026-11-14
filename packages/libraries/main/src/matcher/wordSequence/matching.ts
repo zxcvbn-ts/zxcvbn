@@ -1,21 +1,22 @@
-import DictionaryL33tMatcher from '../dictionary/variants/matching/l33t.ts'
-import DictionaryReverseMatcher from '../dictionary/variants/matching/reverse.ts'
-import DictionaryMatcher from '../dictionary/matching.ts'
-import Options from '../../Options.ts'
 import {
   MatchOptions,
   WordSequenceMatch,
   DictionaryMatch,
   MatcherBaseClass,
   L33tMatch,
+  MatchExtended,
 } from '../../types.ts'
+import { WORD_SEQUENCE_SEPARATOR_CHARS } from '../../data/const.ts'
 
-interface WordMatch {
-  word: string
-  i: number
-  j: number
-  rank: number
-  dictionaryName: string
+// a gap of only separators. '' (plain concatenation) counts too, since there
+// is no character to reject
+const isSeparatorRun = (text: string) => {
+  for (const char of text) {
+    if (!WORD_SEQUENCE_SEPARATOR_CHARS.has(char)) {
+      return false
+    }
+  }
+  return true
 }
 
 /*
@@ -24,43 +25,29 @@ interface WordMatch {
  *-------------------------------------------------------------------------------
  */
 class MatchWordSequence extends MatcherBaseClass {
-  dictionary: DictionaryMatcher
-
-  dictionaryL33t: DictionaryL33tMatcher
-
-  dictionaryReverse: DictionaryReverseMatcher
-
-  constructor(options: Options) {
-    super(options)
-    this.dictionary = new DictionaryMatcher(this.options, true)
-    this.dictionaryL33t = new DictionaryL33tMatcher(this.options, true)
-    this.dictionaryReverse = new DictionaryReverseMatcher(this.options, true)
-  }
-
   match(matchOptions: MatchOptions): WordSequenceMatch[] {
-    const { password } = matchOptions
+    const { password, matches = [] } = matchOptions
 
-    // Get all dictionary matches first
-    const dictionaryMatches = this.dictionary.match(matchOptions)
-    const dictionaryL33tMatches = this.dictionaryL33t.match(matchOptions)
-    const dictionaryReverseMatches = this.dictionaryReverse.match(matchOptions)
+    const dictionaryMatches = matches.filter(
+      (match): match is DictionaryMatch | L33tMatch =>
+        match.pattern === 'dictionary' &&
+        this.options.isWordSequence(match.dictionaryName),
+    )
 
-    const filteredDictionaryMatches = this.filterDictionaryMatches([
-      ...dictionaryMatches,
-      ...dictionaryL33tMatches,
-      ...dictionaryReverseMatches,
-    ])
-    // Convert dictionary matches to our internal format
-    const wordMatches = this.convertToWordMatches(filteredDictionaryMatches)
+    const filteredDictionaryMatches =
+      this.filterDictionaryMatches(dictionaryMatches)
 
-    // Find sequences of consecutive words
-    return this.findWordSequences(wordMatches, password)
+    // Find sequences of consecutive words. These are added as additional
+    // candidates alongside the dictionary/l33t matches they're built from -
+    // Scoring's DP picks whichever is cheaper, so the component matches must
+    // stay in `matches` rather than being removed here.
+    return this.findWordSequences(filteredDictionaryMatches, password)
   }
 
   private filterDictionaryMatches(matches: (L33tMatch | DictionaryMatch)[]) {
     // sort by start index, then by end index
     return (
-      [...matches]
+      matches
         .sort((a, b) => {
           if (a.i !== b.i) return a.i - b.i
           if (a.j !== b.j) return a.j - b.j
@@ -85,20 +72,8 @@ class MatchWordSequence extends MatcherBaseClass {
     )
   }
 
-  private convertToWordMatches(
-    dictionaryMatches: DictionaryMatch[],
-  ): WordMatch[] {
-    return dictionaryMatches.map((match) => ({
-      word: match.matchedWord,
-      i: match.i,
-      j: match.j,
-      rank: match.rank,
-      dictionaryName: match.dictionaryName,
-    }))
-  }
-
   private findWordSequences(
-    wordMatches: WordMatch[],
+    wordMatches: MatchExtended[],
     password: string,
   ): WordSequenceMatch[] {
     const sequences: WordSequenceMatch[] = []
@@ -107,13 +82,10 @@ class MatchWordSequence extends MatcherBaseClass {
       return sequences
     }
 
-    // Sort matches by start position
-    const sortedMatches = [...wordMatches].sort((a, b) => a.i - b.i)
-
     // Find all possible sequences
-    for (let startIdx = 0; startIdx < sortedMatches.length; startIdx += 1) {
+    for (let startIdx = 0; startIdx < wordMatches.length; startIdx += 1) {
       const sequencesFromStart = this.findSequencesFromStart(
-        sortedMatches,
+        wordMatches,
         startIdx,
         password,
       )
@@ -123,9 +95,8 @@ class MatchWordSequence extends MatcherBaseClass {
     return sequences
   }
 
-  // eslint-disable-next-line max-statements
   private findSequencesFromStart(
-    sortedMatches: WordMatch[],
+    sortedMatches: MatchExtended[],
     startIdx: number,
     password: string,
   ): WordSequenceMatch[] {
@@ -133,10 +104,9 @@ class MatchWordSequence extends MatcherBaseClass {
     const startMatch = sortedMatches[startIdx]
 
     // Start with single word sequence
-    let currentSequence = [startMatch]
-    let currentEnd = startMatch.j
+    const currentSequence = [startMatch]
 
-    // Try to extend the sequence
+    // Sequences starting later are covered by the caller's loop over startIdx
     for (
       let nextIdx = startIdx + 1;
       nextIdx < sortedMatches.length;
@@ -144,24 +114,24 @@ class MatchWordSequence extends MatcherBaseClass {
     ) {
       const nextMatch = sortedMatches[nextIdx]
 
-      // Only extend if the next word can form a valid sequence
-      if (this.isValidWordSequence(currentSequence, nextMatch, password)) {
-        currentSequence.push(nextMatch)
-        currentEnd = nextMatch.j
-      } else if (nextMatch.i > currentEnd) {
-        // Gap found, save current sequence and start new one
-        if (currentSequence.length > 1) {
-          sequences.push(
-            this.createWordSequenceMatch(currentSequence, password),
-          )
-        }
-        currentSequence = [nextMatch]
-        currentEnd = nextMatch.j
+      // sortedMatches always comes from filterDictionaryMatches, which already
+      // guarantees each entry starts after the previous one ends, so a
+      // non-extending match is always a gap, never an overlap to skip.
+      if (!this.isValidWordSequence(currentSequence, nextMatch, password)) {
+        break
       }
-      // If nextMatch.i <= currentEnd, it overlaps, so we skip it
+
+      // A separator run can make the longer sequence more expensive than
+      // stopping here and matching the run separately (e.g. as a repeat), so
+      // keep the sequence so far as a candidate before extending over it.
+      const lastWord = currentSequence[currentSequence.length - 1]
+      if (currentSequence.length > 1 && nextMatch.i - lastWord.j > 2) {
+        sequences.push(this.createWordSequenceMatch(currentSequence, password))
+      }
+
+      currentSequence.push(nextMatch)
     }
 
-    // Don't forget the last sequence
     if (currentSequence.length > 1) {
       sequences.push(this.createWordSequenceMatch(currentSequence, password))
     }
@@ -170,22 +140,17 @@ class MatchWordSequence extends MatcherBaseClass {
   }
 
   private isValidWordSequence(
-    currentSequence: WordMatch[],
-    nextMatch: WordMatch,
+    currentSequence: MatchExtended[],
+    nextMatch: MatchExtended,
     password: string,
   ): boolean {
     // Get the text between the last word and the next word
     const lastWord = currentSequence[currentSequence.length - 1]
     const textBetween = password.slice(lastWord.j + 1, nextMatch.i)
 
-    // Check for common word separators
-    const separators = ['', ' ', '-', '_', '.', '']
-
-    // For simple concatenation (no separator)
-    const isSimpleConcat = textBetween === ''
-
-    // For snake_case or kebab-case, check for separators
-    const hasValidSeparator = separators.some((sep) => textBetween === sep)
+    // For snake_case, kebab-case, simple concatenation or a run of separators
+    // like '..'. Longer runs are not free: scoring charges for them.
+    const hasValidSeparator = isSeparatorRun(textBetween)
 
     // For camelCase, we need to check if the next word starts with uppercase
     // and there's no separator (or just a single character that could be uppercase)
@@ -194,16 +159,20 @@ class MatchWordSequence extends MatcherBaseClass {
       textBetween === textBetween.toUpperCase() &&
       textBetween !== textBetween.toLowerCase()
 
-    return hasValidSeparator || isSimpleConcat || isCamelCase
+    return hasValidSeparator || isCamelCase
   }
 
   private createWordSequenceMatch(
-    sequence: WordMatch[],
+    sequence: MatchExtended[],
     password: string,
   ): WordSequenceMatch {
     const firstMatch = sequence[0]
     const lastMatch = sequence[sequence.length - 1]
-    const words = sequence.map((match) => match.word)
+    const words = sequence.map((match) => match.matchedWord)
+    // one entry per gap, so scoring can tell which words are separated
+    const separators = sequence
+      .slice(1)
+      .map((match, index) => password.slice(sequence[index].j + 1, match.i))
 
     // Determine if sequence is ascending (by rank)
     const ranks = sequence.map((match) => match.rank)
@@ -223,6 +192,7 @@ class MatchWordSequence extends MatcherBaseClass {
       wordCount: words.length,
       dictionaryName,
       ascending,
+      separators,
     }
   }
 

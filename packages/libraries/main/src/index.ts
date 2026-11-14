@@ -3,6 +3,7 @@ import { TimeEstimates } from './TimeEstimates.ts'
 import Feedback from './Feedback.ts'
 import Options from './Options.ts'
 import debounce from './utils/debounce.ts'
+import { isSurrogatePairAt } from './utils/helper.ts'
 import {
   Matcher,
   MatchEstimated,
@@ -64,31 +65,42 @@ class ZxcvbnFactory {
     }
   }
 
-  private main(password: string, userInputs?: (string | number)[]) {
+  private getMatches(password: string, userInputs?: (string | number)[]) {
     const userInputsOptions = this.options.getUserInputsOptions(userInputs)
 
     return this.matching.match(password, userInputsOptions)
   }
 
   public check(password: string, userInputs?: (string | number)[]) {
-    const reducedPassword = password.substring(0, this.options.maxLength)
-    const start = time()
-    const matches = this.main(reducedPassword, userInputs)
+    const { reducedPassword, start } = this.prepareCheck(password)
+    const matches = this.getMatches(reducedPassword, userInputs)
 
     if (matches instanceof Promise) {
       throw new Error(
-        'You are using a Promised matcher, please use `zxcvbnAsync` for it.',
+        'You are using a Promised matcher, please use `checkAsync` for it.',
       )
     }
     return this.createReturnValue(matches, reducedPassword, start)
   }
 
   public async checkAsync(password: string, userInputs?: (string | number)[]) {
-    const reducedPassword = password.substring(0, this.options.maxLength)
-    const start = time()
-    const matches = await this.main(reducedPassword, userInputs)
+    const { reducedPassword, start } = this.prepareCheck(password)
+    const matches = await this.getMatches(reducedPassword, userInputs)
 
     return this.createReturnValue(matches, reducedPassword, start)
+  }
+
+  private prepareCheck(password: string) {
+    let end = this.options.maxLength
+    // maxLength counts UTF-16 code units. If the cut lands inside a surrogate
+    // pair (eg. an emoji), drop that whole character instead of half of it.
+    if (isSurrogatePairAt(password, end - 1)) {
+      end -= 1
+    }
+    return {
+      reducedPassword: password.substring(0, end),
+      start: time(),
+    }
   }
 }
 

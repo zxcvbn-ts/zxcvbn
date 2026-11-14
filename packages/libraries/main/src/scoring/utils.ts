@@ -1,5 +1,7 @@
 const LOG10 = Math.log(10)
-const LOG2 = Math.log(2)
+
+// factorials[n] = n!, extended when a larger one is asked for
+const factorials: number[] = [1]
 
 export default {
   // binomial coefficients
@@ -20,16 +22,14 @@ export default {
     }
     return coEff
   },
+  factorial(n: number) {
+    for (let i = factorials.length; i <= n; i += 1) {
+      factorials[i] = factorials[i - 1] * i
+    }
+    return factorials[n]
+  },
   log10(n: number) {
     if (n === 0) return 0
     return Math.log(n) / LOG10 // IE doesn't support Math.log10 :(
-  },
-  log2(n: number) {
-    return Math.log(n) / LOG2
-  },
-  factorial(num: number) {
-    let rval = 1
-    for (let i = 2; i <= num; i += 1) rval *= i
-    return rval
   },
 }

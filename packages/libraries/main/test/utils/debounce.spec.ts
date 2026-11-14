@@ -1,22 +1,39 @@
 import debounce from '../../src/utils/debounce.ts'
 
 describe('debounce', () => {
+  // test files share their environment (isolate: false), so fake timers left
+  // on here would stop the timers of the next file in this worker
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
   it('should call handler immediately', () => {
-    const testFn = jest.fn()
+    const testFn = vi.fn()
     const temp = debounce(testFn, 100, true)
     temp()
     expect(testFn).toHaveBeenCalledTimes(1)
   })
 
+  it('should not call handler again once the timeout elapses in immediate mode', () => {
+    vi.useFakeTimers()
+    const testFn = vi.fn()
+    const temp = debounce(testFn, 100, true)
+    temp()
+    expect(testFn).toHaveBeenCalledTimes(1)
+
+    vi.runAllTimers()
+    expect(testFn).toHaveBeenCalledTimes(1)
+  })
+
   it('should debounce after timeout', () => {
-    jest.useFakeTimers()
-    const testFn = jest.fn()
+    vi.useFakeTimers()
+    const testFn = vi.fn()
     const temp = debounce(testFn, 100, false)
     temp()
 
     expect(testFn).not.toHaveBeenCalled()
     temp()
-    jest.runAllTimers()
+    vi.runAllTimers()
     expect(testFn).toHaveBeenCalledTimes(1)
   })
 })

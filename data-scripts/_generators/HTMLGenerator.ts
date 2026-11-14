@@ -75,6 +75,8 @@ export default class HTMLGenerator extends SimpleListGenerator<Options> {
     this.splitCompoundNames()
     this.normalizeDiacritics()
     this.removeDuplicates()
+    this.simpleTransliterate()
+    this.removeUnicodeControlCharacters()
     this.filterMinLength()
     return this.data
   }

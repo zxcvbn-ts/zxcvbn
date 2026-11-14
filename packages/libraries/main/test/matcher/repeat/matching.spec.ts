@@ -3,7 +3,8 @@ import checkMatches from '../../helper/checkMatches.ts'
 import genpws from '../../helper/genpws.ts'
 import MatchOmni from '../../../src/Matching.ts'
 import Options from '../../../src/Options.ts'
-import { RepeatMatch } from '../../../src/types.ts'
+import { RepeatMatch, ZxcvbnResult } from '../../../src/types.ts'
+import { ZxcvbnFactory } from '../../../src/index.ts'
 
 const zxcvbnOptions = new Options()
 const omniMatch = new MatchOmni(zxcvbnOptions)
@@ -139,5 +140,67 @@ describe('repeat matching', () => {
     propsToCheck: {
       baseToken: ['ab'],
     },
+  })
+
+  // '𝐚' (𝐚) and '🐚' (🐚) share their second half, so
+  // without matching by code point a repeat starts in the middle of '𝐚'
+  pattern = '🐚'.repeat(10)
+  matches = matchRepeat.match({
+    password: `𝐚${pattern}`,
+    omniMatch,
+  }) as RepeatMatch[]
+  msg = "doesn't split an emoji to match a repeat"
+  checkMatches({
+    messagePrefix: msg,
+    matches,
+    patternNames: 'repeat',
+    patterns: [pattern],
+    ijs: [[2, 21]],
+    propsToCheck: {
+      baseToken: ['🐚'],
+      repeatCount: [10],
+    },
+  })
+
+  it('memoizes base token guesses across separated repeat groups within one match() call', async () => {
+    // Use the repeat matcher exactly as production code does: the single
+    // instance registered inside its own omniMatch (Matching), since
+    // getBaseGuesses recurses back into that same instance via
+    // omniMatch.match(baseToken) - a standalone MatchRepeat/omniMatch pair
+    // (like the rest of this file uses) never re-enters itself and so can't
+    // exercise the memoization bug at all.
+    const sharedOmniMatch = new MatchOmni(zxcvbnOptions)
+    const sharedMatchRepeat = sharedOmniMatch.matchers.repeat as MatchRepeat
+    const matchSpy = vi.spyOn(sharedOmniMatch, 'match')
+
+    await sharedMatchRepeat.match({
+      password: 'aaaaaaXXXbbbbbbYYYaaaaaa',
+      omniMatch: sharedOmniMatch,
+    })
+
+    const baseTokenACalls = matchSpy.mock.calls.filter(
+      ([password]) => password === 'a',
+    ).length
+    matchSpy.mockRestore()
+    expect(baseTokenACalls).toBe(1)
+  })
+
+  it('uses user inputs passed to check() when scoring the base token', () => {
+    const password = 'xkqzvbtwxkqzvbtwxkqzvbtw'
+    const userInputs = ['xkqzvbtw']
+    const findRepeat = (result: ZxcvbnResult) =>
+      result.sequence.find((match) => match.pattern === 'repeat')
+
+    const setupResult = new ZxcvbnFactory({
+      dictionary: { userInputs },
+    }).check(password)
+    const perCallResult = new ZxcvbnFactory().check(password, userInputs)
+
+    expect(findRepeat(setupResult)).toMatchObject({
+      baseToken: 'xkqzvbtw',
+      baseGuesses: 2,
+    })
+    expect(findRepeat(perCallResult)).toEqual(findRepeat(setupResult))
+    expect(perCallResult.guesses).toBe(setupResult.guesses)
   })
 })

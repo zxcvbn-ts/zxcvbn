@@ -1,6 +1,6 @@
 {
   "name": "@zxcvbn-ts/language-th",
-  "version": "4.1.1",
+  "version": "4.2.1",
   "type": "module",
   "exports": {
     ".": {

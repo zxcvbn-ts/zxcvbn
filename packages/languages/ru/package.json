@@ -1,6 +1,6 @@
 {
   "name": "@zxcvbn-ts/language-ru",
-  "version": "1.0.0",
+  "version": "4.1.1",
   "type": "module",
   "exports": {
     ".": {
@@ -21,7 +21,9 @@
   "files": [
     "dist",
     "src",
-    "CHANGELOG.md"
+    "CHANGELOG.md",
+    "NOTICE.md",
+    "THIRD_PARTY_LICENSES.md"
   ],
   "publishConfig": {
     "access": "public"

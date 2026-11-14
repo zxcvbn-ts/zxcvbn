@@ -3,6 +3,7 @@ import wordSequences from '../../../../../languages/en/src/wordSequences.json' w
 import scoring from '../../../src/matcher/wordSequence/scoring.ts'
 import feedback from '../../../src/matcher/wordSequence/feedback.ts'
 import Options from '../../../src/Options.ts'
+import { WORD_SEQUENCE_SEPARATOR_CHARS } from '../../../src/data/const.ts'
 
 describe('WordSequence Matcher', () => {
   let zxcvbn: ZxcvbnFactory
@@ -428,7 +429,207 @@ describe('WordSequence Matcher', () => {
     })
   })
 
+  describe('User Inputs', () => {
+    const userInputs = ['Hans', 'Florian', 'Zimmer']
+
+    it.each<[string, string[]]>([
+      ['HansFlorianZimmer', ['hans', 'florian', 'zimmer']],
+      ['hans.zimmer', ['hans', 'zimmer']],
+      ['ZimmerHans', ['zimmer', 'hans']],
+    ])('should detect %s as a user input sequence', (password, words) => {
+      const result = zxcvbn.check(password, userInputs)
+
+      const wordSequenceMatch = result.sequence.find(
+        (match) => match.pattern === 'wordSequence',
+      )
+
+      expect(wordSequenceMatch).toBeDefined()
+      if (wordSequenceMatch?.pattern === 'wordSequence') {
+        expect(wordSequenceMatch.token).toBe(password)
+        expect(wordSequenceMatch.words).toEqual(words)
+        expect(wordSequenceMatch.dictionaryName).toBe('userInputs')
+      }
+      expect(result.feedback.warning).toBe(
+        new Options().translations.warnings.userInputs,
+      )
+    })
+
+    it.each<[string, string[]]>([
+      ['Hans..Florian..Zimmer', ['..', '..']],
+      ['Hans._Florian._Zimmer', ['._', '._']],
+      ['HansZimmer', ['']],
+      ['Hans.FlorianZimmer', ['.', '']],
+      ['HansXZimmer', ['X']],
+    ])(
+      'should keep %s together and record its separators',
+      (password, separators) => {
+        const result = zxcvbn.check(password, userInputs)
+
+        expect(result.sequence).toHaveLength(1)
+        const [match] = result.sequence
+        expect(match.pattern).toBe('wordSequence')
+        if (match.pattern === 'wordSequence') {
+          expect(match.separators).toEqual(separators)
+        }
+      },
+    )
+
+    it('should keep user input sequences at the lowest score with repeated separators', () => {
+      const single = zxcvbn.check('Hans.Florian.Zimmer', userInputs)
+      const repeated = zxcvbn.check('Hans..Florian..Zimmer', userInputs)
+
+      expect(single.score).toBe(0)
+      expect(repeated.score).toBe(0)
+    })
+
+    it('should charge more guesses when only some words are separated', () => {
+      const guesses = (password: string) =>
+        zxcvbn.check(password, userInputs).guesses
+
+      expect(guesses('hans.florianzimmer')).toBeGreaterThan(
+        guesses('hans.florian.zimmer'),
+      )
+      expect(guesses('hansflorian.zimmer')).toBeGreaterThan(
+        guesses('hans.florian.zimmer'),
+      )
+    })
+
+    it('should charge more guesses for an uppercase letter gap than for a separator', () => {
+      const guesses = (password: string) =>
+        zxcvbn.check(password, userInputs).guesses
+
+      expect(guesses('hansXzimmer')).toBeGreaterThan(guesses('hans.zimmer'))
+      expect(guesses('hansXflorian.zimmer')).toBeGreaterThan(
+        guesses('hans.florian.zimmer'),
+      )
+    })
+
+    it('should charge more guesses for a longer separator run', () => {
+      const guesses = (password: string) =>
+        zxcvbn.check(password, userInputs).guesses
+
+      expect(guesses('hans.zimmer')).toBeGreaterThan(guesses('hanszimmer'))
+      expect(guesses('hans..zimmer')).toBeGreaterThan(guesses('hans.zimmer'))
+      expect(guesses('hans----------zimmer')).toBeGreaterThan(
+        guesses('hans--zimmer'),
+      )
+    })
+
+    it('should keep a cheap prefix when an expensive separator run follows', () => {
+      const result = zxcvbn.check(
+        `HansFlorianZimmer${'._'.repeat(12)}Hans`,
+        userInputs,
+      )
+
+      expect(result.sequence[0].pattern).toBe('wordSequence')
+      expect(result.sequence[0].token).toBe('HansFlorianZimmer')
+      expect(result.score).toBeLessThan(4)
+    })
+
+    it('should charge more guesses for mixed separators', () => {
+      const guesses = (password: string) =>
+        zxcvbn.check(password, userInputs).guesses
+
+      expect(guesses('Hans._Florian._Zimmer')).toBeGreaterThan(
+        guesses('Hans..Florian..Zimmer'),
+      )
+      expect(guesses('Hans.Florian_Zimmer')).toBeGreaterThan(
+        guesses('Hans.Florian..Zimmer'),
+      )
+    })
+
+    it('should charge more guesses for uneven runs of the same separator', () => {
+      const guesses = (password: string) =>
+        zxcvbn.check(password, userInputs).guesses
+
+      expect(guesses('Hans.Florian..Zimmer')).toBeGreaterThan(
+        guesses('Hans.Florian.Zimmer'),
+      )
+      expect(guesses('Hans..Florian...Zimmer')).toBeGreaterThan(
+        guesses('Hans...Florian...Zimmer'),
+      )
+    })
+
+    it('should not detect a sequence without user inputs', () => {
+      const result = zxcvbn.check('HansFlorianZimmer')
+
+      const wordSequenceMatch = result.sequence.find(
+        (match) =>
+          match.pattern === 'wordSequence' &&
+          match.dictionaryName === 'userInputs',
+      )
+
+      expect(wordSequenceMatch).toBeUndefined()
+    })
+  })
+
   describe('Scoring and Feedback unit tests', () => {
+    it('scoring should charge the separator choice and run length', () => {
+      const match = (separators: string[]) =>
+        ({ pattern: 'wordSequence', wordCount: 2, separators }) as any
+
+      expect(scoring(match(['']))).toBe(2)
+      expect(scoring(match(['.']))).toBe(2 * WORD_SEQUENCE_SEPARATOR_CHARS.size)
+      expect(scoring(match(['..']))).toBe(
+        2 * WORD_SEQUENCE_SEPARATOR_CHARS.size * 2,
+      )
+      expect(scoring(match(['._']))).toBe(
+        2 * WORD_SEQUENCE_SEPARATOR_CHARS.size ** 2,
+      )
+    })
+
+    it('scoring should treat a missing separators field as concatenation', () => {
+      expect(scoring({ pattern: 'wordSequence', wordCount: 2 } as any)).toBe(2)
+    })
+
+    it('scoring should charge an uppercase letter gap for the letter choice', () => {
+      const match = (separators: string[]) =>
+        ({ pattern: 'wordSequence', wordCount: 2, separators }) as any
+
+      expect(scoring(match(['X']))).toBe(2 * 26)
+    })
+
+    describe('scoring with several gaps', () => {
+      // 3! orderings * 2 for the length penalty
+      const baseGuesses = 12
+      const match = (separators: string[]) =>
+        ({ pattern: 'wordSequence', wordCount: 3, separators }) as any
+
+      it('should guess a separator shared by every gap once', () => {
+        expect(scoring(match(['.', '.']))).toBe(
+          baseGuesses * WORD_SEQUENCE_SEPARATOR_CHARS.size,
+        )
+        expect(scoring(match(['._', '._']))).toBe(
+          baseGuesses * WORD_SEQUENCE_SEPARATOR_CHARS.size ** 2,
+        )
+      })
+
+      it('should charge which gaps hold a separator', () => {
+        expect(scoring(match(['.', '']))).toBe(
+          baseGuesses * WORD_SEQUENCE_SEPARATOR_CHARS.size * 2 ** 2,
+        )
+        expect(scoring(match(['', '']))).toBe(baseGuesses)
+      })
+
+      it('should guess a character once when only its run length differs', () => {
+        expect(scoring(match(['.', '..']))).toBe(
+          baseGuesses * WORD_SEQUENCE_SEPARATOR_CHARS.size * 2,
+        )
+        expect(scoring(match(['..', '...']))).toBe(
+          baseGuesses * WORD_SEQUENCE_SEPARATOR_CHARS.size * 2 * 3,
+        )
+      })
+
+      it('should charge different separators per gap', () => {
+        expect(scoring(match(['.', '_']))).toBe(
+          baseGuesses * WORD_SEQUENCE_SEPARATOR_CHARS.size ** 2,
+        )
+        expect(scoring(match(['X', '.']))).toBe(
+          baseGuesses * 26 * WORD_SEQUENCE_SEPARATOR_CHARS.size,
+        )
+      })
+    })
+
     it('scoring should return 0 if pattern is not wordSequence', () => {
       expect(scoring({ pattern: 'dictionary' } as any)).toBe(0)
     })
@@ -449,6 +650,21 @@ describe('WordSequence Matcher', () => {
       expect(result?.suggestions).toContain(
         options.translations.suggestions.anotherWord,
       )
+    })
+
+    it('feedback should return the user inputs warning for user input sequences', () => {
+      const options = new Options()
+      const match = {
+        pattern: 'wordSequence',
+        wordCount: 2,
+        ascending: true,
+        dictionaryName: 'userInputs',
+      } as any
+      const result = feedback(options, match)
+      expect(result?.warning).toBe(options.translations.warnings.userInputs)
+      expect(result?.suggestions).toEqual([
+        options.translations.suggestions.useWords,
+      ])
     })
   })
 })

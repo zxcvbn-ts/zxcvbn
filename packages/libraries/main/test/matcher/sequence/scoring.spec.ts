@@ -7,6 +7,7 @@ describe('scoring: guesses sequence', () => {
     ['4567', true, 10 * 4], // base10 * len-4
     ['7654', false, 10 * 4 * 2], // base10 * len 4 * descending
     ['ZYX', false, 4 * 3 * 2], // obvious start * len-3 * descending
+    ['𝐚𝐛𝐜𝐝𝐞𝐟', true, 26 * 6], // base26 * len-6 (surrogate pairs count once)
   ]
 
   data.forEach(([token, ascending, guesses]) => {

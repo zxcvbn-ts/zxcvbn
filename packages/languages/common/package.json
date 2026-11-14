@@ -1,6 +1,6 @@
 {
   "name": "@zxcvbn-ts/language-common",
-  "version": "4.1.3",
+  "version": "4.2.0",
   "type": "module",
   "exports": {
     ".": {
@@ -21,7 +21,9 @@
   "files": [
     "dist",
     "src",
-    "CHANGELOG.md"
+    "CHANGELOG.md",
+    "NOTICE.md",
+    "THIRD_PARTY_LICENSES.md"
   ],
   "publishConfig": {
     "access": "public"

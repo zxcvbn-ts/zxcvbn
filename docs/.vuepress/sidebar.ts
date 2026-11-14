@@ -15,16 +15,8 @@ export const sidebar: SidebarGroupOptions[] = [
         link: '/guide/getting-started/',
       },
       {
-        text: 'Examples',
-        link: '/guide/examples/',
-      },
-      {
-        text: 'Best Practices',
-        link: '/guide/best-practices/',
-      },
-      {
-        text: 'Comparison',
-        link: '/guide/comparison/',
+        text: 'Options',
+        link: '/guide/options/',
       },
       {
         text: 'Languages',
@@ -35,20 +27,36 @@ export const sidebar: SidebarGroupOptions[] = [
         link: '/guide/filtering-custom-words/',
       },
       {
-        text: 'Lazy loading',
-        link: '/guide/lazy-loading/',
-      },
-      {
         text: 'Matcher',
         link: '/guide/matcher/',
       },
       {
-        text: 'Options',
-        link: '/guide/options/',
+        text: 'Pwned matcher',
+        link: '/guide/pwned-matcher/',
+      },
+      {
+        text: 'Lazy loading',
+        link: '/guide/lazy-loading/',
+      },
+      {
+        text: 'Best Practices',
+        link: '/guide/best-practices/',
+      },
+      {
+        text: 'Examples',
+        link: '/guide/examples/',
       },
       {
         text: 'Framework examples',
         link: '/guide/framework-examples/',
+      },
+      {
+        text: 'TypeScript',
+        link: '/guide/typescript/',
+      },
+      {
+        text: 'Comparison',
+        link: '/guide/comparison/',
       },
       {
         text: 'Migration',

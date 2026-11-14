@@ -5,6 +5,7 @@ import { DictionaryReturn } from './matcher/dictionary/scoring.ts'
 import { REGEXEN } from './data/const.ts'
 import l33tTableDefault from './data/l33tTable.ts'
 import translationKeys from './data/translationKeys.ts'
+import WordIndex from './matcher/dictionary/WordIndex.ts'
 
 export type PluralizationFunction = (value: number) => string
 
@@ -135,6 +136,10 @@ export interface WordSequenceMatch extends Match {
   wordCount: number
   dictionaryName: string
   ascending: boolean
+  /**
+   * @description The text between each pair of consecutive words: separators, an uppercase letter, or an empty string when they are concatenated
+   */
+  separators: string[]
 }
 
 export type MatchExtended =
@@ -159,12 +164,6 @@ export interface Estimate {
 }
 
 export type MatchEstimated = MatchExtended & Estimate
-
-export interface Optimal {
-  bestMatches: Record<string, MatchEstimated>[]
-  guessesProduct: Record<string, number>[]
-  totalGuesses: Record<string, number>[]
-}
 
 export interface CrackTime {
   base: number | null
@@ -237,12 +236,12 @@ export interface OptionsType {
    */
   useLevenshteinDistance?: boolean
   /**
-   * @description Defines how many characters can be different to match a dictionary word with the levenshtein algorithm.
+   * @description Defines how many characters can be different to match a dictionary word with the levenshtein algorithm, whatever the length of the password. An emoji counts as one character.
    * @default 2
    */
   levenshteinThreshold?: number
   /**
-   * @description The l33t matcher will check how many characters can be exchanged with the l33t table. If they are to many it will decrease the calcTime significantly. So we cap it at a reasonable value by default which will probably already seems like a strong password anyway.
+   * @description Only used together with `useLevenshteinDistance`: the l33t matcher checks the password with every possible substitution made for a close dictionary entry, and this caps how many of those fully substituted passwords are checked, as each costs a levenshtein search. The l33t matches without levenshtein are found by walking the dictionaries and don't depend on it.
    * @default 100
    */
   l33tMaxSubstitutions?: number
@@ -257,10 +256,6 @@ export interface OptionsType {
   timeEstimationValues?: TimeEstimationValues
 }
 
-export type RankedDictionary = Record<string, number>
-
-export type RankedDictionaries = Record<string, RankedDictionary>
-
 export type DefaultFeedbackFunction = (
   options: Options,
   match: MatchEstimated,
@@ -272,9 +267,40 @@ export type DefaultScoringFunction = (
   options: Options,
 ) => number | DictionaryReturn
 
+/**
+ * @deprecated The dictionaries are matched with `Options.wordIndex`, this is only built when read and will be removed in the next major version.
+ */
+export type RankedDictionary = Record<string, number>
+
+/**
+ * @deprecated The dictionaries are matched with `Options.wordIndex`, this is only built when read and will be removed in the next major version.
+ */
+export type RankedDictionaries = Record<string, Record<string, number>>
+
+/**
+ * @deprecated Not used anymore, will be removed in the next major version.
+ */
+export interface Optimal {
+  bestMatches: Record<string, MatchEstimated>[]
+  guessesProduct: Record<string, number>[]
+  totalGuesses: Record<string, number>[]
+}
+
 export interface UserInputsOptions {
-  rankedDictionary: RankedDictionary
-  rankedDictionaryMaxWordSize: number
+  /**
+   * @description The user inputs as the dictionary userInputs. Optional until
+   * the next major version, so objects built by hand without it stay valid,
+   * the matching then builds it from rankedDictionary.
+   */
+  wordIndex?: WordIndex
+  /**
+   * @deprecated Use `wordIndex`. Only built when read, will be removed in the next major version.
+   */
+  readonly rankedDictionary: Record<string, number>
+  /**
+   * @deprecated Only built when read, will be removed in the next major version.
+   */
+  readonly rankedDictionaryMaxWordSize: number
 }
 export interface MatchOptions {
   password: string
@@ -283,6 +309,10 @@ export interface MatchOptions {
    */
   omniMatch: Matching
   userInputsOptions?: UserInputsOptions
+  /**
+   * @description Only given to the wordSequence matcher, which runs after every other matcher: a copy of their matches
+   */
+  matches?: readonly MatchExtended[]
 }
 
 export abstract class MatcherBaseClass {

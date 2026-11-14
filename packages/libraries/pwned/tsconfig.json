@@ -2,6 +2,6 @@
   "extends": "../../../tsconfig.json",
   "compilerOptions": {
     "lib": ["es2018", "dom"],
-    "types": ["node", "jest"]
+    "types": ["node", "vitest/globals"]
   }
 }

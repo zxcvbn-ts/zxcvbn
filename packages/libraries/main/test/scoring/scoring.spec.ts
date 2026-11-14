@@ -290,5 +290,53 @@ describe('scoring', () => {
       expect(result.guesses).toEqual(200)
       expect(result.sequence).toEqual([m2, m3])
     })
+
+    it('returns one bruteforce match when its guesses are capped at Number.MAX_VALUE', () => {
+      // 10 ** 400 overflows to Infinity, so bruteforce scoring caps it at
+      // Number.MAX_VALUE, and MAX_VALUE + 1 for the length penalty is still MAX_VALUE
+      const passwordLocal = 'x'.repeat(400)
+      const result = scoring.mostGuessableMatchSequence(passwordLocal, [])
+
+      expect(result.sequence.length).toEqual(1)
+      expect(result.sequence[0].pattern).toEqual('bruteforce')
+      expect([result.sequence[0].i, result.sequence[0].j]).toEqual([0, 399])
+      expect(result.guesses).toEqual(Number.MAX_VALUE)
+    })
+
+    it('counts an emoji as one character in a bruteforce match', () => {
+      const passwordLocal = '😀😀'
+      const match = { ...getMatch(0, 1, 1), token: '😀' }
+      const result = scoring.mostGuessableMatchSequence(
+        passwordLocal,
+        [match],
+        excludeAdditive,
+      )
+
+      // 2! * (1 * 11), a single character bruteforce match is
+      // MIN_SUBMATCH_GUESSES_SINGLE_CHAR + 1
+      expect(result.guesses).toEqual(22)
+      expect(result.sequence[1]).toMatchObject({
+        pattern: 'bruteforce',
+        token: '😀',
+        i: 2,
+        j: 3,
+      })
+    })
+
+    it('counts both characters of a bruteforce match starting inside an emoji', () => {
+      const passwordLocal = '😀😀'
+      const match = { ...getMatch(0, 0, 1), token: '\ud83d' }
+      const result = scoring.mostGuessableMatchSequence(
+        passwordLocal,
+        [match],
+        excludeAdditive,
+      )
+
+      // the bruteforce match [1, 3] is a lone surrogate plus an emoji, 2 characters:
+      // 2! * (1 * 10 ** 2) = 200 loses against one bruteforce match of 10 ** 2
+      expect(result.guesses).toEqual(100)
+      expect(result.sequence).toHaveLength(1)
+      expect(result.sequence[0].pattern).toEqual('bruteforce')
+    })
   })
 })

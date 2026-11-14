@@ -1,14 +1,12 @@
-import { DictionaryMatch, MatchOptions } from '../../types.ts'
+import { DictionaryNames, MatchOptions } from '../../types.ts'
+import { FindLevenshteinDistanceResult } from '../../utils/levenshtein.ts'
 
-export interface DictionaryMatchOptionsLevenshtein extends MatchOptions {
-  useLevenshtein?: boolean
-}
+export type DictionaryHit = {
+  dictionaryName: DictionaryNames
+  rank: number
+} & Partial<FindLevenshteinDistanceResult>
 
 export type DictionaryMatchOptions = Pick<
-  DictionaryMatchOptionsLevenshtein,
-  'password' | 'userInputsOptions' | 'useLevenshtein'
+  MatchOptions,
+  'password' | 'userInputsOptions'
 >
-
-export type DefaultMatch = (
-  options: DictionaryMatchOptions,
-) => DictionaryMatch[]

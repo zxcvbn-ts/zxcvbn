@@ -1,4 +1,4 @@
-import { extend, sorted } from './utils/helper.ts'
+import { extend } from './utils/helper.ts'
 import { MatcherBaseClass, MatchExtended, UserInputsOptions } from './types.ts'
 import DateMatcher from './matcher/date/matching.ts'
 import DictionaryMatcher from './matcher/dictionary/matching.ts'
@@ -11,6 +11,24 @@ import SpatialMatcher from './matcher/spatial/matching.ts'
 import SeparatorMatcher from './matcher/separator/matching.ts'
 import WordSequenceMatcher from './matcher/wordSequence/matching.ts'
 import Options from './Options.ts'
+import WordIndex from './matcher/dictionary/WordIndex.ts'
+
+// An object built by hand without wordIndex only has the ranked dictionary,
+// its words are put in the word index in the order of their rank. Without
+// this the user inputs would be skipped.
+const withWordIndex = (userInputsOptions: UserInputsOptions | undefined) => {
+  if (!userInputsOptions || userInputsOptions.wordIndex) {
+    return userInputsOptions
+  }
+  // eslint-disable-next-line @typescript-eslint/no-deprecated
+  const words = Object.entries(userInputsOptions.rankedDictionary)
+    .sort((first, second) => first[1] - second[1])
+    .map(([word]) => word)
+  return {
+    ...userInputsOptions,
+    wordIndex: new WordIndex([{ name: 'userInputs', words }]),
+  }
+}
 
 /*
  * -------------------------------------------------------------------------------
@@ -40,60 +58,78 @@ class Matching {
     })
   }
 
-  private processResult(
-    matches: MatchExtended[],
-    promises: Promise<MatchExtended[]>[],
-    result: MatchExtended[] | Promise<MatchExtended[]>,
-  ) {
-    if (result instanceof Promise) {
-      const wrappedPromise = result.then((response) => {
-        extend(matches, response)
-        return response
-      })
-      promises.push(wrappedPromise)
-    } else {
-      extend(matches, result)
-    }
-  }
-
-  private handlePromises(
-    matches: MatchExtended[],
-    promises: Promise<MatchExtended[]>[],
-  ) {
-    if (promises.length > 0) {
-      return new Promise<MatchExtended[]>((resolve, reject) => {
-        Promise.all(promises)
-          .then(() => {
-            resolve(sorted(matches))
-          })
-          .catch((error: unknown) => {
-            // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
-            reject(error)
-          })
-      })
-    }
-    return sorted(matches)
-  }
-
   match(
     password: string,
-    userInputsOptions?: UserInputsOptions,
+    givenUserInputsOptions?: UserInputsOptions,
   ): MatchExtended[] | Promise<MatchExtended[]> {
+    const userInputsOptions = withWordIndex(givenUserInputsOptions)
     const matches: MatchExtended[] = []
-
     const promises: Promise<MatchExtended[]>[] = []
-    Object.values(this.matchers).forEach((matcher) => {
+    // wordSequence reads the shared `matches` array to find sequences of
+    // dictionary matches, so it must run once every other matcher's results
+    // (sync or async) have already landed in `matches` - it can't just be
+    // one more entry in the same iteration order.
+    const { wordSequence, ...otherMatchers } = this.matchers
+    // Scoring writes the guesses onto the matches. A custom matcher may
+    // return the same objects for every check, so its matches are copied and
+    // never carry the guesses of an earlier check.
+    const add = (name: string, result: MatchExtended[]) => {
+      extend(
+        matches,
+        name in this.options.matchers
+          ? result.map((match) => ({ ...match }))
+          : result,
+      )
+    }
+
+    Object.entries(otherMatchers).forEach(([name, matcher]) => {
       const result = matcher.match({
         password,
         omniMatch: this,
         userInputsOptions,
       })
 
-      // extends matches and promises by references
-      this.processResult(matches, promises, result)
+      if (result instanceof Promise) {
+        promises.push(
+          result.then((response) => {
+            add(name, response)
+            return response
+          }),
+        )
+      } else {
+        add(name, result)
+      }
     })
 
-    return this.handlePromises(matches, promises)
+    // The matches are left unsorted: scoring groups them by j and sorts each
+    // group by i, which gives the same order a sort by i and j would
+    const runWordSequence = (): MatchExtended[] | Promise<MatchExtended[]> => {
+      if (!wordSequence) {
+        return matches
+      }
+      // a copy, so a custom wordSequence matcher can't drop or reorder the
+      // matches of the other matchers
+      const result = wordSequence.match({
+        password,
+        omniMatch: this,
+        userInputsOptions,
+        matches: matches.slice(),
+      })
+      if (result instanceof Promise) {
+        return result.then((response) => {
+          add('wordSequence', response)
+          return matches
+        })
+      }
+      add('wordSequence', result)
+      return matches
+    }
+
+    if (promises.length > 0) {
+      return Promise.all(promises).then(runWordSequence)
+    }
+
+    return runWordSequence()
   }
 }
 

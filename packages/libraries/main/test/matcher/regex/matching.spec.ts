@@ -6,6 +6,8 @@ describe('regex matching', () => {
   const data = [
     { pattern: '1922', regexNames: ['recentYear'], ijs: [[0, 3]] },
     { pattern: '2017', regexNames: ['recentYear'], ijs: [[0, 3]] },
+    { pattern: '2030', regexNames: ['recentYear'], ijs: [[0, 3]] },
+    { pattern: '2099', regexNames: ['recentYear'], ijs: [[0, 3]] },
     {
       pattern: '2016-2015',
       regexNames: ['recentYear', 'recentYear'],
@@ -33,5 +35,13 @@ describe('regex matching', () => {
         regexName: regexNames,
       },
     })
+  })
+})
+
+describe('regex matching out of range years', () => {
+  const matchRegex = new MatchRegex(new Options())
+
+  it.each(['1899', '2100'])('does not match %s as a recentYear', (password) => {
+    expect(matchRegex.match({ password })).toEqual([])
   })
 })

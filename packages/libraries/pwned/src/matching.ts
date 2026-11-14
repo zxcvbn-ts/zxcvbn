@@ -8,7 +8,7 @@ import { FetchApi, MatcherPwnedFactoryConfig, PwnedMatch } from './types.ts'
 
 const matchingFactory = (
   universalFetch: FetchApi,
-  { url, networkErrorHandler }: MatcherPwnedFactoryConfig,
+  { url, networkErrorHandler }: MatcherPwnedFactoryConfig = {},
 ): MatcherConstructor => {
   class MatchPwned extends MatcherBaseClass {
     async match({ password }: MatchOptions) {
@@ -19,9 +19,10 @@ const matchingFactory = (
         networkErrorHandler,
       })
       if (pwned) {
+        const pwnedAmount = parseInt(pwned.split(':')[1], 10)
         matches.push({
           pattern: 'pwned',
-          pwnedAmount: parseInt(pwned.split(':')[1], 10),
+          pwnedAmount: Number.isNaN(pwnedAmount) ? 0 : pwnedAmount,
           i: 0,
           j: password.length - 1,
           token: password,

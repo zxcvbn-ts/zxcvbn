@@ -47,48 +47,54 @@ The separator matcher searches for common separators like a space or a hyphen
 
 ### Word sequence matcher
 
-The word sequence matcher is a combination of the sequence matcher and the dictionary matcher. It searches for sequences of words in a specific topic like months.
+The word sequence matcher is a combination of the sequence matcher and the dictionary matcher. It searches for sequences of words in a specific topic like months. User inputs are treated as such a topic as well, so a password like `HansFlorianZimmer` or `hans.zimmer` for a user named Hans Florian Zimmer is matched as a single sequence, as long as `hans`, `florian` and `zimmer` are passed as separate user inputs.
 
 ## Custom Matcher
 
-Custom matchers can be created if needed, including asynchronous matchers. If creating an asynchronous matcher, the function should be debounced using the included debounce function.
+Custom matchers can be created if needed, including asynchronous matchers. An asynchronous matcher requires `checkAsync`, and if it runs while the user types, the check should be [debounced](../examples/#debounce).
+The types used below are described on the [TypeScript page](../typescript/).
 
 ### Creating a Custom Matcher
 
 Here is an example of how to create a custom matcher to check for minimum password length. Please note that we do not recommend using a minimum length matcher.
 
 ```ts
-import { ZxcvbnFactory } from '@zxcvbn-ts/core'
 import {
+  ZxcvbnFactory,
+  Matcher,
+  MatcherBaseClass,
   MatchEstimated,
   MatchExtended,
-  Matcher,
+  MatchOptions,
+  Options,
 } from '@zxcvbn-ts/core'
 
-const minLengthMatcher: Matcher = {
-  Matching: class MatchMinLength {
-    minLength = 10
+class MatchMinLength extends MatcherBaseClass {
+  minLength = 10
 
-    match({ password }: { password: string }) {
-      const matches: MatchExtended[] = []
-      if (password.length <= this.minLength) {
-        matches.push({
-          pattern: 'minLength',
-          token: password,
-          i: 0,
-          j: password.length - 1,
-        })
-      }
-      return matches
+  match({ password }: MatchOptions) {
+    const matches: MatchExtended[] = []
+    if (password.length <= this.minLength) {
+      matches.push({
+        pattern: 'minLength',
+        token: password,
+        i: 0,
+        j: password.length - 1,
+      })
     }
-  },
-  feedback(match: MatchEstimated, isSoleMatch: boolean) {
+    return matches
+  }
+}
+
+const minLengthMatcher: Matcher = {
+  Matching: MatchMinLength,
+  feedback(options: Options, match: MatchEstimated, isSoleMatch?: boolean) {
     return {
       warning: 'Your password is not long enough',
       suggestions: [],
     }
   },
-  scoring(match: MatchExtended) {
+  scoring(match: MatchExtended | MatchEstimated, options: Options) {
     // The length of the password is multiplied by 10 to create a higher score the more characters are added.
     return match.token.length * 10
   },
@@ -99,13 +105,16 @@ const options = {
 }
 
 new ZxcvbnFactory(options, {
-  'minLength': minLengthMatcher
+  minLength: minLengthMatcher,
 })
 ```
 
-The Matching function needs to return an array of matched tokens. The four default properties (pattern, token, i, and j) are mandatory but the object can be extended as needed.
+The `Matching` class must extend `MatcherBaseClass`. It is instantiated with the factory's `Options`, which are available as `this.options`.
+Its `match` method receives a `MatchOptions` object (`password`, `omniMatch`, `userInputsOptions`) and returns an array of matched tokens, or a promise of one for an async matcher.
+`userInputsOptions.wordIndex` holds the user inputs, and `this.options.wordIndex` holds the words of all dictionaries. The old `userInputsOptions.rankedDictionary`, `rankedDictionaryMaxWordSize`, `options.rankedDictionaries` and `options.rankedDictionariesMaxWordSize` are deprecated. They are only built when read and will be removed in the next major version.
+The four default properties (pattern, token, i, and j) are mandatory but the object can be extended as needed.
 `pattern` is the name of the matcher that found the token
-`token` is the part of the password was found with the matcher
+`token` is the part of the password that was found by the matcher
 `i` is the start index of the token inside the password
 `j` is the end index of the token inside the password
 
@@ -117,10 +126,10 @@ token = RandomRandom
 ```
 The found token starts at character 5 and ends at character 16.
 
-The scoring function takes the array of matches that you returned in the matching function as input and should return a guess count, which represents how many guesses an attacker would need to make to correctly guess the password. The guess count should be based on the strength of the password and the matches found.
+The scoring function is called once for each match you returned in the matching function, with the match and the factory's `Options`. It should return a guess count for that token, which represents how many guesses an attacker would need to make to correctly guess it.
 If you need any additional data to calculate your scoring, feel free to add it to the Match object in the matching function.
 
-The feedback function takes a single Match object as input and should return a Feedback object that provides feedback to the user about the match. The Feedback object can have a warning and multiple suggestions.
+The feedback function is only called when the score is 2 or lower and your match is the longest one in the password. It receives the factory's `Options`, the match and whether it is the only match of the password. It should return a Feedback object (`{ warning: string | null, suggestions: string[] }`) or `null`. Use `options.translations` if your feedback should be translated.
 
 
 ## Matcher libraries
@@ -128,6 +137,5 @@ The feedback function takes a single Match object as input and should return a F
 There are different matcher libraries that can extend the core matchers. One such library is:
 
 ### @zxcvbn-ts/matcher-pwned
-The pwned matcher is an async matcher that makes a k-anonymity password request to the [have i been pwned](https://haveibeenpwned.com/) API to check if the password has been exposed in a data breach.
-
-If you bind zxcvbn-ts to your input field and execute the function on every new character typed, be sure to use the provided debounce function to avoid making too many API requests.
+The pwned matcher is an async matcher that makes a k-anonymity password request to the [Have I Been Pwned](https://haveibeenpwned.com/) API to check if the password has been exposed in a data breach.
+See the [pwned matcher page](../pwned-matcher/) for its options, its error handling and why it should not run on every keystroke.
