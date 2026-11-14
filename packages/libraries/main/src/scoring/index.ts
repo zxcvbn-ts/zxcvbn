@@ -11,14 +11,14 @@ import { isSurrogatePairAt } from '../utils/helper'
 // and only become match objects in unwind.
 type BestMatch = MatchEstimated | number
 
-// all arrays are indexed by [k][sequenceLength], with holes for sequence
-// lengths that don't have a best sequence ending at k
+// all arrays are indexed by [endIndex][sequenceLength], with holes for
+// sequence lengths that don't have a best sequence ending at endIndex
 interface SearchState {
-  // bestMatches[k][sequenceLength] holds the final match in the best
-  // length-sequenceLength match sequence covering the password prefix up to k,
-  // inclusive. if there is no length-sequenceLength sequence that scores better
-  // (fewer guesses) than a shorter match sequence spanning the same prefix,
-  // bestMatches[k][sequenceLength] is undefined.
+  // bestMatches[endIndex][sequenceLength] holds the final match in the best
+  // length-sequenceLength match sequence covering the password prefix up to
+  // endIndex, inclusive. if there is no length-sequenceLength sequence that
+  // scores better (fewer guesses) than a shorter match sequence spanning the
+  // same prefix, bestMatches[endIndex][sequenceLength] is undefined.
   bestMatches: BestMatch[][]
   // holds the product term Prod(match.guesses for match in sequence).
   // allows for fast (non-looping) updates to the minimization function.
@@ -52,14 +52,15 @@ export default class Scoring {
   private additivePenalties: number[] = [1]
 
   // bestUpTo[sequenceLength] = the fewest total guesses of the sequences
-  // ending at the current k with sequenceLength or fewer matches, Infinity
-  // if there are none. Every update is for the current k, so the competing
-  // sequences of a candidate are compared at once.
+  // ending at the current endIndex with sequenceLength or fewer matches,
+  // Infinity if there are none. Every update is for the current endIndex, so
+  // the competing sequences of a candidate are compared at once.
   private bestUpTo = new Float64Array(1)
 
   // the index whose best sequences the search is finding, every update is
-  // for a sequence ending there. A sequence ending at k has at most k + 1 matches
-  private k = 0
+  // for a sequence ending there. A sequence ending at endIndex has at most
+  // endIndex + 1 matches
+  private endIndex = 0
 
   // characterCounts[n] = number of characters (code points) in password[0, n)
   private characterCounts = new Int32Array(1)
@@ -115,10 +116,11 @@ export default class Scoring {
     const passwordLength = password.length
     // the low half of a surrogate pair doesn't count as a character
     this.characterCounts = new Int32Array(passwordLength + 1)
-    for (let k = 0; k < passwordLength; k += 1) {
-      const isPairedLowSurrogate = k > 0 && isSurrogatePairAt(password, k - 1)
-      this.characterCounts[k + 1] =
-        this.characterCounts[k] + (isPairedLowSurrogate ? 0 : 1)
+    for (let index = 0; index < passwordLength; index += 1) {
+      const isPairedLowSurrogate =
+        index > 0 && isSurrogatePairAt(password, index - 1)
+      this.characterCounts[index + 1] =
+        this.characterCounts[index] + (isPairedLowSurrogate ? 0 : 1)
     }
   }
 
@@ -136,11 +138,11 @@ export default class Scoring {
   // helper: considers whether a length-sequenceLength
   // sequence ending at match is better (fewer guesses)
   // than previously encountered sequences, updating state if so.
-  // match ends at k. Its guesses are passed in, a bruteforce match is only
-  // its start index and has none to read
+  // match ends at endIndex. Its guesses are passed in, a bruteforce match is
+  // only its start index and has none to read
   // eslint-disable-next-line max-statements, complexity
   private update(match: BestMatch, guesses: number, sequenceLength: number) {
-    const { k } = this
+    const { endIndex } = this
     let pi = guesses
     if (sequenceLength > 1) {
       const i = typeof match === 'number' ? match : match.i
@@ -151,25 +153,28 @@ export default class Scoring {
       pi *= this.state.guessesProduct[i - 1][sequenceLength - 1]
     }
     // calculate the minimization func
-    let g = this.factorials[sequenceLength] * pi
+    let sequenceGuesses = this.factorials[sequenceLength] * pi
     if (!this.excludeAdditive) {
-      g += this.additivePenalties[sequenceLength]
+      sequenceGuesses += this.additivePenalties[sequenceLength]
     }
     // update state if new best.
     // first see if any competing sequences covering this prefix,
     // with sequenceLength or fewer matches,
     // fare better than this sequence. if so, skip it and return.
-    const competingG = this.state.totalGuesses[k]
+    const competingGuesses = this.state.totalGuesses[endIndex]
     const { bestUpTo } = this
-    if (g === Number.POSITIVE_INFINITY) {
+    if (sequenceGuesses === Number.POSITIVE_INFINITY) {
       // bestUpTo can't tell an Infinity sequence from none
-      const maxCompetingLength = Math.min(sequenceLength, competingG.length - 1)
+      const maxCompetingLength = Math.min(
+        sequenceLength,
+        competingGuesses.length - 1,
+      )
       for (let length = 1; length <= maxCompetingLength; length += 1) {
-        if (competingG[length] !== undefined) {
+        if (competingGuesses[length] !== undefined) {
           return
         }
       }
-    } else if (bestUpTo[sequenceLength] <= g) {
+    } else if (bestUpTo[sequenceLength] <= sequenceGuesses) {
       return
     }
     // this sequence might be part of the final optimal sequence.
@@ -177,14 +182,14 @@ export default class Scoring {
     // length that already has as few
     for (
       let length = sequenceLength;
-      length <= k + 1 && bestUpTo[length] > g;
+      length <= endIndex + 1 && bestUpTo[length] > sequenceGuesses;
       length += 1
     ) {
-      bestUpTo[length] = g
+      bestUpTo[length] = sequenceGuesses
     }
-    competingG[sequenceLength] = g
-    this.state.bestMatches[k][sequenceLength] = match
-    this.state.guessesProduct[k][sequenceLength] = pi
+    competingGuesses[sequenceLength] = sequenceGuesses
+    this.state.bestMatches[endIndex][sequenceLength] = match
+    this.state.guessesProduct[endIndex][sequenceLength] = pi
   }
 
   // helper: sets startBounds[i] once the sequences ending at i - 1 are final
@@ -257,11 +262,12 @@ export default class Scoring {
     }
   }
 
-  // helper: finds the best sequences ending at k, from the matches ending at k
-  private step(k: number, matchesAtK: MatchExtended[]) {
-    this.k = k
-    this.bestUpTo.fill(Number.POSITIVE_INFINITY, 0, k + 2)
-    matchesAtK.forEach((match: MatchExtended) => {
+  // helper: finds the best sequences ending at endIndex, from the matches
+  // ending there
+  private step(endIndex: number, matchesAtEnd: MatchExtended[]) {
+    this.endIndex = endIndex
+    this.bestUpTo.fill(Number.POSITIVE_INFINITY, 0, endIndex + 2)
+    matchesAtEnd.forEach((match: MatchExtended) => {
       // a match's guess estimate doesn't change, estimate it once
       const estimatedMatch = estimateGuesses(this.options, match, this.password)
       const { i, guesses } = estimatedMatch
@@ -280,9 +286,9 @@ export default class Scoring {
         this.update(estimatedMatch, guesses, 1)
       }
     })
-    this.bruteforceUpdate(k)
-    if (k + 1 < this.password.length) {
-      this.boundStart(k + 1)
+    this.bruteforceUpdate(endIndex)
+    if (endIndex + 1 < this.password.length) {
+      this.boundStart(endIndex + 1)
     }
   }
 
@@ -292,7 +298,7 @@ export default class Scoring {
     let sequenceLength = 0
     // Infinity, not Number.MAX_VALUE: bruteforce guesses are capped at
     // MAX_VALUE, so the only candidate can be exactly MAX_VALUE
-    let g = Number.POSITIVE_INFINITY
+    let fewestGuesses = Number.POSITIVE_INFINITY
     const totalGuessesAtLastChar = this.state.totalGuesses[passwordLength - 1]
 
     if (totalGuessesAtLastChar) {
@@ -303,9 +309,12 @@ export default class Scoring {
       ) {
         const candidateMetricMatch =
           totalGuessesAtLastChar[candidateSequenceLength]
-        if (candidateMetricMatch !== undefined && candidateMetricMatch < g) {
+        if (
+          candidateMetricMatch !== undefined &&
+          candidateMetricMatch < fewestGuesses
+        ) {
           sequenceLength = candidateSequenceLength
-          g = candidateMetricMatch
+          fewestGuesses = candidateMetricMatch
         }
       }
     }
@@ -316,20 +325,20 @@ export default class Scoring {
   // constructing the final optimal match sequence.
   private unwind(passwordLength: number) {
     const optimalMatchSequence: MatchEstimated[] = []
-    let k = passwordLength - 1
+    let endIndex = passwordLength - 1
     let sequenceLength = this.getBestSequenceLength(passwordLength)
-    while (k >= 0) {
-      const bestMatch = this.state.bestMatches[k][sequenceLength]
+    while (endIndex >= 0) {
+      const bestMatch = this.state.bestMatches[endIndex][sequenceLength]
       const match =
         typeof bestMatch === 'number'
           ? estimateGuesses(
               this.options,
-              this.makeBruteforceMatch(bestMatch, k),
+              this.makeBruteforceMatch(bestMatch, endIndex),
               this.password,
             )
           : bestMatch
       optimalMatchSequence.unshift(match)
-      k = match.i - 1
+      endIndex = match.i - 1
       sequenceLength -= 1
     }
     return optimalMatchSequence
@@ -391,8 +400,8 @@ export default class Scoring {
 
     this.prepare(password)
 
-    for (let k = 0; k < passwordLength; k += 1) {
-      this.step(k, matchesByCoordinateJ[k])
+    for (let endIndex = 0; endIndex < passwordLength; endIndex += 1) {
+      this.step(endIndex, matchesByCoordinateJ[endIndex])
     }
     const optimalMatchSequence = this.unwind(passwordLength)
     const optimalSequenceLength = optimalMatchSequence.length
