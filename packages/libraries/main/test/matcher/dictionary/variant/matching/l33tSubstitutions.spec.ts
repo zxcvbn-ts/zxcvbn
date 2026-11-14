@@ -1,4 +1,4 @@
-import getL33tSubstitutions from '../../../../../src/matcher/dictionary/variants/matching/l33tSubstitutions'
+import getL33tSubstitutions from '../../../../../src/matcher/dictionary/variants/matching/l33tSubstitutions.ts'
 
 describe('l33tSubstitutions', () => {
   it('lists a letter once if the l33t table repeats its substitution', () => {

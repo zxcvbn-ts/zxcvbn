@@ -1,4 +1,4 @@
-import { LooseObject } from '../types'
+import { LooseObject } from '../types.ts'
 
 export const empty = (obj: LooseObject) => Object.keys(obj).length === 0
 

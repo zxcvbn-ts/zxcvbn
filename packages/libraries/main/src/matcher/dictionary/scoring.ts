@@ -1,11 +1,11 @@
-import uppercaseVariant from './variants/scoring/uppercase'
-import l33tVariant from './variants/scoring/l33t'
+import uppercaseVariant from './variants/scoring/uppercase.ts'
+import l33tVariant from './variants/scoring/l33t.ts'
 import {
   DictionaryScoringExtras,
   MatchEstimated,
   MatchExtended,
-} from '../../types'
-import { isDictionaryNamed } from '../../utils/helper'
+} from '../../types.ts'
+import { isDictionaryNamed } from '../../utils/helper.ts'
 
 export interface DictionaryReturn extends DictionaryScoringExtras {
   calculation: number

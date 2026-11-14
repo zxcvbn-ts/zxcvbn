@@ -1,5 +1,5 @@
-import { DictionaryNames, MatchOptions } from '../../types'
-import { FindLevenshteinDistanceResult } from '../../utils/levenshtein'
+import { DictionaryNames, MatchOptions } from '../../types.ts'
+import { FindLevenshteinDistanceResult } from '../../utils/levenshtein.ts'
 
 export type DictionaryHit = {
   dictionaryName: DictionaryNames

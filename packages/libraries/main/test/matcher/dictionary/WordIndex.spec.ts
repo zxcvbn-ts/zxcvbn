@@ -1,4 +1,4 @@
-import WordIndex from '../../../src/matcher/dictionary/WordIndex'
+import WordIndex from '../../../src/matcher/dictionary/WordIndex.ts'
 
 // the hits of a word as [dictionary name, rank]
 const getHits = (wordIndex: WordIndex, word: string) => {

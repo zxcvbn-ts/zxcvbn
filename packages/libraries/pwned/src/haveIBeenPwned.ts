@@ -1,4 +1,4 @@
-import { FetchApi, HaveIBeenPwnedConfig } from './types'
+import { FetchApi, HaveIBeenPwnedConfig } from './types.ts'
 
 const textEncode = (text: string) => {
   try {

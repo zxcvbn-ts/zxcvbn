@@ -1,4 +1,6 @@
-import SimpleListGenerator, { ConstructorOptions } from './SimpleListGenerator'
+import SimpleListGenerator, {
+  ConstructorOptions,
+} from './SimpleListGenerator.ts'
 import axios from 'axios'
 import zlib from 'zlib'
 

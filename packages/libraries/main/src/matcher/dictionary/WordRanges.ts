@@ -1,4 +1,4 @@
-import WordIndex from './WordIndex'
+import WordIndex from './WordIndex.ts'
 
 // The words that start with a prefix, in the word index and in the user
 // inputs. Plain and l33t dictionary matching extend a prefix with it one

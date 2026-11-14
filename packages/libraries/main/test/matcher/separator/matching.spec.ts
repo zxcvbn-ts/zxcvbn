@@ -1,6 +1,6 @@
-import MatchSeparator from '../../../src/matcher/separator/matching'
-import checkMatches from '../../helper/checkMatches'
-import Options from '../../../src/Options'
+import MatchSeparator from '../../../src/matcher/separator/matching.ts'
+import checkMatches from '../../helper/checkMatches.ts'
+import Options from '../../../src/Options.ts'
 
 describe('separator matching', () => {
   const zxcvbnOptions = new Options()
@@ -18,7 +18,7 @@ describe('separator matching', () => {
     vi.resetModules()
     vi.doMock('../../../src/data/const', async (importOriginal) => {
       const actual =
-        await importOriginal<typeof import('../../../src/data/const')>()
+        await importOriginal<typeof import('../../../src/data/const.ts')>()
       // '-' is no longer the last separator, so if it isn't treated as a
       // literal it would turn '.-~' into a range covering letters and digits
       return { ...actual, SEPARATOR_CHARS: [...actual.SEPARATOR_CHARS, '~'] }

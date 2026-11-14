@@ -1,6 +1,6 @@
-import MatchWordSequence from '../../../src/matcher/wordSequence/matching'
-import Options from '../../../src/Options'
-import { DictionaryMatch } from '../../../src/types'
+import MatchWordSequence from '../../../src/matcher/wordSequence/matching.ts'
+import Options from '../../../src/Options.ts'
+import { DictionaryMatch } from '../../../src/types.ts'
 
 const options = new Options()
 const matcher = new MatchWordSequence(options)

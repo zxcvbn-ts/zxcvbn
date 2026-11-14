@@ -20,9 +20,9 @@ import os from 'node:os'
 import path from 'node:path'
 import { parseArgs } from 'node:util'
 import { buildSync } from 'esbuild'
-import { createScenarios, Scenario } from './passwords'
-import { benchmarkDir, localPackageDirs, Target, targets } from './targets'
-import type { StartupResult, ThroughputResult } from './worker'
+import { createScenarios, Scenario } from './passwords.ts'
+import { benchmarkDir, localPackageDirs, Target, targets } from './targets.ts'
+import type { StartupResult, ThroughputResult } from './worker.ts'
 
 const root = path.resolve(__dirname, '../..')
 const workerFile = path.join(benchmarkDir, 'node_modules/.cache/worker.cjs')
@@ -115,7 +115,7 @@ const warnAboutStaleBuild = () => {
   }
 }
 
-// bundled so the measured process runs without esbuild-register, which would
+// bundled so the measured process runs without tsx, which would
 // otherwise also transpile the local dist files while they are being loaded
 const buildWorker = () => {
   buildSync({

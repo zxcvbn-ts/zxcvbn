@@ -1,10 +1,10 @@
-import { extend } from '../../utils/helper'
+import { extend } from '../../utils/helper.ts'
 import {
   MatcherBaseClass,
   MatchOptions,
   OptionsGraphEntry,
   SpatialMatch,
-} from '../../types'
+} from '../../types.ts'
 
 type SpatialMatchOptions = Pick<MatchOptions, 'password'>
 /*

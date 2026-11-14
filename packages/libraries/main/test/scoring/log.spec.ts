@@ -1,4 +1,4 @@
-import utils from '../../src/scoring/utils'
+import utils from '../../src/scoring/utils.ts'
 
 const { log10 } = utils
 const EPSILON = 1e-10

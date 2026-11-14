@@ -1,6 +1,6 @@
-import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common/src/index'
-import * as zxcvbnEnPackage from '@zxcvbn-ts/language-en/src/index'
-import { ZxcvbnFactory } from '@zxcvbn-ts/core/src/index'
+import * as zxcvbnCommonPackage from '../packages/languages/common/src/index.ts'
+import * as zxcvbnEnPackage from '../packages/languages/en/src/index.ts'
+import { ZxcvbnFactory } from '../packages/libraries/main/src/index.ts'
 ;(async () => {
   const options = {
     dictionary: {
@@ -12,7 +12,7 @@ import { ZxcvbnFactory } from '@zxcvbn-ts/core/src/index'
     useLevenshteinDistance: true,
   }
   const zxcvbn = new ZxcvbnFactory(options)
-  return zxcvbn.checkAsync(process.argv[2], process.argv[3]?.split(';'))
+  return await zxcvbn.checkAsync(process.argv[2], process.argv[3]?.split(';'))
 })()
   .then((match) => {
     // eslint-disable-next-line no-console

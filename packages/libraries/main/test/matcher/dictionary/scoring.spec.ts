@@ -1,6 +1,6 @@
-import dictionaryGuesses from '../../../src/matcher/dictionary/scoring'
-import l33tVariant from '../../../src/matcher/dictionary/variants/scoring/l33t'
-import uppercaseVariant from '../../../src/matcher/dictionary/variants/scoring/uppercase'
+import dictionaryGuesses from '../../../src/matcher/dictionary/scoring.ts'
+import l33tVariant from '../../../src/matcher/dictionary/variants/scoring/l33t.ts'
+import uppercaseVariant from '../../../src/matcher/dictionary/variants/scoring/uppercase.ts'
 
 const baseMatch = {
   pattern: 'dictionary',

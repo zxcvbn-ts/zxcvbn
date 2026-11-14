@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-deprecated -- tests the deprecated API */
-import * as zxcvbnEnPackage from '../../../languages/en/src'
-import { MatcherBaseClass, ZxcvbnFactory } from '../src'
+import * as zxcvbnEnPackage from '../../../languages/en/src/index.ts'
+import { MatcherBaseClass, ZxcvbnFactory } from '../src/index.ts'
 import type {
   Match,
   MatchExtended,
@@ -10,7 +10,7 @@ import type {
   RankedDictionaries,
   RankedDictionary,
   UserInputsOptions,
-} from '../src'
+} from '../src/index.ts'
 
 // Custom matchers written against 4.2, they only use what is exported and
 // what MatchOptions and this.options gave them back then.

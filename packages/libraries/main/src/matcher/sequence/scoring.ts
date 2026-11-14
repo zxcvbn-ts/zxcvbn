@@ -1,5 +1,5 @@
-import { MatchEstimated, MatchExtended } from '../../types'
-import { countCharacters } from '../../utils/helper'
+import { MatchEstimated, MatchExtended } from '../../types.ts'
+import { countCharacters } from '../../utils/helper.ts'
 
 export default ({ token, ascending }: MatchExtended | MatchEstimated) => {
   const firstChr = token.charAt(0)

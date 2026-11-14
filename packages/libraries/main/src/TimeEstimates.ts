@@ -1,10 +1,10 @@
-import Options from './Options'
+import Options from './Options.ts'
 import {
   CrackTimes,
   CrackTimesSeconds,
   Score,
   TimeEstimationValues,
-} from './types'
+} from './types.ts'
 
 const SECOND = 1
 const MINUTE = SECOND * 60

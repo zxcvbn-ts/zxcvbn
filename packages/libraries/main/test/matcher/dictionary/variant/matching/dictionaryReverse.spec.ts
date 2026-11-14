@@ -1,6 +1,6 @@
-import MatchDictionaryReverse from '../../../../../src/matcher/dictionary/variants/matching/reverse'
-import checkMatches from '../../../../helper/checkMatches'
-import Options from '../../../../../src/Options'
+import MatchDictionaryReverse from '../../../../../src/matcher/dictionary/variants/matching/reverse.ts'
+import checkMatches from '../../../../helper/checkMatches.ts'
+import Options from '../../../../../src/Options.ts'
 
 describe('dictionary reverse matching', () => {
   const testDicts = {

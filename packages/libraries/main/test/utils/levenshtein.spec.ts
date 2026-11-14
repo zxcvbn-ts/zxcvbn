@@ -1,16 +1,16 @@
-import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common/src'
-import * as zxcvbnEnPackage from '@zxcvbn-ts/language-en/src'
-import { ZxcvbnFactory } from '../../src'
+import * as zxcvbnCommonPackage from '../../../../languages/common/src/index.ts'
+import * as zxcvbnEnPackage from '../../../../languages/en/src/index.ts'
+import { ZxcvbnFactory } from '../../src/index.ts'
 import {
   FindLevenshteinDistanceResult,
   LevenshteinDictionary,
   findLevenshteinEntry,
-} from '../../src/utils/levenshtein'
-import Options from '../../src/Options'
-import MatchDictionary from '../../src/matcher/dictionary/matching'
-import MatchL33t from '../../src/matcher/dictionary/variants/matching/l33t'
-import MatchReverse from '../../src/matcher/dictionary/variants/matching/reverse'
-import { DictionaryMatch } from '../../src/types'
+} from '../../src/utils/levenshtein.ts'
+import Options from '../../src/Options.ts'
+import MatchDictionary from '../../src/matcher/dictionary/matching.ts'
+import MatchL33t from '../../src/matcher/dictionary/variants/matching/l33t.ts'
+import MatchReverse from '../../src/matcher/dictionary/variants/matching/reverse.ts'
+import { DictionaryMatch } from '../../src/types.ts'
 
 type EntryRanks = Record<string, number>
 

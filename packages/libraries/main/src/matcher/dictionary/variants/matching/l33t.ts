@@ -1,14 +1,14 @@
-import { L33tMatch } from '../../../../types'
-import { DictionaryHit, DictionaryMatchOptions } from '../../types'
+import { L33tMatch } from '../../../../types.ts'
+import { DictionaryHit, DictionaryMatchOptions } from '../../types.ts'
 import getCleanPasswords, {
   IndexedPasswordChanges,
   PasswordChanges,
-} from './unmunger/getCleanPasswords'
-import MatchDictionary, { getUserInputsPosition } from '../../matching'
-import WordIndex from '../../WordIndex'
-import WordRanges from '../../WordRanges'
-import { L33tSubstitution, L33tSubstitutions } from './l33tSubstitutions'
-import { countCharacters, toLowerCase } from '../../../../utils/helper'
+} from './unmunger/getCleanPasswords.ts'
+import MatchDictionary, { getUserInputsPosition } from '../../matching.ts'
+import WordIndex from '../../WordIndex.ts'
+import WordRanges from '../../WordRanges.ts'
+import { L33tSubstitution, L33tSubstitutions } from './l33tSubstitutions.ts'
+import { countCharacters, toLowerCase } from '../../../../utils/helper.ts'
 
 // The narrow calls one password may take. A password made of substitutions
 // that each stand for several letters (eg. '!'.repeat(256)) branches at every

@@ -1,6 +1,6 @@
-import * as zxcvbnCommonPackage from '../../../../../languages/common/src'
-import spatialGuesses from '../../../src/matcher/spatial/scoring'
-import Options from '../../../src/Options'
+import * as zxcvbnCommonPackage from '../../../../../languages/common/src/index.ts'
+import spatialGuesses from '../../../src/matcher/spatial/scoring.ts'
+import Options from '../../../src/Options.ts'
 
 describe('scoring: guesses spatial', () => {
   const zxcvbnOptions = new Options({

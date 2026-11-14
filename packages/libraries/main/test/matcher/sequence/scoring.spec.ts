@@ -1,4 +1,4 @@
-import sequenceGuesses from '../../../src/matcher/sequence/scoring'
+import sequenceGuesses from '../../../src/matcher/sequence/scoring.ts'
 
 describe('scoring: guesses sequence', () => {
   const data = [

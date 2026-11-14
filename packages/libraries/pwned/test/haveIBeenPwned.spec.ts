@@ -1,5 +1,5 @@
-import haveIBeenPwned from '../src/haveIBeenPwned'
-import { FetchApi } from '../src/types'
+import haveIBeenPwned from '../src/haveIBeenPwned.ts'
+import { FetchApi } from '../src/types.ts'
 
 describe('haveIBeenPwned', () => {
   it('does not throw when called without a config object', async () => {

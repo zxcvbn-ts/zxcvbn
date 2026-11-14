@@ -1,10 +1,10 @@
-import * as zxcvbnCommonPackage from '../../../../languages/common/src'
-import * as zxcvbnEnPackage from '../../../../languages/en/src'
-import Scoring from '../../src/scoring'
-import Matching from '../../src/Matching'
-import Options from '../../src/Options'
-import { MatchExtended } from '../../src/types'
-import passwordTests from '../helper/passwordTests'
+import * as zxcvbnCommonPackage from '../../../../languages/common/src/index.ts'
+import * as zxcvbnEnPackage from '../../../../languages/en/src/index.ts'
+import Scoring from '../../src/scoring/index.ts'
+import Matching from '../../src/Matching.ts'
+import Options from '../../src/Options.ts'
+import { MatchExtended } from '../../src/types.ts'
+import passwordTests from '../helper/passwordTests.ts'
 
 // The bruteforce pruning (startBounds) may only skip candidates that can't
 // win. A wrongly skipped candidate changes the optimal sequence and with it

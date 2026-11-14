@@ -1,7 +1,7 @@
-import Options from '../src/Options'
-import translationKeys from '../src/data/translationKeys'
-import { timeEstimationValuesDefaults } from '../src/TimeEstimates'
-import { checkMatcher } from '../src/runtimeChecks'
+import Options from '../src/Options.ts'
+import translationKeys from '../src/data/translationKeys.ts'
+import { timeEstimationValuesDefaults } from '../src/TimeEstimates.ts'
+import { checkMatcher } from '../src/runtimeChecks.ts'
 
 describe('Options', () => {
   describe('translations', () => {

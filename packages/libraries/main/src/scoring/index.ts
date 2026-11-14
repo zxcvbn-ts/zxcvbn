@@ -1,10 +1,10 @@
-import utils from './utils'
-import estimateGuesses from './estimate'
-import { MIN_GUESSES_BEFORE_GROWING_SEQUENCE } from '../data/const'
-import { MatchExtended, BruteForceMatch, MatchEstimated } from '../types'
-import Options from '../Options'
-import { bruteforceGuesses } from '../matcher/bruteforce/scoring'
-import { isSurrogatePairAt } from '../utils/helper'
+import utils from './utils.ts'
+import estimateGuesses from './estimate.ts'
+import { MIN_GUESSES_BEFORE_GROWING_SEQUENCE } from '../data/const.ts'
+import { MatchExtended, BruteForceMatch, MatchEstimated } from '../types.ts'
+import Options from '../Options.ts'
+import { bruteforceGuesses } from '../matcher/bruteforce/scoring.ts'
+import { isSurrogatePairAt } from '../utils/helper.ts'
 
 // a slot in the search holds either an estimated match or, for a bruteforce
 // match, just its start index. Bruteforce candidates are rated as numbers

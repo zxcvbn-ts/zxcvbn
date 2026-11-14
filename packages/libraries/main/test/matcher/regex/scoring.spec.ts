@@ -1,5 +1,5 @@
-import regexGuesses from '../../../src/matcher/regex/scoring'
-import { MIN_YEAR_SPACE, REFERENCE_YEAR } from '../../../src/data/const'
+import regexGuesses from '../../../src/matcher/regex/scoring.ts'
+import { MIN_YEAR_SPACE, REFERENCE_YEAR } from '../../../src/data/const.ts'
 
 describe('scoring: guesses regex', () => {
   it('guesses of 26^7 for 7-char lowercase regex', () => {

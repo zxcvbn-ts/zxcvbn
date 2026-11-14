@@ -5,8 +5,8 @@ import {
   MatcherBaseClass,
   L33tMatch,
   MatchExtended,
-} from '../../types'
-import { WORD_SEQUENCE_SEPARATOR_CHARS } from '../../data/const'
+} from '../../types.ts'
+import { WORD_SEQUENCE_SEPARATOR_CHARS } from '../../data/const.ts'
 
 // a gap of only separators. '' (plain concatenation) counts too, since there
 // is no character to reject

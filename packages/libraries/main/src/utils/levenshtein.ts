@@ -1,5 +1,5 @@
 import { distance } from 'fastest-levenshtein'
-import { countCharacters, isHighSurrogate } from './helper'
+import { countCharacters, isHighSurrogate } from './helper.ts'
 
 // fastest-levenshtein compares UTF-16 code units, which would count a
 // character outside the BMP (eg. an emoji) as two edits. Such a character of

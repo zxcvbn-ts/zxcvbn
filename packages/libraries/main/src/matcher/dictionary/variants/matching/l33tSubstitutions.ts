@@ -1,5 +1,5 @@
-import { OptionsL33tTable } from '../../../../types'
-import { toLowerCase } from '../../../../utils/helper'
+import { OptionsL33tTable } from '../../../../types.ts'
+import { toLowerCase } from '../../../../utils/helper.ts'
 
 export interface L33tSubstitution {
   // eg. '4' or '|<'

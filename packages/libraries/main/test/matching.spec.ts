@@ -1,13 +1,13 @@
-import * as zxcvbnCommonPackage from '../../../languages/common/src'
-import * as zxcvbnEnPackage from '../../../languages/en/src'
-import MatchOmni from '../src/Matching'
-import Options from '../src/Options'
+import * as zxcvbnCommonPackage from '../../../languages/common/src/index.ts'
+import * as zxcvbnEnPackage from '../../../languages/en/src/index.ts'
+import MatchOmni from '../src/Matching.ts'
+import Options from '../src/Options.ts'
 import {
   Matcher,
   MatcherBaseClass,
   MatchExtended,
   MatchOptions,
-} from '../src/types'
+} from '../src/types.ts'
 
 const zxcvbnOptions = new Options({
   dictionary: {

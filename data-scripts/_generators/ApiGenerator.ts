@@ -2,8 +2,8 @@ import axios from 'axios'
 import SimpleListGenerator, {
   SimpleListGeneratorDefaultOptions,
   SimpleListGeneratorOptions,
-} from './SimpleListGenerator'
-import { LooseObject } from '../_helpers/runtime'
+} from './SimpleListGenerator.ts'
+import { LooseObject } from '../_helpers/runtime.ts'
 
 interface Options extends SimpleListGeneratorOptions {
   requestConfig?: LooseObject

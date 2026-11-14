@@ -1,4 +1,4 @@
-import { isDictionaryNamed } from './utils/helper'
+import { isDictionaryNamed } from './utils/helper.ts'
 import {
   TranslationKeys,
   OptionsType,
@@ -9,19 +9,19 @@ import {
   Matcher,
   UserInputsOptions,
   TimeEstimationValues,
-} from './types'
-import l33tTable from './data/l33tTable'
-import translationKeys from './data/translationKeys'
-import TrieNode from './matcher/dictionary/variants/matching/unmunger/TrieNode'
-import WordIndex from './matcher/dictionary/WordIndex'
+} from './types.ts'
+import l33tTable from './data/l33tTable.ts'
+import translationKeys from './data/translationKeys.ts'
+import TrieNode from './matcher/dictionary/variants/matching/unmunger/TrieNode.ts'
+import WordIndex from './matcher/dictionary/WordIndex.ts'
 import {
   buildRankedDictionary,
   createUserInputsOptions,
   getMaxWordSize,
-} from './matcher/dictionary/wordLists'
-import l33tTableToTrieNode from './matcher/dictionary/variants/matching/unmunger/l33tTableToTrieNode'
-import getL33tSubstitutions from './matcher/dictionary/variants/matching/l33tSubstitutions'
-import { timeEstimationValuesDefaults } from './TimeEstimates'
+} from './matcher/dictionary/wordLists.ts'
+import l33tTableToTrieNode from './matcher/dictionary/variants/matching/unmunger/l33tTableToTrieNode.ts'
+import getL33tSubstitutions from './matcher/dictionary/variants/matching/l33tSubstitutions.ts'
+import { timeEstimationValuesDefaults } from './TimeEstimates.ts'
 import {
   checkCustomMatchers,
   checkCustomTranslations,
@@ -34,7 +34,7 @@ import {
   checkTimeEstimationValues,
   checkUseLevenshteinDistance,
   checkLevenshteinThreshold,
-} from './runtimeChecks'
+} from './runtimeChecks.ts'
 
 export default class Options {
   public matchers: Matchers = {}

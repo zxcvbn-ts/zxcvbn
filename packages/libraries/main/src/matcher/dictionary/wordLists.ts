@@ -1,6 +1,6 @@
-import { UserInputsOptions } from '../../types'
-import { toLowerCase } from '../../utils/helper'
-import WordIndex from './WordIndex'
+import { UserInputsOptions } from '../../types.ts'
+import { toLowerCase } from '../../utils/helper.ts'
+import WordIndex from './WordIndex.ts'
 
 // the rank of each word, from 1. A duplicate word keeps its last rank.
 export const buildRankedDictionary = (list: (string | number)[]) => {

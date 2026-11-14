@@ -2,9 +2,9 @@ import {
   BRUTEFORCE_CARDINALITY,
   MIN_SUBMATCH_GUESSES_SINGLE_CHAR,
   MIN_SUBMATCH_GUESSES_MULTI_CHAR,
-} from '../../data/const'
-import { MatchEstimated, MatchExtended } from '../../types'
-import { countCharacters } from '../../utils/helper'
+} from '../../data/const.ts'
+import { MatchEstimated, MatchExtended } from '../../types.ts'
+import { countCharacters } from '../../utils/helper.ts'
 
 // guesses for a bruteforce token of tokenLength characters (code points).
 // The scoring search calls this directly to rate bruteforce candidates

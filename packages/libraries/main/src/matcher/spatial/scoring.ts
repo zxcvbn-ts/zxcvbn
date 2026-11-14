@@ -1,6 +1,10 @@
-import utils from '../../scoring/utils'
-import Options from '../../Options'
-import { MatchEstimated, MatchExtended, OptionsGraphEntry } from '../../types'
+import utils from '../../scoring/utils.ts'
+import Options from '../../Options.ts'
+import {
+  MatchEstimated,
+  MatchExtended,
+  OptionsGraphEntry,
+} from '../../types.ts'
 
 interface EstimatePossiblePatternsOptions {
   token: string

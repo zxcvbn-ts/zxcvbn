@@ -1,4 +1,4 @@
-import { LevenshteinDictionary } from '../../utils/levenshtein'
+import { LevenshteinDictionary } from '../../utils/levenshtein.ts'
 
 export interface WordList {
   name: string

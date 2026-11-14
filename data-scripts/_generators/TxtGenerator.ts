@@ -3,7 +3,7 @@ import * as JSZip from 'jszip'
 import SimpleListGenerator, {
   SimpleListGeneratorDefaultOptions,
   SimpleListGeneratorOptions,
-} from './SimpleListGenerator'
+} from './SimpleListGenerator.ts'
 
 export interface Options extends SimpleListGeneratorOptions {
   url: string

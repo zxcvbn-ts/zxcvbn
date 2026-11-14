@@ -1,6 +1,6 @@
-import MatchDictionary from '../../matching'
-import { DictionaryMatch } from '../../../../types'
-import { DictionaryMatchOptions } from '../../types'
+import MatchDictionary from '../../matching.ts'
+import { DictionaryMatch } from '../../../../types.ts'
+import { DictionaryMatchOptions } from '../../types.ts'
 
 /*
  * -------------------------------------------------------------------------------

@@ -1,6 +1,6 @@
-import translations from '../../../languages/ro/src/translations'
-import { TimeEstimates } from '../src/TimeEstimates'
-import Options from '../src/Options'
+import translations from '../../../languages/ro/src/translations.ts'
+import { TimeEstimates } from '../src/TimeEstimates.ts'
+import Options from '../src/Options.ts'
 
 describe('TimeEstimates Romanian pluralization', () => {
   const options = new Options({

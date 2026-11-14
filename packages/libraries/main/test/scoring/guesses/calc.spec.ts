@@ -1,7 +1,7 @@
-import estimate from '../../../src/scoring/estimate'
-import dateGuesses from '../../../src/matcher/date/scoring'
-import Options from '../../../src/Options'
-import { MatcherBaseClass } from '../../../src/types'
+import estimate from '../../../src/scoring/estimate.ts'
+import dateGuesses from '../../../src/matcher/date/scoring.ts'
+import Options from '../../../src/Options.ts'
+import { MatcherBaseClass } from '../../../src/types.ts'
 
 describe('scoring', () => {
   const zxcvbnOptions = new Options()

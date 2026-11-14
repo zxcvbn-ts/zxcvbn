@@ -1,5 +1,5 @@
-import { ZxcvbnFactory } from '../../main/src'
-import { matcherPwnedFactory } from '../src'
+import { ZxcvbnFactory } from '../../main/src/index.ts'
+import { matcherPwnedFactory } from '../src/index.ts'
 
 describe('main', () => {
   it('should use pwned matcher', async () => {
@@ -13,8 +13,7 @@ describe('main', () => {
     const zxcvbn = new ZxcvbnFactory(
       {},
       {
-        // @ts-expect-error for testing purposes
-        pwned: matcherPwnedFactory(fetch),
+        pwned: matcherPwnedFactory(fetch as any),
       },
     )
     const result = await zxcvbn.checkAsync('P4$$w0rd')
@@ -75,7 +74,6 @@ describe('main', () => {
     const zxcvbn = new ZxcvbnFactory(
       {},
       {
-        // @ts-expect-error for testing purposes
         pwned: matcherPwnedFactory(fetch),
       },
     )

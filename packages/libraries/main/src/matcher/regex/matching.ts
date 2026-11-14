@@ -1,5 +1,5 @@
-import { REGEXEN } from '../../data/const'
-import { MatcherBaseClass, MatchOptions, RegexMatch } from '../../types'
+import { REGEXEN } from '../../data/const.ts'
+import { MatcherBaseClass, MatchOptions, RegexMatch } from '../../types.ts'
 
 type RegexMatchOptions = Pick<MatchOptions, 'password'>
 

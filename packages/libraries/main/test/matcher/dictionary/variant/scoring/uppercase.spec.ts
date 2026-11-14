@@ -1,5 +1,5 @@
-import uppercase from '../../../../../src/matcher/dictionary/variants/scoring/uppercase'
-import utils from '../../../../../src/scoring/utils'
+import uppercase from '../../../../../src/matcher/dictionary/variants/scoring/uppercase.ts'
+import utils from '../../../../../src/scoring/utils.ts'
 
 const { nCk } = utils
 

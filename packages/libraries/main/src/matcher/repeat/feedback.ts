@@ -1,6 +1,6 @@
-import Options from '../../Options'
-import { MatchEstimated } from '../../types'
-import { countCharacters } from '../../utils/helper'
+import Options from '../../Options.ts'
+import { MatchEstimated } from '../../types.ts'
+import { countCharacters } from '../../utils/helper.ts'
 
 export default (options: Options, match: MatchEstimated) => {
   let warning = options.translations.warnings.extendedRepeat

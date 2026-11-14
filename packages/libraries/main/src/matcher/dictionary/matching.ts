@@ -1,12 +1,16 @@
 import {
   LevenshteinDictionary,
   findLevenshteinEntry,
-} from '../../utils/levenshtein'
-import { DictionaryNames, DictionaryMatch, MatcherBaseClass } from '../../types'
-import { DictionaryHit, DictionaryMatchOptions } from './types'
-import { countCharacters, toLowerCase } from '../../utils/helper'
-import WordIndex from './WordIndex'
-import WordRanges from './WordRanges'
+} from '../../utils/levenshtein.ts'
+import {
+  DictionaryNames,
+  DictionaryMatch,
+  MatcherBaseClass,
+} from '../../types.ts'
+import { DictionaryHit, DictionaryMatchOptions } from './types.ts'
+import { countCharacters, toLowerCase } from '../../utils/helper.ts'
+import WordIndex from './WordIndex.ts'
+import WordRanges from './WordRanges.ts'
 
 const USER_INPUTS = 'userInputs'
 

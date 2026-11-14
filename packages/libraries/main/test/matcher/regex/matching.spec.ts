@@ -1,6 +1,6 @@
-import MatchRegex from '../../../src/matcher/regex/matching'
-import checkMatches from '../../helper/checkMatches'
-import Options from '../../../src/Options'
+import MatchRegex from '../../../src/matcher/regex/matching.ts'
+import checkMatches from '../../helper/checkMatches.ts'
+import Options from '../../../src/Options.ts'
 
 describe('regex matching', () => {
   const data = [

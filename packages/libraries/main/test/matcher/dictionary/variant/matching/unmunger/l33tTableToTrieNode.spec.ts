@@ -1,5 +1,5 @@
-import l33tTableToTrieNode from '../../../../../../src/matcher/dictionary/variants/matching/unmunger/l33tTableToTrieNode'
-import TrieNode from '../../../../../../src/matcher/dictionary/variants/matching/unmunger/TrieNode'
+import l33tTableToTrieNode from '../../../../../../src/matcher/dictionary/variants/matching/unmunger/l33tTableToTrieNode.ts'
+import TrieNode from '../../../../../../src/matcher/dictionary/variants/matching/unmunger/TrieNode.ts'
 
 describe('l33t table to trie node', () => {
   it('should convert correctly', () => {

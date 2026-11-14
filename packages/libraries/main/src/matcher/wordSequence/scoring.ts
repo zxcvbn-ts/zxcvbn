@@ -1,9 +1,9 @@
-import { MatchExtended, MatchEstimated } from '../../types'
-import utils from '../../scoring/utils'
+import { MatchExtended, MatchEstimated } from '../../types.ts'
+import utils from '../../scoring/utils.ts'
 import {
   WORD_SEQUENCE_LETTER_GAP_OPTIONS,
   WORD_SEQUENCE_SEPARATOR_CHARS,
-} from '../../data/const'
+} from '../../data/const.ts'
 
 const product = (values: number[]) =>
   values.reduce((result, value) => result * value, 1)

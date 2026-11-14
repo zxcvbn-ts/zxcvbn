@@ -1,11 +1,10 @@
 import {
-  MatchExtended,
   MatchOptions,
   MatcherBaseClass,
   MatcherConstructor,
 } from '@zxcvbn-ts/core'
-import haveIBeenPwned from './haveIBeenPwned'
-import { FetchApi, MatcherPwnedFactoryConfig } from './types'
+import haveIBeenPwned from './haveIBeenPwned.ts'
+import { FetchApi, MatcherPwnedFactoryConfig, PwnedMatch } from './types.ts'
 
 const matchingFactory = (
   universalFetch: FetchApi,
@@ -13,7 +12,7 @@ const matchingFactory = (
 ): MatcherConstructor => {
   class MatchPwned extends MatcherBaseClass {
     async match({ password }: MatchOptions) {
-      const matches: MatchExtended[] = []
+      const matches: PwnedMatch[] = []
       const pwned = await haveIBeenPwned(password, {
         universalFetch,
         url,

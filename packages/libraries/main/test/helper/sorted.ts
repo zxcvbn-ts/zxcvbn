@@ -1,4 +1,4 @@
-import { MatchExtended } from '../../src/types'
+import { MatchExtended } from '../../src/types.ts'
 
 // sort on i primary, j secondary
 export default (matches: MatchExtended[]) =>

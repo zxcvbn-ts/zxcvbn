@@ -1,6 +1,6 @@
 // @ts-expect-error for testing purposes
 import pinyin from 'chinese-to-pinyin'
-import CommonWordsGenerator from './CommonWordsGenerator'
+import CommonWordsGenerator from './CommonWordsGenerator.ts'
 
 function containsChinese(text: string) {
   // Matches common Chinese character ranges

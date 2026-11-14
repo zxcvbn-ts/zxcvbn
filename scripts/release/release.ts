@@ -6,14 +6,15 @@ import { execFileSync, spawnSync } from 'node:child_process'
 import { existsSync, readdirSync, readFileSync } from 'node:fs'
 import path from 'node:path'
 import { createInterface } from 'node:readline/promises'
+import { fileURLToPath } from 'node:url'
 import {
   PackagePlan,
   PackageState,
   planPackage,
   sortTopologically,
-} from './plan'
+} from './plan.ts'
 
-const root = path.resolve(__dirname, '../..')
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..')
 const packageRoots = ['packages/libraries', 'packages/languages']
 const remote = 'origin'
 // set explicitly: yarn 1 exports npm_config_registry=https://registry.yarnpkg.com to

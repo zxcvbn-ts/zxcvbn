@@ -1,9 +1,9 @@
-import { ZxcvbnFactory } from '../../../src'
-import wordSequences from '../../../../../languages/en/src/wordSequences.json'
-import scoring from '../../../src/matcher/wordSequence/scoring'
-import feedback from '../../../src/matcher/wordSequence/feedback'
-import Options from '../../../src/Options'
-import { WORD_SEQUENCE_SEPARATOR_CHARS } from '../../../src/data/const'
+import { ZxcvbnFactory } from '../../../src/index.ts'
+import wordSequences from '../../../../../languages/en/src/wordSequences.json' with { type: 'json' }
+import scoring from '../../../src/matcher/wordSequence/scoring.ts'
+import feedback from '../../../src/matcher/wordSequence/feedback.ts'
+import Options from '../../../src/Options.ts'
+import { WORD_SEQUENCE_SEPARATOR_CHARS } from '../../../src/data/const.ts'
 
 describe('WordSequence Matcher', () => {
   let zxcvbn: ZxcvbnFactory

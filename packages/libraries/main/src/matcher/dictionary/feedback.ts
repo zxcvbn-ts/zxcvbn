@@ -1,7 +1,7 @@
-import Options from '../../Options'
-import { MatchEstimated } from '../../types'
-import { ALL_UPPER_INVERTED, START_UPPER } from '../../data/const'
-import { countCharacters } from '../../utils/helper'
+import Options from '../../Options.ts'
+import { MatchEstimated } from '../../types.ts'
+import { ALL_UPPER_INVERTED, START_UPPER } from '../../data/const.ts'
+import { countCharacters } from '../../utils/helper.ts'
 
 const getDictionaryWarningPassword = (
   options: Options,

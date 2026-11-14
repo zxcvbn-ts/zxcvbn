@@ -4,7 +4,7 @@ import {
   PackageState,
   planPackage,
   sortTopologically,
-} from './plan'
+} from './plan.ts'
 
 const head = 'a'.repeat(40)
 const otherCommit = 'b'.repeat(40)

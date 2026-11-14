@@ -1,7 +1,7 @@
-import * as zxcvbnCommonPackage from '../../../languages/common/src'
-import * as zxcvbnEnPackage from '../../../languages/en/src'
-import { MatcherBaseClass, ZxcvbnFactory } from '../src'
-import { Matcher, MatchExtended } from '../src/types'
+import * as zxcvbnCommonPackage from '../../../languages/common/src/index.ts'
+import * as zxcvbnEnPackage from '../../../languages/en/src/index.ts'
+import { MatcherBaseClass, ZxcvbnFactory } from '../src/index.ts'
+import { Matcher, MatchExtended } from '../src/types.ts'
 
 const asyncMatcher: Matcher = {
   Matching: class MatchAsync extends MatcherBaseClass {

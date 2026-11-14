@@ -1,17 +1,17 @@
-import Matching from './Matching'
-import { TimeEstimates } from './TimeEstimates'
-import Feedback from './Feedback'
-import Options from './Options'
-import debounce from './utils/debounce'
-import { isSurrogatePairAt } from './utils/helper'
+import Matching from './Matching.ts'
+import { TimeEstimates } from './TimeEstimates.ts'
+import Feedback from './Feedback.ts'
+import Options from './Options.ts'
+import debounce from './utils/debounce.ts'
+import { isSurrogatePairAt } from './utils/helper.ts'
 import {
   Matcher,
   MatchEstimated,
   MatchExtended,
   OptionsType,
   ZxcvbnResult,
-} from './types'
-import Scoring from './scoring'
+} from './types.ts'
+import Scoring from './scoring/index.ts'
 
 const time = () => new Date().getTime()
 
@@ -104,5 +104,5 @@ class ZxcvbnFactory {
   }
 }
 
-export * from './types'
+export * from './types.ts'
 export { ZxcvbnFactory, debounce, Options }

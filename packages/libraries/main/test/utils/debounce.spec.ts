@@ -1,4 +1,4 @@
-import debounce from '../../src/utils/debounce'
+import debounce from '../../src/utils/debounce.ts'
 
 describe('debounce', () => {
   // test files share their environment (isolate: false), so fake timers left

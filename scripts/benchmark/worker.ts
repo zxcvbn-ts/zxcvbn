@@ -1,8 +1,8 @@
 // Measures one target in a fresh process, so versions don't share a heap or JIT state.
 // Prints a single JSON result to stdout. Started by ./index.ts.
 import { performance } from 'node:perf_hooks'
-import { createScenarios } from './passwords'
-import { Estimator, targets } from './targets'
+import { createScenarios } from './passwords.ts'
+import { Estimator, targets } from './targets.ts'
 
 export interface StartupResult {
   // everything until the first check is possible, including initMs

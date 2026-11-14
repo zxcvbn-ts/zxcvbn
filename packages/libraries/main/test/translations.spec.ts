@@ -1,8 +1,8 @@
 import { readdirSync } from 'fs'
 import path from 'path'
-import translationKeys from '../src/data/translationKeys'
+import translationKeys from '../src/data/translationKeys.ts'
 
-const languagePath = path.join(__dirname, '../../../languages')
+const languagePath = path.join(import.meta.dirname, '../../../languages')
 
 const getLanguages = () => {
   return readdirSync(languagePath, { withFileTypes: true })

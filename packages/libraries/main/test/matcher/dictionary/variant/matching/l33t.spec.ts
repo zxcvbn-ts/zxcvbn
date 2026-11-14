@@ -1,10 +1,10 @@
 import MatchL33t, {
   L33T_NARROW_BUDGET,
-} from '../../../../../src/matcher/dictionary/variants/matching/l33t'
-import WordIndex from '../../../../../src/matcher/dictionary/WordIndex'
-import checkMatches from '../../../../helper/checkMatches'
-import Options from '../../../../../src/Options'
-import sorted from '../../../../helper/sorted'
+} from '../../../../../src/matcher/dictionary/variants/matching/l33t.ts'
+import WordIndex from '../../../../../src/matcher/dictionary/WordIndex.ts'
+import checkMatches from '../../../../helper/checkMatches.ts'
+import Options from '../../../../../src/Options.ts'
+import sorted from '../../../../helper/sorted.ts'
 
 describe('l33t matching', () => {
   let msg
