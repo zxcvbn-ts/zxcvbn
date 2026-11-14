@@ -16,6 +16,9 @@ import {
 const root = path.resolve(__dirname, '../..')
 const packageRoots = ['packages/libraries', 'packages/languages']
 const remote = 'origin'
+// set explicitly: yarn 1 exports npm_config_registry=https://registry.yarnpkg.com to
+// scripts, which npm would otherwise pick up and publish to
+const registry = 'https://registry.npmjs.org/'
 
 interface WorkspacePackage {
   name: string
@@ -129,15 +132,6 @@ const readLocalTags = () =>
       .filter((line) => !line.startsWith(' ')),
   )
 
-const readRegistry = () => {
-  const registry = execFileSync('npm', ['config', 'get', 'registry'], {
-    cwd: root,
-    encoding: 'utf8',
-    stdio: ['ignore', 'pipe', 'ignore'],
-  }).trim()
-  return registry.endsWith('/') ? registry : `${registry}/`
-}
-
 const fetchNpmInfo = async (registry: string, name: string) => {
   const response = await fetch(
     `${registry}${name.replace('/', '%2f')}`,
@@ -165,7 +159,6 @@ const fetchNpmInfo = async (registry: string, name: string) => {
 const readStates = async (packages: WorkspacePackage[]) => {
   const remoteTags = readRemoteTags()
   const localTags = readLocalTags()
-  const registry = readRegistry()
   const npmInfos = await Promise.all(
     packages.map((pkg) => fetchNpmInfo(registry, pkg.name)),
   )
@@ -278,7 +271,11 @@ const publish = (plans: PackagePlan[]) => {
     console.info(`\nPublishing ${plan.tagName} as "${plan.distTag}"`)
     // inherited stdio so npm can prompt for a one-time password or a browser login
     if (
-      !run('npm', ['publish', '--tag', plan.distTag], path.join(root, plan.dir))
+      !run(
+        'npm',
+        ['publish', '--tag', plan.distTag, '--registry', registry],
+        path.join(root, plan.dir),
+      )
     ) {
       return { published, failed: plan, left: plans.slice(published.length) }
     }

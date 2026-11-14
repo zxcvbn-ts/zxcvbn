@@ -27,7 +27,7 @@
     "test:coverage:silent": "yarn -s test:silent --coverage --coverage.reporter=text-summary",
     "test:types": "lerna exec --parallel -- attw --pack .",
     "changed": "lerna changed",
-    "release": "yarn start-ts-file ./scripts/release/index.ts",
+    "release": "yarn start-ts-file ./scripts/release/release.ts",
     "benchmark": "yarn start-ts-file ./scripts/benchmark/index.ts",
     "benchmark:silent": "yarn -s start-ts-file ./scripts/benchmark/index.ts --compact",
     "generate:languageData": "yarn start-ts-file ./data-scripts/generate.ts",
