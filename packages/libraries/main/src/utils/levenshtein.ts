@@ -238,3 +238,198 @@ export const findLevenshteinEntry = (
     })
   return found
 }
+
+// a findLevenshteinEntry of findLevenshteinEntries
+interface Search {
+  length: number
+  mask: number
+  getDistance: (entry: string, entryLength: number) => number
+  found?: FoundEntry
+  // where the group of found is in the order findLevenshteinEntry checks the
+  // groups in, -1 for the password itself
+  foundOrder: number
+}
+
+interface FindInGroupForEachOptions {
+  group: EntriesOfLength
+  entryLength: number
+  // the position of the group in entriesByLength, and the number of groups
+  groupIndex: number
+  groupCount: number
+  searches: Search[]
+  threshold: number
+}
+
+// the rank an entry has to be before to be found by a search: that of the
+// least common entry found, Infinity while a search has found nothing
+const getStopRank = (searches: Search[]) =>
+  searches.reduce(
+    (stopRank, { found }) => Math.max(stopRank, found ? found.rank : Infinity),
+    -Infinity,
+  )
+
+// the characters of at least one password, and those of every password
+const getSharedMasks = (searches: Search[]) =>
+  searches.reduce(
+    ({ anyMask, everyMask }, { mask }) => ({
+      anyMask: anyMask | mask,
+      everyMask: everyMask & mask,
+    }),
+    { anyMask: 0, everyMask: -1 },
+  )
+
+interface FindEntryForEachOptions {
+  searches: Search[]
+  entry: string
+  entryLength: number
+  rank: number
+  mask: number
+  threshold: number
+  maxDifferentCharacters: number
+  // where the group of the entry is in the order findLevenshteinEntry checks
+  // the groups in for the search
+  getOrder: (search: Search) => number
+}
+
+// The most common entry wins, and of two with the same rank the one
+// findLevenshteinEntry finds first, in the group it checks first.
+const beatsFound = (search: Search, rank: number, order: number) =>
+  !search.found ||
+  rank < search.found.rank ||
+  (rank === search.found.rank && order < search.foundOrder)
+
+// checks the entry for each search, true if one of them found it
+const findEntryForEach = ({
+  searches,
+  entry,
+  entryLength,
+  rank,
+  mask,
+  threshold,
+  maxDifferentCharacters,
+  getOrder,
+}: FindEntryForEachOptions) => {
+  let foundAny = false
+  for (const search of searches) {
+    const order = getOrder(search)
+    if (
+      beatsFound(search, rank, order) &&
+      !hasMoreBits(mask & ~search.mask, maxDifferentCharacters) &&
+      !hasMoreBits(search.mask & ~mask, maxDifferentCharacters)
+    ) {
+      const entryDistance = search.getDistance(entry, entryLength)
+      if (entryDistance <= threshold) {
+        search.found = { rank, entry, distance: entryDistance }
+        search.foundOrder = order
+        foundAny = true
+      }
+    }
+  }
+  return foundAny
+}
+
+// findInGroup for several passwords at once. An entry with more characters
+// than allowed that no password has, or without more than allowed that every
+// password has, is too far from all of them, so most entries are ruled out
+// once instead of once per password.
+const findInGroupForEach = ({
+  group: { entries, ranks, masks },
+  entryLength,
+  groupIndex,
+  groupCount,
+  searches,
+  threshold,
+}: FindInGroupForEachOptions) => {
+  // a larger threshold than the bits of a mask can't rule out an entry
+  const maxDifferentCharacters = Math.min(Math.floor(threshold), 30)
+  const { anyMask, everyMask } = getSharedMasks(searches)
+  // findLevenshteinEntry checks the groups closest length first, in
+  // entriesByLength order for the same difference
+  const getOrder = ({ length }: Search) =>
+    Math.abs(entryLength - length) * groupCount + groupIndex
+  let stopRank = getStopRank(searches)
+  for (
+    let index = 0;
+    index < entries.length && ranks[index] <= stopRank;
+    index += 1
+  ) {
+    const mask = masks[index]
+    if (
+      hasMoreBits(mask & ~anyMask, maxDifferentCharacters) ||
+      hasMoreBits(everyMask & ~mask, maxDifferentCharacters)
+    ) {
+      continue
+    }
+    const foundAny = findEntryForEach({
+      searches,
+      entry: entries[index],
+      entryLength,
+      rank: ranks[index],
+      mask,
+      threshold,
+      maxDifferentCharacters,
+      getOrder,
+    })
+    // only this loop reads it, so once per entry is enough
+    if (foundAny) {
+      stopRank = getStopRank(searches)
+    }
+  }
+}
+
+// findLevenshteinEntry of each password, searched together: much faster for
+// many similar passwords, like the l33t variants of one password
+export const findLevenshteinEntries = (
+  passwords: string[],
+  dictionary: LevenshteinDictionary,
+  threshold: number,
+  passwordRanks: (number | undefined)[],
+  // eslint-disable-next-line max-params
+): (FoundEntry | undefined)[] => {
+  // nothing to search, and indexing the dictionary would be wasted
+  if (passwords.length === 0) {
+    return []
+  }
+  const entriesByLength = getEntriesByLength(dictionary)
+  const searches: Search[] = passwords.map((password, index) => {
+    const passwordRank = passwordRanks[index]
+    return {
+      length: countCharacters(password),
+      mask: getCharacterMask(password),
+      getDistance: createGetDistance(password),
+      found:
+        passwordRank === undefined
+          ? undefined
+          : { rank: passwordRank, entry: password, distance: 0 },
+      foundOrder: -1,
+    }
+  })
+  // an entry is at least as many edits away as the lengths differ
+  const lengthDifference = (entryLength: number) =>
+    Math.min(...searches.map(({ length }) => Math.abs(entryLength - length)))
+  const groupCount = entriesByLength.size
+  // Closest lengths first, like findLevenshteinEntry, so a common entry
+  // found early lets the other groups stop sooner. Ties still go by the
+  // position in entriesByLength.
+  Array.from(entriesByLength.entries(), ([entryLength, group], groupIndex) => ({
+    entryLength,
+    group,
+    groupIndex,
+    difference: lengthDifference(entryLength),
+  }))
+    .filter(({ difference }) => difference <= threshold)
+    .sort((first, second) => first.difference - second.difference)
+    .forEach(({ entryLength, group, groupIndex }) => {
+      findInGroupForEach({
+        group,
+        entryLength,
+        groupIndex,
+        groupCount,
+        searches: searches.filter(
+          ({ length }) => Math.abs(entryLength - length) <= threshold,
+        ),
+        threshold,
+      })
+    })
+  return searches.map(({ found }) => found)
+}
