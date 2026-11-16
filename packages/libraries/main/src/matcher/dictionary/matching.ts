@@ -1,5 +1,7 @@
 import {
+  FoundEntry,
   LevenshteinDictionary,
+  findLevenshteinEntries,
   findLevenshteinEntry,
 } from '../../utils/levenshtein'
 import { DictionaryNames, DictionaryMatch, MatcherBaseClass } from '../../types'
@@ -82,6 +84,29 @@ const getUserInputsLevenshteinDictionary = (
     byUserInputs.set(userInputsWordIndex, dictionary)
   }
   return dictionary
+}
+
+// A more common entry close to the full password beats the password itself,
+// even if the dictionary contains it. Finding the password itself is an exact
+// match, not a levenshtein one.
+const addLevenshteinHit = (
+  hits: DictionaryHit[],
+  dictionaryName: string,
+  usedPassword: string,
+  rank: number | undefined,
+  found: FoundEntry | undefined,
+  // eslint-disable-next-line max-params
+) => {
+  if (found && found.entry !== usedPassword) {
+    hits.push({
+      dictionaryName: dictionaryName as DictionaryNames,
+      rank: found.rank,
+      levenshteinDistance: found.distance,
+      levenshteinDistanceEntry: found.entry,
+    })
+  } else if (rank !== undefined) {
+    hits.push({ dictionaryName: dictionaryName as DictionaryNames, rank })
+  }
 }
 
 class MatchDictionary extends MatcherBaseClass {
@@ -197,42 +222,80 @@ class MatchDictionary extends MatcherBaseClass {
     usedPassword: string,
     userInputsWordIndex: WordIndex | undefined,
   ) {
-    const { wordIndex, dictionaryMaxWordSizes, levenshteinThreshold } =
-      this.options
-    const { dictionaryNames } = wordIndex
+    const { levenshteinThreshold } = this.options
     const passwordLength = countCharacters(usedPassword)
     const hits: DictionaryHit[] = []
-    const addHit = (
+    this.forEachLevenshteinDictionary(
+      userInputsWordIndex,
+      (dictionaryName, dictionary, maxWordSize) => {
+        const rank = dictionary.getRank(usedPassword)
+        const found =
+          passwordLength - maxWordSize > levenshteinThreshold
+            ? undefined
+            : findLevenshteinEntry(
+                usedPassword,
+                dictionary,
+                levenshteinThreshold,
+                rank,
+              )
+        addLevenshteinHit(hits, dictionaryName, usedPassword, rank, found)
+      },
+    )
+    return hits
+  }
+
+  // getLevenshteinHits of each password, searched together: much faster for
+  // many similar passwords, like the l33t variants of one password
+  protected getLevenshteinHitsForEach(
+    usedPasswords: string[],
+    userInputsWordIndex: WordIndex | undefined,
+  ) {
+    const { levenshteinThreshold } = this.options
+    const shortestLength = Math.min(...usedPasswords.map(countCharacters))
+    const hitsForEach: DictionaryHit[][] = usedPasswords.map(() => [])
+    this.forEachLevenshteinDictionary(
+      userInputsWordIndex,
+      (dictionaryName, dictionary, maxWordSize) => {
+        const ranks = usedPasswords.map((usedPassword) =>
+          dictionary.getRank(usedPassword),
+        )
+        // the search skips each password too long for an entry by itself
+        const foundForEach =
+          shortestLength - maxWordSize > levenshteinThreshold
+            ? []
+            : findLevenshteinEntries(
+                usedPasswords,
+                dictionary,
+                levenshteinThreshold,
+                ranks,
+              )
+        usedPasswords.forEach((usedPassword, index) => {
+          addLevenshteinHit(
+            hitsForEach[index],
+            dictionaryName,
+            usedPassword,
+            ranks[index],
+            foundForEach[index],
+          )
+        })
+      },
+    )
+    return hitsForEach
+  }
+
+  // Calls callback with every dictionary in dictionary order, and the length
+  // of its longest word. A password longer than that by more than the
+  // threshold is at least that many edits away from every entry.
+  private forEachLevenshteinDictionary(
+    userInputsWordIndex: WordIndex | undefined,
+    callback: (
       dictionaryName: string,
       dictionary: LevenshteinDictionary,
       maxWordSize: number,
-    ) => {
-      const rank = dictionary.getRank(usedPassword)
-      // a more common entry close to the full password beats the password
-      // itself, even if the dictionary contains it. A password longer than
-      // the dictionary's longest word by more than the threshold is at least
-      // that many edits away from every entry.
-      const found =
-        passwordLength - maxWordSize > levenshteinThreshold
-          ? undefined
-          : findLevenshteinEntry(
-              usedPassword,
-              dictionary,
-              levenshteinThreshold,
-              rank,
-            )
-      // finding the password itself is an exact match, not a levenshtein one
-      if (found && found.entry !== usedPassword) {
-        hits.push({
-          dictionaryName: dictionaryName as DictionaryNames,
-          rank: found.rank,
-          levenshteinDistance: found.distance,
-          levenshteinDistanceEntry: found.entry,
-        })
-      } else if (rank !== undefined) {
-        hits.push({ dictionaryName: dictionaryName as DictionaryNames, rank })
-      }
-    }
+    ) => void,
+  ) {
+    const { wordIndex, dictionaryMaxWordSizes } = this.options
+    const { dictionaryNames } = wordIndex
     const userInputsDictionary = getUserInputsPosition(wordIndex)
     for (
       let dictionary = 0;
@@ -240,7 +303,7 @@ class MatchDictionary extends MatcherBaseClass {
       dictionary += 1
     ) {
       if (dictionary === userInputsDictionary && userInputsWordIndex) {
-        addHit(
+        callback(
           USER_INPUTS,
           getUserInputsLevenshteinDictionary(wordIndex, userInputsWordIndex),
           Math.max(
@@ -250,14 +313,13 @@ class MatchDictionary extends MatcherBaseClass {
         )
       } else if (dictionary < dictionaryNames.length) {
         const name = dictionaryNames[dictionary]
-        addHit(
+        callback(
           name,
           wordIndex.getLevenshteinDictionary(dictionary),
           dictionaryMaxWordSizes[name],
         )
       }
     }
-    return hits
   }
 }
 

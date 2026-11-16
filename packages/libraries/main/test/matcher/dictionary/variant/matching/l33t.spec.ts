@@ -35,6 +35,23 @@ describe('l33t matching', () => {
       })
       expect(new MatchL33t(emojiOptions).match({ password: '😀' })).toEqual([])
     })
+    it("doesn't search the levenshtein hits of a single character", () => {
+      // '1' stands for 'i' and 'l', both words, but a single character is
+      // never a l33t match, so their search would be wasted
+      const levenshteinOptions = new Options({
+        dictionary: { words: ['i', 'l'] },
+        useLevenshteinDistance: true,
+      })
+      const levenshteinMatchL33t = new MatchL33t(levenshteinOptions)
+      const getHitsForEach = vi.spyOn(
+        levenshteinMatchL33t as unknown as {
+          getLevenshteinHitsForEach: () => unknown
+        },
+        'getLevenshteinHitsForEach',
+      )
+      expect(levenshteinMatchL33t.match({ password: '1' })).toEqual([])
+      expect(getHitsForEach).not.toHaveBeenCalled()
+    })
     it("doesn't match a word with 'İ' that has no substitution", () => {
       // the '1' gets substituted, but the match on 'İstanbul' doesn't include it
       const dottedIOptions = new Options({

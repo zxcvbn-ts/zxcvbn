@@ -318,25 +318,18 @@ class MatchL33t extends MatchDictionary {
       })
     }
 
-    if (this.options.useLevenshteinDistance) {
+    // addMatches drops a single character, so its variants aren't searched
+    if (this.options.useLevenshteinDistance && countCharacters(password) > 1) {
       const seenLevenshteinWords = new Set<string>()
-      // levenshtein only checks the full password, so the l33t words close
-      // to it are only found with every possible substitution made
-      getCleanPasswords(
-        password,
-        this.options.l33tMaxSubstitutions,
-        this.options.trieNodeRoot,
-      ).forEach(({ password: subbedPassword, changes }) => {
-        if (changes.length === 0) {
-          return
-        }
-        const matchedWord = toLowerCase(subbedPassword)
-        addMatches(
-          { i: 0, j: password.length - 1, matchedWord, changes },
-          () => this.getLevenshteinHits(matchedWord, userInputsWordIndex),
-          seenLevenshteinWords,
-        )
-      })
+      this.getLevenshteinVariants(password, userInputsWordIndex).forEach(
+        ({ matchedWord, changes, getHits }) => {
+          addMatches(
+            { i: 0, j: password.length - 1, matchedWord, changes },
+            getHits,
+            seenLevenshteinWords,
+          )
+        },
+      )
     }
 
     const userInputsPosition = getUserInputsPosition(wordIndex)
@@ -357,6 +350,41 @@ class MatchL33t extends MatchDictionary {
       },
     }).run()
     return matches
+  }
+
+  // Levenshtein only checks the full password, so the l33t words close to it
+  // are only found with every possible substitution made. From two variants
+  // on, they are searched together up front, which is faster than one by one.
+  // A single one is searched by itself, as searching together costs some
+  // setup, and only when needed.
+  private getLevenshteinVariants(
+    password: string,
+    userInputsWordIndex: WordIndex | undefined,
+  ) {
+    const variants = getCleanPasswords(
+      password,
+      this.options.l33tMaxSubstitutions,
+      this.options.trieNodeRoot,
+    )
+      .filter(({ changes }) => changes.length > 0)
+      .map(({ password: subbedPassword, changes }) => ({
+        matchedWord: toLowerCase(subbedPassword),
+        changes,
+      }))
+    const hitsForEach =
+      variants.length > 1
+        ? this.getLevenshteinHitsForEach(
+            variants.map(({ matchedWord }) => matchedWord),
+            userInputsWordIndex,
+          )
+        : undefined
+    return variants.map((variant, index) => ({
+      ...variant,
+      getHits: () =>
+        hitsForEach
+          ? hitsForEach[index]
+          : this.getLevenshteinHits(variant.matchedWord, userInputsWordIndex),
+    }))
   }
 }
 

@@ -4,6 +4,7 @@ import { ZxcvbnFactory } from '../../src'
 import {
   FindLevenshteinDistanceResult,
   LevenshteinDictionary,
+  findLevenshteinEntries,
   findLevenshteinEntry,
 } from '../../src/utils/levenshtein'
 import Options from '../../src/Options'
@@ -805,6 +806,85 @@ describe('levenshtein', () => {
         expect(found).toBeGreaterThan(checks / 4)
         expect(found).toBeLessThan((checks * 3) / 4)
       })
+    })
+  })
+
+  describe('findLevenshteinEntries', () => {
+    const findOneByOne = (
+      passwords: string[],
+      dictionary: LevenshteinDictionary,
+      threshold: number,
+    ) =>
+      passwords.map((password) =>
+        findLevenshteinEntry(
+          password,
+          dictionary,
+          threshold,
+          dictionary.getRank(password),
+        ),
+      )
+    const findTogether = (
+      passwords: string[],
+      dictionary: LevenshteinDictionary,
+      threshold: number,
+    ) =>
+      findLevenshteinEntries(
+        passwords,
+        dictionary,
+        threshold,
+        passwords.map((password) => dictionary.getRank(password)),
+      )
+
+    it('keeps the entry of the closer length when two have the same rank', () => {
+      // the longer entry comes first, but findLevenshteinEntry checks the
+      // closest lengths first
+      const dictionary = toDictionary({ abcdeyz: 1, abcdex: 1 })
+      const passwords = ['abcdef', 'abcdeyy']
+      expect(findTogether(passwords, dictionary, 2)).toEqual(
+        findOneByOne(passwords, dictionary, 2),
+      )
+      expect(findTogether(passwords, dictionary, 2)[0]).toEqual({
+        rank: 1,
+        entry: 'abcdex',
+        distance: 1,
+      })
+    })
+
+    it("doesn't list the entries of the dictionary without passwords", () => {
+      const getEntries = vi.fn(() => ({ entries: ['abc'], ranks: [1] }))
+      const dictionary: LevenshteinDictionary = {
+        getEntries,
+        getRank: () => undefined,
+      }
+      expect(findLevenshteinEntries([], dictionary, 2, [])).toEqual([])
+      expect(getEntries).not.toHaveBeenCalled()
+    })
+
+    it('finds the same entries as findLevenshteinEntry', () => {
+      let seed = 1
+      // Math.imul keeps the product exact, and the high bits of this
+      // generator are much more random than the low ones
+      const random = (max: number) => {
+        seed = (Math.imul(seed, 1103515245) + 12345) & 0x7fffffff
+        return Math.floor((seed / 0x80000000) * max)
+      }
+      const word = () =>
+        Array.from({ length: 3 + random(6) }, () => 'abcde'[random(5)]).join('')
+      for (let run = 0; run < 500; run += 1) {
+        const entryRanks: EntryRanks = {}
+        const size = 1 + random(30)
+        // few different ranks, so many entries share one
+        const maxRank = 1 + random(size)
+        for (let entry = 0; entry < size; entry += 1) {
+          entryRanks[word()] = 1 + random(maxRank)
+        }
+        const dictionary = toDictionary(entryRanks)
+        const passwords = Array.from({ length: 1 + random(12) }, word)
+        const threshold = 1 + random(3)
+        expect(findTogether(passwords, dictionary, threshold)).toEqual(
+          findOneByOne(passwords, dictionary, threshold),
+        )
+      }
     })
   })
 
