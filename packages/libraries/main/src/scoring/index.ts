@@ -135,6 +135,25 @@ export default class Scoring {
     return count
   }
 
+  // An attacker is assumed to try passwords made of fewer matches first: a
+  // word, then a word and a year, then a word, a year and a symbol, ...
+  // Each extra match multiplies the guesses spent on those by the guesses of
+  // a typical match: the geometric mean of this sequence's match guesses,
+  // pi^(1 / n), capped at MIN_GUESSES_BEFORE_GROWING_SEQUENCE. The penalty is
+  // that mean to the power n - 1, so cheap matches like a year or a single
+  // symbol only add a small one.
+  // It grows with pi, so for the same number of matches a lower product
+  // always gives a lower total. The search relies on this, since it only
+  // keeps the lowest product for each length.
+  // additivePenalties[sequenceLength + 1] is the product from which the cap
+  // applies: MIN_GUESSES_BEFORE_GROWING_SEQUENCE ** sequenceLength
+  private getAdditivePenalty(pi: number, sequenceLength: number) {
+    if (pi >= this.additivePenalties[sequenceLength + 1]) {
+      return this.additivePenalties[sequenceLength]
+    }
+    return pi ** ((sequenceLength - 1) / sequenceLength)
+  }
+
   // helper: considers whether a length-sequenceLength
   // sequence ending at match is better (fewer guesses)
   // than previously encountered sequences, updating state if so.
@@ -155,7 +174,7 @@ export default class Scoring {
     // calculate the minimization func
     let sequenceGuesses = this.factorials[sequenceLength] * pi
     if (!this.excludeAdditive) {
-      sequenceGuesses += this.additivePenalties[sequenceLength]
+      sequenceGuesses += Math.ceil(this.getAdditivePenalty(pi, sequenceLength))
     }
     // update state if new best.
     // first see if any competing sequences covering this prefix,
