@@ -155,8 +155,8 @@ export default [
   {
     calcTime: 0,
     password: 'abcdefg123',
-    guesses: 15000,
-    guessesLog10: 4.176091259055681,
+    guesses: 5050,
+    guessesLog10: 3.703291378118661,
     sequence: [
       {
         pattern: 'sequence',
@@ -183,23 +183,23 @@ export default [
     ],
     crackTimes: {
       onlineThrottlingXPerHour: {
-        base: 6,
-        seconds: 540000,
-        display: '6 days',
+        base: 2,
+        seconds: 181800,
+        display: '2 days',
       },
       onlineNoThrottlingXPerSecond: {
-        base: 25,
-        seconds: 1500,
-        display: '25 minutes',
+        base: 8,
+        seconds: 505,
+        display: '8 minutes',
       },
       offlineSlowHashingXPerSecond: {
-        base: 2,
-        seconds: 1.5,
-        display: '2 seconds',
+        base: null,
+        seconds: 0.505,
+        display: 'less than a second',
       },
       offlineFastHashingXPerSecond: {
         base: null,
-        seconds: 0.0000015,
+        seconds: 5.05e-7,
         display: 'less than a second',
       },
     },
@@ -215,8 +215,8 @@ export default [
   {
     calcTime: 0,
     password: 'TESTERINO',
-    guesses: 2486000,
-    guessesLog10: 6.395501124305626,
+    guesses: 2477113,
+    guessesLog10: 6.393945818518452,
     sequence: [
       {
         pattern: 'dictionary',
@@ -246,22 +246,22 @@ export default [
     crackTimes: {
       onlineThrottlingXPerHour: {
         base: 3,
-        seconds: 89496000,
+        seconds: 89176068,
         display: '3 years',
       },
       onlineNoThrottlingXPerSecond: {
         base: 3,
-        seconds: 248600,
+        seconds: 247711.3,
         display: '3 days',
       },
       offlineSlowHashingXPerSecond: {
         base: 4,
-        seconds: 248.6,
+        seconds: 247.7113,
         display: '4 minutes',
       },
       offlineFastHashingXPerSecond: {
         base: null,
-        seconds: 0.0002486,
+        seconds: 0.0002477113,
         display: 'less than a second',
       },
     },
@@ -482,8 +482,8 @@ export default [
   {
     calcTime: 0,
     password: '1234qwert',
-    guesses: 12288,
-    guessesLog10: 4.089481202687437,
+    guesses: 2322,
+    guessesLog10: 3.3658622154025544,
     sequence: [
       {
         pattern: 'dictionary',
@@ -512,23 +512,23 @@ export default [
     ],
     crackTimes: {
       onlineThrottlingXPerHour: {
-        base: 5,
-        seconds: 442368,
-        display: '5 days',
+        base: 23,
+        seconds: 83592,
+        display: '23 hours',
       },
       onlineNoThrottlingXPerSecond: {
-        base: 20,
-        seconds: 1228.8,
-        display: '20 minutes',
+        base: 4,
+        seconds: 232.2,
+        display: '4 minutes',
       },
       offlineSlowHashingXPerSecond: {
-        base: 1,
-        seconds: 1.2288,
-        display: '1 second',
+        base: null,
+        seconds: 0.2322,
+        display: 'less than a second',
       },
       offlineFastHashingXPerSecond: {
         base: null,
-        seconds: 0.0000012288,
+        seconds: 2.322e-7,
         display: 'less than a second',
       },
     },
@@ -592,8 +592,8 @@ export default [
   {
     calcTime: 0,
     password: '2010abc',
-    guesses: 15000,
-    guessesLog10: 4.176091259055681,
+    guesses: 5050,
+    guessesLog10: 3.703291378118661,
     sequence: [
       {
         pattern: 'regex',
@@ -619,23 +619,23 @@ export default [
     ],
     crackTimes: {
       onlineThrottlingXPerHour: {
-        base: 6,
-        seconds: 540000,
-        display: '6 days',
+        base: 2,
+        seconds: 181800,
+        display: '2 days',
       },
       onlineNoThrottlingXPerSecond: {
-        base: 25,
-        seconds: 1500,
-        display: '25 minutes',
+        base: 8,
+        seconds: 505,
+        display: '8 minutes',
       },
       offlineSlowHashingXPerSecond: {
-        base: 2,
-        seconds: 1.5,
-        display: '2 seconds',
+        base: null,
+        seconds: 0.505,
+        display: 'less than a second',
       },
       offlineFastHashingXPerSecond: {
         base: null,
-        seconds: 0.0000015,
+        seconds: 5.05e-7,
         display: 'less than a second',
       },
     },
@@ -821,44 +821,75 @@ export default [
   {
     calcTime: 0,
     password: 'aA!1',
-    guesses: 10001,
-    guessesLog10: 4.000043427276863,
+    guesses: 6570,
+    guessesLog10: 3.81756536955978,
     sequence: [
       {
         pattern: 'bruteforce',
-        token: 'aA!1',
+        token: 'a',
         i: 0,
+        j: 0,
+        guesses: 11,
+        guessesLog10: 1.041392685158225,
+      },
+      {
+        pattern: 'dictionary',
+        i: 1,
         j: 3,
-        guesses: 10000,
-        guessesLog10: 4,
+        token: 'A!1',
+        matchedWord: 'all',
+        rank: 37,
+        dictionaryName: 'commonWords-en',
+        reversed: false,
+        l33t: true,
+        subs: [
+          {
+            letter: 'l',
+            substitution: '!',
+          },
+          {
+            letter: 'l',
+            substitution: '1',
+          },
+        ],
+        subDisplay: '! -> l, 1 -> l',
+        baseGuesses: 37,
+        uppercaseVariations: 2,
+        l33tVariations: 4,
+        guesses: 296,
+        guessesLog10: 2.4712917110589383,
       },
     ],
     crackTimes: {
       onlineThrottlingXPerHour: {
-        base: 4,
-        seconds: 360036,
-        display: '4 days',
+        base: 3,
+        seconds: 236520,
+        display: '3 days',
       },
       onlineNoThrottlingXPerSecond: {
-        base: 17,
-        seconds: 1000.1,
-        display: '17 minutes',
+        base: 11,
+        seconds: 657,
+        display: '11 minutes',
       },
       offlineSlowHashingXPerSecond: {
-        base: 1,
-        seconds: 1.0001,
-        display: '1 second',
+        base: null,
+        seconds: 0.657,
+        display: 'less than a second',
       },
       offlineFastHashingXPerSecond: {
         base: null,
-        seconds: 0.0000010001,
+        seconds: 6.57e-7,
         display: 'less than a second',
       },
     },
     score: 1,
     feedback: {
       warning: null,
-      suggestions: ['Add more words that are less common.'],
+      suggestions: [
+        'Add more words that are less common.',
+        'Capitalize more than the first letter.',
+        "Avoid predictable letter substitutions like '@' for 'a'.",
+      ],
     },
   },
   {
@@ -944,8 +975,8 @@ export default [
   {
     calcTime: 0,
     password: 'AZERYT',
-    guesses: 538000,
-    guessesLog10: 5.730782275666389,
+    guesses: 528514,
+    guessesLog10: 5.723056495980656,
     sequence: [
       {
         pattern: 'spatial',
@@ -970,22 +1001,22 @@ export default [
     crackTimes: {
       onlineThrottlingXPerHour: {
         base: 7,
-        seconds: 19368000,
+        seconds: 19026504,
         display: '7 months',
       },
       onlineNoThrottlingXPerSecond: {
         base: 15,
-        seconds: 53800,
+        seconds: 52851.4,
         display: '15 hours',
       },
       offlineSlowHashingXPerSecond: {
-        base: 54,
-        seconds: 53.8,
-        display: '54 seconds',
+        base: 53,
+        seconds: 52.8514,
+        display: '53 seconds',
       },
       offlineFastHashingXPerSecond: {
         base: null,
-        seconds: 0.0000538,
+        seconds: 0.0000528514,
         display: 'less than a second',
       },
     },
@@ -1001,8 +1032,8 @@ export default [
   {
     calcTime: 0,
     password: 'zxcftzuio',
-    guesses: 12790064,
-    guessesLog10: 7.106872717643415,
+    guesses: 12782592,
+    guessesLog10: 7.106618927152421,
     sequence: [
       {
         pattern: 'bruteforce',
@@ -1027,22 +1058,22 @@ export default [
     crackTimes: {
       onlineThrottlingXPerHour: {
         base: 14,
-        seconds: 460442304,
+        seconds: 460173312,
         display: '14 years',
       },
       onlineNoThrottlingXPerSecond: {
         base: 15,
-        seconds: 1279006.4,
+        seconds: 1278259.2,
         display: '15 days',
       },
       offlineSlowHashingXPerSecond: {
         base: 21,
-        seconds: 1279.0064,
+        seconds: 1278.2592,
         display: '21 minutes',
       },
       offlineFastHashingXPerSecond: {
         base: null,
-        seconds: 0.0012790064,
+        seconds: 0.0012782592,
         display: 'less than a second',
       },
     },
@@ -1058,8 +1089,8 @@ export default [
   {
     calcTime: 0,
     password: 'buy by beer',
-    guesses: 1301200000,
-    guessesLog10: 9.114344054609814,
+    guesses: 1201542224,
+    guessesLog10: 9.079739037169045,
     sequence: [
       {
         pattern: 'bruteforce',
@@ -1092,22 +1123,22 @@ export default [
     crackTimes: {
       onlineThrottlingXPerHour: {
         base: null,
-        seconds: 46843200000,
+        seconds: 43255520064,
         display: 'centuries',
       },
       onlineNoThrottlingXPerSecond: {
         base: 4,
-        seconds: 130120000,
+        seconds: 120154222.4,
         display: '4 years',
       },
       offlineSlowHashingXPerSecond: {
-        base: 2,
-        seconds: 130120,
-        display: '2 days',
+        base: 1,
+        seconds: 120154.2224,
+        display: '1 day',
       },
       offlineFastHashingXPerSecond: {
         base: null,
-        seconds: 0.13012,
+        seconds: 0.1201542224,
         display: 'less than a second',
       },
     },
@@ -1120,8 +1151,8 @@ export default [
   {
     calcTime: 0,
     password: 'horse stable battery',
-    guesses: 65430100000000,
-    guessesLog10: 13.81577758405222,
+    guesses: 3032236113980,
+    guessesLog10: 12.481763015893426,
     sequence: [
       {
         pattern: 'dictionary',
@@ -1140,12 +1171,36 @@ export default [
         guessesLog10: 1.6989700043360185,
       },
       {
-        pattern: 'bruteforce',
-        token: ' stable ',
+        pattern: 'separator',
+        token: ' ',
         i: 5,
+        j: 5,
+        guesses: 10,
+        guessesLog10: 1,
+      },
+      {
+        pattern: 'dictionary',
+        i: 6,
+        j: 11,
+        token: 'stable',
+        matchedWord: 'stable',
+        rank: 2317,
+        dictionaryName: 'wikipedia-en',
+        reversed: false,
+        l33t: false,
+        baseGuesses: 2317,
+        uppercaseVariations: 1,
+        l33tVariations: 1,
+        guesses: 2317,
+        guessesLog10: 3.3649260337899753,
+      },
+      {
+        pattern: 'separator',
+        token: ' ',
+        i: 12,
         j: 12,
-        guesses: 100000000,
-        guessesLog10: 8,
+        guesses: 10,
+        guessesLog10: 1,
       },
       {
         pattern: 'dictionary',
@@ -1167,23 +1222,23 @@ export default [
     crackTimes: {
       onlineThrottlingXPerHour: {
         base: null,
-        seconds: 2355483600000000,
+        seconds: 109160500103280,
         display: 'centuries',
       },
       onlineNoThrottlingXPerSecond: {
         base: null,
-        seconds: 6543010000000,
+        seconds: 303223611398,
         display: 'centuries',
       },
       offlineSlowHashingXPerSecond: {
-        base: null,
-        seconds: 6543010000,
-        display: 'centuries',
+        base: 9,
+        seconds: 303223611.398,
+        display: '9 years',
       },
       offlineFastHashingXPerSecond: {
-        base: 2,
-        seconds: 6543.01,
-        display: '2 hours',
+        base: 5,
+        seconds: 303.223611398,
+        display: '5 minutes',
       },
     },
     score: 4,
@@ -1373,8 +1428,8 @@ export default [
   {
     calcTime: 0,
     password: 'CorrectHorseBatteryStaple',
-    guesses: 54331167232000,
-    guessesLog10: 13.735049035366341,
+    guesses: 53332987257134,
+    guessesLog10: 13.726995909821174,
     sequence: [
       {
         pattern: 'dictionary',
@@ -1444,23 +1499,23 @@ export default [
     crackTimes: {
       onlineThrottlingXPerHour: {
         base: null,
-        seconds: 1955922020352000,
+        seconds: 1919987541256824,
         display: 'centuries',
       },
       onlineNoThrottlingXPerSecond: {
         base: null,
-        seconds: 5433116723200,
+        seconds: 5333298725713.4,
         display: 'centuries',
       },
       offlineSlowHashingXPerSecond: {
         base: null,
-        seconds: 5433116723.2,
+        seconds: 5333298725.7134,
         display: 'centuries',
       },
       offlineFastHashingXPerSecond: {
-        base: 2,
-        seconds: 5433.1167232,
-        display: '2 hours',
+        base: 1,
+        seconds: 5333.2987257134,
+        display: '1 hour',
       },
     },
     score: 4,
@@ -1572,8 +1627,8 @@ export default [
   {
     calcTime: 0,
     password: 'P@ssw0rd123!',
-    guesses: 150096,
-    guessesLog10: 5.17636911861852,
+    guesses: 140361,
+    guessesLog10: 5.14724645367941,
     sequence: [
       {
         pattern: 'dictionary',
@@ -1614,22 +1669,22 @@ export default [
     crackTimes: {
       onlineThrottlingXPerHour: {
         base: 2,
-        seconds: 5403456,
+        seconds: 5052996,
         display: '2 months',
       },
       onlineNoThrottlingXPerSecond: {
         base: 4,
-        seconds: 15009.6,
+        seconds: 14036.1,
         display: '4 hours',
       },
       offlineSlowHashingXPerSecond: {
-        base: 15,
-        seconds: 15.0096,
-        display: '15 seconds',
+        base: 14,
+        seconds: 14.0361,
+        display: '14 seconds',
       },
       offlineFastHashingXPerSecond: {
         base: null,
-        seconds: 0.0000150096,
+        seconds: 0.0000140361,
         display: 'less than a second',
       },
     },
@@ -1914,8 +1969,8 @@ export default [
   {
     calcTime: 0,
     password: '0xDEADBEEF',
-    guesses: 1011130000,
-    guessesLog10: 9.004806995999605,
+    guesses: 911414634,
+    guessesLog10: 8.959715997490257,
     sequence: [
       {
         pattern: 'dictionary',
@@ -1976,22 +2031,22 @@ export default [
     crackTimes: {
       onlineThrottlingXPerHour: {
         base: null,
-        seconds: 36400680000,
+        seconds: 32810926824,
         display: 'centuries',
       },
       onlineNoThrottlingXPerSecond: {
         base: 3,
-        seconds: 101113000,
+        seconds: 91141463.4,
         display: '3 years',
       },
       offlineSlowHashingXPerSecond: {
         base: 1,
-        seconds: 101113,
+        seconds: 91141.4634,
         display: '1 day',
       },
       offlineFastHashingXPerSecond: {
         base: null,
-        seconds: 0.101113,
+        seconds: 0.0911414634,
         display: 'less than a second',
       },
     },
@@ -2004,8 +2059,8 @@ export default [
   {
     calcTime: 0,
     password: '11001100',
-    guesses: 18983,
-    guessesLog10: 4.278364847737688,
+    guesses: 10101,
+    guessesLog10: 4.004364371107751,
     sequence: [
       {
         pattern: 'repeat',
@@ -2013,31 +2068,31 @@ export default [
         j: 7,
         token: '11001100',
         baseToken: '1100',
-        baseGuesses: 9491,
+        baseGuesses: 5050,
         repeatCount: 2,
-        guesses: 18982,
-        guessesLog10: 4.278341969060906,
+        guesses: 10100,
+        guessesLog10: 4.004321373782642,
       },
     ],
     crackTimes: {
       onlineThrottlingXPerHour: {
-        base: 8,
-        seconds: 683388,
-        display: '8 days',
+        base: 4,
+        seconds: 363636,
+        display: '4 days',
       },
       onlineNoThrottlingXPerSecond: {
-        base: 32,
-        seconds: 1898.3,
-        display: '32 minutes',
+        base: 17,
+        seconds: 1010.1,
+        display: '17 minutes',
       },
       offlineSlowHashingXPerSecond: {
-        base: 2,
-        seconds: 1.8983,
-        display: '2 seconds',
+        base: 1,
+        seconds: 1.0101,
+        display: '1 second',
       },
       offlineFastHashingXPerSecond: {
         base: null,
-        seconds: 0.0000018983,
+        seconds: 0.0000010101,
         display: 'less than a second',
       },
     },
@@ -2158,8 +2213,8 @@ export default [
   {
     calcTime: 0,
     password: '!@#$asdf',
-    guesses: 1653328,
-    guessesLog10: 6.218359020818333,
+    guesses: 1644235,
+    guessesLog10: 6.215963888574812,
     sequence: [
       {
         pattern: 'spatial',
@@ -2192,22 +2247,22 @@ export default [
     crackTimes: {
       onlineThrottlingXPerHour: {
         base: 2,
-        seconds: 59519808,
+        seconds: 59192460,
         display: '2 years',
       },
       onlineNoThrottlingXPerSecond: {
         base: 2,
-        seconds: 165332.8,
+        seconds: 164423.5,
         display: '2 days',
       },
       offlineSlowHashingXPerSecond: {
         base: 3,
-        seconds: 165.3328,
+        seconds: 164.4235,
         display: '3 minutes',
       },
       offlineFastHashingXPerSecond: {
         base: null,
-        seconds: 0.0001653328,
+        seconds: 0.0001644235,
         display: 'less than a second',
       },
     },
@@ -2223,8 +2278,8 @@ export default [
   {
     calcTime: 0,
     password: 'zyxwvuts321',
-    guesses: 17680,
-    guessesLog10: 4.247482260677054,
+    guesses: 7742,
+    guessesLog10: 3.8888531669829356,
     sequence: [
       {
         pattern: 'sequence',
@@ -2251,23 +2306,23 @@ export default [
     ],
     crackTimes: {
       onlineThrottlingXPerHour: {
-        base: 7,
-        seconds: 636480,
-        display: '7 days',
+        base: 3,
+        seconds: 278712,
+        display: '3 days',
       },
       onlineNoThrottlingXPerSecond: {
-        base: 29,
-        seconds: 1768,
-        display: '29 minutes',
+        base: 13,
+        seconds: 774.2,
+        display: '13 minutes',
       },
       offlineSlowHashingXPerSecond: {
-        base: 2,
-        seconds: 1.768,
-        display: '2 seconds',
+        base: null,
+        seconds: 0.7742,
+        display: 'less than a second',
       },
       offlineFastHashingXPerSecond: {
         base: null,
-        seconds: 0.000001768,
+        seconds: 7.742e-7,
         display: 'less than a second',
       },
     },
@@ -2333,8 +2388,8 @@ export default [
   {
     calcTime: 0,
     password: 'password!password!',
-    guesses: 22201,
-    guessesLog10: 4.346372536824548,
+    guesses: 2249,
+    guessesLog10: 3.351989455435632,
     sequence: [
       {
         pattern: 'repeat',
@@ -2342,31 +2397,31 @@ export default [
         j: 17,
         token: 'password!password!',
         baseToken: 'password!',
-        baseGuesses: 11100,
+        baseGuesses: 1124,
         repeatCount: 2,
-        guesses: 22200,
-        guessesLog10: 4.346352974450638,
+        guesses: 2248,
+        guessesLog10: 3.351796306897023,
       },
     ],
     crackTimes: {
       onlineThrottlingXPerHour: {
-        base: 9,
-        seconds: 799236,
-        display: '9 days',
+        base: 22,
+        seconds: 80964,
+        display: '22 hours',
       },
       onlineNoThrottlingXPerSecond: {
-        base: 37,
-        seconds: 2220.1,
-        display: '37 minutes',
+        base: 4,
+        seconds: 224.9,
+        display: '4 minutes',
       },
       offlineSlowHashingXPerSecond: {
-        base: 2,
-        seconds: 2.2201,
-        display: '2 seconds',
+        base: null,
+        seconds: 0.2249,
+        display: 'less than a second',
       },
       offlineFastHashingXPerSecond: {
         base: null,
-        seconds: 0.0000022201,
+        seconds: 2.249e-7,
         display: 'less than a second',
       },
     },
@@ -2433,8 +2488,8 @@ export default [
   {
     calcTime: 0,
     password: 'aBcDeFg123',
-    guesses: 107399800,
-    guessesLog10: 8.031003472620732,
+    guesses: 107397128,
+    guessesLog10: 8.030992667672386,
     sequence: [
       {
         pattern: 'dictionary',
@@ -2464,22 +2519,22 @@ export default [
     crackTimes: {
       onlineThrottlingXPerHour: {
         base: null,
-        seconds: 3866392800,
+        seconds: 3866296608,
         display: 'centuries',
       },
       onlineNoThrottlingXPerSecond: {
         base: 4,
-        seconds: 10739980,
+        seconds: 10739712.8,
         display: '4 months',
       },
       offlineSlowHashingXPerSecond: {
         base: 3,
-        seconds: 10739.98,
+        seconds: 10739.7128,
         display: '3 hours',
       },
       offlineFastHashingXPerSecond: {
         base: null,
-        seconds: 0.01073998,
+        seconds: 0.0107397128,
         display: 'less than a second',
       },
     },
@@ -2546,8 +2601,8 @@ export default [
   {
     calcTime: 0,
     password: 'qwerty!@#$',
-    guesses: 269200,
-    guessesLog10: 5.430075055551939,
+    guesses: 259560,
+    guessesLog10: 5.414237765486716,
     sequence: [
       {
         pattern: 'dictionary',
@@ -2579,23 +2634,23 @@ export default [
     ],
     crackTimes: {
       onlineThrottlingXPerHour: {
-        base: 4,
-        seconds: 9691200,
-        display: '4 months',
+        base: 3,
+        seconds: 9344160,
+        display: '3 months',
       },
       onlineNoThrottlingXPerSecond: {
         base: 7,
-        seconds: 26920,
+        seconds: 25956,
         display: '7 hours',
       },
       offlineSlowHashingXPerSecond: {
-        base: 27,
-        seconds: 26.92,
-        display: '27 seconds',
+        base: 26,
+        seconds: 25.956,
+        display: '26 seconds',
       },
       offlineFastHashingXPerSecond: {
         base: null,
-        seconds: 0.00002692,
+        seconds: 0.000025956,
         display: 'less than a second',
       },
     },
@@ -2608,8 +2663,8 @@ export default [
   {
     calcTime: 0,
     password: 'admin_admin',
-    guesses: 160319776,
-    guessesLog10: 8.204987097388049,
+    guesses: 60366357,
+    guessesLog10: 7.780794967761107,
     sequence: [
       {
         pattern: 'dictionary',
@@ -2654,37 +2709,37 @@ export default [
     ],
     crackTimes: {
       onlineThrottlingXPerHour: {
-        base: null,
-        seconds: 5771511936,
-        display: 'centuries',
+        base: 68,
+        seconds: 2173188852,
+        display: '68 years',
       },
       onlineNoThrottlingXPerSecond: {
-        base: 6,
-        seconds: 16031977.6,
-        display: '6 months',
+        base: 2,
+        seconds: 6036635.7,
+        display: '2 months',
       },
       offlineSlowHashingXPerSecond: {
-        base: 4,
-        seconds: 16031.9776,
-        display: '4 hours',
+        base: 2,
+        seconds: 6036.6357,
+        display: '2 hours',
       },
       offlineFastHashingXPerSecond: {
         base: null,
-        seconds: 0.0160319776,
+        seconds: 0.0060366357,
         display: 'less than a second',
       },
     },
-    score: 3,
+    score: 2,
     feedback: {
-      warning: null,
-      suggestions: [],
+      warning: 'This is similar to a commonly used password.',
+      suggestions: ['Add more words that are less common.'],
     },
   },
   {
     calcTime: 0,
     password: '123-456-789',
-    guesses: 1600000000,
-    guessesLog10: 9.204119982655923,
+    guesses: 1474893840,
+    guessesLog10: 9.168760761764064,
     sequence: [
       {
         pattern: 'sequence',
@@ -2698,12 +2753,23 @@ export default [
         guessesLog10: 1.6989700043360185,
       },
       {
-        pattern: 'bruteforce',
-        token: '-456-',
+        pattern: 'separator',
+        token: '-',
         i: 3,
+        j: 3,
+        guesses: 10,
+        guessesLog10: 1,
+      },
+      {
+        pattern: 'spatial',
+        i: 4,
         j: 7,
-        guesses: 100000,
-        guessesLog10: 5,
+        token: '456-',
+        graph: 'keypadMac',
+        turns: 2,
+        shiftedCount: 0,
+        guesses: 2457,
+        guessesLog10: 3.3904051564800803,
       },
       {
         pattern: 'sequence',
@@ -2720,22 +2786,22 @@ export default [
     crackTimes: {
       onlineThrottlingXPerHour: {
         base: null,
-        seconds: 57600000000,
+        seconds: 53096178240,
         display: 'centuries',
       },
       onlineNoThrottlingXPerSecond: {
         base: 5,
-        seconds: 160000000,
+        seconds: 147489384,
         display: '5 years',
       },
       offlineSlowHashingXPerSecond: {
         base: 2,
-        seconds: 160000,
+        seconds: 147489.384,
         display: '2 days',
       },
       offlineFastHashingXPerSecond: {
         base: null,
-        seconds: 0.16,
+        seconds: 0.147489384,
         display: 'less than a second',
       },
     },
@@ -2847,8 +2913,8 @@ export default [
   {
     calcTime: 0,
     password: 'P@SSW0RD!@#',
-    guesses: 110000,
-    guessesLog10: 5.0413926851582245,
+    guesses: 100224,
+    guessesLog10: 5.000971731705811,
     sequence: [
       {
         pattern: 'dictionary',
@@ -2889,22 +2955,22 @@ export default [
     crackTimes: {
       onlineThrottlingXPerHour: {
         base: 1,
-        seconds: 3960000,
+        seconds: 3608064,
         display: '1 month',
       },
       onlineNoThrottlingXPerSecond: {
         base: 3,
-        seconds: 11000,
+        seconds: 10022.4,
         display: '3 hours',
       },
       offlineSlowHashingXPerSecond: {
-        base: 11,
-        seconds: 11,
-        display: '11 seconds',
+        base: 10,
+        seconds: 10.0224,
+        display: '10 seconds',
       },
       offlineFastHashingXPerSecond: {
         base: null,
-        seconds: 0.000011,
+        seconds: 0.0000100224,
         display: 'less than a second',
       },
     },
@@ -3023,8 +3089,8 @@ export default [
   {
     calcTime: 0,
     password: 'December-25',
-    guesses: 110000,
-    guessesLog10: 5.0413926851582245,
+    guesses: 100224,
+    guessesLog10: 5.000971731705811,
     sequence: [
       {
         pattern: 'dictionary',
@@ -3054,22 +3120,22 @@ export default [
     crackTimes: {
       onlineThrottlingXPerHour: {
         base: 1,
-        seconds: 3960000,
+        seconds: 3608064,
         display: '1 month',
       },
       onlineNoThrottlingXPerSecond: {
         base: 3,
-        seconds: 11000,
+        seconds: 10022.4,
         display: '3 hours',
       },
       offlineSlowHashingXPerSecond: {
-        base: 11,
-        seconds: 11,
-        display: '11 seconds',
+        base: 10,
+        seconds: 10.0224,
+        display: '10 seconds',
       },
       offlineFastHashingXPerSecond: {
         base: null,
-        seconds: 0.000011,
+        seconds: 0.0000100224,
         display: 'less than a second',
       },
     },
@@ -3187,8 +3253,8 @@ export default [
   {
     calcTime: 0,
     password: 'password?',
-    guesses: 11100,
-    guessesLog10: 4.045322978786657,
+    guesses: 1124,
+    guessesLog10: 3.050766311233042,
     sequence: [
       {
         pattern: 'dictionary',
@@ -3217,23 +3283,23 @@ export default [
     ],
     crackTimes: {
       onlineThrottlingXPerHour: {
-        base: 5,
-        seconds: 399600,
-        display: '5 days',
+        base: 11,
+        seconds: 40464,
+        display: '11 hours',
       },
       onlineNoThrottlingXPerSecond: {
-        base: 19,
-        seconds: 1110,
-        display: '19 minutes',
+        base: 2,
+        seconds: 112.4,
+        display: '2 minutes',
       },
       offlineSlowHashingXPerSecond: {
-        base: 1,
-        seconds: 1.11,
-        display: '1 second',
+        base: null,
+        seconds: 0.1124,
+        display: 'less than a second',
       },
       offlineFastHashingXPerSecond: {
         base: null,
-        seconds: 0.00000111,
+        seconds: 1.124e-7,
         display: 'less than a second',
       },
     },
@@ -3295,8 +3361,8 @@ export default [
   {
     calcTime: 0,
     password: '11/11/1111',
-    guesses: 210200,
-    guessesLog10: 5.322632711692223,
+    guesses: 200517,
+    guessesLog10: 5.302151198368743,
     sequence: [
       {
         pattern: 'repeat',
@@ -3324,22 +3390,22 @@ export default [
     crackTimes: {
       onlineThrottlingXPerHour: {
         base: 3,
-        seconds: 7567200,
+        seconds: 7218612,
         display: '3 months',
       },
       onlineNoThrottlingXPerSecond: {
         base: 6,
-        seconds: 21020,
+        seconds: 20051.7,
         display: '6 hours',
       },
       offlineSlowHashingXPerSecond: {
-        base: 21,
-        seconds: 21.02,
-        display: '21 seconds',
+        base: 20,
+        seconds: 20.0517,
+        display: '20 seconds',
       },
       offlineFastHashingXPerSecond: {
         base: null,
-        seconds: 0.00002102,
+        seconds: 0.0000200517,
         display: 'less than a second',
       },
     },

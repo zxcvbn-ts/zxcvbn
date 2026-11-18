@@ -229,8 +229,45 @@ describe('scoring', () => {
       const result = scoring.mostGuessableMatchSequence(passwordLocal, matches)
       // sequenceLength = 2
       // guessesProduct = 10 * 10 = 100
-      // totalGuesses = 2! * 100 + 10000^(2-1) = 2 * 100 + 10000 = 10200
-      expect(result.guesses).toEqual(10200)
+      // the penalty per extra match is capped at the geometric mean of the
+      // match guesses, 100^(1/2) = 10, instead of 10000
+      // totalGuesses = 2! * 100 + 10^(2-1) = 2 * 100 + 10 = 210
+      expect(result.guesses).toEqual(210)
+    })
+
+    it('charges the full additive penalty for expensive matches', () => {
+      // long enough that bruteforce (10^20) can't compete
+      const passwordLocal = 'passwordpasswordpass'
+      const matches = [getMatch(0, 9, 100000), getMatch(10, 19, 100000)]
+      const result = scoring.mostGuessableMatchSequence(passwordLocal, matches)
+      // guessesProduct = 10^10, its geometric mean 10^5 is above 10000
+      // totalGuesses = 2! * 10^10 + 10000^(2-1)
+      expect(result.guesses).toEqual(2 * 10 ** 10 + 10000)
+    })
+
+    it('raises the geometric mean to the power sequenceLength - 1', () => {
+      const passwordLocal = 'password'
+      const matches = [
+        getMatch(0, 2, 10),
+        getMatch(3, 5, 10),
+        getMatch(6, 7, 10),
+      ]
+      const result = scoring.mostGuessableMatchSequence(passwordLocal, matches)
+      // sequenceLength = 3
+      // guessesProduct = 10 * 10 * 10 = 1000, its geometric mean is 10
+      // totalGuesses = 3! * 1000 + 10^(3-1) = 6000 + 100 = 6100
+      expect(result.guesses).toEqual(6100)
+    })
+
+    it('only caps the additive penalty once the geometric mean reaches 10000', () => {
+      // long enough that bruteforce (10^10) can't compete
+      const passwordLocal = 'passwordpa'
+      const matches = [getMatch(0, 4, 1000), getMatch(5, 9, 1000)]
+      const result = scoring.mostGuessableMatchSequence(passwordLocal, matches)
+      // guessesProduct = 10^6 is above 10000^(2-1) but below 10000^2,
+      // its geometric mean 1000 is still below 10000
+      // totalGuesses = 2! * 10^6 + 1000^(2-1) = 2000000 + 1000 = 2001000
+      expect(result.guesses).toEqual(2001000)
     })
 
     it('sorts matches by starting index i for deterministic output', () => {
