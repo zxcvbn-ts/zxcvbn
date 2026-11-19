@@ -25,6 +25,13 @@ const isSeparatorRun = (text: string) => {
  *-------------------------------------------------------------------------------
  */
 class MatchWordSequence extends MatcherBaseClass {
+  // A word can be in several lists, like november in mikeNovemberOscar, and
+  // only one of its matches is kept. These are all lists of each kept match.
+  private wordLists = new WeakMap<MatchExtended, string[]>()
+
+  // the lists that hold every word of each sequence being built
+  private sharedLists = new WeakMap<MatchExtended[], string[]>()
+
   match(matchOptions: MatchOptions): WordSequenceMatch[] {
     const { password, matches = [] } = matchOptions
 
@@ -66,6 +73,9 @@ class MatchWordSequence extends MatcherBaseClass {
           const last = acc[acc.length - 1]
           if (!last || match.i > last.j) {
             acc.push(match)
+            this.wordLists.set(match, [match.dictionaryName])
+          } else if (this.isSameWord(last, match)) {
+            this.wordLists.get(last)?.push(match.dictionaryName)
           }
           return acc
         }, [])
@@ -159,7 +169,12 @@ class MatchWordSequence extends MatcherBaseClass {
       textBetween === textBetween.toUpperCase() &&
       textBetween !== textBetween.toLowerCase()
 
-    return hasValidSeparator || isCamelCase
+    // A word from another list isn't part of the sequence, such words are
+    // scored as separate dictionary words.
+    return (
+      (hasValidSeparator || isCamelCase) &&
+      this.extendSharedLists(currentSequence, nextMatch)
+    )
   }
 
   private createWordSequenceMatch(
@@ -194,6 +209,32 @@ class MatchWordSequence extends MatcherBaseClass {
       ascending,
       separators,
     }
+  }
+
+  private isSameWord(a: MatchExtended, b: MatchExtended) {
+    return a.i === b.i && a.j === b.j && a.matchedWord === b.matchedWord
+  }
+
+  private getLists(match: MatchExtended) {
+    return this.wordLists.get(match) ?? [match.dictionaryName]
+  }
+
+  // Whether a list holds every word of the sequence and the next word. Only
+  // those lists are kept for the sequence, as it is extended with that word.
+  private extendSharedLists(
+    sequence: MatchExtended[],
+    nextMatch: MatchExtended,
+  ) {
+    const lists = this.sharedLists.get(sequence) ?? this.getLists(sequence[0])
+    const nextLists = this.getLists(nextMatch)
+    for (const name of lists) {
+      if (!nextLists.includes(name)) {
+        const shared = lists.filter((list) => nextLists.includes(list))
+        this.sharedLists.set(sequence, shared)
+        return shared.length > 0
+      }
+    }
+    return true
   }
 
   private getMostCommon<T>(array: T[]): T | null {

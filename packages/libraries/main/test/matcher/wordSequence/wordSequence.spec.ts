@@ -229,19 +229,33 @@ describe('WordSequence Matcher', () => {
   })
 
   describe('Mixed Sequences', () => {
-    it('should detect mixed category sequences', () => {
+    it('should not join words from different lists', () => {
       const result = zxcvbn.check('oneMondayRed')
 
-      const wordSequenceMatch = result.sequence.find(
-        (match) => match.pattern === 'wordSequence',
-      )
-
-      expect(wordSequenceMatch).toBeDefined()
-      if (wordSequenceMatch?.pattern === 'wordSequence') {
-        expect(wordSequenceMatch.words).toEqual(['one', 'monday', 'red'])
-        expect(wordSequenceMatch.wordCount).toBe(3)
-      }
+      expect(
+        result.sequence.some((match) => match.pattern === 'wordSequence'),
+      ).toBe(false)
     })
+
+    it('should split at the switch to another list', () => {
+      const words = zxcvbn
+        .check('oneTwoMondayTuesday')
+        .sequence.map(
+          (match) => match.pattern === 'wordSequence' && match.words,
+        )
+
+      expect(words).toEqual([
+        ['one', 'two'],
+        ['monday', 'tuesday'],
+      ])
+    })
+
+    it.each(['pluto yellow zulu nine', 'NeptuneVioletXrayFridayAquarius'])(
+      'should score %s like separate words',
+      (password) => {
+        expect(zxcvbn.check(password).score).toBe(4)
+      },
+    )
   })
 
   describe('Edge Cases', () => {
@@ -276,23 +290,80 @@ describe('WordSequence Matcher', () => {
       expect(match.ascending).toBe(false)
     })
 
-    it('should use the most common dictionary name for mixed sequences', () => {
-      // 'one', 'two' are cardinalNumbers. 'monday' is daysOfWeek.
-      const result = zxcvbn.check('oneTwoMonday')
-      const match = result.sequence.find(
-        (m) => m.pattern === 'wordSequence',
-      ) as any
-      expect(match.dictionaryName).toBe('cardinalNumbers-en')
+    it('should not join the same list in another language', () => {
+      const multiLanguage = new ZxcvbnFactory({
+        dictionary: { 'months-pl': ['styczen'], ...wordSequences },
+      })
+      const result = multiLanguage.check('styczenFebruaryMarch')
+
+      expect(
+        result.sequence.map(
+          (match) => match.pattern === 'wordSequence' && match.words,
+        ),
+      ).toEqual([false, ['february', 'march']])
     })
 
-    it('should handle tie in dictionary names by using the first one', () => {
-      // 'one' (cardinalNumbers), 'monday' (daysOfWeek)
-      const result = zxcvbn.check('oneMonday')
-      const match = result.sequence.find(
-        (m) => m.pattern === 'wordSequence',
-      ) as any
-      expect(match.dictionaryName).toBe('cardinalNumbers-en')
+    it('should join a word that is in two lists', () => {
+      // november is matched as a month, it ranks better there
+      const match = zxcvbn
+        .check('mikeNovemberOscar')
+        .sequence.find((m) => m.pattern === 'wordSequence')
+
+      expect(match?.token).toBe('mikeNovemberOscar')
     })
+
+    it('should not join words that share a list only pairwise', () => {
+      // mike and november are military, november and december months
+      const result = zxcvbn.check('mikeNovemberDecember')
+
+      expect(result.sequence.map((match) => match.token)).not.toContain(
+        'mikeNovemberDecember',
+      )
+    })
+
+    it('should join a user input that is also in another list', () => {
+      const result = zxcvbn.check('HansJanuaryZimmer', [
+        'Hans',
+        'January',
+        'Zimmer',
+      ])
+
+      expect(result.sequence).toHaveLength(1)
+      expect(result.sequence[0].pattern).toBe('wordSequence')
+    })
+
+    it('should join words whose shared list is neither kept match', () => {
+      const multiLanguage = new ZxcvbnFactory({
+        dictionary: {
+          'months-xx': ['april'],
+          'months-yy': ['may'],
+          ...wordSequences,
+        },
+      })
+      const match = multiLanguage
+        .check('aprilMayJune')
+        .sequence.find((m) => m.pattern === 'wordSequence')
+
+      expect(match?.token).toBe('aprilMayJune')
+    })
+
+    it.each(['marchAprilMay', 'aprilMayJune'])(
+      'should join %s when april is matched in another language',
+      (password) => {
+        // listed first, so its april is the match that is kept
+        const multiLanguage = new ZxcvbnFactory({
+          dictionary: {
+            'months-xx': ['januar', 'februar', 'maerz', 'april'],
+            ...wordSequences,
+          },
+        })
+        const match = multiLanguage
+          .check(password)
+          .sequence.find((m) => m.pattern === 'wordSequence')
+
+        expect(match?.token).toBe(password)
+      },
+    )
 
     it('should detect sequences with custom separators', () => {
       // Dots and spaces are allowed as per separators array in matching.ts
